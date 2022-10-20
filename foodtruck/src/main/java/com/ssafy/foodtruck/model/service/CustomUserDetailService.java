@@ -32,6 +32,6 @@ public class CustomUserDetailService implements UserDetailsService {
     private User getUserDetail(String email, com.ssafy.foodtruck.db.entity.User user){
         List<GrantedAuthority> authorities = user.getAuthorities().stream().map(auth -> new SimpleGrantedAuthority(auth.getAuthName()))
                 .collect(Collectors.toList());
-        return new User(user.getEmail(), user.getPw(), authorities);
+        return new User(user.getEmail(), user.getPassword(), authorities);
     }
 }

@@ -1,39 +1,47 @@
 package com.ssafy.foodtruck.db.entity;
 
+import com.sun.istack.NotNull;
 import lombok.*;
+import org.checkerframework.common.aliasing.qual.Unique;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
-@Builder @Getter
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@Builder
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class User{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private LocalDateTime regDate;
-    @Column(unique = true, nullable = false)
-    private String email;
-    @Column(nullable = false)
-    private String pw;
-    @Column(unique = true, nullable = false)
-    private String mobileNumber;
-    @Column(unique = true, nullable = false)
+public class User extends BaseEntity {
+
+    @Unique
+    @NotNull
+    @Column(length = 50)
     private String nickname;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "userAuth",
-            joinColumns = {
-                    @JoinColumn(name = "userId", referencedColumnName = "id")
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "authName", referencedColumnName = "authName")
-            }
-    )
-    private Set<Authority> authorities;
+    @Unique
+    @NotNull
+    @Column(length = 50)
+    private String email;
 
+    @NotNull
+    @Column(length = 50)
+    private String password;
+
+    @NotNull
+    @Column(length = 50)
+    private String phone;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private UserType userType;
+
+    @Unique
+    @Column(length = 50)
+    private String businessNumber;
+
+    @Transient
+    private Set<Authority> authorities;
 }
