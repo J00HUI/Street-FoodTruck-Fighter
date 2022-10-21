@@ -45,7 +45,7 @@ public class AuthService {
 
     public boolean checkRightPw(UserDto userDto) {
         User user = userService.getUserByEmail(userDto.getEmail());
-        return passwordEncoder.matches(userDto.getPw(), user.getPw());
+        return passwordEncoder.matches(userDto.getPw(), user.getPassword());
     }
 
     public void logout(String refreshToken) {

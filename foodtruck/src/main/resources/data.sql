@@ -1,3 +1,4 @@
+
 insert into
     authority
     value

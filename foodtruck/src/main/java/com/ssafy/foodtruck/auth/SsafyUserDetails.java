@@ -37,7 +37,7 @@ public class SsafyUserDetails implements UserDetails {
     }
     @Override
     public String getPassword() {
-        return this.user.getPw();
+        return this.user.getPassword();
     }
     @Override
     public String getUsername() {

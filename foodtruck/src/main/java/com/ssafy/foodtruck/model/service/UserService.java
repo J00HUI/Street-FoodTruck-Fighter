@@ -41,15 +41,14 @@ public class UserService {
     public void createUser(UserDto userDto){
         userRepository.save(User.builder()
                         .email(userDto.getEmail())
-                        .pw(passwordEncoder.encode(userDto.getPw()))
-                        .mobileNumber(userDto.getMobileNumber())
+                        .password(passwordEncoder.encode(userDto.getPw()))
+                        .phone(userDto.getMobileNumber())
                         .nickname(userDto.getNickname())
                         .authorities(
                                 Collections.singleton(Authority.builder()
                                         .authName(UserRole.ROLE_USER)
                                         .build())
                         )
-                        .regDate(LocalDateTime.now())
                         .build());
     }
 
