@@ -24,19 +24,19 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
 
-        /*
-         *
-         * Front-end에서 참조하는 URL을 /dist로 매핑
-         *
-         */
+//        Front-end에서 참조하는 URL을 /dist로 매핑
         registry.addResourceHandler("/css/**")
                 .addResourceLocations("classpath:/dist/css/");
+
         registry.addResourceHandler("/fonts/**")
                 .addResourceLocations("classpath:/dist/fonts/");
+
         registry.addResourceHandler("/icons/**")
                 .addResourceLocations("classpath:/dist/icons/");
+
         registry.addResourceHandler("/img/**")
                 .addResourceLocations("classpath:/dist/img/");
+
         registry.addResourceHandler("/js/**")
                 .addResourceLocations("classpath:/dist/js/");
     }

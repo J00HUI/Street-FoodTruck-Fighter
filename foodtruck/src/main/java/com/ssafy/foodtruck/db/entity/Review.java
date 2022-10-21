@@ -34,4 +34,3 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "orders_id")
     private Orders orders;
 }
-

@@ -26,6 +26,10 @@ import static com.google.common.collect.Lists.newArrayList;
 @EnableSwagger2
 public class SwaggerConfig {
 
+    public static final String SECURITY_SCHEMA_NAME = "JWT";
+    public static final String AUTHORIZATION_SCOPE_GLOBAL = "global";
+    public static final String AUTHORIZATION_SCOPE_GLOBAL_DESC = "accessEverything";
+
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2).useDefaultResponseMessages(false)
@@ -34,8 +38,7 @@ public class SwaggerConfig {
                 .paths(PathSelectors.ant("/api/**"))
                 .build()
                 .securityContexts(newArrayList(securityContext()))
-                .securitySchemes(newArrayList(apiKey()))
-                ;
+                .securitySchemes(newArrayList(apiKey()));
     }
 
     private ApiKey apiKey() {
@@ -47,10 +50,6 @@ public class SwaggerConfig {
                 .securityReferences(defaultAuth())
                 .build();
     }
-
-    public static final String SECURITY_SCHEMA_NAME = "JWT";
-    public static final String AUTHORIZATION_SCOPE_GLOBAL = "global";
-    public static final String AUTHORIZATION_SCOPE_GLOBAL_DESC = "accessEverything";
 
     private List<SecurityReference> defaultAuth() {
         AuthorizationScope authorizationScope = new AuthorizationScope(AUTHORIZATION_SCOPE_GLOBAL, AUTHORIZATION_SCOPE_GLOBAL_DESC);

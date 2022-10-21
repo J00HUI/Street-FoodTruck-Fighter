@@ -33,19 +33,17 @@ public class AuthService {
         if (checkRightPw(userDto)) {
             // 유효한 패스워드가 맞는 경우, 로그인 성공으로 응답.(액세스 토큰을 포함하여 응답값 전달)
 //            JwtTokenUtil.getToken(loginInfo.getEmail())
-            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPw());
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword());
             Authentication auth = authenticationManagerBuilder.getObject().authenticate(token);
             SecurityContextHolder.getContext().setAuthentication(auth);
-
             return jwtTokenUtil.createToken(userDto, auth);
         }
-
         throw new InvalidEmailAndPasswordException();
     }
 
     public boolean checkRightPw(UserDto userDto) {
         User user = userService.getUserByEmail(userDto.getEmail());
-        return passwordEncoder.matches(userDto.getPw(), user.getPassword());
+        return passwordEncoder.matches(userDto.getPassword(), user.getPassword());
     }
 
     public void logout(String refreshToken) {
@@ -67,7 +65,6 @@ public class AuthService {
 //            return null;
 //        }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
         return jwtTokenUtil.reissueAccessToken(email, auth);
     }
 }

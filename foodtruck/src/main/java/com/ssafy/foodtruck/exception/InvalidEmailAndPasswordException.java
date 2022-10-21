@@ -1,8 +1,8 @@
 package com.ssafy.foodtruck.exception;
 
 public class InvalidEmailAndPasswordException extends RuntimeException{
-    public InvalidEmailAndPasswordException() {
-    }
+
+    public InvalidEmailAndPasswordException() {}
 
     public InvalidEmailAndPasswordException(String message) {
         super(message);
