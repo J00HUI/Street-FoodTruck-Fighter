@@ -1,6 +1,5 @@
 package com.ssafy.foodtruck.controller;
 
-
 import com.ssafy.foodtruck.dto.JWTokenDto;
 import com.ssafy.foodtruck.dto.UserDto;
 import com.ssafy.foodtruck.model.service.AuthService;
@@ -12,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,7 +31,6 @@ public class AuthController {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     private final AuthService authService;
-    private final UserService userService;
 
     @PostMapping("/login")
     @ApiOperation(value = "로그인", notes = "<strong>아이디와 패스워드</strong>를 통해 로그인 한다.")
@@ -44,9 +41,7 @@ public class AuthController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> login(@RequestBody @ApiParam(value = "로그인 정보", required = true) UserDto userDto, HttpServletResponse resp) {
-
         JWToken jwt = authService.login(userDto);
-
 //        ResponseCookie cookie = ResponseCookie.from("refresh-token", jwt.getRefreshToken())
 //                .maxAge(60*60*24*15)
 //                .httpOnly(true)
@@ -61,9 +56,8 @@ public class AuthController {
     }
 
     @GetMapping("/logout")
-    public ResponseEntity<?> logout(@CookieValue(value="refresh-token", required = false) String refreshToken, HttpServletResponse resp){
+    public ResponseEntity<?> logout(@CookieValue(value="refresh-token", required = false) String refreshToken, HttpServletResponse resp) {
         authService.logout(refreshToken);
-
 //        ResponseCookie cookie = ResponseCookie.from("refresh-token",null)
 //                .maxAge(0)
 //                .httpOnly(true)

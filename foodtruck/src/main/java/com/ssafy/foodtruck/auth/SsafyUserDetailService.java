@@ -14,13 +14,14 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RequiredArgsConstructor
-public class SsafyUserDetailService implements UserDetailsService{
+public class SsafyUserDetailService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email).get();
+
         if(user != null) {
             SsafyUserDetails userDetails = new SsafyUserDetails(user);
             return userDetails;

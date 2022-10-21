@@ -19,21 +19,20 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.stream.Collectors;
 
-//import static com.google.common.collect.Lists.newArrayList;
-
 /**
  * jwt 토큰 유틸 정의.
  */
 @Component
 public class JwtTokenUtil {
-    private static String secretKey;
-    public static Integer expirationTime;
 
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String HEADER_STRING = "Authorization";
     public static final String ISSUER = "ssafy.com";
+
     private final RedisUtil redisUtil;
 
+    private static String secretKey;
+    public static Integer expirationTime;
 
     @Autowired
     public JwtTokenUtil(@Value("${jwt.secret}") String secretKey, @Value("${jwt.expiration}") Integer expirationTime, RedisUtil redisUtil) {
@@ -41,7 +40,6 @@ public class JwtTokenUtil {
         this.expirationTime = expirationTime;
         this.redisUtil=redisUtil;
     }
-
 
     public static JWTVerifier getVerifier() {
         return JWT
@@ -127,15 +125,14 @@ public class JwtTokenUtil {
         }
     }
 
-
-
-
     public JWToken createToken(UserDto userDto, Authentication auth) {
         Date date = new Date();
-        Long accessExpires = 24*60*60*1000L; // 1day
-        Long refreshExpires = 60*60*24*15*1000L; // 15days
+        Long accessExpires = 24 * 60 * 60 * 1000L; // 1day
+        Long refreshExpires = 60 * 60 * 24 * 15 * 1000L; // 15days
 
-        String authorities = auth.getAuthorities().stream().map(GrantedAuthority::getAuthority)
+        String authorities = auth.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
         String accessToken = JWT.create()
@@ -154,18 +151,19 @@ public class JwtTokenUtil {
                 .sign(Algorithm.HMAC512(secretKey.getBytes()));
 
 //        redisUtil.set(auth.getName(), refreshToken, refreshExpires);
-
         return JWToken.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
     }
 
-    public JWToken reissueAccessToken(String email, Authentication auth){
+    public JWToken reissueAccessToken(String email, Authentication auth) {
         Date date = new Date();
         Long accessExpires = 30*60*1000L; // 30minutes
 
-        String authorities = auth.getAuthorities().stream().map(GrantedAuthority::getAuthority)
+        String authorities = auth.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
         String accessToken = JWT.create()
@@ -182,25 +180,23 @@ public class JwtTokenUtil {
     }
 
     public String getEmailFromBearerToken(String bearerToken) {
-        if(bearerToken.startsWith(TOKEN_PREFIX)) {
+        if (bearerToken.startsWith(TOKEN_PREFIX)) {
             String token = bearerToken.substring(TOKEN_PREFIX.length());
             return decodeToken(token).getSubject();
         }
         throw new RuntimeException();
     }
 
-    public String getEmailFromRefreshToken(String refreshToken){
+    public String getEmailFromRefreshToken(String refreshToken) {
         return decodeToken(refreshToken).getSubject();
     }
 
     public static DecodedJWT decodeToken(String token) {
         try {
             JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC512(secretKey)).withIssuer(ISSUER).build();
-
             // 토큰 검증
             DecodedJWT decodedJWT = jwtVerifier.verify(token);
             return decodedJWT;
-
         } catch (JWTVerificationException e) {
             throw e;
         }
@@ -210,7 +206,7 @@ public class JwtTokenUtil {
      * test용 임시 token
      * @return
      */
-    public String tempToken(){
+    public String tempToken() {
         return JWT.create()
                 .withSubject("ssafy@naver.com")
                 .withClaim("test", "test1,test2")

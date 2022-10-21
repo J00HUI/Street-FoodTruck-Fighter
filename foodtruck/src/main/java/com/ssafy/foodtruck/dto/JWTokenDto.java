@@ -9,13 +9,16 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class JWTokenDto {
+
+    private static final String BEARER = "Bearer";
+
     private String grantType;
     private String accessToken;
 
-    public static JWTokenDto of(JWToken token){
+    public static JWTokenDto of(JWToken token) {
         JWTokenDto jwToken = new JWTokenDto();
         jwToken.accessToken = token.getAccessToken();
-        jwToken.grantType = "Bearer";
+        jwToken.grantType = BEARER;
         return jwToken;
     }
 }

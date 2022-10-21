@@ -15,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -25,23 +24,23 @@ import java.util.*;
 @RequiredArgsConstructor
 @Transactional
 public class UserService {
+
+//    @Value("${spring.servlet.multipart.location}")
+//    private String root;
+
 //    public static final String INFO = "INFO::";
 //    private static final String HEART = "HEART";
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
     private final JwtTokenUtil jwtTokenUtil;
 //    private final RedisUtil redisUtil;
 
-//    @Value("${spring.servlet.multipart.location}")
-//    private String root;
-
-    public void createUser(UserDto userDto){
+    public void createUser(UserDto userDto) {
         userRepository.save(User.builder()
                         .email(userDto.getEmail())
-                        .password(passwordEncoder.encode(userDto.getPw()))
+                        .password(passwordEncoder.encode(userDto.getPassword()))
                         .phone(userDto.getMobileNumber())
                         .nickname(userDto.getNickname())
                         .authorities(
@@ -54,9 +53,12 @@ public class UserService {
 
     public User getUserByEmail(String email) {
         Optional<User> user = userRepository.findByEmail(email);
-        if (!user.isPresent()) throw new UsernameNotFoundException("존재하지 않는 이메일입니다.");
+        if (!user.isPresent()) {
+            throw new UsernameNotFoundException("존재하지 않는 이메일입니다.");
+        }
         return user.get();
     }
+
     // Uid Id 구분 헷갈리네...
 //    public UserDto getUserByUid(int uId){
 //        UserDto userDto = userDao.selectUserByUid(uId);
@@ -66,9 +68,9 @@ public class UserService {
 //        return userDto;
 //    }
 
-    public void checkExistingEmail(String email) throws ExistingEmailException{
+    public void checkExistingEmail(String email) throws ExistingEmailException {
         User user = userRepository.findByEmail(email).get();
-        if(user != null){
+        if (user != null) {
             throw new ExistingEmailException();
         }
     }
@@ -77,5 +79,4 @@ public class UserService {
 //    public int getUidFromBearerToken(String BearerToken) {
 //        return userDao.selectUidByEmail(jwtTokenUtil.getEmailFromBearerToken(BearerToken));
 //    }
-
 }
