@@ -1,7 +1,5 @@
 <template>
-  <h1>메인페이지</h1>
-  <br><br><br><br><br><br><br>
-  ㅋㅋ
+    <h1>매출 통계 페이지</h1>
 </template>
 
 <script>
@@ -11,8 +9,5 @@ export default {
 </script>
 
 <style>
-template {
-
-}
 
 </style>
