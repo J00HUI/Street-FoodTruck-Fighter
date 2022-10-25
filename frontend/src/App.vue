@@ -4,7 +4,7 @@
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Avenir, Helvetica, Arial, sans-serif, ;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
@@ -14,6 +14,16 @@
   border: 5px solid var(--color-gray-1);
   margin: auto;
 }
+@font-face {
+    font-family: 'SCoreDream';
+    font-weight: 500; 
+    font-style: normal; 
+    src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream5.woff2) format('woff2'),
+         url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream5.woff) format('woff');
+    font-display: swap;
+}
+
+
 :root {
   --color-gray-1: #f7f8f8;
   --color-gray-2: #898989;
