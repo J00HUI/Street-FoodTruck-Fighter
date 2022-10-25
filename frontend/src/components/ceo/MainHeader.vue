@@ -38,6 +38,7 @@ header {
   font-size: 1rem;
   border-radius: 0px 0px 1rem 1rem;
   padding: 4%;
+  margin-bottom: 4rem;
 }
 address {
   display: inline-block;
