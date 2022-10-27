@@ -9,10 +9,12 @@
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   width: 100vw;
+  height: 100vh;
   max-width: 600px;
-  min-width: 200px;
+  min-width: 320px;
   border: 5px solid var(--color-gray-1);
-  margin: auto;
+  margin: 0 auto 0 auto;
+
 }
 @font-face {
     font-family: 'SCoreDream';
@@ -40,5 +42,9 @@
   --color-pink-1: #ffd4d4;
   --color-pink-2: #ffaeae;
   --color-green-1: #7fd488;
+}
+h1 {
+  margin: 0px;
+  /* 나중에 지울 것 */
 }
 </style>
