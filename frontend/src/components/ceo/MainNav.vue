@@ -11,7 +11,6 @@
     </div>
     <nav>
       <div class="main__nav-box">
-        
         <router-link to="/start">
           <button type="button" class="main__nav-style">
             <img class="main__nav-img" src="@/assets/ceo/navOpen.svg" alt />
@@ -46,7 +45,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+
+};
 </script>
 
 <style scoped>
@@ -65,7 +66,7 @@ img {
   box-sizing: border-box;
   padding: 1rem;
   border-radius: 1rem;
-  width: 20vw;
+  width: 90%;
   box-shadow: 0px 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
 }
 .main__date-time {
@@ -80,7 +81,7 @@ img {
   margin: auto 0 auto 0;
 }
 .main__nav-box {
-  height: 10vw;
+  height: 10%;
 }
 .main__nav-style {
   margin: 5%;
@@ -105,6 +106,7 @@ img {
   content: '';
 }
 .nav__a-style {
-  height: 10vh;
+  height: 15%;
+  margin-top: 5%;
 }
 </style>
