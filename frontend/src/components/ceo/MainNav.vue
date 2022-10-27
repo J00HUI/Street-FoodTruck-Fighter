@@ -10,7 +10,7 @@
       </span>
     </div>
     <nav>
-      <div>
+      <div class="main__nav-box">
         
         <router-link to="/start">
           <button type="button" class="main__nav-style">
@@ -25,20 +25,20 @@
         </router-link>
       </div>
 
-      <div>
-        <router-link to="/salesstatistics">
-          <img class="nav__a-style" src="@/assets/ceo/navStatistics.svg" alt />
+      <div class="nav__a-link">
+        <router-link class="nav__a-style" to="/salesstatistics">
+          <img src="@/assets/ceo/navStatistics.svg" alt />
         </router-link>
-        <router-link to="/schedule">
-          <img class="nav__a-style" src="@/assets/ceo/navSchedule.svg" alt />
+        <router-link class="nav__a-style" to="/schedule">
+          <img src="@/assets/ceo/navSchedule.svg" alt />
         </router-link>
       </div>
-      <div>
-        <router-link to="/surveycheck">
-          <img class="nav__a-style" src="@/assets/ceo/navSurvey.svg" alt />
+      <div class="nav__a-link">
+        <router-link class="nav__a-style" to="/surveycheck">
+          <img src="@/assets/ceo/navSurvey.svg" alt />
         </router-link>
-        <router-link to="/mytruck">
-          <img class="nav__a-style" src="@/assets/ceo/navTruck.svg" alt />
+        <router-link class="nav__a-style" to="/mytruck">
+          <img src="@/assets/ceo/navTruck.svg" alt />
         </router-link>
       </div>
     </nav>
@@ -65,7 +65,7 @@ img {
   box-sizing: border-box;
   padding: 1rem;
   border-radius: 1rem;
-  width: 90%;
+  width: 20vw;
   box-shadow: 0px 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
 }
 .main__date-time {
@@ -79,22 +79,32 @@ img {
   font-style: normal;
   margin: auto 0 auto 0;
 }
+.main__nav-box {
+  height: 10vw;
+}
 .main__nav-style {
-  margin-left: 5%;
-  width: 42.5%;
+  margin: 5%;
+  width: 40%;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
   border: none;
   background: white;
   border-radius: 2rem;
 }
 .main__nav-img {
-  width: 80%;
+  height: 20%;
   margin: 10%;
-  height: 25vh;
+
+}
+
+.nav__a-link {
+  display: flex;
+  justify-content: space-around;
+}
+.nav__a-link::before, .nav__a-link::after {
+  display: inline-block;
+  content: '';
 }
 .nav__a-style {
-  margin-left: 10%;
-  margin-top: 5%;
-  width: 35%;
+  height: 10vh;
 }
 </style>
