@@ -1,17 +1,19 @@
 <template>
     <CeoHeader></CeoHeader>
     <NewOrder></NewOrder>
+    <Order></Order>
 
-    <h1>영업시작 페이지</h1>
 </template>
 
 <script>
 import CeoHeader from '@/components/ceo/CeoHeader.vue'
 import NewOrder from '@/components/ceo/StartNewOrder.vue'
+import Order from '@/components/ceo/StartOrder.vue'
 export default {
     components: {
         CeoHeader,
         NewOrder,
+        Order,
     }
 
 }
