@@ -1,40 +1,63 @@
 <template>
-  <img src="@/assets/foodtruck.svg" style="width: 5rem" alt />
-  <br />
-  <span style="font-family: SCoreDream; font-style: normal; font-weight: 600"
-    >스트리트 푸드트럭 파이터</span
-  >
-  <br />
-  <span style="font-family: SCoreDream; font-style: normal"
-    >아직 회원이 아니신가요?
-    <span style="color: #ffcd00; font-family: SCoreDream; font-style: normal"
-      >회원가입</span
-    ></span
-  >
-  <br />
+  <div style="text-align: center">
+    <img src="@/assets/foodtruck.svg" style="width: 25%; margin-top: 40%" alt />
 
-  <form action="/action_page.php">
-    <label for="email"></label>
-    <input
-      type="email"
-      id="email"
-      name="email"
-      class="email"
-      placeholder="이메일"
-      style="text-align: center"
-    />
-    <br />
-    <label for="pwd"></label>
-    <input
-      type="password"
-      id="pwd"
-      name="pwd"
-      class="pwd"
-      placeholder="비밀번호"
-      style="text-align: center"
-    /><br /><br />
-    <input type="button" value="로그인" class="loginButton" />
-  </form>
+    <div style="margin-top: 3%">
+      <span
+        style="
+          font-family: SCoreDream;
+          font-style: normal;
+          font-weight: 600;
+          font-size: 170%; ;
+        "
+        >스트리트 푸드트럭 파이터</span
+      >
+    </div>
+
+    <div style="margin-top: 1%">
+      <span style="font-family: SCoreDream; font-style: normal; font-size: 100%"
+        >아직 회원이 아니신가요?
+        <span
+          style="
+            color: #ffcd00;
+            font-family: SCoreDream;
+            font-style: normal;
+            font-size: 110%;
+          "
+          >회원가입</span
+        ></span
+      >
+    </div>
+
+    <div style="margin-top: 10%">
+      <form action="/action_page.php">
+        <label for="email"></label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="email"
+          placeholder="이메일"
+          style="text-align: center"
+        />
+        <br />
+        <div style="margin-top: 3%">
+          <label for="pwd"></label>
+          <input
+            type="password"
+            id="pwd"
+            name="pwd"
+            class="pwd"
+            placeholder="비밀번호"
+            style="text-align: center"
+          />
+        </div>
+        <div style="margin-top: 10%">
+          <input type="button" value="로그인" class="loginButton" />
+        </div>
+      </form>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -46,7 +69,10 @@ export default {};
 .pwd {
   /* width: 331px; */
   width: 20rem;
+  /* width: 90%; */
+  /* width: 350px; */
   height: 4rem;
+  /* height: 80px; */
   /* width: 600px; */
   /* width: 50vw; */
   /* height: 5vh; */
