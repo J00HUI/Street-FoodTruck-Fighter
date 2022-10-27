@@ -38,6 +38,7 @@ header {
   font-size: 1rem;
   border-radius: 0px 0px 1rem 1rem;
   padding: 4%;
+  margin-bottom: 4rem;
 }
 address {
   display: inline-block;
@@ -48,7 +49,7 @@ input {
   border: none;
   outline-style: none;
   padding: 0 0 0 1rem;
-  width: calc(100% - 2rem);
+  width: 80%;
 }
 p {
   display: inline;
@@ -69,8 +70,8 @@ img {
   box-sizing: border-box;
   left: 5%;
   width: 90%;
-  height: 3rem;
-  top: calc(100% - 1.5rem);
+  height: 30%;
+  top: 85%;
   border-radius: 0.75rem;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
   background-color: white;
