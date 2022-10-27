@@ -82,17 +82,18 @@ img {
 }
 .main__nav-box {
   height: 10%;
+  margin: 4%;
 }
 .main__nav-style {
-  margin: 5%;
-  width: 40%;
+  margin: 1%;
+  width: 48%;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
   border: none;
   background: white;
   border-radius: 2rem;
 }
 .main__nav-img {
-  height: 20%;
+  height: 15%;
   margin: 10%;
 
 }
