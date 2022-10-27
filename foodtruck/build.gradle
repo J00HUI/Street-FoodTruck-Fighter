@@ -45,6 +45,10 @@ dependencies {
 	annotationProcessor("com.google.guava:guava:29.0-jre")
 
 	implementation('commons-io:commons-io:2.6')
+
+	// https://mvnrepository.com/artifact/org.hamcrest/hamcrest
+	testImplementation group: 'org.hamcrest', name: 'hamcrest', version: '2.2'
+
 }
 
 tasks.named('test') {
