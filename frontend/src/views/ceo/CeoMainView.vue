@@ -1,7 +1,6 @@
 <template>
     <Header></Header>
     <Nav></Nav>
-        <h1>사장님 메인페이지</h1>
 </template>
 
 <script>

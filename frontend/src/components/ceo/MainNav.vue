@@ -11,30 +11,36 @@
     </div>
     <nav>
       <div>
-        <a href>
-          <button type="button" class="main__nav-border">
-            <img src="@/assets/ceo/navOpen.svg" alt />
+        
+        <router-link to="/start">
+          <button type="button" class="main__nav-style">
+            <img class="main__nav-img" src="@/assets/ceo/navOpen.svg" alt />
           </button>
-        </a>
-        <a href>
-          <button type="button" class="main__nav-border">
-            <img src="@/assets/ceo/navClose.svg" alt />
+        </router-link>
+        
+        <router-link to="/start">
+          <button type="button" class="main__nav-style">
+            <img class="main__nav-img" src="@/assets/ceo/navClose.svg" alt />
           </button>
-        </a>
+        </router-link>
       </div>
-      <a class="nav__a-style" href>
-        <img src="@/assets/ceo/navProfit.svg" alt />
-      </a>
-      <a class="nav__a-style" href>
-        <img src="@/assets/ceo/navProfit.svg" alt />
-      </a>
 
-      <a class="nav__a-style" href>
-        <img src="@/assets/ceo/navDemand.svg" alt />
-      </a>
-      <a class="nav__a-style" href>
-        <img src="@/assets/ceo/navTruck.svg" alt />
-      </a>
+      <div>
+        <router-link to="/salesstatistics">
+          <img class="nav__a-style" src="@/assets/ceo/navStatistics.svg" alt />
+        </router-link>
+        <router-link to="/schedule">
+          <img class="nav__a-style" src="@/assets/ceo/navSchedule.svg" alt />
+        </router-link>
+      </div>
+      <div>
+        <router-link to="/surveycheck">
+          <img class="nav__a-style" src="@/assets/ceo/navSurvey.svg" alt />
+        </router-link>
+        <router-link to="/mytruck">
+          <img class="nav__a-style" src="@/assets/ceo/navTruck.svg" alt />
+        </router-link>
+      </div>
     </nav>
   </main>
 </template>
@@ -73,15 +79,22 @@ img {
   font-style: normal;
   margin: auto 0 auto 0;
 }
-.main__nav-border {
-  margin: 5%;
-  width: 40%;
+.main__nav-style {
+  margin-left: 5%;
+  width: 42.5%;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
   border: none;
   background: white;
   border-radius: 2rem;
 }
-.nav__a-style {
+.main__nav-img {
+  width: 80%;
   margin: 10%;
+  height: 25vh;
+}
+.nav__a-style {
+  margin-left: 10%;
+  margin-top: 5%;
+  width: 35%;
 }
 </style>
