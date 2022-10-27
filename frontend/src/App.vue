@@ -8,10 +8,8 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  width: 100vw;
-  height: 100vh;
-  max-width: 600px;
-  min-width: 320px;
+  width: 390px;
+  height: 844px;
   border: 5px solid var(--color-gray-1);
   margin: 0 auto 0 auto;
 
