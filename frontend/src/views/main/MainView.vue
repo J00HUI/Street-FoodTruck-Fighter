@@ -11,8 +11,5 @@ export default {
 </script>
 
 <style>
-template {
-
-}
 
 </style>
