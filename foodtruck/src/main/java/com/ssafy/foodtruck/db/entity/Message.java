@@ -8,5 +8,9 @@ public class Message {
         this.message = message;
     }
 
+    public Message(ErrorMessage message) {
+        this.message = message.getMessage();
+    }
+
     private String message;
 }
