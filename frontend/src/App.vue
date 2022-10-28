@@ -26,6 +26,7 @@
 
 :root {
   --color-gray-1: #f7f8f8;
+  --color-gray-p1: #C8C8C8;
   --color-gray-2: #898989;
   --color-yellow-1: #fdeca6;
   --color-yellow-2: #ffdd2d;
