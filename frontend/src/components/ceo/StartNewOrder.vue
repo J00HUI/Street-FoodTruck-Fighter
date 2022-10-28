@@ -6,7 +6,6 @@
       <div>
         <div>붕어빵 100개</div>
         <div>잉어빵 10000000개</div>
-        <div>붕어</div>
       </div>
       <time class="newOrderTime">AM 10:10</time>
       <br />
@@ -68,7 +67,7 @@ h1 {
 }
 .newOrderTime {
   position: absolute;
-  top: 1rem;
+  top: 0.5rem;
   right: 2rem;
   font-size: 0.75rem;
 }

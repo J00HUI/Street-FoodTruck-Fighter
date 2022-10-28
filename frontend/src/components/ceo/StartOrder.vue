@@ -1,7 +1,6 @@
 <template>
   <div class="orderView">
     <h1>수락된 주문 내역</h1>
-    <div style="overflow: scroll; height:500px">
     <section class="orderBox" v-for="i in 5"
     :key="i">
       <div>대기번호</div>
@@ -17,7 +16,6 @@
         <button type="button" class="acceptButton">완료</button>
       </div>
     </section>
-  </div>
   </div>
 </template>
 
@@ -39,6 +37,8 @@ h1 {
 }
 .orderView {
   font-family: "SCoreDream";
+  position: sticky;
+
 }
 .orderBox {
   position: relative;
