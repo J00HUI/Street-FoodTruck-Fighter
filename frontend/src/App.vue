@@ -37,6 +37,7 @@
   --color-purple-2: #d076cd;
   --color-blue-1: #beefff;
   --color-blue-2: #00c2ff;
+  --color-pink-0: #F7E8F7;
   --color-pink-1: #ffd4d4;
   --color-pink-2: #ffaeae;
   --color-green-1: #7fd488;
