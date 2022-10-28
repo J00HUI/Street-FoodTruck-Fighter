@@ -89,9 +89,8 @@ h1 {
   border-radius: 1rem;
 }
 .acceptButton {
-  font-family: "SCoreDream";
+  font: 0.5rem "SCoreDream";
   color: white;
-  font-size: 0.5rem;
   width: 4rem;
   height: 2rem;
   border: 0.1rem solid var(--color-purple-2);
