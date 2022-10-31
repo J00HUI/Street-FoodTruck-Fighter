@@ -1,45 +1,85 @@
 <template>
   <label for="my-truck-img" class="truckInput inputImg">
     <input @change="set_img" id="my-truck-img" type="file" accept=".gif, .jpg, .png" />
-    <img class="TruckImg" src="@/assets/ceo/myAddImgIcon.svg" alt />
+    <img class="truckImg imgVisible" src alt />
+    <img class="addIcon" src="@/assets/ceo/myAddImgIcon.svg" alt="추가" />
   </label>
-
-  <label for="my-truck-img" class="truckInput inputText"></label>
-  <div class="truckInput inputText"></div>
-  <div class="truckInput inputText"></div>
-  <div class="truckInput inputText"></div>
-  <button class="updateButton">수정</button>
+  <label for="truck-name" class="truckInput inputText">
+    <img src="@/assets/ceo/myTruckNameIcon.svg" alt />
+    <input id="truck-name" placeholder="상호명" v-model="myStore.myData.truckName" type="text" />
+  </label>
+  <label for="truck-call-number" class="truckInput inputText">
+    <img src="@/assets/ceo/myCallIcon.svg" alt />
+    <input id="truck-call-number" placeholder="전화번호" v-model="myStore.myData.callNumber" type="tel" />
+  </label>
+  <div class="truckInput inputText">
+    <img src="@/assets/ceo/myEmptyMarkerIcon.svg" alt />
+    <input type="text" placeholder="위치" disabled />
+    <img class="markerIcon" src="@/assets/ceo/myMarkerIcon.svg" alt />
+  </div>
+  <label for="truck-operating" class="truckInput inputText">
+    <div class="timeInputBox">
+      <span class="timePlaceHoleder">open</span>
+      <input id="truck-operating" title="open" v-model="myStore.myData.openTime" type="time" />
+    </div>~
+    <div class="timeInputBox">
+      <span class="timePlaceHoleder">close</span>
+      <input style="padding-right:1rem" v-model="myStore.myData.closeTime" type="time" />
+    </div>
+  </label>
+  <button type="button" @click="myUpdate" class="updateButton">수정</button>
 </template>
 
 <script>
+import { useCeoMyStore } from "@/stores/ceo/my.js";
 export default {
-	setup() {
-		const test_img = ''
-		function set_img (e) {
-			console.log(e.target.nextElementSibling())
-			console.log(e.target.files)
-			URL.createObjectURL(e.target.files)
-
-			document.getElementById("img태그id").src
-		
-
-		}
-		return {
-			test_img,
-			set_img,
-		}
-	}
+  setup() {
+    const myStore = useCeoMyStore();
+    function set_img(e) {
+      myStore.myData.truckImg = e.target.files[0]
+      let ImgUrl = URL.createObjectURL(e.target.files[0]);
+      e.target.nextElementSibling.src = ImgUrl;
+      e.target.nextElementSibling.classList.remove("imgVisible");
+      e.target.nextElementSibling.nextElementSibling.classList.add(
+        "imgVisible"
+      )
+    }
+    function myUpdate() {
+      console.log(myStore.myData)
+    }
+    return {
+      myStore,
+      set_img,
+      myUpdate
+      
+    };
+  }
 };
 </script>
 
 <style scoped>
 input[type="file"] {
-	position: absolute;
+  position: absolute;
   width: 0;
   height: 0;
   padding: 0;
   overflow: hidden;
   border: 0;
+}
+input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  outline-style: none;
+  padding: 0 1rem;
+  font-size: 1rem;
+  background-color: var(--color-gray-1);
+  font: 1.1rem "SCoreDream";
+}
+input[type="time"] {
+  padding: 0;
+  flex-direction: row-reverse;
 }
 button {
   -webkit-appearance: none;
@@ -50,21 +90,48 @@ button {
 }
 .truckInput {
   display: flex;
-	justify-content: space-around;
-	align-items: center;
+  position: relative;
+  justify-content: space-evenly;
+  align-items: center;
   border-radius: 1rem;
   background-color: var(--color-gray-1);
   width: 88%;
   margin: 6%;
 }
-.TruckImg {
-	opacity: 30%;
+.imgVisible {
+  visibility: hidden;
+}
+
+.truckImg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 100;
+}
+.addIcon {
+  opacity: 30%;
+}
+label:hover {
+  cursor: pointer;
 }
 .inputImg {
   height: 32%;
 }
 .inputText {
   height: 8%;
+}
+.markerIcon {
+  position: absolute;
+  right: 1rem;
+}
+.timePlaceHoleder {
+  padding: 0 0.7rem;
+}
+.timeInputBox {
+  display: flex;
+  flex-direction: column;
 }
 .updateButton {
   font: 1rem "SCoreDream";
