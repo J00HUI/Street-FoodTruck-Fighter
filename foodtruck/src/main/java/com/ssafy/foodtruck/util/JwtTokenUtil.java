@@ -177,7 +177,7 @@ public class JwtTokenUtil {
                 .build();
     }
 
-    public String getEmailFromBearerToken(String bearerToken) {
+    public static String getEmailFromBearerToken(String bearerToken) {
         if (bearerToken.startsWith(TOKEN_PREFIX)) {
             String token = bearerToken.substring(TOKEN_PREFIX.length());
             return decodeToken(token).getSubject();
