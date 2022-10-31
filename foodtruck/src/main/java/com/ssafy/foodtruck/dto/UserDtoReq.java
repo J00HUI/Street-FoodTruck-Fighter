@@ -1,5 +1,6 @@
 package com.ssafy.foodtruck.dto;
 
+import com.ssafy.foodtruck.db.entity.UserType;
 import lombok.*;
 
 @Builder
@@ -7,11 +8,14 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
+@ToString
+public class UserDtoReq {
 
     private Long id;
     private String email;
+    private String businessNumber;
     private String password;
-    private String mobileNumber;
+    private String phone;
     private String nickname;
+    private UserType userType;
 }

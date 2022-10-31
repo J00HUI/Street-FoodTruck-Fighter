@@ -1,9 +1,9 @@
 package com.ssafy.foodtruck.config;
 
+import com.ssafy.foodtruck.auth.FoodTruckUserDetailService;
 import com.ssafy.foodtruck.auth.JwtAuthenticationFilter;
 import com.ssafy.foodtruck.exception.handler.JwtAccessDeniedHandler;
 import com.ssafy.foodtruck.exception.handler.JwtAuthenticationEntryPoint;
-import com.ssafy.foodtruck.model.service.CustomUserDetailService;
 import com.ssafy.foodtruck.model.service.UserService;
 import com.ssafy.foodtruck.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    private final CustomUserDetailService userDetailService;
+    private final FoodTruckUserDetailService userDetailService;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final JwtAccessDeniedHandler accessDeniedHandler;
@@ -68,6 +68,7 @@ public class SecurityConfig {
                         "/favicon.com");
     }
 
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
@@ -98,7 +99,7 @@ public class SecurityConfig {
                 //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), userService))
                 .authorizeRequests()
-                .antMatchers("/","/auth/login","/user/signup","/user/mail").permitAll()
+                .antMatchers("/","/auth/login","/user/signup", "/user/a").permitAll()
                 .anyRequest().authenticated(); //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
         return http.build();
     }

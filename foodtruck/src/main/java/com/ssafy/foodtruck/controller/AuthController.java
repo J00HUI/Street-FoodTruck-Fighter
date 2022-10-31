@@ -1,9 +1,8 @@
 package com.ssafy.foodtruck.controller;
 
 import com.ssafy.foodtruck.dto.JWTokenDto;
-import com.ssafy.foodtruck.dto.UserDto;
+import com.ssafy.foodtruck.dto.UserDtoReq;
 import com.ssafy.foodtruck.model.service.AuthService;
-import com.ssafy.foodtruck.model.service.UserService;
 import com.ssafy.foodtruck.util.JWToken;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -35,13 +34,13 @@ public class AuthController {
     @PostMapping("/login")
     @ApiOperation(value = "로그인", notes = "<strong>아이디와 패스워드</strong>를 통해 로그인 한다.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공", response = UserDto.class),
+            @ApiResponse(code = 200, message = "성공", response = UserDtoReq.class),
             @ApiResponse(code = 401, message = "인증 실패"),
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> login(@RequestBody @ApiParam(value = "로그인 정보", required = true) UserDto userDto, HttpServletResponse resp) {
-        JWToken jwt = authService.login(userDto);
+    public ResponseEntity<?> login(@RequestBody @ApiParam(value = "로그인 정보", required = true) UserDtoReq userDtoReq, HttpServletResponse resp) {
+        JWToken jwt = authService.login(userDtoReq);
 //        ResponseCookie cookie = ResponseCookie.from("refresh-token", jwt.getRefreshToken())
 //                .maxAge(60*60*24*15)
 //                .httpOnly(true)
