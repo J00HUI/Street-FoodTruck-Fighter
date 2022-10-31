@@ -42,8 +42,7 @@ public class JwtTokenUtil {
     }
 
     public static JWTVerifier getVerifier() {
-        return JWT
-                .require(Algorithm.HMAC512(secretKey.getBytes()))
+        return JWT.require(Algorithm.HMAC512(secretKey.getBytes()))
                 .withIssuer(ISSUER)
                 .build();
     }
@@ -73,8 +72,7 @@ public class JwtTokenUtil {
     }
 
     public static void handleError(String token) {
-        JWTVerifier verifier = JWT
-                .require(Algorithm.HMAC512(secretKey.getBytes()))
+        JWTVerifier verifier = JWT.require(Algorithm.HMAC512(secretKey.getBytes()))
                 .withIssuer(ISSUER)
                 .build();
 
