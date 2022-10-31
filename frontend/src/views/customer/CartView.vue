@@ -1,7 +1,5 @@
 <template>
-  <h1>메인페이지</h1>
-  <br><br><br><br><br><br><br>
-  ㅋㅋ
+    <h1>장바구니(메뉴별)</h1>
 </template>
 
 <script>

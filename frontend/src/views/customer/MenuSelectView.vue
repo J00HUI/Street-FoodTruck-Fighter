@@ -1,5 +1,5 @@
 <template>
     <div>
-      <h1>지도 탭 목록탭</h1>
+      <h1>메뉴 선택</h1>
     </div>
   </template>
