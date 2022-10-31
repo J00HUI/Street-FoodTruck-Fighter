@@ -1,22 +1,22 @@
 <template>
   <nav class="ceoFooter">
-    <button>
+    <router-link to="/schedule">
       <img src="@/assets/ceo/footerSchedule.svg" alt />
-    </button>
-    <button>
+    </router-link>
+    <router-link to="/salesstatistics">
       <img src="@/assets/ceo/footerStatistics.svg" alt />
-    </button>
+    </router-link>
     <div class="footerHomeBox">
-    <button class="footerHome">
+    <router-link class="footerHome" to="/ceomain">
       <img src="@/assets/ceo/footerHome.svg" style="width:4rem; height:4rem;" alt />
-    </button>
+    </router-link>
   </div>
-    <button>
+    <router-link to="/surveycheck">
       <img src="@/assets/ceo/footerSurvey.svg" alt />
-    </button>
-    <button>
+    </router-link>
+    <router-link to="/mytruck">
       <img src="@/assets/ceo/footerMy.svg" alt />
-    </button>
+    </router-link>
   </nav>
 </template>
 
