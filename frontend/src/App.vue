@@ -8,11 +8,11 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  width: 100vw;
-  max-width: 600px;
-  min-width: 200px;
+  width: 390px;
+  height: 844px;
   border: 5px solid var(--color-gray-1);
-  margin: auto;
+  margin: 0 auto 0 auto;
+
 }
 @font-face {
     font-family: 'SCoreDream';
@@ -37,8 +37,13 @@
   --color-purple-2: #d076cd;
   --color-blue-1: #beefff;
   --color-blue-2: #00c2ff;
+  --color-pink-0: #F7E8F7;
   --color-pink-1: #ffd4d4;
   --color-pink-2: #ffaeae;
   --color-green-1: #7fd488;
+}
+h1 {
+  margin: 0px;
+  /* 나중에 지울 것 */
 }
 </style>
