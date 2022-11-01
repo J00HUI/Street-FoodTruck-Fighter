@@ -1,12 +1,14 @@
 <template>
-
-    <div class="map_wrap">
-    <div id="ceo-schedule-map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+  <div class="map_wrap">
+    <div
+      id="ceo-schedule-map"
+      style="width: 100%; height: 100%; position: relative; overflow: hidden"
+    ></div>
     <div class="hAddr">
-        <span class="title">지도중심기준 행정동 주소정보</span>
-        <span id="centerAddr"></span>
+      <!-- <span class="title">지도중심기준 행정동 주소정보</span> -->
+      <span id="centerAddr"></span>
     </div>
-</div>
+  </div>
 </template>
 
 <script>
@@ -32,10 +34,10 @@ export default {
 
       const options = {
         center: new kakao.maps.LatLng(36.36880618678187, 127.37618869404398),
-        level: 5
+        level: 5,
       };
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
+        navigator.geolocation.getCurrentPosition(function (position) {
           var moveLatLng = new kakao.maps.LatLng(
             position.coords.latitude,
             position.coords.longitude
@@ -46,7 +48,7 @@ export default {
       initMap.map = new kakao.maps.Map(container, options);
 
       // 주소-좌표 변환 객체를 생성합니다
-      var geocoder = new kakao.maps.services.Geocoder()
+      var geocoder = new kakao.maps.services.Geocoder();
 
       var marker = new kakao.maps.Marker(), // 클릭한 위치를 표시할 마커입니다
         infowindow = new kakao.maps.InfoWindow({ zindex: 1 }); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
@@ -55,36 +57,48 @@ export default {
       searchAddrFromCoords(initMap.map.getCenter(), displayCenterInfo);
 
       // 지도를 클릭했을 때 클릭 위치 좌표에 대한 주소정보를 표시하도록 이벤트를 등록합니다
-      kakao.maps.event.addListener(initMap.map, "click", function(mouseEvent) {
-        searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
-          if (status === kakao.maps.services.Status.OK) {
-            var detailAddr = result[0].road_address
-              ? "<div>도로명주소 : " +
-                result[0].road_address.address_name +
-                "</div>"
-              : "";
-            detailAddr +=
-              "<div>지번 주소 : " + result[0].address.address_name + "</div>";
+      kakao.maps.event.addListener(initMap.map, "click", function (mouseEvent) {
+        searchDetailAddrFromCoords(
+          mouseEvent.latLng,
+          function (result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+              var detailAddr = result[0].road_address
+                ? "<div>도로명주소 : " +
+                  result[0].road_address.address_name +
+                  "</div>"
+                : "";
+              detailAddr +=
+                "<div>지번 주소 : " + result[0].address.address_name + "</div>";
 
-            var content =
-              '<div class="bAddr">' +
-              '<span class="title">법정동 주소정보</span>' +
-              detailAddr +
-              "</div>";
+              var content =
+                '<div class="bAddr">' +
+                '<span class="title">법정동 주소정보</span>' +
+                detailAddr +
+                "</div>";
 
-            // 마커를 클릭한 위치에 표시합니다
-            marker.setPosition(mouseEvent.latLng);
-            marker.setMap(initMap.map);
+              // 마커를 클릭한 위치에 표시합니다
+              console.log(result);
+              if (result[0].road_address !== null) {
+                store.scheduleData.address = result[0].road_address.address_name;
+              } else if (result[0].address !== null) {
+                store.scheduleData.address = result[0].address.address_name;
+              } else {
+                store.scheduleData.address = '확인불가'
+              }
 
-            // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
-            infowindow.setContent(content);
-            infowindow.open(initMap.map, marker);
+              marker.setPosition(mouseEvent.latLng);
+              marker.setMap(initMap.map);
+
+              // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
+              infowindow.setContent(content);
+              infowindow.open(initMap.map, marker);
+            }
           }
-        });
+        );
       });
 
       // 중심 좌표나 확대 수준이 변경됐을 때 지도 중심 좌표에 대한 주소 정보를 표시하도록 이벤트를 등록합니다
-      kakao.maps.event.addListener(initMap.map, "idle", function() {
+      kakao.maps.event.addListener(initMap.map, "idle", function () {
         searchAddrFromCoords(initMap.map.getCenter(), displayCenterInfo);
       });
 
@@ -114,9 +128,9 @@ export default {
       }
     };
     return {
-      store
+      store,
     };
-  }
+  },
 };
 </script>
 
@@ -129,9 +143,35 @@ export default {
   border-radius: 1rem;
   margin: 5%;
 }
-.map_wrap {position:relative;width:100%;height:350px;}
-    .title {font-weight:bold;display:block;}
-    .hAddr {position:absolute;left:10px;top:10px;border-radius: 2px;background:#fff;background:rgba(255,255,255,0.8);z-index:1;padding:5px;}
-    #centerAddr {display:block;margin-top:2px;font-weight: normal;}
-    .bAddr {padding:5px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+.map_wrap {
+  position: relative;
+  width: 100%;
+  height: 350px;
+}
+.title {
+  font-weight: bold;
+  display: block;
+}
+.hAddr {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  border-radius: 2px;
+  background: #fff;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: 1;
+  padding: 5px;
+}
+#centerAddr {
+  display: block;
+  margin-top: 1px;
+  font-weight: normal;
+  font-size: 0.5rem;
+}
+.bAddr {
+  padding: 5px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
 </style>

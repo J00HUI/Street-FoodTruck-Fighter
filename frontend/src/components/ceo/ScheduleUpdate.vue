@@ -1,40 +1,59 @@
 <template>
   <label for="truck-name" class="truckInput inputText">
     <img src="@/assets/ceo/ScheduleCalendarIcon.svg" alt />
-
-    <button>
+    <div>
+    <button @click="yesterday">
       <img src="@/assets/ceo/nav2Back.svg" alt />
     </button>
-    <time style="padding: 0 4%">asdfasd/</time>
+    <input class="scheduleDateInput" max="3000-01-01" type="date" v-model="KakaoStore.scheduleData.date">
+    <!-- <time style="padding: 0 4%" v-model="KakaoStore.scheduleData.date">{{}}</time> -->
     <button>
       <img style="transform:rotate(180deg);" src="@/assets/ceo/nav2Back.svg" alt />
     </button>
+    </div>
 
     <!-- <input id="truck-name" placeholder="상호명" type="text" /> -->
   </label>
-  <label for="truck-operating" class="truckInput inputText">
+  <label for="schedule-operating" class="truckInput inputText">
     <div class="timeInputBox">
       <span class="timePlaceHoleder">open</span>
-      <input id="truck-operating" title="open" type="time" />
+      <input id="schedule-operating" v-model="KakaoStore.scheduleData.openTime" title="open" type="time" />
     </div>~
     <div class="timeInputBox">
       <span class="timePlaceHoleder">close</span>
-      <input style="padding-right:1rem" type="time" />
+      <input style="padding-right:1rem" v-model="KakaoStore.scheduleData.closeTime" type="time" />
     </div>
   </label>
-  <label for="truck-name" class="truckInput inputText">
+  <div for="truck-name" class="truckInput inputText">
     <img src="@/assets/ceo/myMarkerIcon.svg" alt />
-    <input id="truck-name" placeholder="주소" type="text" />
-  </label>
+    <div class="scheduleAddress">{{KakaoStore.scheduleData.address}}</div>
+  </div>
   <KakaoMap class="truckInput inputMap"></KakaoMap>
-  <button type="button" @click="myUpdate" class="updateButton">수정</button>
+  <button type="button" @click="scheduleUpdate" class="updateButton">수정</button>
 </template>
 
 <script>
 import KakaoMap from "@/components/ceo/ScheduleKakaoMap.vue";
+import { useKakaoStore } from '@/stores/kakao.js'
 export default {
   components: {
     KakaoMap
+  },
+  setup() {
+    const KakaoStore = useKakaoStore ()
+    function yesterday() {
+      console.log()
+      // KakaoStore.scheduleData.date = KakaoStore.scheduleData.date - 1
+    }
+    function scheduleUpdate() {
+      
+      console.log(KakaoStore.scheduleData)
+    }
+    return {
+      KakaoStore,
+      yesterday,
+      scheduleUpdate,
+    }
   }
 };
 </script>
@@ -60,6 +79,9 @@ button {
   appearance: none;
   background-color: transparent;
   border: none;
+}
+button:hover {
+  cursor: pointer;
 }
 .truckInput {
   display: flex;
@@ -98,5 +120,13 @@ input[type="time"] {
 .timeInputBox {
   display: flex;
   flex-direction: column;
+}
+.scheduleAddress {
+  word-break: keep-all;
+  width: 70%;
+}
+.scheduleDateInput {
+  padding: 0;
+  vertical-align: sub;
 }
 </style>
