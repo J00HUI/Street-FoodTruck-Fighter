@@ -1,10 +1,12 @@
 package com.ssafy.foodtruck.db.entity;
 
+import com.ssafy.foodtruck.dto.UserDtoReq;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.checkerframework.common.aliasing.qual.Unique;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -42,4 +44,17 @@ public class User extends BaseEntity {
 
     @Transient
     private Set<Authority> authorities;
+
+    public static UserDtoReq of(User user){
+        return UserDtoReq.builder()
+                .password(user.getPassword())
+                .email(user.getEmail())
+                .authorities(user.getAuthorities())
+                .businessNumber(user.getBusinessNumber())
+                .id(user.getId())
+                .nickname(user.getNickname())
+                .phone(user.getPhone())
+                .userType(user.getUserType())
+                .build();
+    }
 }

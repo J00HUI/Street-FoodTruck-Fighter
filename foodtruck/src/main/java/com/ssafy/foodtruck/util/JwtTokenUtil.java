@@ -38,7 +38,7 @@ public class JwtTokenUtil {
     public JwtTokenUtil(@Value("${jwt.secret}") String secretKey, @Value("${jwt.expiration}") Integer expirationTime, RedisUtil redisUtil) {
         this.secretKey = secretKey;
         this.expirationTime = expirationTime;
-        this.redisUtil=redisUtil;
+        this.redisUtil = redisUtil;
     }
 
     public static JWTVerifier getVerifier() {

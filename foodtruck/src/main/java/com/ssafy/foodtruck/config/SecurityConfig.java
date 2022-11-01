@@ -1,6 +1,6 @@
 package com.ssafy.foodtruck.config;
 
-import com.ssafy.foodtruck.auth.FoodTruckUserDetailService;
+import com.ssafy.foodtruck.auth.CustomUserDetailService;
 import com.ssafy.foodtruck.auth.JwtAuthenticationFilter;
 import com.ssafy.foodtruck.exception.handler.JwtAccessDeniedHandler;
 import com.ssafy.foodtruck.exception.handler.JwtAuthenticationEntryPoint;
@@ -33,7 +33,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    private final FoodTruckUserDetailService userDetailService;
+    private final CustomUserDetailService userDetailService;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final JwtAccessDeniedHandler accessDeniedHandler;
@@ -63,11 +63,8 @@ public class SecurityConfig {
                         "/swagger-ui/**",
                         "/swagger-resources/**",
                         "/v2/api-docs/**",
-                        "/webjars/**",
-                        "/h2-console/**",
-                        "/favicon.com");
+                        "/webjars/**");
     }
-
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -99,7 +96,7 @@ public class SecurityConfig {
                 //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), userService))
                 .authorizeRequests()
-                .antMatchers("/","/auth/login","/user/signup", "/user/a").permitAll()
+                .antMatchers("/", "/**", "/auth/login","/user/signup", "/user/a").permitAll()
                 .anyRequest().authenticated(); //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
         return http.build();
     }
