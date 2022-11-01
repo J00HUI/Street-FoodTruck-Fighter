@@ -24,101 +24,112 @@
     </nav>
   </div>
 
-  <div style="text-align: center">
-    <div style="margin-top: 7%">
-      <form action="/action_page.php">
-        <label for="email"></label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          class="email"
-          placeholder="이메일"
-          style="text-align: center"
-        />
-        <br />
-        <div style="margin-top: 3%">
-          <label for="pwd"></label>
-          <input
-            type="password"
-            id="pwd"
-            name="pwd"
-            class="pwd"
-            placeholder="비밀번호"
-            style="text-align: center"
-          />
-        </div>
-        <div style="margin-top: 3%">
-          <label for="pwdcheck"></label>
-          <input
-            type="password"
-            id="pwdcheck"
-            name="pwdcheck"
-            class="pwdcheck"
-            placeholder="비밀번호 확인"
-            style="text-align: center"
-          />
-        </div>
-        <div style="margin-top: 3%">
-          <label for="nickname"></label>
-          <input
-            type="text"
-            id="nickname"
-            name="nickname"
-            class="nickname"
-            placeholder="닉네임"
-            style="text-align: center"
-          />
-        </div>
-        <div style="margin-top: 3%">
-          <label for="phonenum"></label>
-          <input
-            type="text"
-            id="phonenum"
-            name="phonenum"
-            class="phonenum"
-            placeholder="휴대폰 번호"
-            style="text-align: center"
-          />
-          <input type="button" value="인증" class="checkButton" />
-        </div>
+  <div
+    style="
+      font-family: SCoreDream;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 120%;
+      margin-top: 7%;
+      text-align: center;
+    "
+  >
+    내 푸드트럭 등록
+  </div>
 
-        <div style="margin-top: 3%">
-          <label for="numcheck"></label>
-          <input
-            type="text"
-            id="numcheck"
-            name="numcheck"
-            class="numcheck"
-            placeholder="인증 번호"
-            style="text-align: center"
-          />
-          <input type="button" value="확인" class="checkButton" />
-        </div>
-
-        <div style="margin-top: 3%">
-          <label for="ceonumcheck"></label>
-          <input
-            type="text"
-            id="ceonumcheck"
-            name="ceonumcheck"
-            class="ceonumcheck"
-            placeholder="사업자 등록번호"
-            style="text-align: center"
-          />
-          <input type="button" value="인증" class="checkButton" />
-        </div>
-
-        <div style="margin-top: 10%">
-          <input type="button" value="다음" class="nextButton" />
-        </div>
-      </form>
+  <label for="my-truck-img" class="truckInput inputImg">
+    <input
+      @change="set_img"
+      id="my-truck-img"
+      type="file"
+      accept=".gif, .jpg, .png"
+    />
+    <img class="truckImg imgVisible" src alt />
+    <img class="addIcon" src="@/assets/ceo/myAddImgIcon.svg" alt="추가" />
+  </label>
+  <label for="truck-name" class="truckInput inputText">
+    <img src="@/assets/ceo/myTruckNameIcon.svg" alt />
+    <input
+      id="truck-name"
+      placeholder="상호명"
+      v-model="myStore.myData.truckName"
+      type="text"
+    />
+  </label>
+  <label for="truck-call-number" class="truckInput inputText">
+    <img src="@/assets/ceo/myCallIcon.svg" alt />
+    <input
+      id="truck-call-number"
+      placeholder="전화번호"
+      v-model="myStore.myData.callNumber"
+      type="tel"
+    />
+  </label>
+  <div class="truckInput inputText">
+    <img src="@/assets/ceo/myEmptyMarkerIcon.svg" alt />
+    <input type="text" placeholder="위치" disabled />
+    <img class="markerIcon" src="@/assets/ceo/myMarkerIcon.svg" alt />
+  </div>
+  <label for="truck-operating" class="truckInput inputText">
+    <div class="timeInputBox">
+      <span class="timePlaceHoleder">open</span>
+      <input
+        id="truck-operating"
+        title="open"
+        v-model="myStore.myData.openTime"
+        type="time"
+      />
     </div>
+    ~
+    <div class="timeInputBox">
+      <span class="timePlaceHoleder">close</span>
+      <input
+        style="padding-right: 1rem"
+        v-model="myStore.myData.closeTime"
+        type="time"
+      />
+    </div>
+  </label>
+  <div style="margin-top: 3%; text-align: center;">
+    <label for="nickname"></label>
+    <input
+      type="text"
+      id="nickname"
+      name="nickname"
+      class="nickname"
+      placeholder="카테고리"
+      style="text-align: center"
+    />
+  </div>
+  <div style="text-align: center; margin-top: 10%">
+    <button type="button" @click="myUpdate" class="nextButton">수정</button>
   </div>
 </template>
 
 <script>
-export default {};
+import { useCeoMyStore } from "@/stores/ceo/my.js";
+export default {
+  setup() {
+    const myStore = useCeoMyStore();
+    function set_img(e) {
+      myStore.myData.truckImg = e.target.files[0];
+      let ImgUrl = URL.createObjectURL(e.target.files[0]);
+      e.target.nextElementSibling.src = ImgUrl;
+      e.target.nextElementSibling.classList.remove("imgVisible");
+      e.target.nextElementSibling.nextElementSibling.classList.add(
+        "imgVisible"
+      );
+    }
+    function myUpdate() {
+      console.log(myStore.myData);
+    }
+    return {
+      myStore,
+      set_img,
+      myUpdate,
+    };
+  },
+};
 </script>
 
 <style scoped>
@@ -297,9 +308,9 @@ input.ceonumcheck::-webkit-input-placeholder {
   font: 1rem "SCoreDream";
   font-weight: 600;
   width: 50%;
-  color: #C8C8C8;
+  color: #c8c8c8;
   padding: auto;
-  border: 0.001rem solid #C8C8C8;
+  border: 0.001rem solid #c8c8c8;
   border-top: none;
   border-left: none;
   border-bottom: none;
@@ -312,5 +323,91 @@ input.ceonumcheck::-webkit-input-placeholder {
 .underLine {
   border-bottom: 0.1rem solid black;
   color: black;
+}
+
+input[type="file"] {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+}
+input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  outline-style: none;
+  padding: 0 1rem;
+  font-size: 1rem;
+  background-color: var(--color-gray-1);
+  font: 1.1rem "SCoreDream";
+}
+input[type="time"] {
+  padding: 0;
+  flex-direction: row-reverse;
+}
+button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: transparent;
+  border: none;
+}
+.truckInput {
+  display: flex;
+  position: relative;
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 1rem;
+  background-color: var(--color-gray-1);
+  width: 88%;
+  margin: 6%;
+}
+.imgVisible {
+  visibility: hidden;
+}
+
+.truckImg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 100;
+}
+.addIcon {
+  opacity: 30%;
+}
+label:hover {
+  cursor: pointer;
+}
+.inputImg {
+  height: 32%;
+}
+.inputText {
+  height: 8%;
+}
+.markerIcon {
+  position: absolute;
+  right: 1rem;
+}
+.timePlaceHoleder {
+  padding: 0 0.7rem;
+}
+.timeInputBox {
+  display: flex;
+  flex-direction: column;
+}
+.updateButton {
+  font: 1rem "SCoreDream";
+  border-radius: 2rem;
+  width: 80%;
+  margin-left: 10%;
+  height: 6%;
+  color: white;
+  background-color: var(--color-purple-2);
+  filter: drop-shadow(0px 10px 22px rgba(149, 173, 254, 0.3));
 }
 </style>
