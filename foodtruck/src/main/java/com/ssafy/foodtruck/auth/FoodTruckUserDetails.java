@@ -26,10 +26,12 @@ public class FoodTruckUserDetails implements UserDetails {
     public FoodTruckUserDetails(User user) {
         super();
         this.user = user;
-        List<? extends GrantedAuthority> authorities = user.getAuthorities().stream().map(auth -> new SimpleGrantedAuthority(auth.getAuthName()))
-                .collect(Collectors.toList());
+//        List<? extends GrantedAuthority> authorities = user.getAuthorities().stream().map(auth -> new SimpleGrantedAuthority(auth.getAuthName()))
+//                .collect(Collectors.toList());
 
-        this.roles = authorities;
+        List<GrantedAuthority> authorityList = new ArrayList<>();
+        authorityList.add(new SimpleGrantedAuthority("ROLE_USER"));
+        this.roles = authorityList;
     }
 
     public User getUser() {
