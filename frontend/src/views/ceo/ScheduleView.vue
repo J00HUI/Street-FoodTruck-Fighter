@@ -1,16 +1,20 @@
 <template>
-	<CeoHeader></CeoHeader>
-  <Update></Update>
+  <CeoHeader></CeoHeader>
+  <Calendar></Calendar>
+  <!-- <Update></Update> -->
 </template>
 
 <script>
 import CeoHeader from "@/components/ceo/CeoHeader.vue";
-import Update from "@/components/ceo/ScheduleUpdate.vue";
+import Calendar from "@/components/ceo/ScheduleCalendar.vue";
+// import Update from "@/components/ceo/ScheduleUpdate.vue";
 export default {
   components: {
-    Update,
-		CeoHeader,
-  }
+    CeoHeader,
+    Calendar,
+
+    // Update,
+  },
 };
 </script>
 
