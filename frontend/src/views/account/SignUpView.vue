@@ -13,18 +13,33 @@
     >
   </div>
 
-  <div style="position: relative; margin-top: 7%">
+  <div style="position: relative; margin-top: 7%" v-if="ceoSignUp">
     <nav style="display: flex; height: 8%">
-      <div class="salesNav">
+      <div class="salesNav" @click="signUpCeo()">
         <span class="underLine">사장님</span>
       </div>
-      <div class="salesNav salesNavR">
+      <div class="salesNav salesNavR" @click="signUpCustomer()">
         <span>고객님</span>
       </div>
     </nav>
   </div>
 
-  <div style="text-align: center">
+  <div style="position: relative; margin-top: 7%" v-if="customerSignUp">
+    <nav style="display: flex; height: 8%">
+      <div class="salesNav salesNavL" @click="signUpCeo()">
+        <span>사장님</span>
+      </div>
+      <div
+        class="salesNav"
+        style="border-right: none"
+        @click="signUpCustomer()"
+      >
+        <span class="underLine">고객님</span>
+      </div>
+    </nav>
+  </div>
+
+  <div style="text-align: center" v-if="ceoSignUp">
     <div style="margin-top: 7%">
       <form action="/action_page.php">
         <label for="email"></label>
@@ -115,10 +130,107 @@
       </form>
     </div>
   </div>
+
+  <div style="text-align: center" v-if="customerSignUp">
+    <div style="margin-top: 7%">
+      <form action="/action_page.php">
+        <label for="email"></label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="email"
+          placeholder="이메일"
+          style="text-align: center"
+        />
+        <br />
+        <div style="margin-top: 3%">
+          <label for="pwd"></label>
+          <input
+            type="password"
+            id="pwd"
+            name="pwd"
+            class="pwd"
+            placeholder="비밀번호"
+            style="text-align: center"
+          />
+        </div>
+        <div style="margin-top: 3%">
+          <label for="pwdcheck"></label>
+          <input
+            type="password"
+            id="pwdcheck"
+            name="pwdcheck"
+            class="pwdcheck"
+            placeholder="비밀번호 확인"
+            style="text-align: center"
+          />
+        </div>
+        <div style="margin-top: 3%">
+          <label for="nickname"></label>
+          <input
+            type="text"
+            id="nickname"
+            name="nickname"
+            class="nickname"
+            placeholder="닉네임"
+            style="text-align: center"
+          />
+        </div>
+        <div style="margin-top: 3%">
+          <label for="phonenum"></label>
+          <input
+            type="text"
+            id="phonenum"
+            name="phonenum"
+            class="phonenum"
+            placeholder="휴대폰 번호"
+            style="text-align: center"
+          />
+          <input type="button" value="인증" class="checkButton" />
+        </div>
+
+        <div style="margin-top: 3%">
+          <label for="numcheck"></label>
+          <input
+            type="text"
+            id="numcheck"
+            name="numcheck"
+            class="numcheck"
+            placeholder="인증 번호"
+            style="text-align: center"
+          />
+          <input type="button" value="확인" class="checkButton" />
+        </div>
+
+        <div style="margin-top: 10%">
+          <input type="button" value="완료" class="nextButton" />
+        </div>
+      </form>
+    </div>
+  </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      ceoSignUp: true,
+      customerSignUp: false,
+    };
+  },
+  methods: {
+    signUpCeo() {
+      this.ceoSignUp = true;
+      this.customerSignUp = false;
+    },
+
+    signUpCustomer() {
+      this.ceoSignUp = false;
+      this.customerSignUp = true;
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -297,9 +409,14 @@ input.ceonumcheck::-webkit-input-placeholder {
   font: 1rem "SCoreDream";
   font-weight: 600;
   width: 50%;
-  color: #C8C8C8;
+  color: #c8c8c8;
   padding: auto;
-  border: 0.001rem solid #C8C8C8;
+  border: 0.001rem solid #c8c8c8;
+  border-top: none;
+  border-left: none;
+  border-bottom: none;
+}
+.salesNavL {
   border-top: none;
   border-left: none;
   border-bottom: none;
