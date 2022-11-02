@@ -2,6 +2,12 @@ import { defineStore } from "pinia";
 
 export const useKakaoStore = defineStore("Kakao", {
   state: () => {
+    const scheduleData = {
+      date:'',
+      openTime:'',
+      closeTime:'',
+      address:'',
+    }
     return {
       s_markers_info: [
         ["밥",36.36880618678187,127.37618869404398],
@@ -22,7 +28,8 @@ export const useKakaoStore = defineStore("Kakao", {
         ["잉어",36.375325209657895,127.38914701779225],
         ["잉어",36.388875952062065,127.36727951717582]
       ],
-
+      currentAddress:'',
+      scheduleData,
     }
   },
   actions: {
