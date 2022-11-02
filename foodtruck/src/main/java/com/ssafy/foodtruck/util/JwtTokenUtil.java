@@ -6,7 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.*;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.ssafy.foodtruck.dto.UserDto;
+import com.ssafy.foodtruck.dto.UserDtoReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -123,7 +123,7 @@ public class JwtTokenUtil {
         }
     }
 
-    public JWToken createToken(UserDto userDto, Authentication auth) {
+    public JWToken createToken(UserDtoReq userDtoReq, Authentication auth) {
         Date date = new Date();
         Long accessExpires = 24 * 60 * 60 * 1000L; // 1day
         Long refreshExpires = 60 * 60 * 24 * 15 * 1000L; // 15days
@@ -134,7 +134,7 @@ public class JwtTokenUtil {
                 .collect(Collectors.joining(","));
 
         String accessToken = JWT.create()
-                .withSubject(userDto.getEmail())
+                .withSubject(userDtoReq.getEmail())
                 .withClaim("auth", authorities)
                 .withExpiresAt(new Date(date.getTime() + accessExpires))
                 .withIssuer(ISSUER)
@@ -142,7 +142,7 @@ public class JwtTokenUtil {
                 .sign(Algorithm.HMAC512(secretKey.getBytes()));
 
         String refreshToken = JWT.create()
-                .withSubject(userDto.getEmail())
+                .withSubject(userDtoReq.getEmail())
                 .withExpiresAt(new Date(date.getTime() + refreshExpires))
                 .withIssuer(ISSUER)
                 .withIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
