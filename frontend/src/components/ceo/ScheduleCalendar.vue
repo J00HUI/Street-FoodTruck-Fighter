@@ -28,12 +28,14 @@ const options = reactive({
   editable: true,
   selectable: true,
   weekends: true,
+  dayMaxEvents: 3,
+  eventMaxStack: 99,
 
   select: arg => {
-    console.log(arg);
     id.value = id.value + 1;
     const cal = arg.view.calendar;
-    cal.unselect();
+    console.log(cal.getEvents()[0]);
+    // cal.unselect();
     let title = "";
     const startDate = arg.startStr.replace(/-/g, "");
     const endDate = arg.endStr.replace(/-/g, "");
@@ -42,7 +44,7 @@ const options = reactive({
     } else {
       title = `${arg.startStr.slice(-5)} ~ ${endDate.slice(-4, -2) +
         "-" +
-        (endDate.slice(-2) - 1)}`;
+        (endDate.slice(-2)<10 ? '0' + (endDate.slice(-1) -  1) : endDate.slice(-2) - 1)}`;
     }
     cal.addEvent({
       id: `${id.value}`,
@@ -60,6 +62,7 @@ const options = reactive({
     console.log(arg);
     console.log(arg.event.target);
   },
+
   titleFormat: function(date) {
     return `${date.date.year}년 ${date.date.month + 1}월`;
   },
@@ -79,7 +82,7 @@ const options = reactive({
   justify-content: space-around !important;
 }
 .fc {
-  height: 80%;
+  height: 80% !important;
 }
 .fc-button {
   background-color: var(--color-purple-2) !important;
@@ -90,5 +93,11 @@ const options = reactive({
 }
 .fc-day-sun {
   color: red !important;
+}
+.fc-event-title.fc-sticky {
+  white-space: normal;
+}
+.fc-daygrid-more-link {
+  font-size: 0.25rem;
 }
 </style>
