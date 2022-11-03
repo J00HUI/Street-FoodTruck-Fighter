@@ -3,7 +3,7 @@
 <div class="container">
     <div class="truck">
         <h1>가게 이름</h1>
-        <form name="myform" id="myform">
+        <form name="starForm" id="starForm">
             <fieldset>
                 <input type="radio" name="rating" value="5" id="rate1"><label for="rate1">⭐</label>
                 <input type="radio" name="rating" value="4" id="rate2"><label for="rate2">⭐</label>
@@ -89,7 +89,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 /* .container{
     height: auto;
     width: 100%;
@@ -173,35 +173,35 @@ ul{
 /***************** tabs end ******************/
 
 /***************** 별점 start ******************/
-#myform fieldset{
+#starForm fieldset{
     display: inline-block; /* 하위 별점 이미지들이 있는 영역만 자리를 차지함.*/
     border: 0; /* 필드셋 테두리 제거 */
 }
-#myform input[type=radio]{
+#starForm input[type=radio]{
     display: none; /* 라디오박스 감춤 */
 }
-#myform label{
+#starForm label{
     font-size: 3em; /* 이모지 크기 */
     color: transparent; /* 기존 이모지 컬러 제거 */
     text-shadow: 0 0 0 #f0f0f0; /* 새 이모지 색상 부여 */
 }
-#myform label:hover{
+#starForm label:hover{
     color:black; /* text 컬러 원상태로 */
     opacity:0.5; /* text 투명도 50% */
 }
-#myform label:hover ~ label{
+#starForm label:hover ~ label{
     opacity:0.5;
     color:black;
 }
-#myform fieldset{
+#starForm fieldset{
     display: inline-block; /* 하위 별점 이미지들이 있는 영역만 자리를 차지함.*/
     direction: rtl; /* 이모지 순서 반전 */
     border: 1px; /* 필드셋 테두리 제거 */
 }
-#myform fieldset legend{
+#starForm fieldset legend{
     text-align: left;
 }
-#myform input[type=radio]:checked ~ label{
+#starForm input[type=radio]:checked ~ label{
     opacity:1; /* text 투명도 100% */
     color:black;
 }

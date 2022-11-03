@@ -6,12 +6,16 @@
       </button>
     </div>
     <div class="home">
-      <button @click ="goHome">
-        <img src="@/assets/Home.svg" alt />
-      </button>
-      <button @click ="goCart">
-        <img src="@/assets/Cart.svg" style="margin-left:1rem;" alt />
-      </button>
+      <router-link to="/">
+        <button>
+          <img src="@/assets/Home.svg" alt />
+        </button>
+      </router-link>
+      <router-link to="/cart">
+        <button>
+          <img src="@/assets/Cart.svg" style="margin-left:1rem;" alt />
+        </button>
+      </router-link>
     </div>
   </header>
 </template>
