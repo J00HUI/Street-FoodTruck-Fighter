@@ -87,6 +87,11 @@ const routes = [
     component: () => import("@/views/ceo/ScheduleView.vue"),
   },
   {
+    path: "/scheduleupdate",
+    name: "scheduleupdate",
+    component: () => import("@/views/ceo/ScheduleUpdateView.vue"),
+  },
+  {
     path: "/start",
     name: "start",
     component: () => import("@/views/ceo/StartView.vue"),

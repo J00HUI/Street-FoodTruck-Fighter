@@ -16,7 +16,7 @@
 <script>
 export default {
   setup() {
-    const selectTime = [5, 10, 15, 20, 25];
+    const selectTime = [5, 10, 15, 20, 25]
     return {
       selectTime
     };
