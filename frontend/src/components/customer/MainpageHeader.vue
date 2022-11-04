@@ -15,8 +15,8 @@
           >
         </span>
         <span>
-          <img src="@/assets/noticeIcon.svg" alt />
-          <img src="@/assets/humanIcon.svg" style="margin-left: 1rem" alt />
+          <img src="@/assets/noticeIcon.svg" alt @click="gotoNotice" />
+          <img src="@/assets/humanIcon.svg" style="margin-left: 1rem" alt @click="gotoMyprofile" />
         </span>
       </div>
     </div>
@@ -29,7 +29,21 @@
 </template>
 
 <script>
-export default {};
+import router from "@/router";
+export default {
+  setup() {
+    function gotoNotice(){
+      router.push('/myprofile')
+    }
+    function gotoMyprofile(){
+      router.push('/notice')
+    }
+    return{
+      gotoNotice,
+      gotoMyprofile,
+    }
+  }
+};
 </script>
 
 <style scoped>
