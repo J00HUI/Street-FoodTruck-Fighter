@@ -28,8 +28,9 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
             "AND is_done = 0;", nativeQuery = true)
     List<Orders> findByCeoOrders(int foodtruckId);
 
-    @Query(value = "SELECT *\n" +
-            "FROM orders\n" +
-            "WHERE is_done = 1", nativeQuery = true)
+    @Query(value = "SELECT * \n" +
+            "FROM orders \n" +
+            "WHERE foodtruck_id = :foodtruckId \n" +
+            "AND is_done = 0;", nativeQuery = true)
     List<Orders> findByCeoOrdersAll(int foodtruckId);
 }
