@@ -8,7 +8,7 @@ public class Message {
         this.message = message;
     }
 
-    public Message(ErrorMessage message) {
+    public Message(OrdersErrorMessage message) {
         this.message = message.getMessage();
     }
 
