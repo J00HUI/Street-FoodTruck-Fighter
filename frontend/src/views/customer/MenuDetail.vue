@@ -6,11 +6,11 @@
                 <img class="picture" src="@/assets/hamburger.svg" alt />
             </div>
             <div class="amount">
-                <button>-</button>
+                <button @click="minusAmount">-</button>
                     <div id="amount">
                         <p>12</p>
                     </div>
-                <button>+</button>
+                <button @click="plusAmount">+</button>
             </div>
         </div>
 
@@ -36,7 +36,19 @@ import Header from '@/components/customer/BackButtonHeader.vue'
 export default {
     components: {
         Header,
-    }
+    },
+    setup() {
+        function minusAmount() {
+            
+        }
+        function plusAmount() {
+            
+        }
+        return{
+            minusAmount,
+            plusAmount,
+        }
+    }   
 }
 </script>
 
