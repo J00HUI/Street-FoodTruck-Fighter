@@ -31,65 +31,56 @@ public class OrdersService {
     }
 
     public List<CurrentOrdersHistoryResponse> getCustomerOrders(int userId) {
-        List<Orders> ordersList = ordersRepository.findByUserId(userId);
+        List<Orders> ordersList = ordersRepository.findByCustomerOrders(userId);
         OrdersMenu ordersMenu = ordersMenuRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
 
         List<CurrentOrdersHistoryResponse> currentOrdersHistoryResponses = new ArrayList<>();
 
         for(Orders orders : ordersList) {
-
-            if(orders.getIsAccepted() && !orders.getIsDone()) {
                 currentOrdersHistoryResponses.add(
                         CurrentOrdersHistoryResponse.builder()
                                 .foodtruckName(orders.getFoodTruck().getName())
                                 .menuName(ordersMenu.getMenu().getName())
                                 .build());
-            }
         }
         return currentOrdersHistoryResponses;
     }
 
     public List<OrdersHistoryResponse> getCustomerOrdersAll(int userId) {
-        List<Orders> ordersList = ordersRepository.findByUserId(userId);
+        List<Orders> ordersList = ordersRepository.findByCustomerOrdersAll(userId);
         OrdersMenu ordersMenu = ordersMenuRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
 
         List<OrdersHistoryResponse> ordersHistoryResponses = new ArrayList<>();
 
         for(Orders orders : ordersList) {
-
-            if(orders.getIsDone()) {
                 ordersHistoryResponses.add(
                         OrdersHistoryResponse.builder()
                                 .foodtruckName(orders.getFoodTruck().getName())
                                 .menuName(ordersMenu.getMenu().getName())
                                 .build());
-            }
         }
         return ordersHistoryResponses;
     }
 
     public List<CurrentOrdersListByFoodtruckResponse> getCeoOrders(int userId, int foodtruckId) {
-        List<Orders> ordersList = ordersRepository.findByUserId(foodtruckId);
+        List<Orders> ordersList = ordersRepository.findByCeoOrders(foodtruckId);
         OrdersMenu ordersMenu = ordersMenuRepository.findByCeoOrders(foodtruckId);
 
         List<CurrentOrdersListByFoodtruckResponse> currentOrdersListByFoodtruckResponses = new ArrayList<>();
 
         for(Orders orders : ordersList) {
-
-            if(orders.getIsAccepted() && !orders.getIsDone()) {
                 currentOrdersListByFoodtruckResponses.add(
                         CurrentOrdersListByFoodtruckResponse.builder()
                                 .menuName(ordersMenu.getMenu().getName())
                                 .build());
-            }
         }
         return currentOrdersListByFoodtruckResponses;
     }
 
     public List<OrdersListByFoodtruckResponse> getCeoOrdersAll(int userId, int foodtruckId) {
-        List<Orders> ordersList = ordersRepository.findByUserId(foodtruckId);
+        List<Orders> ordersList = ordersRepository.findByCeoOrdersAll(foodtruckId);
         OrdersMenu ordersMenu = ordersMenuRepository.findByCeoOrders(foodtruckId);
 
         List<OrdersListByFoodtruckResponse> ordersListByFoodtruckResponses = new ArrayList<>();
