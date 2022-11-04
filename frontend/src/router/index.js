@@ -37,6 +37,11 @@ const routes = [
     component: () => import("@/views/customer/MenuSelectView.vue"),
   },
   {
+    path: "/menudetail",
+    name: "menudetail",
+    component: () => import("@/views/customer/MenuDetail.vue"),
+  },
+  {
     path: "/myprofile",
     name: "myprofile",
     component: () => import("@/views/customer/MyProfileView.vue"),
