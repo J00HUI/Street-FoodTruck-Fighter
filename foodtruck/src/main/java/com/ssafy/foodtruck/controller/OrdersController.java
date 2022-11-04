@@ -39,4 +39,10 @@ public class OrdersController {
         ordersService.acceptOrders(userId, ordersId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("/customer/{userId}")
+    public ResponseEntity<List<OrdersHistoryResponse>> getCustomerOrders(@PathVariable int userId) {
+        ordersService.getCustomerOrders(userId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
