@@ -29,7 +29,7 @@ export default {
       }
     });
     const initMap = () => {
-      const container = document.getElementById("cus-truck");
+      const container = document.getElementById("cus-truck-map");
 
       const options = {
         center: new kakao.maps.LatLng(36.36880618678187, 127.37618869404398),
