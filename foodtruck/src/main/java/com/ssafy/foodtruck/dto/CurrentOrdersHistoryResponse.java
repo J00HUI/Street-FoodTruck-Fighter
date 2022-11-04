@@ -6,8 +6,8 @@ import lombok.*;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RegisterOrdersRequest {
+public class CurrentOrdersHistoryResponse {
 
-    private int foodtruckId;
-    private String menuId;
+    private String foodtruckName;
+    private String menuName;
 }

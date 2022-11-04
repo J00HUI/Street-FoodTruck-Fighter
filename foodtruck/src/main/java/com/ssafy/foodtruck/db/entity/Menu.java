@@ -4,6 +4,8 @@ import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,4 +30,8 @@ public class Menu extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "foodtruck_id")
     private FoodTruck foodTruck;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)
+    private List<OrdersMenu> ordersMenuList = new ArrayList<>();
 }
