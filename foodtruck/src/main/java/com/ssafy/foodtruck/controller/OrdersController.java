@@ -58,4 +58,10 @@ public class OrdersController {
         ordersService.getCeoOrders(userId, foodtruckId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("/ceo/all")
+    public ResponseEntity<List<OrdersListByFoodtruckResponse>> getCeoOrdersAll(@PathVariable int userId, @PathVariable int foodtruckId) {
+        ordersService.getCeoOrdersAll(userId, foodtruckId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
