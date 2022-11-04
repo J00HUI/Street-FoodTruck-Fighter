@@ -5,9 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum ErrorMessage {
-
-    FAIL_TO_REGISTER("주문내역 등록에 실패하였습니다.");
+public enum OrdersErrorMessage {
 
     private final String message;
 }
