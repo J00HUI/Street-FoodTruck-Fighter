@@ -17,6 +17,11 @@ const routes = [
     component: () => import("@/views/account/SignUpView.vue"),
   },
   {
+    path: "/truckregister",
+    name: "truckregister",
+    component: () => import("@/views/account/TruckRegisterView.vue"),
+  },
+  {
     path: "/cart",
     name: "cart",
     component: () => import("@/views/customer/CartView.vue"),
@@ -80,6 +85,11 @@ const routes = [
     path: "/schedule",
     name: "schedule",
     component: () => import("@/views/ceo/ScheduleView.vue"),
+  },
+  {
+    path: "/scheduleupdate",
+    name: "scheduleupdate",
+    component: () => import("@/views/ceo/ScheduleUpdateView.vue"),
   },
   {
     path: "/start",

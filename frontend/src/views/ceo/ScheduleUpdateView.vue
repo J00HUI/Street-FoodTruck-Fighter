@@ -1,18 +1,23 @@
 <template>
   <CeoHeader></CeoHeader>
-	<UpdateInput></UpdateInput>
-
+  <Update></Update>
 </template>
 
 <script>
+
 import CeoHeader from "@/components/ceo/CeoHeader.vue";
-import UpdateInput from "@/components/ceo/MyUpdate.vue"
+
+
+import Update from "@/components/ceo/ScheduleUpdate.vue";
 export default {
   components: {
     CeoHeader,
-		UpdateInput,
+
+    Update,
+  },
+  setup() {
   }
-};
+}
 </script>
 
 <style>

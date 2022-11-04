@@ -1,13 +1,22 @@
 <template>
-    <h1>스케줄 페이지</h1>
+  <CeoHeader></CeoHeader>
+  <Calendar></Calendar>
 </template>
 
 <script>
-export default {
+import CeoHeader from "@/components/ceo/CeoHeader.vue";
+import Calendar from "@/components/ceo/ScheduleCalendar.vue";
 
-}
+export default {
+  components: {
+    CeoHeader,
+    Calendar,
+  },
+  setup() {
+
+  }
+};
 </script>
 
 <style>
-
 </style>
