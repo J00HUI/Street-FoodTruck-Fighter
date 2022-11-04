@@ -29,4 +29,24 @@ public class OrdersService {
                 .orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
         orders.setIsAccepted(true);
     }
+
+    public List<CurrentOrdersHistoryResponse> getCustomerOrders(int userId) {
+        List<Orders> ordersList = ordersRepository.findByUserId(userId);
+        OrdersMenu ordersMenu = ordersMenuRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
+
+        List<CurrentOrdersHistoryResponse> currentOrdersHistoryResponses = new ArrayList<>();
+
+        for(Orders orders : ordersList) {
+
+            if(orders.getIsAccepted() && !orders.getIsDone()) {
+                currentOrdersHistoryResponses.add(
+                        CurrentOrdersHistoryResponse.builder()
+                                .foodtruckName(orders.getFoodTruck().getName())
+                                .menuName(ordersMenu.getMenu().getName())
+                                .build());
+            }
+        }
+        return currentOrdersHistoryResponses;
+    }
 }
