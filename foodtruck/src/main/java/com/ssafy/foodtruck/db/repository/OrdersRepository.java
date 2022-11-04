@@ -10,7 +10,8 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
 
     @Query(value = "SELECT *\n" +
             "FROM orders\n" +
-            "WHERE is_accepted = 1 " +
+            "WHERE user_id = :userId\n" +
+            "AND is_accepted = 1 \n" +
             "AND is_done = 0", nativeQuery = true)
     List<Orders> findByCustomerOrders(int userId);
 
