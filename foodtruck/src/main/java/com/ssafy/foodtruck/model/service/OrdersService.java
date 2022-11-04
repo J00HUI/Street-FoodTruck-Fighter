@@ -49,4 +49,24 @@ public class OrdersService {
         }
         return currentOrdersHistoryResponses;
     }
+
+    public List<OrdersHistoryResponse> getCustomerOrdersAll(int userId) {
+        List<Orders> ordersList = ordersRepository.findByUserId(userId);
+        OrdersMenu ordersMenu = ordersMenuRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
+
+        List<OrdersHistoryResponse> ordersHistoryResponses = new ArrayList<>();
+
+        for(Orders orders : ordersList) {
+
+            if(orders.getIsDone()) {
+                ordersHistoryResponses.add(
+                        OrdersHistoryResponse.builder()
+                                .foodtruckName(orders.getFoodTruck().getName())
+                                .menuName(ordersMenu.getMenu().getName())
+                                .build());
+            }
+        }
+        return ordersHistoryResponses;
+    }
 }
