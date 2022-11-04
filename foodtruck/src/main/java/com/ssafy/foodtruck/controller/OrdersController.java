@@ -51,4 +51,11 @@ public class OrdersController {
         ordersService.getCustomerOrdersAll(userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("/ceo")
+    public ResponseEntity<List<CurrentOrdersListByFoodtruckResponse>> getCeoOrders(@PathVariable int userId, @PathVariable int foodtruckId) {
+//        ordersService.getCeoOrders(userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken)));
+        ordersService.getCeoOrders(userId, foodtruckId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
