@@ -1,9 +1,8 @@
 package com.ssafy.foodtruck.controller;
 
 import com.ssafy.foodtruck.TestUtil;
-import com.ssafy.foodtruck.db.entity.ErrorMessage;
+import com.ssafy.foodtruck.db.entity.OrdersErrorMessage;
 import com.ssafy.foodtruck.db.entity.Message;
-import com.ssafy.foodtruck.db.entity.User;
 import com.ssafy.foodtruck.dto.RegisterOrdersRequest;
 import com.ssafy.foodtruck.model.service.OrdersService;
 import com.ssafy.foodtruck.util.JwtTokenUtil;
@@ -40,7 +39,7 @@ public class OrdersControllerTest extends TestUtil {
     void setUp() {
         registerOrdersRequest = RegisterOrdersRequest.builder()
                 .foodtruckId(ID)
-                .menuId(Collections.singletonList(ID))
+                .menuId(Collections.singletonList(ID).toString())
                 .build();
     }
 
@@ -48,7 +47,8 @@ public class OrdersControllerTest extends TestUtil {
     @DisplayName("주문내역 등록 - 성공")
     void register_orders_success() throws Exception {
         // given
-        willDoNothing().given(ordersService).registerOrders(any(User.class), any(RegisterOrdersRequest.class));
+//        willDoNothing().given(ordersService).registerOrders(any(User.class), any(RegisterOrdersRequest.class));
+        willDoNothing().given(ordersService).registerOrders(anyInt(), any(RegisterOrdersRequest.class));
         // when
         ResultActions resultActions = 주문내역_등록_요청(registerOrdersRequest);
         // then
@@ -59,11 +59,11 @@ public class OrdersControllerTest extends TestUtil {
     @Test
     void register_orders_fail() throws Exception {
         // given
-        willThrow(new RuntimeException()).given(ordersService).registerOrders(any(User.class), any(RegisterOrdersRequest.class));
+        willThrow(new RuntimeException()).given(ordersService).registerOrders(anyInt(), any(RegisterOrdersRequest.class));
         // when
         ResultActions resultActions = 주문내역_등록_요청(registerOrdersRequest);
         // then
-        주문내역_등록_실패(resultActions, new Message(ErrorMessage.FAIL_TO_REGISTER));
+        주문내역_등록_실패(resultActions, new Message(OrdersErrorMessage.FAIL_TO_REGISTER));
     }
 
     private ResultActions 주문내역_등록_요청(RegisterOrdersRequest registerOrdersRequest) throws Exception {
