@@ -1,9 +1,6 @@
 package com.ssafy.foodtruck.dto;
 
-import com.ssafy.foodtruck.db.entity.OrdersMenu;
 import lombok.*;
-
-import java.util.List;
 
 @Getter
 @Builder
@@ -12,5 +9,5 @@ import java.util.List;
 public class RegisterOrdersRequest {
 
     private int foodtruckId;
-    private List<Integer> menuId;
+    private String menuId;
 }
