@@ -42,6 +42,10 @@ public class User extends BaseEntity {
     @Column(length = 50)
     private String businessNumber;
 
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Orders> ordersList = new ArrayList<>();
+
     @Transient
     private Set<Authority> authorities;
 }
