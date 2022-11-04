@@ -6,6 +6,8 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -35,4 +37,16 @@ public class Orders extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "foodtruck_id")
     private FoodTruck foodTruck;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
+    private List<OrdersMenu> ordersMenuList = new ArrayList<>();
+
+    public void setIsAccepted(boolean isAccepted) {
+        this.isAccepted = isAccepted;
+    }
+
+    public void setIsCanceled(boolean isCanceled) {
+        this.isCanceled = isCanceled;
+    }
 }
