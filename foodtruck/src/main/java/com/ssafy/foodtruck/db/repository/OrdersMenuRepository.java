@@ -10,6 +10,6 @@ public interface OrdersMenuRepository extends JpaRepository<OrdersMenu, Integer>
             "FROM orders o\n" +
             "LEFT JOIN orders_menu om\n" +
             "ON o.id = om.orders_id\n" +
-            "WHERE o.foodtruck_id LIKE :foodtruckId;", nativeQuery = true)
+            "WHERE o.foodtruck_id LIKE :foodtruckId", nativeQuery = true)
     OrdersMenu findByCeoOrders(int foodtruckId);
 }
