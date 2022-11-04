@@ -105,4 +105,11 @@ public class OrdersService {
         }
         return ordersListByFoodtruckResponses;
     }
+
+    @Transactional
+    public void cancelOrders(int userId, int orderId) {
+        Orders orders = ordersRepository.findById(orderId)
+                .orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
+        orders.setIsCanceled(true);
+    }
 }
