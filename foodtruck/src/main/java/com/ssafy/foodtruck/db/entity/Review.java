@@ -13,10 +13,6 @@ import javax.persistence.*;
 public class Review extends BaseEntity {
 
     @NotNull
-    @Column(length = 200)
-    private String title;
-
-    @NotNull
     @Column(length = 3000)
     private String content;
 
