@@ -64,4 +64,10 @@ public class OrdersController {
         ordersService.getCeoOrdersAll(userId, foodtruckId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PatchMapping("/{orderId}")
+    public ResponseEntity<?> cancelOrders(@PathVariable int userId, @PathVariable int orderId) {
+        ordersService.cancelOrders(userId, orderId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
