@@ -87,4 +87,22 @@ public class OrdersService {
         }
         return currentOrdersListByFoodtruckResponses;
     }
+
+    public List<OrdersListByFoodtruckResponse> getCeoOrdersAll(int userId, int foodtruckId) {
+        List<Orders> ordersList = ordersRepository.findByUserId(foodtruckId);
+        OrdersMenu ordersMenu = ordersMenuRepository.findByCeoOrders(foodtruckId);
+
+        List<OrdersListByFoodtruckResponse> ordersListByFoodtruckResponses = new ArrayList<>();
+
+        for(Orders orders : ordersList) {
+
+            if(orders.getIsDone()) {
+                ordersListByFoodtruckResponses.add(
+                        OrdersListByFoodtruckResponse.builder()
+                                .menuName(ordersMenu.getMenu().getName())
+                                .build());
+            }
+        }
+        return ordersListByFoodtruckResponses;
+    }
 }
