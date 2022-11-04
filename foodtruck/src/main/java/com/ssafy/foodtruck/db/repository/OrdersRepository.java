@@ -15,9 +15,10 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
             "AND is_done = 0", nativeQuery = true)
     List<Orders> findByCustomerOrders(int userId);
 
-    @Query(value = "SELECT *\n" +
-            "FROM orders\n" +
-            "WHERE is_done = 1", nativeQuery = true)
+    @Query(value = "SELECT * \n" +
+            "FROM orders \n" +
+            "WHERE user_id = :userId \n" +
+            "AND is_done = 1", nativeQuery = true)
     List<Orders> findByCustomerOrdersAll(int userId);
 
     @Query(value = "SELECT *\n" +
