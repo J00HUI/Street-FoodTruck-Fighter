@@ -37,6 +37,7 @@ public class OrdersController {
 	}
 
 	@GetMapping("/customer")
+	@ApiOperation(value = "현재 주문내역 조회 - 사용자", notes = "<strong>Customer ID를 통해 현재 주문내역 조회를 한다.</strong>")
 	public ResponseEntity<List<CurrentOrdersHistoryResponse>> getCustomerOrders(@RequestHeader(AUTHORIZATION) String bearerToken) {
 		int customerId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
 		return new ResponseEntity<>(ordersService.getCustomerOrders(customerId), HttpStatus.OK);
