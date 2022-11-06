@@ -58,6 +58,15 @@ public class FoodTruckController {
 		return ResponseEntity.ok().body(REGISTER_FOODTRUCK_SUCCESS);
 	}
 
+	// 푸드 트럭 수정
+	@PatchMapping()
+	@ApiOperation(value = "푸드트럭 수정", notes = "<strong>푸드트럭 정보를 수정한다.</strong>")
+	public ResponseEntity<?> updateFoodTruck(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken, @RequestBody @ApiParam(value="푸드트럭 정보", required = true) RegisterFoodTruckReq registerFoodTruckReq) throws IllegalAccessException {
+		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
+		foodTruckService.updateFoodTruck(registerFoodTruckReq, user);
+		return null;
+	}
+
 	// 리뷰 등록
 	@PostMapping("/review")
 	@ApiOperation(value = "리뷰 등록", notes = "<strong>주문내역에 리뷰를 등록한다.</strong>")
@@ -79,13 +88,6 @@ public class FoodTruckController {
 	@GetMapping("/near")
 	@ApiOperation(value = "사용자 위치로 푸드트럭 조회", notes = "<strong>현재 위치에서 가까운 푸드트럭를 조회한다.</strong>")
 	public void getNearFoodTruck(){
-
-	}
-
-	// 푸드 트럭 수정
-	@PutMapping()
-	@ApiOperation(value = "푸드트럭 수정", notes = "<strong>푸드트럭 정보를 수정한다.</strong>")
-	public void updateFoodTruck(){
 
 	}
 

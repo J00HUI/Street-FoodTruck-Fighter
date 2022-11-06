@@ -18,24 +18,37 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetFoodTruckRes {
+
 	private List<MenuDto> menuList = new ArrayList<>(); // 메뉴리스트
+
 	private String name; //상호명
+
 	private Category category; //카테고리
+
 	private String phone; //전화번호
+
 	private String description; //설명
+
 	private String src; //이미지
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime start_date; //시작일시
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime end_date; //종료일시
+
 	private Boolean is_valid; //사용여부
+
 	private Double latitude; // 위도
+
 	private Double longtitue; // 경도
+
 	private String address; //주소
 
 	private Double grade; //평점
 
 	private Integer numberOfPeople; //대기인원
+
 	private Integer time; //예상시간
 
 	public static GetFoodTruckRes of(List<MenuDto> menuList, FoodTruck foodTruck, Schedule schedule, Double grade, Integer numberOfPeople, Integer time){

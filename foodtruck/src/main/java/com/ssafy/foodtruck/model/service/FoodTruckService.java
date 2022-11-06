@@ -8,6 +8,7 @@ import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReviewReq;
 import com.ssafy.foodtruck.dto.response.GetFoodTruckRes;
 import com.ssafy.foodtruck.dto.response.GetFoodTruckReviewRes;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -16,12 +17,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static com.ssafy.foodtruck.constant.FoodTruckConstant.*;
 
 @Service("foodTruckService")
 @RequiredArgsConstructor
-@Transactional
 public class FoodTruckService {
 
 	private final FoodTruckRepository foodTruckRepository;
@@ -102,6 +103,49 @@ public class FoodTruckService {
 			.endDate(LocalDateTime.parse(registerFoodTruckReq.getEnd_date(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
 			.isValid(true).build();
 		scheduleRepository.save(schedule);
+	}
+
+	// 푸드트럭 수정
+	public void updateFoodTruck(RegisterFoodTruckReq registerFoodTruckReq, User user) throws IllegalAccessException {
+		// 푸드트럭 찾기
+		FoodTruck foodTruck = foodTruckRepository.findByUser(user)
+			.orElseThrow(NoSuchElementException::new);
+
+		// 메뉴 삭제
+		deleteMenu(foodTruck);
+
+		// 새 메뉴 등록
+		for(MenuDto menuDto : registerFoodTruckReq.getMenuList()){
+			final Menu menu = Menu.builder()
+				.name(menuDto.getName())
+				.foodTruck(foodTruck)
+				.price(menuDto.getPrice())
+				.description(menuDto.getDescription())
+				.src(menuDto.getSrc()).build();
+
+			menuRepository.save(menu);
+		}
+		// 스케쥴 수정
+		Schedule schedule = scheduleRepository.findByFoodTruck(foodTruck)
+			.orElseThrow(NoSuchElementException::new);
+		schedule.update(registerFoodTruckReq);
+		scheduleRepository.save(schedule);
+
+		// 푸드트럭 수정
+		foodTruck.update(registerFoodTruckReq);
+		foodTruckRepository.save(foodTruck);
+	}
+
+	// 메뉴 삭제
+	public void deleteMenu(FoodTruck foodTruck){
+		List<Menu> menuList = menuRepository.findByFoodTruck(foodTruck);
+		for(Menu menu : menuList){
+			try {
+				menuRepository.delete(menu);
+			} catch (DataIntegrityViolationException exception) {
+				throw new IllegalArgumentException();
+			}
+		}
 	}
 
 	// 푸드트럭 리뷰 등록
