@@ -39,12 +39,24 @@ public class FoodTruckService {
 		Schedule schedule = scheduleRepository.findByFoodTruck(foodTruck).orElse(null);
 //		if(schedule == null) throw Error?
 
-		List<MenuDto> list = new ArrayList<>();
+		List<Menu> findMenuList = menuRepository.findByFoodTruck(foodTruck);
+		List<MenuDto> menuList = new ArrayList<>();
+		for(Menu menu : findMenuList){
+			menuList.add(MenuDto.of(menu));
+		}
+
 		Double grade = 0.0;
+		List<Review> findReviewList = reviewRepository.findAllByFoodTruckId(foodTruckId);
+		for(Review r : findReviewList){
+			grade += r.getGrade();
+		}
+		grade /= findReviewList.size();
+		System.out.println("grade:" + grade);
+
 		Integer numberOfPeople = 0;
 		Integer time = 0;
 
-		return GetFoodTruckRes.of(list, foodTruck, schedule, grade, numberOfPeople, time);
+		return GetFoodTruckRes.of(menuList, foodTruck, schedule, grade, numberOfPeople, time);
 	}
 
 	// 내 푸드트럭 등록

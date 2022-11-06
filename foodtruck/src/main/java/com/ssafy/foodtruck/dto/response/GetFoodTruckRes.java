@@ -1,7 +1,9 @@
 package com.ssafy.foodtruck.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ssafy.foodtruck.db.entity.Category;
 import com.ssafy.foodtruck.db.entity.FoodTruck;
+import com.ssafy.foodtruck.db.entity.Menu;
 import com.ssafy.foodtruck.db.entity.Schedule;
 import com.ssafy.foodtruck.dto.MenuDto;
 import lombok.*;
@@ -22,8 +24,9 @@ public class GetFoodTruckRes {
 	private String phone; //전화번호
 	private String description; //설명
 	private String src; //이미지
-
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime start_date; //시작일시
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime end_date; //종료일시
 	private Boolean is_valid; //사용여부
 	private Double latitude; // 위도

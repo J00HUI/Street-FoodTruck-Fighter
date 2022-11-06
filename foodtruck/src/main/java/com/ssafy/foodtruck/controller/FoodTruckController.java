@@ -4,6 +4,7 @@ import com.ssafy.foodtruck.common.Response;
 import com.ssafy.foodtruck.db.entity.User;
 import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReq;
 import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReviewReq;
+import com.ssafy.foodtruck.dto.response.GetFoodTruckRes;
 import com.ssafy.foodtruck.dto.response.GetFoodTruckReviewRes;
 import com.ssafy.foodtruck.exception.NotFoundException;
 import com.ssafy.foodtruck.model.service.FoodTruckService;
@@ -40,9 +41,12 @@ public class FoodTruckController {
 	// 푸드트럭 정보를 가져옴
 	@GetMapping("/{foodtruck_id}")
 	@ApiOperation(value = "푸드트럭 ID 로 푸드트럭 조회", notes = "<strong>푸드트럭 ID 를 통해 푸드트럭 정보를 조회한다.</strong>")
-	public ResponseEntity<?> getFoodTruck(@PathVariable("foodtruck_id") @ApiParam(value="푸드트럭 ID", required = true) Integer foodTruckId){
-		System.out.println(foodTruckId);
-		return null;
+	public ResponseEntity<Map<String, Object>> getFoodTruck(@PathVariable("foodtruck_id") @ApiParam(value="푸드트럭 ID", required = true) Integer foodTruckId){
+		GetFoodTruckRes getFoodTruckRes = foodTruckService.getFoodTruck(foodTruckId);
+		Map<String, Object> result = new HashMap<>();
+		result.put("data", getFoodTruckRes);
+		result.put("msg", GET_FOODTRUCK_SUCCESS);
+		return ResponseEntity.ok().body(result);
 	}
 
 	// 푸드트럭 등록
@@ -60,7 +64,7 @@ public class FoodTruckController {
 	public ResponseEntity<?> registerFoodTruckReview(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken, @RequestBody @ApiParam(value="리뷰 정보", required = true) RegisterFoodTruckReviewReq registerFoodTruckReviewReq){
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
 		foodTruckService.registerFoodTruckReview(registerFoodTruckReviewReq, user);
-		return ResponseEntity.status(200).body(REGISTER_REVIEW_SUCCESS);
+		return ResponseEntity.ok().body(REGISTER_REVIEW_SUCCESS);
 	}
 
 	// 리뷰 조회
