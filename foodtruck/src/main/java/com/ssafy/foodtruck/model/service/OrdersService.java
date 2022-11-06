@@ -1,11 +1,7 @@
 package com.ssafy.foodtruck.model.service;
 
-import com.ssafy.foodtruck.db.entity.Menu;
-import com.ssafy.foodtruck.db.entity.Orders;
-import com.ssafy.foodtruck.db.entity.OrdersErrorMessage;
-import com.ssafy.foodtruck.db.entity.OrdersMenu;
-import com.ssafy.foodtruck.db.repository.OrdersMenuRepository;
-import com.ssafy.foodtruck.db.repository.OrdersRepository;
+import com.ssafy.foodtruck.db.entity.*;
+import com.ssafy.foodtruck.db.repository.*;
 import com.ssafy.foodtruck.dto.*;
 import com.ssafy.foodtruck.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +18,36 @@ public class OrdersService {
 	private final OrdersRepository ordersRepository;
 	private final OrdersMenuRepository ordersMenuRepository;
 
-	public void registerOrders(int customerId, RegisterOrdersRequest registerOrdersRequest) {
+	private final MenuRepository menuRepository;
 
+	private final UserRepository userRepository;
+	private final FoodTruckRepository foodTruckRepository;
+
+	@Transactional
+	public void registerOrders(int customerId, List<RegisterOrdersReq> registerOrdersReqList) {
+
+		User user = userRepository.findById(customerId).get();
+
+		for(RegisterOrdersReq registerOrdersReq : registerOrdersReqList){
+
+			FoodTruck foodTruck = foodTruckRepository.findById(registerOrdersReq.getFoodtruckId()).get();
+
+			Orders orders = Orders.builder()
+				.user(user)
+				.foodTruck(foodTruck)
+				.build();
+
+			ordersRepository.save(orders);
+
+			Menu menu = menuRepository.findById(registerOrdersReq.getMenuId()).get();
+
+			OrdersMenu ordersMenu = OrdersMenu.builder()
+				.orders(orders)
+				.menu(menu)
+				.build();
+
+			ordersMenuRepository.save(ordersMenu);
+		}
 	}
 
 	@Transactional
@@ -31,75 +55,91 @@ public class OrdersService {
 		Orders orders = ordersRepository.findById(ordersId)
 			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
 
-		if (ceoId == orders.getUser().getId()) {
-			orders.setIsAccepted(true);
+		if(ceoId != orders.getFoodTruck().getUser().getId()){
+			throw new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER);
 		}
+
+		orders.setIsAccepted(true);
 	}
 
-	public List<CurrentOrdersHistoryResponse> getCustomerOrders(int customerId, int ordersId) {
+	public List<CurrentOrdersHistoryResponse> getCustomerOrders(int customerId) {
 		List<Orders> ordersList = ordersRepository.findByCustomerOrders(customerId);
-		List<OrdersMenu> ordersMenuList = ordersMenuRepository.findByOrdersId(ordersId);
 
-		List<CurrentOrdersHistoryResponse> currentOrdersHistoryResponses = new ArrayList<>();
+		List<CurrentOrdersHistoryResponse> currentOrdersHistoryResponseList = new ArrayList<>();
 
 		for(Orders orders : ordersList) {
-			currentOrdersHistoryResponses.add(
+
+			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
+
+			currentOrdersHistoryResponseList.add(
 				CurrentOrdersHistoryResponse.builder()
 					.foodtruckName(orders.getFoodTruck().getName())
-//					.menuName()
+					.menuName(ordersMenu.getMenu().getName())
 					.build());
 		}
-		return currentOrdersHistoryResponses;
+
+		return currentOrdersHistoryResponseList;
 	}
 
 	public List<OrdersHistoryResponse> getCustomerOrdersAll(int customerId) {
 		List<Orders> ordersList = ordersRepository.findByCustomerOrdersAll(customerId);
-		OrdersMenu ordersMenu = ordersMenuRepository.findById(customerId)
-			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
+		List<OrdersHistoryResponse> OrdersHistoryResponseList = new ArrayList<>();
 
-		List<OrdersHistoryResponse> ordersHistoryResponses = new ArrayList<>();
+		for(Orders orders : ordersList) {
 
-		for (Orders orders : ordersList) {
-			ordersHistoryResponses.add(
+			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
+
+			OrdersHistoryResponseList.add(
 				OrdersHistoryResponse.builder()
 					.foodtruckName(orders.getFoodTruck().getName())
 					.menuName(ordersMenu.getMenu().getName())
 					.build());
 		}
-		return ordersHistoryResponses;
+
+		return OrdersHistoryResponseList;
 	}
 
-	public List<CurrentOrdersListByFoodtruckResponse> getCeoOrders(int ceoId, int foodtruckId) {
-		List<Orders> ordersList = ordersRepository.findByCeoOrders(foodtruckId);
-		OrdersMenu ordersMenu = ordersMenuRepository.findByCeoOrders(foodtruckId);
+	public List<CurrentOrdersListByFoodtruckResponse> getCeoOrders(int ceoId) {
+		User user = userRepository.findById(ceoId).get();
+		FoodTruck foodTruck = foodTruckRepository.findByUser(user).get();
 
-		List<CurrentOrdersListByFoodtruckResponse> currentOrdersListByFoodtruckResponses = new ArrayList<>();
+		List<Orders> ordersList = ordersRepository.findByCeoOrders(foodTruck.getId());
+
+		List<CurrentOrdersListByFoodtruckResponse> currentOrdersListByFoodtruckResponseList = new ArrayList<>();
 
 		for (Orders orders : ordersList) {
-			currentOrdersListByFoodtruckResponses.add(
+
+			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
+
+			currentOrdersListByFoodtruckResponseList.add(
 				CurrentOrdersListByFoodtruckResponse.builder()
+					.foodtruckName(orders.getFoodTruck().getName())
 					.menuName(ordersMenu.getMenu().getName())
 					.build());
 		}
-		return currentOrdersListByFoodtruckResponses;
+		return currentOrdersListByFoodtruckResponseList;
 	}
 
-	public List<OrdersListByFoodtruckResponse> getCeoOrdersAll(int ceoId, int foodtruckId) {
-		List<Orders> ordersList = ordersRepository.findByCeoOrdersAll(foodtruckId);
-		OrdersMenu ordersMenu = ordersMenuRepository.findByCeoOrders(foodtruckId);
+	public List<OrdersListByFoodtruckResponse> getCeoOrdersAll(int ceoId) {
 
-		List<OrdersListByFoodtruckResponse> ordersListByFoodtruckResponses = new ArrayList<>();
+		User user = userRepository.findById(ceoId).get();
+		FoodTruck foodTruck = foodTruckRepository.findByUser(user).get();
+
+		List<Orders> ordersList = ordersRepository.findByCeoOrdersAll(foodTruck.getId());
+
+		List<OrdersListByFoodtruckResponse> OrdersListByFoodtruckResponseList = new ArrayList<>();
 
 		for (Orders orders : ordersList) {
 
-			if (orders.getIsDone()) {
-				ordersListByFoodtruckResponses.add(
-					OrdersListByFoodtruckResponse.builder()
-						.menuName(ordersMenu.getMenu().getName())
-						.build());
-			}
+			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
+
+			OrdersListByFoodtruckResponseList.add(
+				OrdersListByFoodtruckResponse.builder()
+					.foodtruckName(orders.getFoodTruck().getName())
+					.menuName(ordersMenu.getMenu().getName())
+					.build());
 		}
-		return ordersListByFoodtruckResponses;
+		return OrdersListByFoodtruckResponseList;
 	}
 
 	@Transactional
@@ -107,8 +147,10 @@ public class OrdersService {
 		Orders orders = ordersRepository.findById(orderId)
 			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
 
-		if (ceoId == orders.getUser().getId()) {
-			orders.setIsCanceled(true);
+		if(ceoId != orders.getFoodTruck().getUser().getId()){
+			throw new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER);
 		}
+
+		orders.setIsCanceled(true);
 	}
 }

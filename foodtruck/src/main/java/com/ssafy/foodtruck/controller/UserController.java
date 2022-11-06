@@ -45,7 +45,6 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getUserInfo(@RequestHeader("Authorization") String bearerToken) {
-        System.out.println(bearerToken);
         User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
         UserDtoRes userDtoRes = UserDtoRes.builder()
                 .businessNumber(user.getBusinessNumber())
@@ -55,20 +54,6 @@ public class UserController {
                 .nickname(user.getNickname())
                 .phone(user.getPhone())
                 .build();
-        System.out.println(userDtoRes);
         return new ResponseEntity<>(userDtoRes ,HttpStatus.OK);
-    }
-
-    @GetMapping("a")
-    @ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 401, message = "인증 실패"),
-            @ApiResponse(code = 404, message = "사용자 없음"),
-            @ApiResponse(code = 500, message = "서버 오류")
-    })
-    public ResponseEntity<?> getUserInfoA() {
-        System.out.println("a");
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -15,5 +15,5 @@ public interface OrdersMenuRepository extends JpaRepository<OrdersMenu, Integer>
             "WHERE o.foodtruck_id LIKE :foodtruckId", nativeQuery = true)
     OrdersMenu findByCeoOrders(int foodtruckId);
 
-    List<OrdersMenu> findByOrdersId(int ordersId);
+	OrdersMenu findByOrdersId(Integer ordersId);
 }
