@@ -39,11 +39,11 @@ public class OrdersController {
 		return new ResponseEntity<>(ordersService.getCustomerOrders(customerId), HttpStatus.OK);
 	}
 
-    @GetMapping("/customer/all")
-    public ResponseEntity<List<OrdersHistoryResponse>> getCustomerOrdersAll(@PathVariable int userId) {
-        ordersService.getCustomerOrdersAll(userId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+	@GetMapping("/customer/all")
+	public ResponseEntity<List<OrdersHistoryResponse>> getCustomerOrdersAll(@RequestHeader(AUTHORIZATION) String bearerToken) {
+		int customerId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
+		return new ResponseEntity<>(ordersService.getCustomerOrdersAll(customerId), HttpStatus.OK);
+	}
 
     @GetMapping("/ceo")
     public ResponseEntity<List<CurrentOrdersListByFoodtruckResponse>> getCeoOrders(@PathVariable int userId, @PathVariable int foodtruckId) {
