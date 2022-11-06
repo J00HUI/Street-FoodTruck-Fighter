@@ -21,18 +21,14 @@ import static com.ssafy.foodtruck.db.entity.Message.AUTHORIZATION;
 @RequestMapping("/order")
 public class OrdersController {
 
-    private final UserService userService;
+	private final OrdersService ordersService;
 
-    private final JwtTokenUtil jwtTokenUtil;
-
-    private final OrdersService ordersService;
-
-    @PostMapping("/customer")
-//    public ResponseEntity<?> registerOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @RequestBody RegisterOrdersRequest registerOrdersRequest) {
-    public ResponseEntity<?> registerOrders(@PathVariable int userId, @RequestBody RegisterOrdersRequest registerOrdersRequest) {
-        ordersService.registerOrders(userId, registerOrdersRequest);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+	@PostMapping("/customer")
+	public ResponseEntity<?> registerOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @RequestBody RegisterOrdersRequest registerOrdersRequest) {
+		int customerId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
+		ordersService.registerOrders(customerId, registerOrdersRequest);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 
     @PatchMapping("/ceo/{ordersId}")
     public ResponseEntity<?> acceptOrders(@PathVariable int userId, @PathVariable int ordersId) {
