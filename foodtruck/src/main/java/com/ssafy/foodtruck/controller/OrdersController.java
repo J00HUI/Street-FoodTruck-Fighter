@@ -1,11 +1,7 @@
 package com.ssafy.foodtruck.controller;
 
-import com.ssafy.foodtruck.dto.CurrentOrdersListByFoodtruckResponse;
-import com.ssafy.foodtruck.dto.OrdersHistoryResponse;
-import com.ssafy.foodtruck.dto.OrdersListByFoodtruckResponse;
-import com.ssafy.foodtruck.dto.RegisterOrdersRequest;
+import com.ssafy.foodtruck.dto.*;
 import com.ssafy.foodtruck.model.service.OrdersService;
-import com.ssafy.foodtruck.model.service.UserService;
 import com.ssafy.foodtruck.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,11 +26,12 @@ public class OrdersController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-    @PatchMapping("/ceo/{ordersId}")
-    public ResponseEntity<?> acceptOrders(@PathVariable int userId, @PathVariable int ordersId) {
-        ordersService.acceptOrders(userId, ordersId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+	@PatchMapping("/ceo/{ordersId}")
+	public ResponseEntity<?> acceptOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @PathVariable int ordersId) {
+		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
+		ordersService.acceptOrders(ceoId, ordersId);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 
     @GetMapping("/customer/{userId}")
     public ResponseEntity<List<OrdersHistoryResponse>> getCustomerOrders(@PathVariable int userId) {
