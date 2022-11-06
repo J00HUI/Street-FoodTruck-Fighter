@@ -1,6 +1,8 @@
 package com.ssafy.foodtruck.model.service;
 
-import com.ssafy.foodtruck.db.entity.*;
+import com.ssafy.foodtruck.db.entity.Orders;
+import com.ssafy.foodtruck.db.entity.OrdersErrorMessage;
+import com.ssafy.foodtruck.db.entity.OrdersMenu;
 import com.ssafy.foodtruck.db.repository.OrdersMenuRepository;
 import com.ssafy.foodtruck.db.repository.OrdersRepository;
 import com.ssafy.foodtruck.dto.*;
@@ -16,19 +18,22 @@ import java.util.List;
 @Service
 public class OrdersService {
 
-    private final OrdersRepository ordersRepository;
-    private final OrdersMenuRepository ordersMenuRepository;
+	private final OrdersRepository ordersRepository;
+	private final OrdersMenuRepository ordersMenuRepository;
 
-    public void registerOrders(int userId, RegisterOrdersRequest registerOrdersRequest) {
+	public void registerOrders(int customerId, RegisterOrdersRequest registerOrdersRequest) {
 
-    }
+	}
 
-    @Transactional
-    public void acceptOrders(int userId, int ordersId) {
-        Orders orders = ordersRepository.findById(ordersId)
-                .orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
-        orders.setIsAccepted(true);
-    }
+	@Transactional
+	public void acceptOrders(int ceoId, int ordersId) {
+		Orders orders = ordersRepository.findById(ordersId)
+			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
+
+		if (ceoId == orders.getUser().getId()) {
+			orders.setIsAccepted(true);
+		}
+	}
 
     public List<CurrentOrdersHistoryResponse> getCustomerOrders(int userId) {
         List<Orders> ordersList = ordersRepository.findByCustomerOrders(userId);
