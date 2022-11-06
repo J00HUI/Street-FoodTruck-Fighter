@@ -29,6 +29,7 @@ public class OrdersController {
 	}
 
 	@PatchMapping("/ceo/{ordersId}")
+	@ApiOperation(value = "Orders ID로 주문 접수", notes = "<strong>Orders ID를 통해 주문을 접수한다.</strong>")
 	public ResponseEntity<?> acceptOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @PathVariable int ordersId) {
 		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
 		ordersService.acceptOrders(ceoId, ordersId);
