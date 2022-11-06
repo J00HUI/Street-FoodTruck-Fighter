@@ -69,20 +69,20 @@ public class OrdersService {
 		return ordersHistoryResponses;
 	}
 
-    public List<CurrentOrdersListByFoodtruckResponse> getCeoOrders(int userId, int foodtruckId) {
-        List<Orders> ordersList = ordersRepository.findByCeoOrders(foodtruckId);
-        OrdersMenu ordersMenu = ordersMenuRepository.findByCeoOrders(foodtruckId);
+	public List<CurrentOrdersListByFoodtruckResponse> getCeoOrders(int ceoId, int foodtruckId) {
+		List<Orders> ordersList = ordersRepository.findByCeoOrders(foodtruckId);
+		OrdersMenu ordersMenu = ordersMenuRepository.findByCeoOrders(foodtruckId);
 
-        List<CurrentOrdersListByFoodtruckResponse> currentOrdersListByFoodtruckResponses = new ArrayList<>();
+		List<CurrentOrdersListByFoodtruckResponse> currentOrdersListByFoodtruckResponses = new ArrayList<>();
 
-        for(Orders orders : ordersList) {
-                currentOrdersListByFoodtruckResponses.add(
-                        CurrentOrdersListByFoodtruckResponse.builder()
-                                .menuName(ordersMenu.getMenu().getName())
-                                .build());
-        }
-        return currentOrdersListByFoodtruckResponses;
-    }
+		for (Orders orders : ordersList) {
+			currentOrdersListByFoodtruckResponses.add(
+				CurrentOrdersListByFoodtruckResponse.builder()
+					.menuName(ordersMenu.getMenu().getName())
+					.build());
+		}
+		return currentOrdersListByFoodtruckResponses;
+	}
 
     public List<OrdersListByFoodtruckResponse> getCeoOrdersAll(int userId, int foodtruckId) {
         List<Orders> ordersList = ordersRepository.findByCeoOrdersAll(foodtruckId);
