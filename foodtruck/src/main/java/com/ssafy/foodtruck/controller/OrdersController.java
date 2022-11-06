@@ -3,6 +3,7 @@ package com.ssafy.foodtruck.controller;
 import com.ssafy.foodtruck.dto.*;
 import com.ssafy.foodtruck.model.service.OrdersService;
 import com.ssafy.foodtruck.util.JwtTokenUtil;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ public class OrdersController {
 	private final OrdersService ordersService;
 
 	@PostMapping("/customer")
+	@ApiOperation(value = "주문내역 등록", notes = "<strong>사용자가 주문내역을 등록한다.</strong>")
 	public ResponseEntity<?> registerOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @RequestBody List<RegisterOrdersReq> registerOrdersReqList) {
 		int customerId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
 		ordersService.registerOrders(customerId, registerOrdersReqList);
