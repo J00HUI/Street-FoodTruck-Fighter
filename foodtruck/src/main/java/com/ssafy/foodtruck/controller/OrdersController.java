@@ -57,9 +57,10 @@ public class OrdersController {
 		return new ResponseEntity<>(ordersService.getCeoOrdersAll(ceoId, foodtruckId), HttpStatus.OK);
 	}
 
-    @PatchMapping("/{orderId}")
-    public ResponseEntity<?> cancelOrders(@PathVariable int userId, @PathVariable int orderId) {
-        ordersService.cancelOrders(userId, orderId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+	@PatchMapping("/{orderId}")
+	public ResponseEntity<?> cancelOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @PathVariable int orderId) {
+		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
+		ordersService.cancelOrders(ceoId, orderId);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 }
