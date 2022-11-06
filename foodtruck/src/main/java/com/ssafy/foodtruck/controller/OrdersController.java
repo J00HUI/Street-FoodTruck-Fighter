@@ -65,6 +65,7 @@ public class OrdersController {
 	}
 
 	@PatchMapping("/{orderId}")
+	@ApiOperation(value = "Orders ID로 주문 취소", notes = "<strong>Orders ID를 통해 주문을 취소한다.</strong>")
 	public ResponseEntity<?> cancelOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @PathVariable int orderId) {
 		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
 		ordersService.cancelOrders(ceoId, orderId);
