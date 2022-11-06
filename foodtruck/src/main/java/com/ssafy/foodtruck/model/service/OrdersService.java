@@ -84,23 +84,23 @@ public class OrdersService {
 		return currentOrdersListByFoodtruckResponses;
 	}
 
-    public List<OrdersListByFoodtruckResponse> getCeoOrdersAll(int userId, int foodtruckId) {
-        List<Orders> ordersList = ordersRepository.findByCeoOrdersAll(foodtruckId);
-        OrdersMenu ordersMenu = ordersMenuRepository.findByCeoOrders(foodtruckId);
+	public List<OrdersListByFoodtruckResponse> getCeoOrdersAll(int ceoId, int foodtruckId) {
+		List<Orders> ordersList = ordersRepository.findByCeoOrdersAll(foodtruckId);
+		OrdersMenu ordersMenu = ordersMenuRepository.findByCeoOrders(foodtruckId);
 
-        List<OrdersListByFoodtruckResponse> ordersListByFoodtruckResponses = new ArrayList<>();
+		List<OrdersListByFoodtruckResponse> ordersListByFoodtruckResponses = new ArrayList<>();
 
-        for(Orders orders : ordersList) {
+		for (Orders orders : ordersList) {
 
-            if(orders.getIsDone()) {
-                ordersListByFoodtruckResponses.add(
-                        OrdersListByFoodtruckResponse.builder()
-                                .menuName(ordersMenu.getMenu().getName())
-                                .build());
-            }
-        }
-        return ordersListByFoodtruckResponses;
-    }
+			if (orders.getIsDone()) {
+				ordersListByFoodtruckResponses.add(
+					OrdersListByFoodtruckResponse.builder()
+						.menuName(ordersMenu.getMenu().getName())
+						.build());
+			}
+		}
+		return ordersListByFoodtruckResponses;
+	}
 
     @Transactional
     public void cancelOrders(int userId, int orderId) {
