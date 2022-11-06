@@ -45,12 +45,11 @@ public class OrdersController {
 		return new ResponseEntity<>(ordersService.getCustomerOrdersAll(customerId), HttpStatus.OK);
 	}
 
-    @GetMapping("/ceo")
-    public ResponseEntity<List<CurrentOrdersListByFoodtruckResponse>> getCeoOrders(@PathVariable int userId, @PathVariable int foodtruckId) {
-//        ordersService.getCeoOrders(userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken)));
-        ordersService.getCeoOrders(userId, foodtruckId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+	@GetMapping("/ceo")
+	public ResponseEntity<List<CurrentOrdersListByFoodtruckResponse>> getCeoOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @PathVariable int foodtruckId) {
+		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
+		return new ResponseEntity<>(ordersService.getCeoOrders(ceoId, foodtruckId), HttpStatus.OK);
+	}
 
     @GetMapping("/ceo/all")
     public ResponseEntity<List<OrdersListByFoodtruckResponse>> getCeoOrdersAll(@PathVariable int userId, @PathVariable int foodtruckId) {
