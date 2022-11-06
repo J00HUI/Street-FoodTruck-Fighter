@@ -58,6 +58,7 @@ public class OrdersController {
 	}
 
 	@GetMapping("/ceo/all")
+	@ApiOperation(value = "전체 주문내역 조회 - 사업자", notes = "<strong>Ceo ID를 통해 전체 주문내역 조회를 한다.</strong>")
 	public ResponseEntity<List<OrdersListByFoodtruckResponse>> getCeoOrdersAll(@RequestHeader(AUTHORIZATION) String bearerToken) {
 		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
 		return new ResponseEntity<>(ordersService.getCeoOrdersAll(ceoId), HttpStatus.OK);
