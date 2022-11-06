@@ -1,11 +1,7 @@
 package com.ssafy.foodtruck.controller;
 
-import com.ssafy.foodtruck.dto.CurrentOrdersListByFoodtruckResponse;
-import com.ssafy.foodtruck.dto.OrdersHistoryResponse;
-import com.ssafy.foodtruck.dto.OrdersListByFoodtruckResponse;
-import com.ssafy.foodtruck.dto.RegisterOrdersRequest;
+import com.ssafy.foodtruck.dto.*;
 import com.ssafy.foodtruck.model.service.OrdersService;
-import com.ssafy.foodtruck.model.service.UserService;
 import com.ssafy.foodtruck.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,53 +17,50 @@ import static com.ssafy.foodtruck.db.entity.Message.AUTHORIZATION;
 @RequestMapping("/order")
 public class OrdersController {
 
-    private final UserService userService;
+	private final OrdersService ordersService;
 
-    private final JwtTokenUtil jwtTokenUtil;
+	@PostMapping("/customer")
+	public ResponseEntity<?> registerOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @RequestBody RegisterOrdersRequest registerOrdersRequest) {
+		int customerId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
+		ordersService.registerOrders(customerId, registerOrdersRequest);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 
-    private final OrdersService ordersService;
+	@PatchMapping("/ceo/{ordersId}")
+	public ResponseEntity<?> acceptOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @PathVariable int ordersId) {
+		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
+		ordersService.acceptOrders(ceoId, ordersId);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 
-    @PostMapping("/customer")
-//    public ResponseEntity<?> registerOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @RequestBody RegisterOrdersRequest registerOrdersRequest) {
-    public ResponseEntity<?> registerOrders(@PathVariable int userId, @RequestBody RegisterOrdersRequest registerOrdersRequest) {
-        ordersService.registerOrders(userId, registerOrdersRequest);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+	@GetMapping("/customer")
+	public ResponseEntity<List<CurrentOrdersHistoryResponse>> getCustomerOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @RequestParam int ordersId) {
+		int customerId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
+		return new ResponseEntity<>(ordersService.getCustomerOrders(customerId, ordersId), HttpStatus.OK);
+	}
 
-    @PatchMapping("/ceo/{ordersId}")
-    public ResponseEntity<?> acceptOrders(@PathVariable int userId, @PathVariable int ordersId) {
-        ordersService.acceptOrders(userId, ordersId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+	@GetMapping("/customer/all")
+	public ResponseEntity<List<OrdersHistoryResponse>> getCustomerOrdersAll(@RequestHeader(AUTHORIZATION) String bearerToken) {
+		int customerId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
+		return new ResponseEntity<>(ordersService.getCustomerOrdersAll(customerId), HttpStatus.OK);
+	}
 
-    @GetMapping("/customer/{userId}")
-    public ResponseEntity<List<OrdersHistoryResponse>> getCustomerOrders(@PathVariable int userId) {
-        ordersService.getCustomerOrders(userId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+	@GetMapping("/ceo")
+	public ResponseEntity<List<CurrentOrdersListByFoodtruckResponse>> getCeoOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @RequestParam int foodtruckId) {
+		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
+		return new ResponseEntity<>(ordersService.getCeoOrders(ceoId, foodtruckId), HttpStatus.OK);
+	}
 
-    @GetMapping("/customer/all")
-    public ResponseEntity<List<OrdersHistoryResponse>> getCustomerOrdersAll(@PathVariable int userId) {
-        ordersService.getCustomerOrdersAll(userId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+	@GetMapping("/ceo/all")
+	public ResponseEntity<List<OrdersListByFoodtruckResponse>> getCeoOrdersAll(@RequestHeader(AUTHORIZATION) String bearerToken, @RequestParam int foodtruckId) {
+		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
+		return new ResponseEntity<>(ordersService.getCeoOrdersAll(ceoId, foodtruckId), HttpStatus.OK);
+	}
 
-    @GetMapping("/ceo")
-    public ResponseEntity<List<CurrentOrdersListByFoodtruckResponse>> getCeoOrders(@PathVariable int userId, @PathVariable int foodtruckId) {
-//        ordersService.getCeoOrders(userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken)));
-        ordersService.getCeoOrders(userId, foodtruckId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @GetMapping("/ceo/all")
-    public ResponseEntity<List<OrdersListByFoodtruckResponse>> getCeoOrdersAll(@PathVariable int userId, @PathVariable int foodtruckId) {
-        ordersService.getCeoOrdersAll(userId, foodtruckId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PatchMapping("/{orderId}")
-    public ResponseEntity<?> cancelOrders(@PathVariable int userId, @PathVariable int orderId) {
-        ordersService.cancelOrders(userId, orderId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+	@PatchMapping("/{orderId}")
+	public ResponseEntity<?> cancelOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @PathVariable int orderId) {
+		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
+		ordersService.cancelOrders(ceoId, orderId);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 }
