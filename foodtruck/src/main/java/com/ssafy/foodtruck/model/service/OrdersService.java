@@ -1,5 +1,6 @@
 package com.ssafy.foodtruck.model.service;
 
+import com.ssafy.foodtruck.db.entity.Menu;
 import com.ssafy.foodtruck.db.entity.Orders;
 import com.ssafy.foodtruck.db.entity.OrdersErrorMessage;
 import com.ssafy.foodtruck.db.entity.OrdersMenu;
@@ -35,18 +36,17 @@ public class OrdersService {
 		}
 	}
 
-	public List<CurrentOrdersHistoryResponse> getCustomerOrders(int customerId) {
+	public List<CurrentOrdersHistoryResponse> getCustomerOrders(int customerId, int ordersId) {
 		List<Orders> ordersList = ordersRepository.findByCustomerOrders(customerId);
-		OrdersMenu ordersMenu = ordersMenuRepository.findById(customerId)
-			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
+		List<OrdersMenu> ordersMenuList = ordersMenuRepository.findByOrdersId(ordersId);
 
 		List<CurrentOrdersHistoryResponse> currentOrdersHistoryResponses = new ArrayList<>();
 
-		for (Orders orders : ordersList) {
+		for(Orders orders : ordersList) {
 			currentOrdersHistoryResponses.add(
 				CurrentOrdersHistoryResponse.builder()
 					.foodtruckName(orders.getFoodTruck().getName())
-					.menuName(ordersMenu.getMenu().getName())
+//					.menuName()
 					.build());
 		}
 		return currentOrdersHistoryResponses;
