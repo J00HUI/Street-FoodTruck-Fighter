@@ -33,10 +33,10 @@ public class OrdersController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@GetMapping("/customer/{userId}")
-	public ResponseEntity<List<CurrentOrdersHistoryResponse>> getCustomerOrders(@RequestHeader(AUTHORIZATION) String bearerToken) {
+	@GetMapping("/customer")
+	public ResponseEntity<List<CurrentOrdersHistoryResponse>> getCustomerOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @RequestParam int ordersId) {
 		int customerId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
-		return new ResponseEntity<>(ordersService.getCustomerOrders(customerId), HttpStatus.OK);
+		return new ResponseEntity<>(ordersService.getCustomerOrders(customerId, ordersId), HttpStatus.OK);
 	}
 
 	@GetMapping("/customer/all")
@@ -46,13 +46,13 @@ public class OrdersController {
 	}
 
 	@GetMapping("/ceo")
-	public ResponseEntity<List<CurrentOrdersListByFoodtruckResponse>> getCeoOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @PathVariable int foodtruckId) {
+	public ResponseEntity<List<CurrentOrdersListByFoodtruckResponse>> getCeoOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @RequestParam int foodtruckId) {
 		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
 		return new ResponseEntity<>(ordersService.getCeoOrders(ceoId, foodtruckId), HttpStatus.OK);
 	}
 
 	@GetMapping("/ceo/all")
-	public ResponseEntity<List<OrdersListByFoodtruckResponse>> getCeoOrdersAll(@RequestHeader(AUTHORIZATION) String bearerToken, @PathVariable int foodtruckId) {
+	public ResponseEntity<List<OrdersListByFoodtruckResponse>> getCeoOrdersAll(@RequestHeader(AUTHORIZATION) String bearerToken, @RequestParam int foodtruckId) {
 		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
 		return new ResponseEntity<>(ordersService.getCeoOrdersAll(ceoId, foodtruckId), HttpStatus.OK);
 	}
