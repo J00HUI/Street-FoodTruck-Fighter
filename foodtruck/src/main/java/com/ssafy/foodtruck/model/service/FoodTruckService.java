@@ -10,13 +10,14 @@ import com.ssafy.foodtruck.dto.response.GetFoodTruckReviewRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ssafy.foodtruck.Constant.FoodTruckConstant.*;
+import static com.ssafy.foodtruck.constant.FoodTruckConstant.*;
 
 @Service("foodTruckService")
 @RequiredArgsConstructor
@@ -47,12 +48,12 @@ public class FoodTruckService {
 	}
 
 	// 내 푸드트럭 등록
-	public String registerFoodTruck(RegisterFoodTruckReq registerFoodTruckReq, User user){
+	public void registerFoodTruck(RegisterFoodTruckReq registerFoodTruckReq, User user) throws IllegalAccessException {
 		// 중복된 푸드트럭이 등록되었는지 검사
 		FoodTruck foodTruckUser = foodTruckRepository.findByUser(user).orElse(null);
 
 		if(foodTruckUser != null){
-			return DUPLICATED_FOODTRUCK_ERROR_MESSAGE;
+			throw new IllegalAccessException(DUPLICATED_FOODTRUCK_ERROR_MESSAGE);
 		}
 
 		// 푸드트럭 등록
@@ -89,8 +90,6 @@ public class FoodTruckService {
 			.endDate(LocalDateTime.parse(registerFoodTruckReq.getEnd_date(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
 			.isValid(true).build();
 		scheduleRepository.save(schedule);
-
-		return REGISTER_FOODTRUCK_SUCCESS;
 	}
 
 	// 푸드트럭 리뷰 등록
@@ -109,15 +108,30 @@ public class FoodTruckService {
 	}
 
 	// 푸드트럭 리뷰 조회
-	public GetFoodTruckReviewRes getFoodTruckReview(Integer foodTruckId){
+	public List<GetFoodTruckReviewRes> getFoodTruckReview(Integer foodTruckId){
+		List<Review> findReviewList = reviewRepository.findAllByFoodTruckId(foodTruckId);
+		List<GetFoodTruckReviewRes> reviewList = new ArrayList<>();
 
-		// 푸드트럭에 해당하는 주문 내역 조회
-		FoodTruck foodTruck = foodTruckRepository.findById(foodTruckId)
-			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE));
-		List<Orders> ordersList = ordersRepository.findByFoodTruck(foodTruck);
+		for(Review r : findReviewList){
+			reviewList.add(GetFoodTruckReviewRes.builder()
+				.content(r.getContent())
+				.userId(r.getUser().getId())
+				.ordersId(r.getOrders().getId())
+				.grade(r.getGrade())
+				.src(r.getSrc())
+				.regDate(r.getRegDate())
+				.id(r.getId()).build());
+
+//			System.out.println(r.getContent() + ", " + r.getId() + "," + r.getGrade());
+		}
 
 
-		return null;
+		return reviewList;
+//		EntityManager em = new EntityManager() {
+//		}
+//		em.createQuery("select c from Cup c where c.id in :cups")
+//			.setParameter("cups", cups)
+//			.getResultList();
 	}
 
 	public FoodTruck getFoodTruckByUser(User user){

@@ -5,7 +5,9 @@ import lombok.*;
 import org.checkerframework.common.aliasing.qual.Unique;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Set;
+import java.util.List;
 
 @Entity
 @Builder

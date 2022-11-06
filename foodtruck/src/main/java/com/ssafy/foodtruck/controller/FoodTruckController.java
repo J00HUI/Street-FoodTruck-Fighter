@@ -5,6 +5,7 @@ import com.ssafy.foodtruck.db.entity.User;
 import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReq;
 import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReviewReq;
 import com.ssafy.foodtruck.dto.response.GetFoodTruckReviewRes;
+import com.ssafy.foodtruck.exception.NotFoundException;
 import com.ssafy.foodtruck.model.service.FoodTruckService;
 import com.ssafy.foodtruck.model.service.UserService;
 import com.ssafy.foodtruck.util.JwtTokenUtil;
@@ -15,7 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.ssafy.foodtruck.Constant.FoodTruckConstant.*;
+import static com.ssafy.foodtruck.constant.FoodTruckConstant.*;
+import java.util.*;
 
 /**
  * 푸드트럭 관련 API 요청 처리를 위한 컨트롤러 정의
@@ -46,13 +48,10 @@ public class FoodTruckController {
 	// 푸드트럭 등록
 	@PostMapping()
 	@ApiOperation(value = "푸드트럭 등록", notes = "<strong>내 푸드트럭을 등록한다.</strong>")
-	public ResponseEntity<?> registerFoodTruck(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken, @RequestBody @ApiParam(value="푸드트럭 정보", required = true) RegisterFoodTruckReq registerFoodTruckReq) {
-		System.out.println(bearerToken);
+	public ResponseEntity<?> registerFoodTruck(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken, @RequestBody @ApiParam(value="푸드트럭 정보", required = true) RegisterFoodTruckReq registerFoodTruckReq) throws IllegalAccessException {
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
-		String result = foodTruckService.registerFoodTruck(registerFoodTruckReq, user);
-		if(result == DUPLICATED_FOODTRUCK_ERROR_MESSAGE)
-			return response.fail(DUPLICATED_FOODTRUCK_ERROR_MESSAGE);
-		return response.success(REGISTER_FOODTRUCK_SUCCESS);
+		foodTruckService.registerFoodTruck(registerFoodTruckReq, user);
+		return ResponseEntity.ok().body(REGISTER_FOODTRUCK_SUCCESS);
 	}
 
 	// 리뷰 등록
@@ -61,14 +60,15 @@ public class FoodTruckController {
 	public ResponseEntity<?> registerFoodTruckReview(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken, @RequestBody @ApiParam(value="리뷰 정보", required = true) RegisterFoodTruckReviewReq registerFoodTruckReviewReq){
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
 		foodTruckService.registerFoodTruckReview(registerFoodTruckReviewReq, user);
-		return response.success(REGISTER_REVIEW_SUCCESS);
+		return ResponseEntity.status(200).body(REGISTER_REVIEW_SUCCESS);
 	}
 
 	// 리뷰 조회
 	@GetMapping("/review/{foodtruck_id}")
 	@ApiOperation(value = "리뷰 조회", notes = "<strong>푸드트럭 ID에 해당하는 리뷰를 조회한다.</strong>")
-	public void getFoodTruckReview(@PathVariable("foodtruck_id") @ApiParam(value="푸드트럭 ID", required = true) Integer foodTruckId){
-		GetFoodTruckReviewRes getFoodTruckReviewRes = foodTruckService.getFoodTruckReview(foodTruckId);
+	public ResponseEntity<?> getFoodTruckReview(@PathVariable("foodtruck_id") @ApiParam(value="푸드트럭 ID", required = true) Integer foodTruckId){
+		List<GetFoodTruckReviewRes> getFoodTruckReviewResList = foodTruckService.getFoodTruckReview(foodTruckId);
+		return ResponseEntity.ok().body(getFoodTruckReviewResList);
 	}
 
 	// 지도와 가까운 푸드트럭 조회

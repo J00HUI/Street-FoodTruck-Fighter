@@ -1,4 +1,4 @@
-package com.ssafy.foodtruck.Constant;
+package com.ssafy.foodtruck.constant;
 
 public class FoodTruckConstant {
 	public static final String REGISTER_FOODTRUCK_SUCCESS = "푸드트럭 등록 성공";
