@@ -51,11 +51,11 @@ public class OrdersController {
 		return new ResponseEntity<>(ordersService.getCeoOrders(ceoId, foodtruckId), HttpStatus.OK);
 	}
 
-    @GetMapping("/ceo/all")
-    public ResponseEntity<List<OrdersListByFoodtruckResponse>> getCeoOrdersAll(@PathVariable int userId, @PathVariable int foodtruckId) {
-        ordersService.getCeoOrdersAll(userId, foodtruckId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+	@GetMapping("/ceo/all")
+	public ResponseEntity<List<OrdersListByFoodtruckResponse>> getCeoOrdersAll(@RequestHeader(AUTHORIZATION) String bearerToken, @PathVariable int foodtruckId) {
+		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
+		return new ResponseEntity<>(ordersService.getCeoOrdersAll(ceoId, foodtruckId), HttpStatus.OK);
+	}
 
     @PatchMapping("/{orderId}")
     public ResponseEntity<?> cancelOrders(@PathVariable int userId, @PathVariable int orderId) {
