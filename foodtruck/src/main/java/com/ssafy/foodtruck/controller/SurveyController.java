@@ -6,6 +6,7 @@ import com.ssafy.foodtruck.dto.response.SurveyRes;
 import com.ssafy.foodtruck.model.service.SurveyService;
 import com.ssafy.foodtruck.model.service.UserService;
 import com.ssafy.foodtruck.util.JwtTokenUtil;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ public class SurveyController {
 	private final SurveyService surveyService;
 
 	@PostMapping
+	@ApiOperation(value = "설문조사 등록", notes = "<strong>사용자의 위치 기반으로 원하는 푸드트럭에 대한 설문조사를 등록한다.</strong>")
 	public ResponseEntity<?> submitSurvey(@RequestHeader(AUTHORIZATION) String bearerToken, @RequestBody SurveyReq surveyReq) {
 		int customerId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
 		surveyService.submitSurvey(customerId, surveyReq);
