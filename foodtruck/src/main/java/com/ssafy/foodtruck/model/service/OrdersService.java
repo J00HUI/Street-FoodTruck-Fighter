@@ -52,22 +52,22 @@ public class OrdersService {
 		return currentOrdersHistoryResponses;
 	}
 
-    public List<OrdersHistoryResponse> getCustomerOrdersAll(int userId) {
-        List<Orders> ordersList = ordersRepository.findByCustomerOrdersAll(userId);
-        OrdersMenu ordersMenu = ordersMenuRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
+	public List<OrdersHistoryResponse> getCustomerOrdersAll(int customerId) {
+		List<Orders> ordersList = ordersRepository.findByCustomerOrdersAll(customerId);
+		OrdersMenu ordersMenu = ordersMenuRepository.findById(customerId)
+			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
 
-        List<OrdersHistoryResponse> ordersHistoryResponses = new ArrayList<>();
+		List<OrdersHistoryResponse> ordersHistoryResponses = new ArrayList<>();
 
-        for(Orders orders : ordersList) {
-                ordersHistoryResponses.add(
-                        OrdersHistoryResponse.builder()
-                                .foodtruckName(orders.getFoodTruck().getName())
-                                .menuName(ordersMenu.getMenu().getName())
-                                .build());
-        }
-        return ordersHistoryResponses;
-    }
+		for (Orders orders : ordersList) {
+			ordersHistoryResponses.add(
+				OrdersHistoryResponse.builder()
+					.foodtruckName(orders.getFoodTruck().getName())
+					.menuName(ordersMenu.getMenu().getName())
+					.build());
+		}
+		return ordersHistoryResponses;
+	}
 
     public List<CurrentOrdersListByFoodtruckResponse> getCeoOrders(int userId, int foodtruckId) {
         List<Orders> ordersList = ordersRepository.findByCeoOrders(foodtruckId);
