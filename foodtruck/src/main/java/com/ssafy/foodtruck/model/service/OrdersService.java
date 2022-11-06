@@ -102,10 +102,13 @@ public class OrdersService {
 		return ordersListByFoodtruckResponses;
 	}
 
-    @Transactional
-    public void cancelOrders(int userId, int orderId) {
-        Orders orders = ordersRepository.findById(orderId)
-                .orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
-        orders.setIsCanceled(true);
-    }
+	@Transactional
+	public void cancelOrders(int ceoId, int orderId) {
+		Orders orders = ordersRepository.findById(orderId)
+			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
+
+		if (ceoId == orders.getUser().getId()) {
+			orders.setIsCanceled(true);
+		}
+	}
 }
