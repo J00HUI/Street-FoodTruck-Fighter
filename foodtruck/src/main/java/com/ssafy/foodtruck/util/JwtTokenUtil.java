@@ -6,6 +6,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.*;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.ssafy.foodtruck.db.entity.User;
+import com.ssafy.foodtruck.db.repository.UserRepository;
 import com.ssafy.foodtruck.dto.UserDtoReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,14 +33,17 @@ public class JwtTokenUtil {
 
     private final RedisUtil redisUtil;
 
+	private static UserRepository userRepository;
+
     private static String secretKey;
     public static Integer expirationTime;
 
     @Autowired
-    public JwtTokenUtil(@Value("${jwt.secret}") String secretKey, @Value("${jwt.expiration}") Integer expirationTime, RedisUtil redisUtil) {
+    public JwtTokenUtil(@Value("${jwt.secret}") String secretKey, @Value("${jwt.expiration}") Integer expirationTime, RedisUtil redisUtil, UserRepository userRepository) {
         this.secretKey = secretKey;
         this.expirationTime = expirationTime;
         this.redisUtil=redisUtil;
+		this.userRepository = userRepository;
     }
 
     public static JWTVerifier getVerifier() {
@@ -184,6 +189,12 @@ public class JwtTokenUtil {
         }
         throw new RuntimeException();
     }
+
+	public static int getUserIdFromBearerToken(String bearertoken) {
+		String email = getEmailFromBearerToken(bearertoken);
+		User user = userRepository.findByEmail(email).get();
+		return user.getId();
+	}
 
     public String getEmailFromRefreshToken(String refreshToken) {
         return decodeToken(refreshToken).getSubject();

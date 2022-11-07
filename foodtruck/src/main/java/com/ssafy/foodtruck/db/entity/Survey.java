@@ -14,7 +14,7 @@ public class Survey extends BaseEntity {
 
     @NotNull
     @Column(length = 200)
-    private String category;
+    private Category category;
 
     @NotNull
     private Double latitude;
