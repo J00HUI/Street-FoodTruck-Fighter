@@ -6,7 +6,7 @@ import com.ssafy.foodtruck.db.entity.User;
 import com.ssafy.foodtruck.db.entity.UserType;
 import com.ssafy.foodtruck.db.repository.SurveyRepository;
 import com.ssafy.foodtruck.db.repository.UserRepository;
-import com.ssafy.foodtruck.dto.FindSurveyReq;
+import com.ssafy.foodtruck.dto.request.FindSurveyReq;
 import com.ssafy.foodtruck.dto.request.SurveyReq;
 import com.ssafy.foodtruck.dto.response.SurveyRes;
 import com.ssafy.foodtruck.exception.NotFoundException;
