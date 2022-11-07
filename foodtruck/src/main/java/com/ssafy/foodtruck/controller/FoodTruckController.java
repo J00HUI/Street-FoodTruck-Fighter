@@ -2,10 +2,12 @@ package com.ssafy.foodtruck.controller;
 
 import com.ssafy.foodtruck.common.Response;
 import com.ssafy.foodtruck.db.entity.User;
+import com.ssafy.foodtruck.dto.request.GetNearFoodTruckReq;
 import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReq;
 import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReviewReq;
 import com.ssafy.foodtruck.dto.response.GetFoodTruckRes;
 import com.ssafy.foodtruck.dto.response.GetFoodTruckReviewRes;
+import com.ssafy.foodtruck.dto.response.GetNearFoodTruckRes;
 import com.ssafy.foodtruck.exception.NotFoundException;
 import com.ssafy.foodtruck.model.service.FoodTruckService;
 import com.ssafy.foodtruck.model.service.UserService;
@@ -87,8 +89,13 @@ public class FoodTruckController {
 	// 지도와 가까운 푸드트럭 조회
 	@GetMapping("/near")
 	@ApiOperation(value = "사용자 위치로 푸드트럭 조회", notes = "<strong>현재 위치에서 가까운 푸드트럭를 조회한다.</strong>")
-	public void getNearFoodTruck(){
+	public ResponseEntity<Map<String, Object>> getNearFoodTruck(@RequestBody @ApiParam(value="사용자의 위치 정보와 카테고리", required = true) GetNearFoodTruckReq getNearFoodTruckReq){
+		List<GetNearFoodTruckRes> foodTruckResList = foodTruckService.getNearFoodTruck(getNearFoodTruckReq);
 
+		Map<String, Object> result = new HashMap<>();
+		result.put("data", foodTruckResList);
+		result.put("msg", GET_FOODTRUCK_SUCCESS);
+		return ResponseEntity.ok().body(result);
 	}
 
 	// 푸드트럭 검색

@@ -41,11 +41,11 @@ public class Schedule extends BaseEntity {
     @JoinColumn(name = "foodtruck_id")
     private FoodTruck foodTruck;
 
-	public void update(final RegisterFoodTruckReq registerFoodTruckReq){
-		this.startDate = LocalDateTime.parse(registerFoodTruckReq.getStart_date(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-		this.endDate = LocalDateTime.parse(registerFoodTruckReq.getEnd_date(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-		this.latitude = registerFoodTruckReq.getLatitude();
-		this.longitude = registerFoodTruckReq.getLongtitue();
-		this.address = registerFoodTruckReq.getAddress();
-	}
+//	public void update(final RegisterFoodTruckReq registerFoodTruckReq){
+//		this.startDate = LocalDateTime.parse(registerFoodTruckReq.getStart_date(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+//		this.endDate = LocalDateTime.parse(registerFoodTruckReq.getEnd_date(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+//		this.latitude = registerFoodTruckReq.getLatitude();
+//		this.longitude = registerFoodTruckReq.getLongtitue();
+//		this.address = registerFoodTruckReq.getAddress();
+//	}
 }

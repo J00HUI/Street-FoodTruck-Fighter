@@ -3,6 +3,7 @@ package com.ssafy.foodtruck.dto.request;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ssafy.foodtruck.db.entity.Category;
 import com.ssafy.foodtruck.dto.MenuDto;
+import com.ssafy.foodtruck.dto.ScheduleDateDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,9 +29,5 @@ public class RegisterFoodTruckReq {
 	private Double latitude; // 위도
 	private Double longtitue; // 경도
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-	private String start_date; //시작일시
-
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-	private String end_date; //종료일시
+	List<ScheduleDateDto> dateDtoList;	// 운영시간리스트
 }

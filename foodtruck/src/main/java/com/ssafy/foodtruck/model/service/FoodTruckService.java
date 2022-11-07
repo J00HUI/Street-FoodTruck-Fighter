@@ -3,10 +3,13 @@ package com.ssafy.foodtruck.model.service;
 import com.ssafy.foodtruck.db.entity.*;
 import com.ssafy.foodtruck.db.repository.*;
 import com.ssafy.foodtruck.dto.MenuDto;
+import com.ssafy.foodtruck.dto.ScheduleDateDto;
+import com.ssafy.foodtruck.dto.request.GetNearFoodTruckReq;
 import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReq;
 import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReviewReq;
 import com.ssafy.foodtruck.dto.response.GetFoodTruckRes;
 import com.ssafy.foodtruck.dto.response.GetFoodTruckReviewRes;
+import com.ssafy.foodtruck.dto.response.GetNearFoodTruckRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -40,7 +43,7 @@ public class FoodTruckService {
 		Schedule schedule = scheduleRepository.findByFoodTruck(foodTruck).orElse(null);
 //		if(schedule == null) throw Error?
 
-		List<Menu> findMenuList = menuRepository.findByFoodTruck(foodTruck);
+		List<Menu> findMenuList = menuRepository.findMenuByFoodTruck(foodTruck);
 		List<MenuDto> menuList = new ArrayList<>();
 		for(Menu menu : findMenuList){
 			menuList.add(MenuDto.of(menu));
@@ -94,15 +97,18 @@ public class FoodTruckService {
 		}
 
 		// 스케쥴 등록
-		final Schedule schedule = Schedule.builder()
-			.foodTruck(savedFoodTruck)
-			.latitude(registerFoodTruckReq.getLatitude())
-			.longitude(registerFoodTruckReq.getLongtitue())
-			.address(registerFoodTruckReq.getAddress())
-			.startDate(LocalDateTime.parse(registerFoodTruckReq.getStart_date(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-			.endDate(LocalDateTime.parse(registerFoodTruckReq.getEnd_date(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-			.isValid(true).build();
-		scheduleRepository.save(schedule);
+		for(ScheduleDateDto dateDto : registerFoodTruckReq.getDateDtoList()){
+			final Schedule schedule = Schedule.builder()
+				.foodTruck(savedFoodTruck)
+				.latitude(registerFoodTruckReq.getLatitude())
+				.longitude(registerFoodTruckReq.getLongtitue())
+				.address(registerFoodTruckReq.getAddress())
+				.startDate(LocalDateTime.parse(dateDto.getWorkingDay() + " " + dateDto.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+				.endDate(LocalDateTime.parse(dateDto.getWorkingDay() + " " + dateDto.getEndTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+				.isValid(true).build();
+
+			scheduleRepository.save(schedule);
+		}
 	}
 
 	// 푸드트럭 수정
@@ -128,7 +134,7 @@ public class FoodTruckService {
 		// 스케쥴 수정
 		Schedule schedule = scheduleRepository.findByFoodTruck(foodTruck)
 			.orElseThrow(NoSuchElementException::new);
-		schedule.update(registerFoodTruckReq);
+//		schedule.update(registerFoodTruckReq);
 		scheduleRepository.save(schedule);
 
 		// 푸드트럭 수정
@@ -138,7 +144,7 @@ public class FoodTruckService {
 
 	// 메뉴 삭제
 	public void deleteMenu(FoodTruck foodTruck){
-		List<Menu> menuList = menuRepository.findByFoodTruck(foodTruck);
+		List<Menu> menuList = menuRepository.findMenuByFoodTruck(foodTruck);
 		for(Menu menu : menuList){
 			try {
 				menuRepository.delete(menu);
@@ -188,6 +194,35 @@ public class FoodTruckService {
 //		em.createQuery("select c from Cup c where c.id in :cups")
 //			.setParameter("cups", cups)
 //			.getResultList();
+	}
+
+	// 현재 위치와 가까운 푸드트럭 조회
+	public List<GetNearFoodTruckRes> getNearFoodTruck(GetNearFoodTruckReq getNearFoodTruckReq){
+		List<Schedule> scheduleList = scheduleRepository.findScheduleNearBy(getNearFoodTruckReq.getLat(),getNearFoodTruckReq.getLng());
+
+		List<GetNearFoodTruckRes> foodTruckList = new ArrayList<>();
+		for(Schedule schedule : scheduleList){
+			// 카테고리에 해당하는 푸드트럭
+			FoodTruck foodTruck = schedule.getFoodTruck();
+			if(foodTruck.getCategory() != getNearFoodTruckReq.getCategory()) continue;
+
+			List<Menu> menuList = menuRepository.findMenuByFoodTruck(foodTruck);
+			List<MenuDto> menuDtoList = new ArrayList<>();
+			for(Menu menu : menuList){
+				menuDtoList.add(MenuDto.of(menu));
+			}
+
+			Double grade = 0.0;
+			List<Review> findReviewList = reviewRepository.findAllByFoodTruckId(foodTruck.getId());
+			for(Review r : findReviewList){
+				grade += r.getGrade();
+			}
+			grade /= findReviewList.size();
+
+			foodTruckList.add(GetNearFoodTruckRes.of(menuDtoList, foodTruck, schedule, grade));
+		}
+
+		return foodTruckList;
 	}
 
 	public FoodTruck getFoodTruckByUser(User user){
