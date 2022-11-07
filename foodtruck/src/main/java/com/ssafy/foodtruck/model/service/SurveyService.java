@@ -6,6 +6,7 @@ import com.ssafy.foodtruck.db.entity.User;
 import com.ssafy.foodtruck.db.entity.UserType;
 import com.ssafy.foodtruck.db.repository.SurveyRepository;
 import com.ssafy.foodtruck.db.repository.UserRepository;
+import com.ssafy.foodtruck.dto.FindSurveyReq;
 import com.ssafy.foodtruck.dto.request.SurveyReq;
 import com.ssafy.foodtruck.dto.response.SurveyRes;
 import com.ssafy.foodtruck.exception.NotFoundException;
@@ -36,13 +37,13 @@ public class SurveyService {
 		surveyRepository.save(survey);
 	}
 
-	public List<SurveyRes> getSurvey(int ceoId, SurveyReq surveyReq) {
+	public List<SurveyRes> getSurvey(int ceoId, FindSurveyReq findSurveyReq) {
 		if (userRepository.findById(ceoId).get().getUserType() != UserType.CEO) {
 			throw new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER);
 		}
 		List<SurveyRes> surveyResList = new ArrayList<>();
 
-		for (Survey survey : surveyRepository.findSurveyNearby(surveyReq.getLatitude(), surveyReq.getLongitude())) {
+		for (Survey survey : surveyRepository.findSurveyNearby(findSurveyReq.getLatitude(), findSurveyReq.getLongitude())) {
 			surveyResList.add(
 				SurveyRes.builder()
 					.category(survey.getCategory())
