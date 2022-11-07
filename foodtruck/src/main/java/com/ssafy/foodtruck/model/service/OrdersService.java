@@ -17,35 +17,33 @@ public class OrdersService {
 
 	private final OrdersRepository ordersRepository;
 	private final OrdersMenuRepository ordersMenuRepository;
-
 	private final MenuRepository menuRepository;
-
 	private final UserRepository userRepository;
 	private final FoodTruckRepository foodTruckRepository;
 
 	@Transactional
 	public void registerOrders(int customerId, List<RegisterOrdersReq> registerOrdersReqList) {
-
-		User user = userRepository.findById(customerId).get();
+		User user = userRepository.findById(customerId)
+			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
 
 		for(RegisterOrdersReq registerOrdersReq : registerOrdersReqList){
 
-			FoodTruck foodTruck = foodTruckRepository.findById(registerOrdersReq.getFoodtruckId()).get();
+			FoodTruck foodTruck = foodTruckRepository.findById(registerOrdersReq.getFoodtruckId())
+				.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
 
 			Orders orders = Orders.builder()
 				.user(user)
 				.foodTruck(foodTruck)
 				.build();
-
 			ordersRepository.save(orders);
 
-			Menu menu = menuRepository.findById(registerOrdersReq.getMenuId()).get();
+			Menu menu = menuRepository.findById(registerOrdersReq.getMenuId())
+				.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
 
 			OrdersMenu ordersMenu = OrdersMenu.builder()
 				.orders(orders)
 				.menu(menu)
 				.build();
-
 			ordersMenuRepository.save(ordersMenu);
 		}
 	}
@@ -58,61 +56,54 @@ public class OrdersService {
 		if(ceoId != orders.getFoodTruck().getUser().getId()){
 			throw new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER);
 		}
-
 		orders.setIsAccepted(true);
 	}
 
-	public List<CurrentOrdersHistoryResponse> getCustomerOrders(int customerId) {
+	public List<CurrentOrdersHistoryRes> getCustomerOrders(int customerId) {
 		List<Orders> ordersList = ordersRepository.findByCustomerOrders(customerId);
-
-		List<CurrentOrdersHistoryResponse> currentOrdersHistoryResponseList = new ArrayList<>();
+		List<CurrentOrdersHistoryRes> currentOrdersHistoryResList = new ArrayList<>();
 
 		for(Orders orders : ordersList) {
 
 			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
-
-			currentOrdersHistoryResponseList.add(
-				CurrentOrdersHistoryResponse.builder()
+			currentOrdersHistoryResList.add(
+				CurrentOrdersHistoryRes.builder()
 					.foodtruckName(orders.getFoodTruck().getName())
 					.menuName(ordersMenu.getMenu().getName())
 					.build());
 		}
-
-		return currentOrdersHistoryResponseList;
+		return currentOrdersHistoryResList;
 	}
 
-	public List<OrdersHistoryResponse> getCustomerOrdersAll(int customerId) {
+	public List<OrdersHistoryRes> getCustomerOrdersAll(int customerId) {
 		List<Orders> ordersList = ordersRepository.findByCustomerOrdersAll(customerId);
-		List<OrdersHistoryResponse> OrdersHistoryResponseList = new ArrayList<>();
+		List<OrdersHistoryRes> ordersHistoryResList = new ArrayList<>();
 
 		for(Orders orders : ordersList) {
 
 			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
-
-			OrdersHistoryResponseList.add(
-				OrdersHistoryResponse.builder()
+			ordersHistoryResList.add(
+				OrdersHistoryRes.builder()
 					.foodtruckName(orders.getFoodTruck().getName())
 					.menuName(ordersMenu.getMenu().getName())
 					.build());
 		}
-
-		return OrdersHistoryResponseList;
+		return ordersHistoryResList;
 	}
 
-	public List<CurrentOrdersListByFoodtruckResponse> getCeoOrders(int ceoId) {
-		User user = userRepository.findById(ceoId).get();
-		FoodTruck foodTruck = foodTruckRepository.findByUser(user).get();
-
+	public List<CurrentOrdersListByFoodtruckRes> getCeoOrders(int ceoId) {
+		User user = userRepository.findById(ceoId)
+			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
+		FoodTruck foodTruck = foodTruckRepository.findByUser(user)
+			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
 		List<Orders> ordersList = ordersRepository.findByCeoOrders(foodTruck.getId());
-
-		List<CurrentOrdersListByFoodtruckResponse> currentOrdersListByFoodtruckResponseList = new ArrayList<>();
+		List<CurrentOrdersListByFoodtruckRes> currentOrdersListByFoodtruckResponseList = new ArrayList<>();
 
 		for (Orders orders : ordersList) {
 
 			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
-
 			currentOrdersListByFoodtruckResponseList.add(
-				CurrentOrdersListByFoodtruckResponse.builder()
+				CurrentOrdersListByFoodtruckRes.builder()
 					.foodtruckName(orders.getFoodTruck().getName())
 					.menuName(ordersMenu.getMenu().getName())
 					.build());
@@ -120,26 +111,25 @@ public class OrdersService {
 		return currentOrdersListByFoodtruckResponseList;
 	}
 
-	public List<OrdersListByFoodtruckResponse> getCeoOrdersAll(int ceoId) {
-
-		User user = userRepository.findById(ceoId).get();
-		FoodTruck foodTruck = foodTruckRepository.findByUser(user).get();
-
+	public List<OrdersListByFoodtruckRes> getCeoOrdersAll(int ceoId) {
+		User user = userRepository.findById(ceoId)
+			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
+		FoodTruck foodTruck = foodTruckRepository.findByUser(user)
+			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
 		List<Orders> ordersList = ordersRepository.findByCeoOrdersAll(foodTruck.getId());
-
-		List<OrdersListByFoodtruckResponse> OrdersListByFoodtruckResponseList = new ArrayList<>();
+		List<OrdersListByFoodtruckRes> ordersListByFoodtruckResponseList = new ArrayList<>();
 
 		for (Orders orders : ordersList) {
 
 			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
 
-			OrdersListByFoodtruckResponseList.add(
-				OrdersListByFoodtruckResponse.builder()
+			ordersListByFoodtruckResponseList.add(
+				OrdersListByFoodtruckRes.builder()
 					.foodtruckName(orders.getFoodTruck().getName())
 					.menuName(ordersMenu.getMenu().getName())
 					.build());
 		}
-		return OrdersListByFoodtruckResponseList;
+		return ordersListByFoodtruckResponseList;
 	}
 
 	@Transactional
@@ -150,7 +140,6 @@ public class OrdersService {
 		if(ceoId != orders.getFoodTruck().getUser().getId()){
 			throw new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER);
 		}
-
 		orders.setIsCanceled(true);
 	}
 }
