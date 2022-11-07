@@ -41,7 +41,7 @@ public class Schedule extends BaseEntity {
     @Column(length = 200)
     private String address;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "foodtruck_id")
     private FoodTruck foodTruck;
 

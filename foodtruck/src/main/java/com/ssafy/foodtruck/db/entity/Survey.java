@@ -26,7 +26,7 @@ public class Survey extends BaseEntity {
     @Column(length = 200)
     private String address;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 }

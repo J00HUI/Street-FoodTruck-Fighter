@@ -30,11 +30,11 @@ public class Orders extends BaseEntity {
 
     private LocalDateTime doneDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "foodtruck_id")
     private FoodTruck foodTruck;
 
