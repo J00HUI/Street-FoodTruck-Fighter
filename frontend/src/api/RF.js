@@ -1,6 +1,7 @@
-const HOST = "http://localhost:8000/api/"
+// const HOST = "http://localhost:8000/api/"
+const HOST = "http://k7b206.p.ssafy.io:8080/"
 // const api = " api/"
-const USER = "user/"
+const USER = "auth/"
 const CEO = 'ceo/'
 const CUSTOMER = 'customer/'
 const FOODTRUCK = "foodtruck/"
@@ -9,33 +10,33 @@ const ORDER = 'order/'
 const SCHEDULE = 'schedule/'
 export default {
   user: {
-    login: () => HOST + "login/",
-    logout: ()=> HOST + USER + "logout/",
-    signup: () => HOST + USER + "signup/" ,
-    getUserInfo: () => HOST + USER
+    login: () => HOST + "login",
+    logout: ()=> HOST + USER + "logout",
+    signup: () => HOST + USER + "signup" ,
+    getUserInfo: () => HOST + 'user',
   },
   foodtruck:{
-    registerFoodTruck: () => HOST + FOODTRUCK,
-    registerFoodTruckReview: () => HOST + FOODTRUCK + REVIEW,
-    getFoodTruckReview: (foodtruck_id) => HOST + FOODTRUCK + REVIEW + `${foodtruck_id}/`,
-    getFoodTruck: (foodtruck_id) => HOST + FOODTRUCK + `${foodtruck_id}/`,
-    getNearFoodTruck: () => HOST + FOODTRUCK + 'near/',
-    updateFoodTruck: () => HOST + FOODTRUCK,
+    registerFoodTruck: () => HOST + 'foodtruck',
+    registerFoodTruckReview: () => HOST + FOODTRUCK + 'review',
+    getFoodTruckReview: (foodtruck_id) => HOST + FOODTRUCK + REVIEW + `${foodtruck_id}`,
+    getFoodTruck: (foodtruck_id) => HOST + FOODTRUCK + `${foodtruck_id}`,
+    getNearFoodTruck: () => HOST + FOODTRUCK + 'near',
+    updateFoodTruck: () => HOST + 'foodtruck',
     search: (keyword) => HOST + FOODTRUCK + 'search/' + `${keyword}`,
   },
   survey: {
     survey: () => HOST + 'survey/'
   },
   orders: {
-    customer:() => HOST + ORDER,
-    acceptOrders: (order_id) => HOST + ORDER + CEO + `${order_id}/`,
-    getCustomerOrdersAll: () => HOST + ORDER + CUSTOMER + 'all/',
-    getCeoOrders: () => HOST + ORDER + CEO,
-    getCeoOrdersAll: () => HOST + ORDER + CEO + 'all/',
-    cancelOrders: () => HOST + ORDER
+    customer:() => HOST + 'order',
+    acceptOrders: (order_id) => HOST + ORDER + CEO + `${order_id}`,
+    getCustomerOrdersAll: () => HOST + ORDER + CUSTOMER + 'all',
+    getCeoOrders: () => HOST + ORDER + 'ceo',
+    getCeoOrdersAll: () => HOST + ORDER + CEO + 'all',
+    cancelOrders: () => HOST + 'order',
   },
   schedule: {
-    setSchedule:() => HOST + SCHEDULE,
-    cancelSchedule:(schedule_id) => HOST + SCHEDULE + `${schedule_id}/`,
+    setSchedule:() => HOST + 'schedule',
+    cancelSchedule:(schedule_id) => HOST + SCHEDULE + `${schedule_id}`,
   },
 }
