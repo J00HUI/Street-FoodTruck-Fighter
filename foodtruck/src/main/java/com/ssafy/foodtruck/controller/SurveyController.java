@@ -31,7 +31,7 @@ public class SurveyController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@GetMapping
+	@PostMapping("/find")
 	@ApiOperation(value = "설문 조회", notes = "<strong>사업자들이 확인할 수 있는 설문조사 결과 리스트를 보여준다.</strong>")
 	public ResponseEntity<List<SurveyRes>> getSurvey(@RequestHeader(AUTHORIZATION) String bearerToken, @RequestBody SurveyReq surveyReq) {
 		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
