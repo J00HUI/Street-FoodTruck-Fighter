@@ -1,6 +1,7 @@
 package com.ssafy.foodtruck.controller;
 
 import com.ssafy.foodtruck.common.Response;
+import com.ssafy.foodtruck.db.entity.FoodTruck;
 import com.ssafy.foodtruck.db.entity.User;
 import com.ssafy.foodtruck.dto.request.GetNearFoodTruckReq;
 import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReq;
@@ -16,6 +17,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +38,13 @@ public class FoodTruckController {
 	private final UserService userService;
 
 	private final JwtTokenUtil jwtTokenUtil;
+
+	@GetMapping
+	@ApiOperation(value = "본인 푸드트럭 조회", notes = "<strong>본인 푸드트럭 정보를 조회한다.</strong>")
+	public ResponseEntity<FoodTruck> getFoodTruck(@RequestHeader("Authorization") String bearerToken) {
+		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
+		return new ResponseEntity<>(foodTruckService.getFoodTruckByUser(user), HttpStatus.OK);
+	}
 
 	// 푸드트럭 정보를 가져옴
 	@GetMapping("/{foodtruck_id}")
