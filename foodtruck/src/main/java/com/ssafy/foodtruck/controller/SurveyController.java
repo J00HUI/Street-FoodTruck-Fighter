@@ -1,6 +1,6 @@
 package com.ssafy.foodtruck.controller;
 
-import com.ssafy.foodtruck.dto.FindSurveyReq;
+import com.ssafy.foodtruck.dto.request.FindSurveyReq;
 import com.ssafy.foodtruck.dto.request.SurveyReq;
 import com.ssafy.foodtruck.dto.response.SurveyRes;
 import com.ssafy.foodtruck.model.service.SurveyService;
