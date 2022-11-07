@@ -1,10 +1,9 @@
 package com.ssafy.foodtruck.controller;
 
-import com.ssafy.foodtruck.db.entity.User;
+import com.ssafy.foodtruck.dto.FindSurveyReq;
 import com.ssafy.foodtruck.dto.request.SurveyReq;
 import com.ssafy.foodtruck.dto.response.SurveyRes;
 import com.ssafy.foodtruck.model.service.SurveyService;
-import com.ssafy.foodtruck.model.service.UserService;
 import com.ssafy.foodtruck.util.JwtTokenUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +32,8 @@ public class SurveyController {
 
 	@PostMapping("/find")
 	@ApiOperation(value = "설문 조회", notes = "<strong>사업자들이 확인할 수 있는 설문조사 결과 리스트를 보여준다.</strong>")
-	public ResponseEntity<List<SurveyRes>> getSurvey(@RequestHeader(AUTHORIZATION) String bearerToken, @RequestBody SurveyReq surveyReq) {
+	public ResponseEntity<List<SurveyRes>> getSurvey(@RequestHeader(AUTHORIZATION) String bearerToken, @RequestBody FindSurveyReq findSurveyReq) {
 		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
-		return new ResponseEntity<>(surveyService.getSurvey(ceoId, surveyReq), HttpStatus.OK);
+		return new ResponseEntity<>(surveyService.getSurvey(ceoId, findSurveyReq), HttpStatus.OK);
 	}
 }
