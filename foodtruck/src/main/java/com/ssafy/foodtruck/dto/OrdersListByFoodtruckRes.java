@@ -6,7 +6,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrdersListByFoodtruckResponse {
+public class OrdersListByFoodtruckRes {
 
 	private String foodtruckName;
     private String menuName;
