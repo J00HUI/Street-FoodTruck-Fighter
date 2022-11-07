@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,6 @@ public class OrdersService {
 			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
 
 		for(RegisterOrdersReq registerOrdersReq : registerOrdersReqList){
-
 			FoodTruck foodTruck = foodTruckRepository.findById(registerOrdersReq.getFoodtruckId())
 				.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
 
@@ -49,14 +49,14 @@ public class OrdersService {
 	}
 
 	@Transactional
-	public void acceptOrders(int ceoId, int ordersId) {
-		Orders orders = ordersRepository.findById(ordersId)
+	public void acceptOrders(int ceoId, AcceptOrdersReq acceptOrdersReq) {
+		Orders orders = ordersRepository.findById(acceptOrdersReq.getOrdersId())
 			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
 
 		if(ceoId != orders.getFoodTruck().getUser().getId()){
 			throw new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER);
 		}
-		orders.setIsAccepted(true);
+		orders.setIsAccepted(true, LocalDateTime.now().plusMinutes(acceptOrdersReq.getDoneDate()));
 	}
 
 	public List<CurrentOrdersHistoryRes> getCustomerOrders(int customerId) {
@@ -64,7 +64,6 @@ public class OrdersService {
 		List<CurrentOrdersHistoryRes> currentOrdersHistoryResList = new ArrayList<>();
 
 		for(Orders orders : ordersList) {
-
 			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
 			currentOrdersHistoryResList.add(
 				CurrentOrdersHistoryRes.builder()
@@ -80,7 +79,6 @@ public class OrdersService {
 		List<OrdersHistoryRes> ordersHistoryResList = new ArrayList<>();
 
 		for(Orders orders : ordersList) {
-
 			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
 			ordersHistoryResList.add(
 				OrdersHistoryRes.builder()
@@ -100,7 +98,6 @@ public class OrdersService {
 		List<CurrentOrdersListByFoodtruckRes> currentOrdersListByFoodtruckResponseList = new ArrayList<>();
 
 		for (Orders orders : ordersList) {
-
 			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
 			currentOrdersListByFoodtruckResponseList.add(
 				CurrentOrdersListByFoodtruckRes.builder()
@@ -120,7 +117,6 @@ public class OrdersService {
 		List<OrdersListByFoodtruckRes> ordersListByFoodtruckResponseList = new ArrayList<>();
 
 		for (Orders orders : ordersList) {
-
 			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
 
 			ordersListByFoodtruckResponseList.add(
