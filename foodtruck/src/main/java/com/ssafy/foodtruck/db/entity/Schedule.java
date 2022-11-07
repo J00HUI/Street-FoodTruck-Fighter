@@ -54,6 +54,9 @@ public class Schedule extends BaseEntity {
 //		this.longitude = registerFoodTruckReq.getLongtitue();
 //		this.address = registerFoodTruckReq.getAddress();
 //	}
+	public void setIsValid(boolean isValid){
+		this.isValid = isValid;
+	}
 
 	public void update(final UpdateScheduleReq updateScheduleReq){
 		this.startTime = LocalDateTime.parse(this.workingDate + " " + updateScheduleReq.getStartTime(),DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));

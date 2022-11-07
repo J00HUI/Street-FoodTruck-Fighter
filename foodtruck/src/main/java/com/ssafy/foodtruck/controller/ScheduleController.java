@@ -14,8 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.ssafy.foodtruck.constant.ScheduleConstant.CREATE_SCHEDULE_SUCCESS;
-import static com.ssafy.foodtruck.constant.ScheduleConstant.UPDATE_SCHEDULE_SUCCESS;
+import static com.ssafy.foodtruck.constant.ScheduleConstant.*;
 
 /**
  * 스케줄 관련 API 요청 처리를 위한 컨트롤러 정의
@@ -50,6 +49,13 @@ public class ScheduleController {
 		return ResponseEntity.ok().body(UPDATE_SCHEDULE_SUCCESS);
 	}
 	// 일정 취소
+	@PatchMapping("/{schedule_id}")
+	@ApiOperation(value = "일정 취소", notes = "<strong>일정을 취소한다.</strong>")
+	public ResponseEntity<?> cancleSchedule(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken, @PathVariable("schedule_id") @ApiParam(value="스케쥴 ID", required = true) Integer scheduleId){
+		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
+		scheduleService.cancelSchedule(scheduleId, user);
+		return ResponseEntity.ok().body(CANCEL_SCHEDULE_SUCCESS);
+	}
 
 	// 한달간 일정 조회
 

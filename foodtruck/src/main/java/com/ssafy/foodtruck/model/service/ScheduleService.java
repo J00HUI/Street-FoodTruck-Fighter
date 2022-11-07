@@ -55,4 +55,14 @@ public class ScheduleService {
 		schedule.update(updateScheduleReq);
 		scheduleRepository.save(schedule);
 	}
+
+	// 일정 취소
+	public void cancelSchedule(Integer scheduleId, User user){
+		// 일정 푸트트럭 아이디와 user 비교 -> 다르면 수정 불가 (테스트 코트 작성)
+
+		Schedule schedule = scheduleRepository.findById(scheduleId)
+			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_SCHEDULE_ERROR_MESSAGE));
+		schedule.setIsValid(false);
+		scheduleRepository.save(schedule);
+	}
 }
