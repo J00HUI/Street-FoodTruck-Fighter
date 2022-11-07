@@ -1,62 +1,59 @@
 <template>
   <div class="cardContainer">
     <div class="card" @click="showDetail">
-        <div class="picture">
-            <img  src="@/assets/hamburger.svg" alt />
+      <div class="picture">
+        <img src="@/assets/hamburger.svg" alt />
+      </div>
+      <div class="detail">
+        <div class="storeName">
+          <h3>맛있는 햄버거</h3>
         </div>
-        <div class="detail">
-            <div class="storeName">
-                <h3 >맛있는 햄버거</h3>
-            </div>
-            <div class="orders">
-                <h4>7500원</h4>
-            </div>
+        <div class="orders">
+          <h4>7500원</h4>
         </div>
-        
+      </div>
     </div>
   </div>
-  <hr>
+  <hr />
 </template>
 
 <script>
 import router from "@/router";
 export default {
-  components: {
-    
-  },
+  components: {},
   setup() {
-    function showDetail(){
-      router.push('/menudetail')
+    function showDetail() {
+      router.push("/menudetail");
     }
-    return{
-      showDetail
-    }
-  }
-}
+    return {
+      showDetail,
+    };
+  },
+};
 </script>
 
 <style scoped>
 /***************** card style start ******************/
-.cardContainer{
-    display: flex;
-    justify-content: center;
-    margin-top: 1rem;
-    margin-bottom: 1.5rem;
+.cardContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
 }
-.card{
-    display: flex;
-    justify-content: left;
-    flex-direction: row;
-    align-items: center;
-    width: 21.5rem;
-    height: 6rem;
-    border: 0;
+.card {
+  display: flex;
+  justify-content: left;
+  flex-direction: row;
+  align-items: center;
+  width: 21.5rem;
+  height: 6rem;
+  border: 0;
 }
-hr{
+hr {
   width: 100%;
   color: lightgray;
 }
-.picture{
+.picture {
   margin-right: 1rem;
 }
 
