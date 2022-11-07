@@ -37,9 +37,6 @@ public class FoodTruckController {
 
 	private final JwtTokenUtil jwtTokenUtil;
 
-	private final Response response;
-
-
 	// 푸드트럭 정보를 가져옴
 	@GetMapping("/{foodtruck_id}")
 	@ApiOperation(value = "푸드트럭 ID 로 푸드트럭 조회", notes = "<strong>푸드트럭 ID 를 통해 푸드트럭 정보를 조회한다.</strong>")
@@ -66,7 +63,7 @@ public class FoodTruckController {
 	public ResponseEntity<?> updateFoodTruck(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken, @RequestBody @ApiParam(value="푸드트럭 정보", required = true) RegisterFoodTruckReq registerFoodTruckReq) throws IllegalAccessException {
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
 		foodTruckService.updateFoodTruck(registerFoodTruckReq, user);
-		return null;
+		return Res
 	}
 
 	// 리뷰 등록
