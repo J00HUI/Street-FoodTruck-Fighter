@@ -8,6 +8,7 @@ import com.ssafy.foodtruck.db.entity.Schedule;
 import com.ssafy.foodtruck.dto.MenuDto;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +32,20 @@ public class GetFoodTruckRes {
 
 	private String src; //이미지
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-	private LocalDateTime start_date; //시작일시
+//	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+//	private LocalDateTime start_date; //시작일시
+//
+//	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+//	private LocalDateTime end_date; //종료일시
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-	private LocalDateTime end_date; //종료일시
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+	private LocalDate workingDate;
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
+	private LocalDateTime startTime;
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
+	private LocalDateTime endTime;
 
 	private Boolean is_valid; //사용여부
 
@@ -58,8 +68,9 @@ public class GetFoodTruckRes {
 			.phone(foodTruck.getPhone())
 			.description(foodTruck.getDescription())
 			.src(foodTruck.getSrc())
-			.start_date(schedule.getStartDate())
-			.end_date(schedule.getEndDate())
+			.workingDate(schedule.getWorkingDate())
+			.startTime(schedule.getStartTime())
+			.endTime(schedule.getEndTime())
 			.is_valid(schedule.getIsValid())
 			.latitude(schedule.getLatitude())
 			.longtitue(schedule.getLongitude())

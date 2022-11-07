@@ -11,11 +11,14 @@ import com.ssafy.foodtruck.dto.response.GetFoodTruckRes;
 import com.ssafy.foodtruck.dto.response.GetFoodTruckReviewRes;
 import com.ssafy.foodtruck.dto.response.GetNearFoodTruckRes;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.asm.Advice;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.text.DateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -40,8 +43,8 @@ public class FoodTruckService {
 		FoodTruck foodTruck = foodTruckRepository.findById(foodTruckId)
 			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE));
 
-		Schedule schedule = scheduleRepository.findByFoodTruck(foodTruck).orElse(null);
-//		if(schedule == null) throw Error?
+		Schedule schedule = scheduleRepository.findScheduleByFoodTruckAndDate(foodTruckId).orElse(null);
+//		if(schedule == null) 오늘은 영업시간이 아닙니다.
 
 		List<Menu> findMenuList = menuRepository.findMenuByFoodTruck(foodTruck);
 		List<MenuDto> menuList = new ArrayList<>();
@@ -103,8 +106,9 @@ public class FoodTruckService {
 				.latitude(registerFoodTruckReq.getLatitude())
 				.longitude(registerFoodTruckReq.getLongtitue())
 				.address(registerFoodTruckReq.getAddress())
-				.startDate(LocalDateTime.parse(dateDto.getWorkingDay() + " " + dateDto.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
-				.endDate(LocalDateTime.parse(dateDto.getWorkingDay() + " " + dateDto.getEndTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+				.workingDate(LocalDate.parse(dateDto.getWorkingDay(), DateTimeFormatter.ISO_DATE))
+				.startTime(LocalDateTime.parse(dateDto.getWorkingDay() + " " + dateDto.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+				.endTime(LocalDateTime.parse(dateDto.getWorkingDay() + " " + dateDto.getEndTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
 				.isValid(true).build();
 
 			scheduleRepository.save(schedule);
@@ -132,10 +136,10 @@ public class FoodTruckService {
 			menuRepository.save(menu);
 		}
 		// 스케쥴 수정
-		Schedule schedule = scheduleRepository.findByFoodTruck(foodTruck)
-			.orElseThrow(NoSuchElementException::new);
+//		Schedule schedule = scheduleRepository.findByFoodTruck(foodTruck)
+//			.orElseThrow(NoSuchElementException::new);
 //		schedule.update(registerFoodTruckReq);
-		scheduleRepository.save(schedule);
+//		scheduleRepository.save(schedule);
 
 		// 푸드트럭 수정
 		foodTruck.update(registerFoodTruckReq);
@@ -183,17 +187,8 @@ public class FoodTruckService {
 				.src(r.getSrc())
 				.regDate(r.getRegDate())
 				.id(r.getId()).build());
-
-//			System.out.println(r.getContent() + ", " + r.getId() + "," + r.getGrade());
 		}
-
-
 		return reviewList;
-//		EntityManager em = new EntityManager() {
-//		}
-//		em.createQuery("select c from Cup c where c.id in :cups")
-//			.setParameter("cups", cups)
-//			.getResultList();
 	}
 
 	// 현재 위치와 가까운 푸드트럭 조회

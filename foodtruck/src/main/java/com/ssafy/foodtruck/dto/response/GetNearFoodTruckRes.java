@@ -1,11 +1,14 @@
 package com.ssafy.foodtruck.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ssafy.foodtruck.db.entity.Category;
 import com.ssafy.foodtruck.db.entity.FoodTruck;
 import com.ssafy.foodtruck.db.entity.Schedule;
 import com.ssafy.foodtruck.dto.MenuDto;
+import com.sun.istack.NotNull;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +27,14 @@ public class GetNearFoodTruckRes {
 	private String description; //설명
 	private String src; //이미지
 
-	private LocalDateTime start_date; //시작일시
-	private LocalDateTime end_date; //종료일시
-	private Boolean is_valid; //사용여부
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+	private LocalDate workingDate;	// 날짜
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
+	private LocalDateTime startTime; // 시작일시
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
+	private LocalDateTime endTime; // 종료일시
 	private Double latitude; // 위도
 	private Double longtitue; // 경도
 	private String address; //주소
@@ -42,9 +50,9 @@ public class GetNearFoodTruckRes {
 			.phone(foodTruck.getPhone())
 			.description(foodTruck.getDescription())
 			.src(foodTruck.getSrc())
-			.start_date(schedule.getStartDate())
-			.end_date(schedule.getEndDate())
-			.is_valid(schedule.getIsValid())
+			.workingDate(schedule.getWorkingDate())
+			.startTime(schedule.getStartTime())
+			.endTime(schedule.getEndTime())
 			.latitude(schedule.getLatitude())
 			.longtitue(schedule.getLongitude())
 			.address(schedule.getAddress())

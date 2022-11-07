@@ -87,7 +87,7 @@ public class FoodTruckController {
 	}
 
 	// 지도와 가까운 푸드트럭 조회
-	@GetMapping("/near")
+	@PostMapping("/near")
 	@ApiOperation(value = "사용자 위치로 푸드트럭 조회", notes = "<strong>현재 위치에서 가까운 푸드트럭를 조회한다.</strong>")
 	public ResponseEntity<Map<String, Object>> getNearFoodTruck(@RequestBody @ApiParam(value="사용자의 위치 정보와 카테고리", required = true) GetNearFoodTruckReq getNearFoodTruckReq){
 		List<GetNearFoodTruckRes> foodTruckResList = foodTruckService.getNearFoodTruck(getNearFoodTruckReq);
