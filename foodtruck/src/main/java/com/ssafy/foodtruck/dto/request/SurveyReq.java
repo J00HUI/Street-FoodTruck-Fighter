@@ -13,7 +13,7 @@ import lombok.Setter;
 public class SurveyReq {
 
 	private Double latitude; // 위도
-	private Double longtitue; // 경도
+	private Double longitude; // 경도
 	private Category category;
 	private String address;
 }
