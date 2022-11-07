@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import javax.swing.text.html.Option;
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.List;
 
@@ -26,4 +27,12 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
 		"where foodtruck_id = :foodTruckId \n" +
 		"and curdate() = working_date;", nativeQuery = true)
 	Optional<Schedule> findScheduleByFoodTruckAndDate(int foodTruckId);
+
+	// 이번달에 해당하는 스케줄을 가져온다.
+
+	@Query(value = "select *\n" +
+		"from schedule\n" +
+		"where foodtruck_id = :foodTruckId \n" +
+		"and working_date between :firstDate and :lastDate ;", nativeQuery = true)
+	List<Schedule> findScheduleByFoodTruckAndThisMonth(int foodTruckId, LocalDate firstDate, LocalDate lastDate);
 }

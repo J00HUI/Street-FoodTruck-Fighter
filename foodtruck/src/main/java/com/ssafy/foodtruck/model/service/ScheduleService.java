@@ -8,12 +8,16 @@ import com.ssafy.foodtruck.db.repository.ScheduleRepository;
 import com.ssafy.foodtruck.dto.ScheduleDateDto;
 import com.ssafy.foodtruck.dto.request.CreateScheduleReq;
 import com.ssafy.foodtruck.dto.request.UpdateScheduleReq;
+import com.ssafy.foodtruck.dto.response.GetScheduleRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.ssafy.foodtruck.constant.FoodTruckConstant.NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE;
 import static com.ssafy.foodtruck.constant.ScheduleConstant.NOT_FOUND_SCHEDULE_ERROR_MESSAGE;
@@ -64,5 +68,31 @@ public class ScheduleService {
 			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_SCHEDULE_ERROR_MESSAGE));
 		schedule.setIsValid(false);
 		scheduleRepository.save(schedule);
+	}
+
+	// 이번달 일정 조회
+	public List<GetScheduleRes> getSchedule(User user){
+		LocalDate today = LocalDate.now();
+		LocalDate firstDate = today.withDayOfMonth(1);
+		LocalDate lastDate = today.withDayOfMonth(today.lengthOfMonth());
+
+		FoodTruck foodtruck = foodTruckRepository.findByUser(user)
+			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE));
+
+		List<Schedule> findScheduleList = scheduleRepository.findScheduleByFoodTruckAndThisMonth(foodtruck.getId(), firstDate, lastDate);
+
+		List<GetScheduleRes> scheduleResList = new ArrayList<>();
+		for(Schedule schedule : findScheduleList){
+			scheduleResList.add(GetScheduleRes.builder()
+				.ScheduleId(schedule.getId())
+				.workingDate(schedule.getWorkingDate())
+				.startTime(schedule.getStartTime())
+				.endTime(schedule.getEndTime())
+				.latitude(schedule.getLatitude())
+				.longitude(schedule.getLongitude())
+				.address(schedule.getAddress()).build());
+		}
+
+		return scheduleResList;
 	}
 }
