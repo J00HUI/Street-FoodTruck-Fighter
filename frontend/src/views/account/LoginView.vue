@@ -39,6 +39,7 @@
           class="email"
           placeholder="이메일"
           style="text-align: center"
+          v-model="accontStore.userData.email"
         />
         <br />
         <div style="margin-top: 3%">
@@ -50,10 +51,11 @@
             class="pwd"
             placeholder="비밀번호"
             style="text-align: center"
+            v-model="accontStore.userData.password"
           />
         </div>
         <div style="margin-top: 10%">
-          <input type="button" value="로그인" class="loginButton" />
+          <input type="button" @click="accontStore.login" value="로그인" class="loginButton" />
         </div>
       </form>
     </div>
@@ -61,7 +63,16 @@
 </template>
 
 <script>
-export default {};
+import { useAccountStore } from '@/stores/account';
+export default {
+  setup() {
+    const accontStore = useAccountStore()
+    
+    return {
+      accontStore,
+    }
+  }
+};
 </script>
 
 <style scoped>
