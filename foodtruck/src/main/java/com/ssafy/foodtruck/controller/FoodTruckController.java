@@ -63,7 +63,7 @@ public class FoodTruckController {
 	public ResponseEntity<?> updateFoodTruck(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken, @RequestBody @ApiParam(value="푸드트럭 정보", required = true) RegisterFoodTruckReq registerFoodTruckReq) throws IllegalAccessException {
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
 		foodTruckService.updateFoodTruck(registerFoodTruckReq, user);
-		return Res
+		return ResponseEntity.ok().body(UPDATE_FOODTRUCK_SUCCESS);
 	}
 
 	// 리뷰 등록
