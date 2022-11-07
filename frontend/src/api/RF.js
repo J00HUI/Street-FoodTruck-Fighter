@@ -1,7 +1,7 @@
 // const HOST = "http://localhost:8000/api/"
-const HOST = "http://k7b206.p.ssafy.io:8080/"
+const HOST = "http://k7b206.p.ssafy.io/api/"
 // const api = " api/"
-const USER = "auth/"
+const AUTH = "auth/"
 const CEO = 'ceo/'
 const CUSTOMER = 'customer/'
 const FOODTRUCK = "foodtruck/"
@@ -10,9 +10,9 @@ const ORDER = 'order/'
 const SCHEDULE = 'schedule/'
 export default {
   user: {
-    login: () => HOST + "login",
-    logout: ()=> HOST + USER + "logout",
-    signup: () => HOST + USER + "signup" ,
+    login: () => HOST + AUTH + "login",
+    logout: ()=> HOST + AUTH + "logout",
+    signup: () => HOST + AUTH + "signup" ,
     getUserInfo: () => HOST + 'user',
   },
   foodtruck:{

@@ -30,7 +30,7 @@
   --color-gray-3: #898989;
   --color-yellow-1: #fdeca6;
   --color-yellow-2: #ffdd2d;
-  --color-beige-2: #fff6dd;
+  --color-beige-1: #fff6dd;
   --color-beige-2: #fff1d6;
   --color-orange-1: #f6ab1c;
   --color-orange-2: #f2be5c;
