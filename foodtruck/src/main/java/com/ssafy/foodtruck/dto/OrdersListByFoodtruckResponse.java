@@ -8,5 +8,6 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrdersListByFoodtruckResponse {
 
+	private String foodtruckName;
     private String menuName;
 }
