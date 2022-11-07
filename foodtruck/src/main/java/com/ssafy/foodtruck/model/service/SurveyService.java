@@ -6,6 +6,7 @@ import com.ssafy.foodtruck.db.entity.User;
 import com.ssafy.foodtruck.db.entity.UserType;
 import com.ssafy.foodtruck.db.repository.SurveyRepository;
 import com.ssafy.foodtruck.db.repository.UserRepository;
+import com.ssafy.foodtruck.dto.request.FindSurveyReq;
 import com.ssafy.foodtruck.dto.request.SurveyReq;
 import com.ssafy.foodtruck.dto.response.SurveyRes;
 import com.ssafy.foodtruck.exception.NotFoundException;
@@ -23,36 +24,34 @@ public class SurveyService {
 	private final SurveyRepository surveyRepository;
 
 	public void submitSurvey(int customerId, SurveyReq surveyReq) {
-		User user = userRepository.findById(customerId).get();
+		User user = userRepository.findById(customerId)
+			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
 
 		Survey survey = Survey.builder()
 			.address(surveyReq.getAddress())
 			.category(surveyReq.getCategory())
 			.latitude(surveyReq.getLatitude())
-			.longitude(surveyReq.getLongtitue())
+			.longitude(surveyReq.getLongitude())
 			.user(user)
 			.build();
-
 		surveyRepository.save(survey);
 	}
 
-	public List<SurveyRes> getSurvey(int ceoId, SurveyReq surveyReq) {
-
-		if(userRepository.findById(ceoId).get().getUserType() != UserType.CEO) {
+	public List<SurveyRes> getSurvey(int ceoId, FindSurveyReq findSurveyReq) {
+		if (userRepository.findById(ceoId).get().getUserType() != UserType.CEO) {
 			throw new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER);
 		}
+		List<SurveyRes> surveyResList = new ArrayList<>();
 
-		List<SurveyRes> list = new ArrayList<>();
-
-		for(Survey survey : surveyRepository.findSurveyNearby(surveyReq.getLatitude(), surveyReq.getLongtitue())){
-			list.add(SurveyRes.builder()
+		for (Survey survey : surveyRepository.findSurveyNearby(findSurveyReq.getLatitude(), findSurveyReq.getLongitude())) {
+			surveyResList.add(
+				SurveyRes.builder()
 					.category(survey.getCategory())
-					.latitude(surveyReq.getLatitude())
-					.longitude(surveyReq.getLongtitue())
-					.address(surveyReq.getAddress())
+					.latitude(survey.getLatitude())
+					.longitude(survey.getLongitude())
+					.address(survey.getAddress())
 					.build());
 		}
-
-		return list;
+		return surveyResList;
 	}
 }

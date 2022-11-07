@@ -1,4 +1,4 @@
-package com.ssafy.foodtruck.dto;
+package com.ssafy.foodtruck.dto.request;
 
 import lombok.*;
 
@@ -8,6 +8,6 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RegisterOrdersReq {
 
-    private int foodtruckId;
-    private int menuId;
+	private Integer foodtruckId;
+	private Integer menuId;
 }

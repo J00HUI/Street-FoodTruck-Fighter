@@ -1,4 +1,4 @@
-package com.ssafy.foodtruck.dto;
+package com.ssafy.foodtruck.dto.response;
 
 import lombok.*;
 
@@ -6,8 +6,8 @@ import lombok.*;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrdersListByFoodtruckResponse {
+public class CurrentOrdersHistoryRes {
 
-	private String foodtruckName;
+    private String foodtruckName;
     private String menuName;
 }
