@@ -1,6 +1,11 @@
 package com.ssafy.foodtruck.controller;
 
-import com.ssafy.foodtruck.dto.*;
+import com.ssafy.foodtruck.dto.request.AcceptOrdersReq;
+import com.ssafy.foodtruck.dto.request.RegisterOrdersReq;
+import com.ssafy.foodtruck.dto.response.CurrentOrdersHistoryRes;
+import com.ssafy.foodtruck.dto.response.CurrentOrdersListByFoodtruckRes;
+import com.ssafy.foodtruck.dto.response.OrdersHistoryRes;
+import com.ssafy.foodtruck.dto.response.OrdersListByFoodtruckRes;
 import com.ssafy.foodtruck.model.service.OrdersService;
 import com.ssafy.foodtruck.util.JwtTokenUtil;
 import io.swagger.annotations.ApiOperation;
