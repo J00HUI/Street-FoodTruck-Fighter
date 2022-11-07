@@ -1,12 +1,15 @@
 package com.ssafy.foodtruck.db.entity;
 
 
+import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReq;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -15,11 +18,14 @@ import java.time.LocalDateTime;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Schedule extends BaseEntity {
 
-    @NotNull
-    private LocalDateTime startDate;
+	@NotNull
+	private LocalDate workingDate;
 
     @NotNull
-    private LocalDateTime endDate;
+    private LocalDateTime startTime;
+
+    @NotNull
+    private LocalDateTime endTime;
 
     @NotNull
     @ColumnDefault("true")
@@ -35,7 +41,16 @@ public class Schedule extends BaseEntity {
     @Column(length = 200)
     private String address;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "foodtruck_id")
     private FoodTruck foodTruck;
+
+//	public void update(final RegisterFoodTruckReq registerFoodTruckReq){
+//		this.workingDate = LocalDate.parse(registerFoodTruckReq.get.getWorkingDay(), DateTimeFormatter.ISO_DATE);
+//		this.endTime = LocalDateTime.parse(registerFoodTruckReq.getEnd_date(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+//		this.startTime = LocalDateTime.parse(dateDto.getWorkingDay() + " " + dateDto.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+//		this.latitude = registerFoodTruckReq.getLatitude();
+//		this.longitude = registerFoodTruckReq.getLongtitue();
+//		this.address = registerFoodTruckReq.getAddress();
+//	}
 }
