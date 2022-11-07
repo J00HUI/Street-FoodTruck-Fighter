@@ -27,7 +27,7 @@ public class OrdersService {
 		User user = userRepository.findById(customerId)
 			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
 
-		for(RegisterOrdersReq registerOrdersReq : registerOrdersReqList){
+		for (RegisterOrdersReq registerOrdersReq : registerOrdersReqList) {
 			FoodTruck foodTruck = foodTruckRepository.findById(registerOrdersReq.getFoodtruckId())
 				.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
 
@@ -53,7 +53,7 @@ public class OrdersService {
 		Orders orders = ordersRepository.findById(acceptOrdersReq.getOrdersId())
 			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
 
-		if(ceoId != orders.getFoodTruck().getUser().getId()){
+		if (ceoId != orders.getFoodTruck().getUser().getId()) {
 			throw new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER);
 		}
 		orders.setIsAccepted(true, LocalDateTime.now().plusMinutes(acceptOrdersReq.getDoneDate()));
@@ -63,7 +63,7 @@ public class OrdersService {
 		List<Orders> ordersList = ordersRepository.findByCustomerOrders(customerId);
 		List<CurrentOrdersHistoryRes> currentOrdersHistoryResList = new ArrayList<>();
 
-		for(Orders orders : ordersList) {
+		for (Orders orders : ordersList) {
 			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
 			currentOrdersHistoryResList.add(
 				CurrentOrdersHistoryRes.builder()
@@ -78,7 +78,7 @@ public class OrdersService {
 		List<Orders> ordersList = ordersRepository.findByCustomerOrdersAll(customerId);
 		List<OrdersHistoryRes> ordersHistoryResList = new ArrayList<>();
 
-		for(Orders orders : ordersList) {
+		for (Orders orders : ordersList) {
 			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
 			ordersHistoryResList.add(
 				OrdersHistoryRes.builder()
@@ -133,7 +133,7 @@ public class OrdersService {
 		Orders orders = ordersRepository.findById(orderId)
 			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
 
-		if(ceoId != orders.getFoodTruck().getUser().getId()){
+		if (ceoId != orders.getFoodTruck().getUser().getId()) {
 			throw new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER);
 		}
 		orders.setIsCanceled(true);
