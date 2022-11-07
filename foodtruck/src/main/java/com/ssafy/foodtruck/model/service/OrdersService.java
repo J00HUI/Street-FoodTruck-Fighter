@@ -2,7 +2,12 @@ package com.ssafy.foodtruck.model.service;
 
 import com.ssafy.foodtruck.db.entity.*;
 import com.ssafy.foodtruck.db.repository.*;
-import com.ssafy.foodtruck.dto.*;
+import com.ssafy.foodtruck.dto.request.RegisterOrdersReq;
+import com.ssafy.foodtruck.dto.request.AcceptOrdersReq;
+import com.ssafy.foodtruck.dto.response.CurrentOrdersHistoryRes;
+import com.ssafy.foodtruck.dto.response.CurrentOrdersListByFoodtruckRes;
+import com.ssafy.foodtruck.dto.response.OrdersHistoryRes;
+import com.ssafy.foodtruck.dto.response.OrdersListByFoodtruckRes;
 import com.ssafy.foodtruck.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
