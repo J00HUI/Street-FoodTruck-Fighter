@@ -1,4 +1,4 @@
-package com.ssafy.foodtruck.dto;
+package com.ssafy.foodtruck.dto.response;
 
 import lombok.*;
 
