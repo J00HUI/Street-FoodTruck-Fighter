@@ -2,6 +2,7 @@ package com.ssafy.foodtruck.db.entity;
 
 
 import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReq;
+import com.ssafy.foodtruck.dto.request.UpdateScheduleReq;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -53,4 +54,12 @@ public class Schedule extends BaseEntity {
 //		this.longitude = registerFoodTruckReq.getLongtitue();
 //		this.address = registerFoodTruckReq.getAddress();
 //	}
+
+	public void update(final UpdateScheduleReq updateScheduleReq){
+		this.startTime = LocalDateTime.parse(this.workingDate + " " + updateScheduleReq.getStartTime(),DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+		this.endTime = LocalDateTime.parse(this.workingDate + " " + updateScheduleReq.getEndTime(),DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+		this.latitude = updateScheduleReq.getLat();
+		this.longitude = updateScheduleReq.getLng();
+		this.address = updateScheduleReq.getAddress();
+	}
 }

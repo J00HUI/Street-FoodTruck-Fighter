@@ -7,6 +7,7 @@ import com.ssafy.foodtruck.db.repository.FoodTruckRepository;
 import com.ssafy.foodtruck.db.repository.ScheduleRepository;
 import com.ssafy.foodtruck.dto.ScheduleDateDto;
 import com.ssafy.foodtruck.dto.request.CreateScheduleReq;
+import com.ssafy.foodtruck.dto.request.UpdateScheduleReq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static com.ssafy.foodtruck.constant.FoodTruckConstant.NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE;
+import static com.ssafy.foodtruck.constant.ScheduleConstant.NOT_FOUND_SCHEDULE_ERROR_MESSAGE;
 
 @Service("scheduleService")
 @RequiredArgsConstructor
@@ -42,5 +44,15 @@ public class ScheduleService {
 
 			scheduleRepository.save(schedule);
 		}
+	}
+
+	// 일정 수정
+	public void updateSchedule(UpdateScheduleReq updateScheduleReq, User user){
+		// 일정 푸트트럭 아이디와 user 비교 -> 다르면 수정 불가 (테스트 코트 작성)
+
+		Schedule schedule = scheduleRepository.findById(updateScheduleReq.getScheduleId())
+			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_SCHEDULE_ERROR_MESSAGE));
+		schedule.update(updateScheduleReq);
+		scheduleRepository.save(schedule);
 	}
 }
