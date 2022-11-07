@@ -1,4 +1,6 @@
 import { defineStore } from "pinia";
+import RF from "@/api/RF";
+import axios from "axios";
 
 export const useKakaoStore = defineStore("Kakao", {
   state: () => {
@@ -33,6 +35,35 @@ export const useKakaoStore = defineStore("Kakao", {
     }
   },
   actions: {
+    setSurvey() {
+      const token = localStorage.getItem("token");
+      axios({
+        url: RF.foodtruck.survey(),
+        method: "post",
+        headers: { Authorization: "Bearer" + token },
+      })
+        .then((res) => {
+          alert(res.data);
+        })
+        .catc((err) => {
+          console.log(err);
+        });
+    },
+    getSurvey() {
+      const token = localStorage.getItem("token");
+      axios({
+        url: RF.foodtruck.survey(),
+        method: "get",
+        headers: { Authorization: "Bearer" + token },
+      })
+        .then((res) => {
+          alert(res.data);
+        })
+        .catc((err) => {
+          console.log(err);
+        });
+    },
+    
 
   }
 })

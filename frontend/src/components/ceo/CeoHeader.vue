@@ -1,12 +1,16 @@
 <template>
   <header class="header2">
-    <button @click ="goBack">
+    <button @click="goBack">
       <img src="@/assets/ceo/nav2Back.svg" alt />
     </button>
     <img src="@/assets/markerIcon.svg" alt />
     <address style="margin:auto;   font-style: normal;">주소</address>
-    <img src="@/assets/noticeIcon.svg" alt />
-    <img src="@/assets/humanIcon.svg" style="margin-left:1rem;" alt />
+    <router-link to>
+      <img src="@/assets/noticeIcon.svg" alt />
+    </router-link>
+    <router-link to="/myprofile">
+      <img src="@/assets/humanIcon.svg" style="margin-left:1rem;" alt />
+    </router-link>
   </header>
 </template>
 
@@ -14,11 +18,11 @@
 export default {
   setup() {
     function goBack() {
-      window.history.back()
+      window.history.back();
     }
     return {
-      goBack,
-    }
+      goBack
+    };
   }
 };
 </script>

@@ -12,11 +12,13 @@
     <img src="@/assets/ceo/myCallIcon.svg" alt />
     <input id="truck-call-number" placeholder="전화번호" v-model="myStore.myData.callNumber" type="tel" />
   </label>
-  <div class="truckInput inputText">
+  <div id="ceo-default-address" class="truckInput inputText">
     <img src="@/assets/ceo/myEmptyMarkerIcon.svg" alt />
-    <input type="text" placeholder="위치" disabled />
-    <img class="markerIcon" src="@/assets/ceo/myMarkerIcon.svg" alt />
+    <input type="text" style="padding:0px" placeholder="위치" disabled />
+  <img  @click="toggleMap" src="@/assets/ceo/myMarkerIcon.svg" alt />
+
   </div>
+  <searchKakaoMap v-if="toggle.isMap"></searchKakaoMap>
   <label for="truck-operating" class="truckInput inputText">
     <div class="timeInputBox">
       <span class="timePlaceHoleder">open</span>
@@ -31,27 +33,39 @@
 </template>
 
 <script>
+import { ref } from "vue";
 import { useCeoMyStore } from "@/stores/ceo/my.js";
+import searchKakaoMap from "@/components/ceo/SearchKakaoMap.vue";
+import router from "@/router/index.js";
 export default {
+  components: { searchKakaoMap },
   setup() {
     const myStore = useCeoMyStore();
+    const toggle = ref({
+      isMap: false
+    });
+    function toggleMap() {
+      toggle.value.isMap = !toggle.value.isMap;
+      router.replace('/mytruck/#ceo-default-address')
+    }
     function set_img(e) {
-      myStore.myData.truckImg = e.target.files[0]
+      myStore.myData.truckImg = e.target.files[0];
       let ImgUrl = URL.createObjectURL(e.target.files[0]);
       e.target.nextElementSibling.src = ImgUrl;
       e.target.nextElementSibling.classList.remove("imgVisible");
       e.target.nextElementSibling.nextElementSibling.classList.add(
         "imgVisible"
-      )
+      );
     }
     function myUpdate() {
-      console.log(myStore.myData)
+      console.log(myStore.myData);
     }
     return {
       myStore,
+      toggle,
+      toggleMap,
       set_img,
       myUpdate
-      
     };
   }
 };
@@ -122,10 +136,6 @@ label:hover {
 .inputText {
   height: 8%;
 }
-.markerIcon {
-  position: absolute;
-  right: 1rem;
-}
 .timePlaceHoleder {
   padding: 0 0.7rem;
 }
@@ -142,5 +152,8 @@ label:hover {
   color: white;
   background-color: var(--color-purple-2);
   filter: drop-shadow(0px 10px 22px rgba(149, 173, 254, 0.3));
+}
+.updateButton:hover {
+  cursor: pointer;
 }
 </style>
