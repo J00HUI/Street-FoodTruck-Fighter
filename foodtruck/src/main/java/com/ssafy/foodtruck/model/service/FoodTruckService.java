@@ -163,6 +163,8 @@ public class FoodTruckService {
 		// 주문내역에서 찾음
 		Orders order = ordersRepository.findById(registerFoodTruckReviewReq.getOrdersId())
 			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_ORDERS_ERROR_MESSAGE));
+		// Review 에서 찾음 -> 에러 (테스트 코드 작성) - 주문 내역 1번에 1번의 리뷰만 달 수 있다.
+
 		final Review review = Review.builder()
 			.user(user)
 			.orders(order)
@@ -217,6 +219,39 @@ public class FoodTruckService {
 			foodTruckList.add(GetNearFoodTruckRes.of(menuDtoList, foodTruck, schedule, grade));
 		}
 
+		return foodTruckList;
+	}
+
+	// 푸드트럭 검색
+	public List<GetNearFoodTruckRes> searchFoodTruck(String keyword){
+		// 키워드에 해당하는 푸드트럭 ID List 구하기
+		List<Integer> foodTruckIdList = foodTruckRepository.findAllByKeyword(keyword);
+
+		List<GetNearFoodTruckRes> foodTruckList = new ArrayList<>();
+
+		// 푸드트럭 ID 에 해당하는 푸드트럭 정보들 리턴
+		for(Integer foodTruckId : foodTruckIdList){
+			FoodTruck foodTruck = foodTruckRepository.findById(foodTruckId)
+				.orElseThrow(() -> new IllegalArgumentException(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE));
+
+			List<Menu> menuList = menuRepository.findMenuByFoodTruck(foodTruck);
+			List<MenuDto> menuDtoList = new ArrayList<>();
+			for(Menu menu : menuList){
+				menuDtoList.add(MenuDto.of(menu));
+			}
+
+			Double grade = 0.0;
+			List<Review> findReviewList = reviewRepository.findAllByFoodTruckId(foodTruckId);
+			for(Review r : findReviewList){
+				grade += r.getGrade();
+			}
+			grade /= findReviewList.size();
+
+			Schedule schedule = scheduleRepository.findScheduleByFoodTruckAndDate(foodTruckId).orElse(null);
+//			if(schedule == null) 오늘은 운영시간이 아닙니다. 테스트 케이스 작성
+
+			foodTruckList.add(GetNearFoodTruckRes.of(menuDtoList, foodTruck, schedule, grade));
+		}
 		return foodTruckList;
 	}
 
