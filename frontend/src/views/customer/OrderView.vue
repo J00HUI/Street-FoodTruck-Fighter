@@ -77,7 +77,7 @@ import Header from "@/components/customer/BackButtonHeader.vue";
 import Menu from "@/components/customer/OrderMenu.vue";
 import Info from "@/components/customer/OrderInfo.vue";
 import Review from "@/components/customer/OrderReview.vue";
-import { useMenuStore } from "@/stores/menu";
+import { useMenuStore } from "@/stores/customer/menu/menu";
 
 export default {
   components: {
