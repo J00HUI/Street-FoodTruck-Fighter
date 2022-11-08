@@ -4,7 +4,7 @@
     <div class="familyName">
       <h1>윤</h1>
     </div>
-    <h3>윤일준</h3>
+    <h3>{{curUserData.name}}</h3>
   </div>
 
   <div class="accountData">
@@ -56,11 +56,23 @@
 
 <script>
 import Header from "@/components/customer/BackButtonHeader.vue";
+import {useMypageStore} from '@/stores/customer/mypage/mypage'
 export default {
   components: {
     Header,
   },
-  setup() {},
+  setup() {
+    const store = useMypageStore()
+    const curUserData = sessionStorage.getItem("user")
+    let strFamilyName = curUserData.name.substr(0,1)
+    console.log(curUserData)
+    return{
+      store,
+      curUserData,
+      strFamilyName,
+
+    }
+  },
 };
 </script>
 
