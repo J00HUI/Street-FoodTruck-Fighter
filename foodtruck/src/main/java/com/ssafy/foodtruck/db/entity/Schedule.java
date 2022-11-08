@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Schedule extends BaseEntity {
 
 	@NotNull

@@ -1,16 +1,13 @@
 package com.ssafy.foodtruck.dto.request;
 
 import com.ssafy.foodtruck.dto.ScheduleDateDto;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class CreateScheduleReq {
 	List<ScheduleDateDto> scheduleDateDtoList;

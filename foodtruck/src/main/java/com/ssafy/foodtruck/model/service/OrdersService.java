@@ -29,29 +29,6 @@ public class OrdersService {
 
 	@Transactional
 	public void registerOrders(RegisterOrdersReq registerOrdersReq, User user) {
-//		User user = userRepository.findById(customerId)
-//			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
-//
-//		for (RegisterOrdersReq registerOrdersReq : registerOrdersReqList) {
-//			FoodTruck foodTruck = foodTruckRepository.findById(registerOrdersReq.getFoodtruckId())
-//				.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
-//
-//			Orders orders = Orders.builder()
-//				.user(user)
-//				.foodTruck(foodTruck)
-//				.build();
-//			ordersRepository.save(orders);
-//
-//			Menu menu = menuRepository.findById(registerOrdersReq.getMenuId())
-//				.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
-//
-//			OrdersMenu ordersMenu = OrdersMenu.builder()
-//				.orders(orders)
-//				.menu(menu)
-//				.build();
-//			ordersMenuRepository.save(ordersMenu);
-//		}
-
 		FoodTruck foodTruck = foodTruckRepository.findById(registerOrdersReq.getFoodtruckId())
 			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
 		final Orders orders = Orders.builder()

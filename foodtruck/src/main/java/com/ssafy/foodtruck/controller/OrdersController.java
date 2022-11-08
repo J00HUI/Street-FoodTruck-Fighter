@@ -34,8 +34,6 @@ public class OrdersController {
 	@PostMapping("/customer")
 	@ApiOperation(value = "주문내역 등록", notes = "<strong>사용자가 주문내역을 등록한다.</strong>")
 	public ResponseEntity<?> registerOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @RequestBody RegisterOrdersReq registerOrdersReq) {
-//		int customerId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
-//		ordersService.registerOrders(customerId, registerOrdersReqList);
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
 		ordersService.registerOrders(registerOrdersReq, user);
 		return new ResponseEntity<>(HttpStatus.OK);
