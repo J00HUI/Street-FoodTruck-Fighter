@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Orders extends BaseEntity {
 
     @ColumnDefault("false")

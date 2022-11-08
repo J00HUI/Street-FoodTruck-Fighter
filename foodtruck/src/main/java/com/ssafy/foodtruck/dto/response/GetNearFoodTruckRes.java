@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class GetNearFoodTruckRes {
 	private Integer foodTruckId;		// 푸드트럭 Id
 	private List<MenuDto> menuList = new ArrayList<>(); // 메뉴리스트

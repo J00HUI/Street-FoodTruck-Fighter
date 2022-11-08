@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class OrdersMenu extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
