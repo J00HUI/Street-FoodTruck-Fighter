@@ -12,29 +12,30 @@ export const useCeoOrderStore = defineStore("CeoOrder", {
     getCeoOrders() {
       const token = localStorage.getItem("token");
       axios({
-        url: RF.foodtruck.getCeoOrders(),
+        url: RF.orders.getCeoOrders(),
         method: "get",
-        headers: { Authorization: "Bearer" + token },
+        headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
-          alert(res.data);
+          console.log(res)
         })
-        .catc((err) => {
-          console.log(err);
+        .catch((err) => {
+          alert('현재주문 가져오기')
+          console.log(err)
         });
     },
     getCeoOrdersAll() {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("accessToken");
       axios({
-        url: RF.foodtruck.getCeoOrdersAll(),
+        url: RF.orders.getCeoOrdersAll(),
         method: "get",
-        headers: { Authorization: "Bearer" + token },
+        headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
-          alert(res.data);
+          console.log(res)
         })
-        .catc((err) => {
-          console.log(err);
+        .catch(() => {
+          alert('주문목록 가져오기 실패')
         });
     },
   }

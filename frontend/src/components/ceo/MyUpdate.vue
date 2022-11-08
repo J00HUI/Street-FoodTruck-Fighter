@@ -14,11 +14,22 @@
   </label>
   <div id="ceo-default-address" class="truckInput inputText">
     <img src="@/assets/ceo/myEmptyMarkerIcon.svg" alt />
-    <input type="text" style="padding:0px" placeholder="위치" disabled />
-  <img  @click="toggleMap" src="@/assets/ceo/myMarkerIcon.svg" alt />
-
+    <img v-if="kakaoStore.searchTypeData.iconType === true" src="@/assets/ceo/addressIcon.svg" alt="">
+    <img v-if="kakaoStore.searchTypeData.iconType === false" src="@/assets/ceo/addressXIcon.svg" alt="">
+    <input
+      type="text"
+      v-model="kakaoStore.ceoMyData.address"
+      @focus="inputType"
+      style="padding:0px"
+      placeholder="위치"
+    />
+    <a href="#ceo-schedule-map">
+      <img @click="toggleMap" src="@/assets/ceo/myMarkerIcon.svg" alt />
+    </a>
   </div>
-  <searchKakaoMap v-if="toggle.isMap"></searchKakaoMap>
+  <div class="ceoDefaultMap">
+    <defaultKakaoMap v-if="toggle.isMap"></defaultKakaoMap>
+  </div>
   <label for="truck-operating" class="truckInput inputText">
     <div class="timeInputBox">
       <span class="timePlaceHoleder">open</span>
@@ -34,19 +45,20 @@
 
 <script>
 import { ref } from "vue";
+import { useKakaoStore } from "@/stores/kakao";
 import { useCeoMyStore } from "@/stores/ceo/my.js";
-import searchKakaoMap from "@/components/ceo/SearchKakaoMap.vue";
-import router from "@/router/index.js";
+import defaultKakaoMap from "@/components/ceo/ScheduleKakaoMap.vue";
 export default {
-  components: { searchKakaoMap },
+  components: { defaultKakaoMap },
   setup() {
     const myStore = useCeoMyStore();
+    const kakaoStore = useKakaoStore();
+    kakaoStore.searchTypeData.viewType = "my";
     const toggle = ref({
       isMap: false
     });
     function toggleMap() {
       toggle.value.isMap = !toggle.value.isMap;
-      router.replace('/mytruck/#ceo-default-address')
     }
     function set_img(e) {
       myStore.myData.truckImg = e.target.files[0];
@@ -60,12 +72,18 @@ export default {
     function myUpdate() {
       console.log(myStore.myData);
     }
+    function inputType() {
+      kakaoStore.searchTypeData.searchType = "input";
+    }
+
     return {
       myStore,
+      kakaoStore,
       toggle,
       toggleMap,
       set_img,
-      myUpdate
+      myUpdate,
+      inputType
     };
   }
 };
@@ -155,5 +173,11 @@ label:hover {
 }
 .updateButton:hover {
   cursor: pointer;
+}
+.ceoDefaultMap {
+  position: relative;
+  width: 88%;
+  margin: 6%;
+  border-radius: 1rem;
 }
 </style>
