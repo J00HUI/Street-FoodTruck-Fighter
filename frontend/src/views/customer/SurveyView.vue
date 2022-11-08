@@ -1,13 +1,16 @@
 <template>
-    <h1>원해요 푸드트럭</h1>
+  <MenuSurvey></MenuSurvey>
 </template>
 
 <script>
-export default {
+import MenuSurvey from "@/components/customer/MenuSurvey.vue";
 
-}
+export default {
+  components: {
+    MenuSurvey,
+  },
+};
 </script>
 
 <style>
-
 </style>

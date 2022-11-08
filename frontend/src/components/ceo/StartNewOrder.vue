@@ -16,17 +16,30 @@
         :key="idx"
       >{{item}}분</button>
       <div style="margin: 1rem 0 0 50%">
-        <button type="button" class="cancleButton">주문 취소</button>
-        <button type="button" class="acceptButton">주문 수락</button>
+        <button id="btn-cancle" type="button" class="cancleButton">주문 취소</button>
+        <button id="btn-accept" type="button" class="acceptButton">주문 수락</button>
       </div>
     </section>
   </div>
 </template>
 
 <script>
+import * as SockJs from 'sockjs-client';
 export default {
   setup() {
+    var Stomp = require("stompjs");
+    var sock = new SockJs("/stompTest");
+    var client = Stomp.over(sock);
+    client.connect({}, function() {
+      console.log("Connected stompTest!");
+      client.send("/TTT", {}, "msg:Haha~~~");
+      client.subscribe("/topic/message", function(event) {
+        console.log("!!!!!!!!event>>", event);
+      });
+    });
+
     const selectTime = [5, 10, 15, 20, 25];
+
     return {
       selectTime
     };
