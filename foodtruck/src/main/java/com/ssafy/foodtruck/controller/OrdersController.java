@@ -1,6 +1,11 @@
 package com.ssafy.foodtruck.controller;
 
-import com.ssafy.foodtruck.dto.*;
+import com.ssafy.foodtruck.dto.request.AcceptOrdersReq;
+import com.ssafy.foodtruck.dto.request.RegisterOrdersReq;
+import com.ssafy.foodtruck.dto.response.CurrentOrdersHistoryRes;
+import com.ssafy.foodtruck.dto.response.CurrentOrdersListByFoodtruckRes;
+import com.ssafy.foodtruck.dto.response.OrdersHistoryRes;
+import com.ssafy.foodtruck.dto.response.OrdersListByFoodtruckRes;
 import com.ssafy.foodtruck.model.service.OrdersService;
 import com.ssafy.foodtruck.util.JwtTokenUtil;
 import io.swagger.annotations.ApiOperation;
@@ -30,36 +35,36 @@ public class OrdersController {
 
 	@PatchMapping("/ceo/{ordersId}")
 	@ApiOperation(value = "Orders ID로 주문 접수", notes = "<strong>Orders ID를 통해 주문을 접수한다.</strong>")
-	public ResponseEntity<?> acceptOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @PathVariable int ordersId) {
+	public ResponseEntity<?> acceptOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @RequestBody AcceptOrdersReq acceptOrdersReq) {
 		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
-		ordersService.acceptOrders(ceoId, ordersId);
+		ordersService.acceptOrders(ceoId, acceptOrdersReq);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@GetMapping("/customer")
 	@ApiOperation(value = "현재 주문내역 조회 - 사용자", notes = "<strong>Customer ID를 통해 현재 주문내역 조회를 한다.</strong>")
-	public ResponseEntity<List<CurrentOrdersHistoryResponse>> getCustomerOrders(@RequestHeader(AUTHORIZATION) String bearerToken) {
+	public ResponseEntity<List<CurrentOrdersHistoryRes>> getCustomerOrders(@RequestHeader(AUTHORIZATION) String bearerToken) {
 		int customerId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
 		return new ResponseEntity<>(ordersService.getCustomerOrders(customerId), HttpStatus.OK);
 	}
 
 	@GetMapping("/customer/all")
 	@ApiOperation(value = "전체 주문내역 조회 - 사용자", notes = "<strong>Customer ID를 통해 전체 주문내역 조회를 한다.</strong>")
-	public ResponseEntity<List<OrdersHistoryResponse>> getCustomerOrdersAll(@RequestHeader(AUTHORIZATION) String bearerToken) {
+	public ResponseEntity<List<OrdersHistoryRes>> getCustomerOrdersAll(@RequestHeader(AUTHORIZATION) String bearerToken) {
 		int customerId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
 		return new ResponseEntity<>(ordersService.getCustomerOrdersAll(customerId), HttpStatus.OK);
 	}
 
 	@GetMapping("/ceo")
 	@ApiOperation(value = "현재 주문내역 조회 - 사업자", notes = "<strong>Ceo ID를 통해 현재 주문내역 조회를 한다.</strong>")
-	public ResponseEntity<List<CurrentOrdersListByFoodtruckResponse>> getCeoOrders(@RequestHeader(AUTHORIZATION) String bearerToken) {
+	public ResponseEntity<List<CurrentOrdersListByFoodtruckRes>> getCeoOrders(@RequestHeader(AUTHORIZATION) String bearerToken) {
 		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
 		return new ResponseEntity<>(ordersService.getCeoOrders(ceoId), HttpStatus.OK);
 	}
 
 	@GetMapping("/ceo/all")
 	@ApiOperation(value = "전체 주문내역 조회 - 사업자", notes = "<strong>Ceo ID를 통해 전체 주문내역 조회를 한다.</strong>")
-	public ResponseEntity<List<OrdersListByFoodtruckResponse>> getCeoOrdersAll(@RequestHeader(AUTHORIZATION) String bearerToken) {
+	public ResponseEntity<List<OrdersListByFoodtruckRes>> getCeoOrdersAll(@RequestHeader(AUTHORIZATION) String bearerToken) {
 		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
 		return new ResponseEntity<>(ordersService.getCeoOrdersAll(ceoId), HttpStatus.OK);
 	}

@@ -22,7 +22,7 @@ public class Review extends BaseEntity {
     @Column(length = 200)
     private String src;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

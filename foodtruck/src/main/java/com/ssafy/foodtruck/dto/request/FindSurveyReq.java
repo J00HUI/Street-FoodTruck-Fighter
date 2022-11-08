@@ -1,16 +1,13 @@
 package com.ssafy.foodtruck.dto.request;
 
-import com.ssafy.foodtruck.db.entity.Category;
 import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class SurveyReq {
+public class FindSurveyReq {
 
 	private Double latitude;
 	private Double longitude;
-	private Category category;
-	private String address;
 }

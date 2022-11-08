@@ -3,9 +3,9 @@ package com.ssafy.foodtruck.dto.response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ssafy.foodtruck.db.entity.Category;
 import com.ssafy.foodtruck.db.entity.FoodTruck;
-import com.ssafy.foodtruck.db.entity.Menu;
 import com.ssafy.foodtruck.db.entity.Schedule;
 import com.ssafy.foodtruck.dto.MenuDto;
+import com.sun.istack.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -18,51 +18,33 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetFoodTruckRes {
-
+public class GetNearFoodTruckRes {
+	private Integer foodTruckId;		// 푸드트럭 Id
 	private List<MenuDto> menuList = new ArrayList<>(); // 메뉴리스트
-
 	private String name; //상호명
-
 	private Category category; //카테고리
-
 	private String phone; //전화번호
-
 	private String description; //설명
-
 	private String src; //이미지
 
-//	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-//	private LocalDateTime start_date; //시작일시
-//
-//	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-//	private LocalDateTime end_date; //종료일시
-
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-	private LocalDate workingDate;
+	private LocalDate workingDate;	// 날짜
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
-	private LocalDateTime startTime;
+	private LocalDateTime startTime; // 시작일시
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
-	private LocalDateTime endTime;
-
-	private Boolean is_valid; //사용여부
-
+	private LocalDateTime endTime; // 종료일시
 	private Double latitude; // 위도
-
 	private Double longtitue; // 경도
-
 	private String address; //주소
 
 	private Double grade; //평점
 
-	private Integer numberOfPeople; //대기인원
-
-	private Integer time; //예상시간
-
-	public static GetFoodTruckRes of(List<MenuDto> menuList, FoodTruck foodTruck, Schedule schedule, Double grade, Integer numberOfPeople, Integer time){
-		return new GetFoodTruckResBuilder()
+	public static GetNearFoodTruckRes of(List<MenuDto> menuList, FoodTruck foodTruck, Schedule schedule, Double grade){
+		return new GetNearFoodTruckResBuilder()
+			.foodTruckId(foodTruck.getId())
+			.menuList(menuList)
 			.name(foodTruck.getName())
 			.category(foodTruck.getCategory())
 			.phone(foodTruck.getPhone())
@@ -71,14 +53,10 @@ public class GetFoodTruckRes {
 			.workingDate(schedule.getWorkingDate())
 			.startTime(schedule.getStartTime())
 			.endTime(schedule.getEndTime())
-			.is_valid(schedule.getIsValid())
 			.latitude(schedule.getLatitude())
 			.longtitue(schedule.getLongitude())
 			.address(schedule.getAddress())
 			.grade(grade)
-			.numberOfPeople(numberOfPeople)
-			.time(time)
-			.menuList(menuList)
 			.build();
 	}
 }

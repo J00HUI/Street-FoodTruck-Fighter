@@ -9,9 +9,9 @@ import java.util.List;
 public interface SurveyRepository extends JpaRepository<Survey, Integer> {
 
 	//추후에 날짜 조건도 추가해주면 좋을 듯
-	@Query(value = "SELECT *\n" +
-		"FROM survey\n" +
-		"WHERE latitude BETWEEN :lat - 0.05 AND :lat + 0.05\n" +
-		"AND longitude BETWEEN :lng - 0.05 AND :lng + 0.05;", nativeQuery = true)
-	List<Survey> findSurveyNearby(Double lat, Double lng);
+	@Query(value = "SELECT * \n" +
+		"FROM survey \n" +
+		"WHERE latitude BETWEEN :latitude - 0.1 AND :latitude + 0.1 \n" +
+		"AND longitude BETWEEN :longitude - 0.1 AND :longitude + 0.1", nativeQuery = true)
+	List<Survey> findSurveyNearby(Double latitude, Double longitude);
 }
