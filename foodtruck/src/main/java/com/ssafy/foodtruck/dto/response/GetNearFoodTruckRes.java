@@ -5,7 +5,6 @@ import com.ssafy.foodtruck.db.entity.Category;
 import com.ssafy.foodtruck.db.entity.FoodTruck;
 import com.ssafy.foodtruck.db.entity.Schedule;
 import com.ssafy.foodtruck.dto.MenuDto;
-import com.sun.istack.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -36,7 +35,7 @@ public class GetNearFoodTruckRes {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
 	private LocalDateTime endTime; // 종료일시
 	private Double latitude; // 위도
-	private Double longtitue; // 경도
+	private Double longitude; // 경도
 	private String address; //주소
 
 	private Double grade; //평점
@@ -54,7 +53,7 @@ public class GetNearFoodTruckRes {
 			.startTime(schedule.getStartTime())
 			.endTime(schedule.getEndTime())
 			.latitude(schedule.getLatitude())
-			.longtitue(schedule.getLongitude())
+			.longitude(schedule.getLongitude())
 			.address(schedule.getAddress())
 			.grade(grade)
 			.build();

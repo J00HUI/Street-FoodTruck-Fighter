@@ -6,6 +6,7 @@ import com.ssafy.foodtruck.db.entity.User;
 import com.ssafy.foodtruck.dto.request.GetNearFoodTruckReq;
 import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReq;
 import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReviewReq;
+import com.ssafy.foodtruck.dto.response.FoodtruckRes;
 import com.ssafy.foodtruck.dto.response.GetFoodTruckRes;
 import com.ssafy.foodtruck.dto.response.GetFoodTruckReviewRes;
 import com.ssafy.foodtruck.dto.response.GetNearFoodTruckRes;
@@ -41,9 +42,10 @@ public class FoodTruckController {
 
 	@GetMapping
 	@ApiOperation(value = "본인 푸드트럭 조회", notes = "<strong>본인 푸드트럭 정보를 조회한다.</strong>")
-	public ResponseEntity<FoodTruck> getFoodTruck(@RequestHeader("Authorization") String bearerToken) {
+	public ResponseEntity<FoodtruckRes> getFoodTruck(@RequestHeader("Authorization") String bearerToken) {
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
-		return new ResponseEntity<>(foodTruckService.getFoodTruckByUser(user), HttpStatus.OK);
+		FoodTruck foodTruck = foodTruckService.getFoodTruckByUser(user);
+		return new ResponseEntity<>(FoodtruckRes.of(foodTruck), HttpStatus.OK);
 	}
 
 	// 푸드트럭 정보를 가져옴
