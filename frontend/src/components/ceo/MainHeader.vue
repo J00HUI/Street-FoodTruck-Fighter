@@ -12,8 +12,12 @@
           <img src="@/assets/chefIcon.svg" style="width:1.25rem;" alt />
         </span>
         <span>
-          <img src="@/assets/noticeIcon.svg" alt />
-          <img src="@/assets/humanIcon.svg" style="margin-left:1rem;" alt />
+          <router-link to>
+            <img src="@/assets/noticeIcon.svg" alt />
+          </router-link>
+          <router-link to="/myprofile">
+            <img src="@/assets/humanIcon.svg" style="margin-left:1rem;" alt />
+          </router-link>
         </span>
       </div>
     </div>
@@ -25,9 +29,7 @@
 </template>
 
 <script>
-export default {
-
-};
+export default {};
 </script>
 
 <style scoped>

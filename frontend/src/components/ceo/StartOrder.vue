@@ -20,11 +20,16 @@
 </template>
 
 <script>
+import { useCeoOrderStore } from '@/stores/ceo/order';
 export default {
   setup() {
+    const orderStore = useCeoOrderStore()
     const selectTime = [5, 10, 15, 20, 25];
+    orderStore.getCeoOrders()
+    orderStore.getCeoOrdersAll()
     return {
-      selectTime
+      orderStore,
+      selectTime,
     };
   }
 };
@@ -38,6 +43,7 @@ h1 {
 .orderView {
   font-family: "SCoreDream";
   position: sticky;
+  min-height: 10px;
 
 }
 .orderBox {
