@@ -28,28 +28,47 @@ public class OrdersService {
 	private final FoodTruckRepository foodTruckRepository;
 
 	@Transactional
-	public void registerOrders(int customerId, List<RegisterOrdersReq> registerOrdersReqList) {
-		User user = userRepository.findById(customerId)
-			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
+	public void registerOrders(RegisterOrdersReq registerOrdersReq, User user) {
+//		User user = userRepository.findById(customerId)
+//			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
+//
+//		for (RegisterOrdersReq registerOrdersReq : registerOrdersReqList) {
+//			FoodTruck foodTruck = foodTruckRepository.findById(registerOrdersReq.getFoodtruckId())
+//				.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
+//
+//			Orders orders = Orders.builder()
+//				.user(user)
+//				.foodTruck(foodTruck)
+//				.build();
+//			ordersRepository.save(orders);
+//
+//			Menu menu = menuRepository.findById(registerOrdersReq.getMenuId())
+//				.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
+//
+//			OrdersMenu ordersMenu = OrdersMenu.builder()
+//				.orders(orders)
+//				.menu(menu)
+//				.build();
+//			ordersMenuRepository.save(ordersMenu);
+//		}
 
-		for (RegisterOrdersReq registerOrdersReq : registerOrdersReqList) {
-			FoodTruck foodTruck = foodTruckRepository.findById(registerOrdersReq.getFoodtruckId())
-				.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
+		FoodTruck foodTruck = foodTruckRepository.findById(registerOrdersReq.getFoodtruckId())
+			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
+		final Orders orders = Orders.builder()
+			.user(user)
+			.foodTruck(foodTruck)
+			.build();
+		Orders savedOrders = ordersRepository.save(orders);
 
-			Orders orders = Orders.builder()
-				.user(user)
-				.foodTruck(foodTruck)
-				.build();
-			ordersRepository.save(orders);
-
-			Menu menu = menuRepository.findById(registerOrdersReq.getMenuId())
+		List<Integer> menuIdList = registerOrdersReq.getMenuIdList();
+		for(int menuId : menuIdList){
+			Menu menu = menuRepository.findById(menuId)
 				.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
 
-			OrdersMenu ordersMenu = OrdersMenu.builder()
-				.orders(orders)
+			ordersMenuRepository.save(OrdersMenu.builder()
+				.orders(savedOrders)
 				.menu(menu)
-				.build();
-			ordersMenuRepository.save(ordersMenu);
+				.build());
 		}
 	}
 

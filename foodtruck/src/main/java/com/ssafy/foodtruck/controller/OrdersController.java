@@ -1,5 +1,6 @@
 package com.ssafy.foodtruck.controller;
 
+import com.ssafy.foodtruck.db.entity.User;
 import com.ssafy.foodtruck.dto.request.AcceptOrdersReq;
 import com.ssafy.foodtruck.dto.request.RegisterOrdersReq;
 import com.ssafy.foodtruck.dto.response.CurrentOrdersHistoryRes;
@@ -7,6 +8,7 @@ import com.ssafy.foodtruck.dto.response.CurrentOrdersListByFoodtruckRes;
 import com.ssafy.foodtruck.dto.response.OrdersHistoryRes;
 import com.ssafy.foodtruck.dto.response.OrdersListByFoodtruckRes;
 import com.ssafy.foodtruck.model.service.OrdersService;
+import com.ssafy.foodtruck.model.service.UserService;
 import com.ssafy.foodtruck.util.JwtTokenUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -25,11 +27,17 @@ public class OrdersController {
 
 	private final OrdersService ordersService;
 
+	private final UserService userService;
+
+	private final JwtTokenUtil jwtTokenUtil;
+
 	@PostMapping("/customer")
 	@ApiOperation(value = "주문내역 등록", notes = "<strong>사용자가 주문내역을 등록한다.</strong>")
-	public ResponseEntity<?> registerOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @RequestBody List<RegisterOrdersReq> registerOrdersReqList) {
-		int customerId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
-		ordersService.registerOrders(customerId, registerOrdersReqList);
+	public ResponseEntity<?> registerOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @RequestBody RegisterOrdersReq registerOrdersReq) {
+//		int customerId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
+//		ordersService.registerOrders(customerId, registerOrdersReqList);
+		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
+		ordersService.registerOrders(registerOrdersReq, user);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 

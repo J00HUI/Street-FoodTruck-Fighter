@@ -1,6 +1,7 @@
 package com.ssafy.foodtruck.dto.request;
 
 import lombok.*;
+import java.util.List;
 
 @Getter
 @Builder
@@ -9,5 +10,5 @@ import lombok.*;
 public class RegisterOrdersReq {
 
 	private Integer foodtruckId;
-	private Integer menuId;
+	private List<Integer> menuIdList;
 }
