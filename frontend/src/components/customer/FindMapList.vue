@@ -40,14 +40,20 @@
   </div>
 
   <FindMenuIcon></FindMenuIcon>
+  <TruckMap style="margin-top: 7%" v-if="isMap"></TruckMap>
+  <TruckList v-if="isList"></TruckList>
 </template>
 
 <script>
 import FindMenuIcon from "@/components/customer/FindMenuIcon.vue";
+import TruckMap from "@/components/customer/TruckMap.vue";
+import TruckList from "@/components/customer/TruckList.vue";
 
 export default {
   components: {
     FindMenuIcon,
+    TruckMap,
+    TruckList,
   },
 
   data() {
