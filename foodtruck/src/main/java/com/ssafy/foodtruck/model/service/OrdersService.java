@@ -2,8 +2,8 @@ package com.ssafy.foodtruck.model.service;
 
 import com.ssafy.foodtruck.db.entity.*;
 import com.ssafy.foodtruck.db.repository.*;
-import com.ssafy.foodtruck.dto.request.RegisterOrdersReq;
 import com.ssafy.foodtruck.dto.request.AcceptOrdersReq;
+import com.ssafy.foodtruck.dto.request.RegisterOrdersReq;
 import com.ssafy.foodtruck.dto.response.CurrentOrdersHistoryRes;
 import com.ssafy.foodtruck.dto.response.CurrentOrdersListByFoodtruckRes;
 import com.ssafy.foodtruck.dto.response.OrdersHistoryRes;
@@ -63,13 +63,17 @@ public class OrdersService {
 	public List<CurrentOrdersHistoryRes> getCustomerOrders(int customerId) {
 		List<Orders> ordersList = ordersRepository.findByCustomerOrders(customerId);
 		List<CurrentOrdersHistoryRes> currentOrdersHistoryResList = new ArrayList<>();
+		int count = ordersRepository.findByCount(customerId);
 
 		for (Orders orders : ordersList) {
-			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
+			OrdersMenu ordersMenu = ordersMenuRepository.findById(orders.getId())
+				.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
 			currentOrdersHistoryResList.add(
 				CurrentOrdersHistoryRes.builder()
 					.foodtruckName(orders.getFoodTruck().getName())
 					.menuName(ordersMenu.getMenu().getName())
+					.acceptTime(orders.getRegDate())
+					.count(count)
 					.build());
 		}
 		return currentOrdersHistoryResList;
@@ -85,6 +89,7 @@ public class OrdersService {
 				OrdersHistoryRes.builder()
 					.foodtruckName(orders.getFoodTruck().getName())
 					.menuName(ordersMenu.getMenu().getName())
+					.acceptTime(orders.getRegDate())
 					.build());
 		}
 		return ordersHistoryResList;
@@ -104,6 +109,7 @@ public class OrdersService {
 				CurrentOrdersListByFoodtruckRes.builder()
 					.foodtruckName(orders.getFoodTruck().getName())
 					.menuName(ordersMenu.getMenu().getName())
+					.acceptTime(orders.getRegDate())
 					.build());
 		}
 		return currentOrdersListByFoodtruckResponseList;
@@ -124,6 +130,7 @@ public class OrdersService {
 				OrdersListByFoodtruckRes.builder()
 					.foodtruckName(orders.getFoodTruck().getName())
 					.menuName(ordersMenu.getMenu().getName())
+					.acceptTime(orders.getRegDate())
 					.build());
 		}
 		return ordersListByFoodtruckResponseList;
