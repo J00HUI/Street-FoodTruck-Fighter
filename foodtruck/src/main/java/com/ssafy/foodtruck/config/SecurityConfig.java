@@ -99,7 +99,7 @@ public class SecurityConfig {
                 //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), userService))
                 .authorizeRequests()
-			.antMatchers("/","/auth/login","/user/signup", "/user/a", "/foodtruck/{foodtruck_id}", "/foodtruck/review/{foodtruck_id}").permitAll()
+			.antMatchers("/","/auth/login","/user/signup", "/user/a", "/foodtruck/{foodtruck_id}", "/foodtruck/review/{foodtruck_id}", "/foodtruck/search/{keyword}").permitAll()
                 .anyRequest().authenticated(); //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
         return http.build();
     }

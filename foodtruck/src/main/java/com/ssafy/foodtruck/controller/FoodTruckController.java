@@ -108,9 +108,14 @@ public class FoodTruckController {
 
 	// 푸드트럭 검색
 	@GetMapping("/search/{keyword}")
-	@ApiOperation(value = "푸드트럭 검색", notes = "<strong>키워드에 해당하는 푸드트럭을 검색해 조회한다.</strong>")
-	public void search(){
+	@ApiOperation(value = "푸드트럭 검색", notes = "<strong>상호명, 설명, 메뉴, 카테고리에 해당 키워드를 포함된 푸드트럭정보를 가져온다.</strong>")
+	public ResponseEntity<Map<String, Object>> search(@PathVariable("keyword") @ApiParam(value="검색 키워드", required = true) String keyword){
+		List<GetNearFoodTruckRes> foodTruckResList = foodTruckService.searchFoodTruck(keyword);
 
+		Map<String, Object> result = new HashMap<>();
+		result.put("data", foodTruckResList);
+		result.put("msg", SEARCH_FOODTRUCK_SUCCESS);
+		return ResponseEntity.ok().body(result);
 	}
 
 }
