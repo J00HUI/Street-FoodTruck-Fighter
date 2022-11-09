@@ -12,7 +12,7 @@ import java.util.*;
 public interface ReviewRepository extends JpaRepository<Review, Integer> {
 	Optional<Review> findByOrders(Orders orders);
 
-	@Query(value = "SELECT r.id, r.reg_date, content, grade, src, orders_id, r.user_id \n" +
+	@Query(value = "SELECT * \n" +
 		"FROM orders as o\n" +
 		"LEFT JOIN review as r \n" +
 		"ON o.id = r.orders_id\n" +

@@ -180,15 +180,16 @@ public class FoodTruckService {
 		List<Review> findReviewList = reviewRepository.findAllByFoodTruckId(foodTruckId);
 		List<GetFoodTruckReviewRes> reviewList = new ArrayList<>();
 
-		for(Review r : findReviewList){
+		for(Review review : findReviewList){
+
 			reviewList.add(GetFoodTruckReviewRes.builder()
-				.content(r.getContent())
-				.userId(r.getUser().getId())
-				.ordersId(r.getOrders().getId())
-				.grade(r.getGrade())
-				.src(r.getSrc())
-				.regDate(r.getRegDate())
-				.id(r.getId()).build());
+					.id(review.getId())
+					.userId(review.getUser().getId())
+//					.ordersId(review.getOrders().getId())
+					.grade(review.getGrade())
+					.src(review.getSrc())
+					.regDate(review.getRegDate())
+				.build());
 		}
 		return reviewList;
 	}
