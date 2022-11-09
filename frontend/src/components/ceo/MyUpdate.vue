@@ -138,6 +138,8 @@ button {
   position: absolute;
   width: 100%;
   height: 100%;
+  top: 0%;
+  border-radius: 1rem;
   background-size: contain;
   background-repeat: no-repeat;
   z-index: 100;
