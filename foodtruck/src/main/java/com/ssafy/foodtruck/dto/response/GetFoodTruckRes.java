@@ -17,7 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class GetFoodTruckRes {
 
 	private List<MenuDto> menuList = new ArrayList<>(); // 메뉴리스트
@@ -67,7 +67,6 @@ public class GetFoodTruckRes {
 			.category(foodTruck.getCategory())
 			.phone(foodTruck.getPhone())
 			.description(foodTruck.getDescription())
-			.src(foodTruck.getSrc())
 			.workingDate(schedule.getWorkingDate())
 			.startTime(schedule.getStartTime())
 			.endTime(schedule.getEndTime())

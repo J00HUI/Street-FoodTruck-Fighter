@@ -2,8 +2,8 @@ package com.ssafy.foodtruck.model.service;
 
 import com.ssafy.foodtruck.db.entity.*;
 import com.ssafy.foodtruck.db.repository.*;
-import com.ssafy.foodtruck.dto.request.RegisterOrdersReq;
 import com.ssafy.foodtruck.dto.request.AcceptOrdersReq;
+import com.ssafy.foodtruck.dto.request.RegisterOrdersReq;
 import com.ssafy.foodtruck.dto.response.CurrentOrdersHistoryRes;
 import com.ssafy.foodtruck.dto.response.CurrentOrdersListByFoodtruckRes;
 import com.ssafy.foodtruck.dto.response.OrdersHistoryRes;
@@ -28,28 +28,24 @@ public class OrdersService {
 	private final FoodTruckRepository foodTruckRepository;
 
 	@Transactional
-	public void registerOrders(int customerId, List<RegisterOrdersReq> registerOrdersReqList) {
-		User user = userRepository.findById(customerId)
-			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
+	public void registerOrders(RegisterOrdersReq registerOrdersReq, User user) {
+		FoodTruck foodTruck = foodTruckRepository.findById(registerOrdersReq.getFoodtruckId())
+			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
+		final Orders orders = Orders.builder()
+			.user(user)
+			.foodTruck(foodTruck)
+			.build();
+		Orders savedOrders = ordersRepository.save(orders);
 
-		for (RegisterOrdersReq registerOrdersReq : registerOrdersReqList) {
-			FoodTruck foodTruck = foodTruckRepository.findById(registerOrdersReq.getFoodtruckId())
-				.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
-
-			Orders orders = Orders.builder()
-				.user(user)
-				.foodTruck(foodTruck)
-				.build();
-			ordersRepository.save(orders);
-
-			Menu menu = menuRepository.findById(registerOrdersReq.getMenuId())
+		List<Integer> menuIdList = registerOrdersReq.getMenuIdList();
+		for(int menuId : menuIdList){
+			Menu menu = menuRepository.findById(menuId)
 				.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
 
-			OrdersMenu ordersMenu = OrdersMenu.builder()
-				.orders(orders)
+			ordersMenuRepository.save(OrdersMenu.builder()
+				.orders(savedOrders)
 				.menu(menu)
-				.build();
-			ordersMenuRepository.save(ordersMenu);
+				.build());
 		}
 	}
 
@@ -67,13 +63,17 @@ public class OrdersService {
 	public List<CurrentOrdersHistoryRes> getCustomerOrders(int customerId) {
 		List<Orders> ordersList = ordersRepository.findByCustomerOrders(customerId);
 		List<CurrentOrdersHistoryRes> currentOrdersHistoryResList = new ArrayList<>();
+		int count = ordersRepository.findByCount(customerId);
 
 		for (Orders orders : ordersList) {
-			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
+			OrdersMenu ordersMenu = ordersMenuRepository.findById(orders.getId())
+				.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
 			currentOrdersHistoryResList.add(
 				CurrentOrdersHistoryRes.builder()
 					.foodtruckName(orders.getFoodTruck().getName())
 					.menuName(ordersMenu.getMenu().getName())
+					.acceptTime(orders.getRegDate())
+					.count(count)
 					.build());
 		}
 		return currentOrdersHistoryResList;
@@ -89,6 +89,7 @@ public class OrdersService {
 				OrdersHistoryRes.builder()
 					.foodtruckName(orders.getFoodTruck().getName())
 					.menuName(ordersMenu.getMenu().getName())
+					.acceptTime(orders.getRegDate())
 					.build());
 		}
 		return ordersHistoryResList;
@@ -108,6 +109,7 @@ public class OrdersService {
 				CurrentOrdersListByFoodtruckRes.builder()
 					.foodtruckName(orders.getFoodTruck().getName())
 					.menuName(ordersMenu.getMenu().getName())
+					.acceptTime(orders.getRegDate())
 					.build());
 		}
 		return currentOrdersListByFoodtruckResponseList;
@@ -128,6 +130,7 @@ public class OrdersService {
 				OrdersListByFoodtruckRes.builder()
 					.foodtruckName(orders.getFoodTruck().getName())
 					.menuName(ordersMenu.getMenu().getName())
+					.acceptTime(orders.getRegDate())
 					.build());
 		}
 		return ordersListByFoodtruckResponseList;

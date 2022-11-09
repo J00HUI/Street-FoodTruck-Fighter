@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface OrdersRepository extends JpaRepository<Orders, Integer> {
 
-    @Query(value = "SELECT *\n" +
-            "FROM orders\n" +
-            "WHERE user_id = :customerId\n" +
+    @Query(value = "SELECT * \n" +
+            "FROM orders \n" +
+            "WHERE user_id = :customerId \n" +
             "AND is_accepted = 1 \n" +
             "AND is_done = 0", nativeQuery = true)
     List<Orders> findByCustomerOrders(int customerId);
@@ -36,4 +36,14 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
     List<Orders> findByCeoOrdersAll(int foodtruckId);
 
 	List<Orders> findByFoodTruck(FoodTruck foodTruck);
+
+	@Query(value = "SELECT count(om.menu_id) \n" +
+		"FROM orders o \n" +
+		"JOIN orders_menu om \n" +
+		"ON o.id = om.orders_id \n" +
+		"WHERE o.user_Id = :customerId \n" +
+		"AND o.is_accepted = 1 \n" +
+		"AND o.is_done = 0 \n" +
+		"GROUP BY om.menu_id", nativeQuery = true)
+	int findByCount(int customerId);
 }

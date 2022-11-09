@@ -1,13 +1,10 @@
 package com.ssafy.foodtruck.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class RegisterFoodTruckReviewReq {
 	private Integer ordersId; // 주문내역 ID

@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class FoodTruck extends BaseEntity {
 
     @Unique
@@ -21,10 +21,7 @@ public class FoodTruck extends BaseEntity {
     @Column(length = 50)
     private String name;
 
-    @Column(length = 200)
-    private String src;
-
-    @Enumerated
+    @Enumerated(value = EnumType.STRING)
     @NotNull
     private Category category;
 
@@ -38,6 +35,9 @@ public class FoodTruck extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+	@OneToOne(mappedBy = "foodTruck", cascade = CascadeType.ALL)
+	private FileEntity fileEntity;
+
     @Builder.Default
     @OneToMany(mappedBy = "foodTruck", cascade = CascadeType.ALL)
     private List<Menu> menuList = new ArrayList<>();
@@ -48,11 +48,14 @@ public class FoodTruck extends BaseEntity {
 	@OneToMany(mappedBy = "foodTruck", cascade = CascadeType.ALL)
 	private List<Orders> ordersList = new ArrayList<>();
 
-	public void update(final RegisterFoodTruckReq registerFoodTruckReq){
+	public void update(final RegisterFoodTruckReq registerFoodTruckReq) {
 		this.name = registerFoodTruckReq.getName();
-		this.src = registerFoodTruckReq.getSrc();
 		this.category = registerFoodTruckReq.getCategory();
 		this.phone = registerFoodTruckReq.getPhone();
 		this.description = registerFoodTruckReq.getDescription();
+	}
+
+	public void setFileEntity(FileEntity fileEntity) {
+		this.fileEntity = fileEntity;
 	}
 }

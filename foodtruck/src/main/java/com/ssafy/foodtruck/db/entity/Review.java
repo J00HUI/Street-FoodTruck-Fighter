@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Review extends BaseEntity {
 
     @NotNull

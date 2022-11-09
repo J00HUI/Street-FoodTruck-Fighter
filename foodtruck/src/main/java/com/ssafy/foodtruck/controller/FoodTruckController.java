@@ -1,11 +1,14 @@
 package com.ssafy.foodtruck.controller;
 
 import com.ssafy.foodtruck.common.Response;
+import com.ssafy.foodtruck.db.entity.FileEntity;
 import com.ssafy.foodtruck.db.entity.FoodTruck;
 import com.ssafy.foodtruck.db.entity.User;
+import com.ssafy.foodtruck.db.repository.FoodTruckRepository;
 import com.ssafy.foodtruck.dto.request.GetNearFoodTruckReq;
 import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReq;
 import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReviewReq;
+import com.ssafy.foodtruck.dto.response.FoodtruckRes;
 import com.ssafy.foodtruck.dto.response.GetFoodTruckRes;
 import com.ssafy.foodtruck.dto.response.GetFoodTruckReviewRes;
 import com.ssafy.foodtruck.dto.response.GetNearFoodTruckRes;
@@ -17,11 +20,16 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import static com.ssafy.foodtruck.constant.FoodTruckConstant.*;
+
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -35,15 +43,17 @@ public class FoodTruckController {
 
 	private final FoodTruckService foodTruckService;
 
+	private final FoodTruckRepository foodTruckRepository;
 	private final UserService userService;
 
 	private final JwtTokenUtil jwtTokenUtil;
 
 	@GetMapping
 	@ApiOperation(value = "본인 푸드트럭 조회", notes = "<strong>본인 푸드트럭 정보를 조회한다.</strong>")
-	public ResponseEntity<FoodTruck> getFoodTruck(@RequestHeader("Authorization") String bearerToken) {
+	public ResponseEntity<FoodtruckRes> getFoodTruck(@RequestHeader("Authorization") String bearerToken) {
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
-		return new ResponseEntity<>(foodTruckService.getFoodTruckByUser(user), HttpStatus.OK);
+		FoodTruck foodTruck = foodTruckService.getFoodTruckByUser(user);
+		return new ResponseEntity<>(FoodtruckRes.of(foodTruck), HttpStatus.OK);
 	}
 
 	// 푸드트럭 정보를 가져옴
@@ -106,9 +116,29 @@ public class FoodTruckController {
 
 	// 푸드트럭 검색
 	@GetMapping("/search/{keyword}")
-	@ApiOperation(value = "푸드트럭 검색", notes = "<strong>키워드에 해당하는 푸드트럭을 검색해 조회한다.</strong>")
-	public void search(){
+	@ApiOperation(value = "푸드트럭 검색", notes = "<strong>상호명, 설명, 메뉴, 카테고리에 해당 키워드를 포함된 푸드트럭정보를 가져온다.</strong>")
+	public ResponseEntity<Map<String, Object>> search(@PathVariable("keyword") @ApiParam(value="검색 키워드", required = true) String keyword){
+		List<GetNearFoodTruckRes> foodTruckResList = foodTruckService.searchFoodTruck(keyword);
 
+		Map<String, Object> result = new HashMap<>();
+		result.put("data", foodTruckResList);
+		result.put("msg", SEARCH_FOODTRUCK_SUCCESS);
+		return ResponseEntity.ok().body(result);
+	}
+
+	@PostMapping("/upload")
+	public ResponseEntity<HttpStatus> saveFile(@RequestHeader("Authorization") String bearerToken, @RequestParam("file") MultipartFile file) throws IOException {
+		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
+		foodTruckService.saveFile(ceoId, file);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@GetMapping("/images")
+	@ResponseBody
+	public ResponseEntity<UrlResource> getFile(@RequestHeader("Authorization") String bearerToken) throws IOException{
+		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
+		FileEntity file = foodTruckService.getFile(ceoId);
+		return new ResponseEntity<>(new UrlResource("file:" + file.getSavedPath()), HttpStatus.OK);
 	}
 
 }
