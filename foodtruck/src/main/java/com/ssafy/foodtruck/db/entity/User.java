@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+
 @Entity
 @Builder
 @Getter
@@ -27,7 +28,7 @@ public class User extends BaseEntity {
     private String email;
 
     @NotNull
-    @Column(length = 50)
+    @Column(length = 100)
     private String password;
 
     @NotNull
@@ -41,6 +42,10 @@ public class User extends BaseEntity {
     @Unique
     @Column(length = 50)
     private String businessNumber;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Orders> ordersList = new ArrayList<>();
 
     @Transient
     private Set<Authority> authorities;

@@ -3,7 +3,7 @@ package com.ssafy.foodtruck.model.service;
 import com.ssafy.foodtruck.db.entity.Authority;
 import com.ssafy.foodtruck.db.entity.User;
 import com.ssafy.foodtruck.db.repository.UserRepository;
-import com.ssafy.foodtruck.dto.UserDto;
+import com.ssafy.foodtruck.dto.UserDtoReq;
 import com.ssafy.foodtruck.exception.ExistingEmailException;
 import com.ssafy.foodtruck.util.JwtTokenUtil;
 import com.ssafy.foodtruck.util.UserRole;
@@ -37,12 +37,14 @@ public class UserService {
     private final JwtTokenUtil jwtTokenUtil;
 //    private final RedisUtil redisUtil;
 
-    public void createUser(UserDto userDto) {
+    public void createUser(UserDtoReq userDtoReq) {
         userRepository.save(User.builder()
-                        .email(userDto.getEmail())
-                        .password(passwordEncoder.encode(userDto.getPassword()))
-                        .phone(userDto.getMobileNumber())
-                        .nickname(userDto.getNickname())
+                        .email(userDtoReq.getEmail())
+                        .password(passwordEncoder.encode(userDtoReq.getPassword()))
+                        .businessNumber(userDtoReq.getBusinessNumber())
+                        .phone(userDtoReq.getPhone())
+                        .nickname(userDtoReq.getNickname())
+                        .userType(userDtoReq.getUserType())
                         .authorities(
                                 Collections.singleton(Authority.builder()
                                         .authName(UserRole.ROLE_USER)

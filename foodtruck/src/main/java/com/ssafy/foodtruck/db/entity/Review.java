@@ -13,10 +13,6 @@ import javax.persistence.*;
 public class Review extends BaseEntity {
 
     @NotNull
-    @Column(length = 200)
-    private String title;
-
-    @NotNull
     @Column(length = 3000)
     private String content;
 
@@ -26,7 +22,7 @@ public class Review extends BaseEntity {
     @Column(length = 200)
     private String src;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

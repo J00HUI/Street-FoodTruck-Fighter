@@ -14,7 +14,7 @@ public class Survey extends BaseEntity {
 
     @NotNull
     @Column(length = 200)
-    private String category;
+    private Category category;
 
     @NotNull
     private Double latitude;
@@ -26,7 +26,7 @@ public class Survey extends BaseEntity {
     @Column(length = 200)
     private String address;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 }

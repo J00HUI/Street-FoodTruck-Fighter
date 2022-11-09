@@ -1,10 +1,13 @@
 package com.ssafy.foodtruck.db.entity;
 
+import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReq;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.checkerframework.common.aliasing.qual.Unique;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -34,4 +37,22 @@ public class FoodTruck extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "foodTruck", cascade = CascadeType.ALL)
+    private List<Menu> menuList = new ArrayList<>();
+
+	@OneToMany(mappedBy = "foodTruck", cascade = CascadeType.ALL)
+	private List<Schedule> scheduleList = new ArrayList<>();
+
+	@OneToMany(mappedBy = "foodTruck", cascade = CascadeType.ALL)
+	private List<Orders> ordersList = new ArrayList<>();
+
+	public void update(final RegisterFoodTruckReq registerFoodTruckReq){
+		this.name = registerFoodTruckReq.getName();
+		this.src = registerFoodTruckReq.getSrc();
+		this.category = registerFoodTruckReq.getCategory();
+		this.phone = registerFoodTruckReq.getPhone();
+		this.description = registerFoodTruckReq.getDescription();
+	}
 }
