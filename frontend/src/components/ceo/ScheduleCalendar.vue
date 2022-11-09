@@ -31,23 +31,18 @@ const options = reactive({
   weekends: true,
   dayMaxEvents: 3,
   eventMaxStack: 99,
-
-
+  longPressDelay: 500,
+  eventLongPressDelay: 500,
+  selectLongPressDelay: 500,
   select: arg => {
     id.value = id.value + 1;
     const cal = arg.view.calendar;
     console.log(cal.getEvents()[0]);
     // cal.unselect();
-    let title = "";
-    const startDate = arg.startStr.replace(/-/g, "");
-    const endDate = arg.endStr.replace(/-/g, "");
-    if (startDate == endDate - 1) {
-      title = arg.startStr.slice(-5);
-    } else {
-      title = `${arg.startStr.slice(-5)} ~ ${endDate.slice(-4, -2) +
-        "-" +
-        (endDate.slice(-2)<10 ? '0' + (endDate.slice(-1) -  1) : endDate.slice(-2) - 1)}`;
-    }
+    let title = "?";
+    console.log
+      // title = arg.startStr.slice(-5);
+
     colorIndex = Math.floor(Math.random() * 6)
     
     cal.addEvent({
@@ -61,7 +56,6 @@ const options = reactive({
     });
   },
   eventClick: () => {
-    console.log(this);
     router.push("/scheduleupdate");
   },
   eventMouseEnter: arg => {
