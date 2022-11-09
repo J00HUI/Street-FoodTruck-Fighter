@@ -25,6 +25,7 @@ public class OrdersService {
 	private final MenuRepository menuRepository;
 	private final UserRepository userRepository;
 	private final FoodTruckRepository foodTruckRepository;
+	private final ReviewRepository reviewRepository;
 
 	@Transactional
 	public void registerOrders(RegisterOrdersReq registerOrdersReq, User user) {
@@ -100,9 +101,26 @@ public class OrdersService {
 		return currentOrdersHistoryResList;
 	}
 
-	public List<OrdersHistoryRes> getCustomerOrdersAll(int customerId) {
-		List<Orders> ordersList = ordersRepository.findByCustomerOrdersAll(customerId);
+	public List<OrdersHistoryRes> getCustomerOrdersAll(User user) {
 		List<OrdersHistoryRes> ordersHistoryResList = new ArrayList<>();
+		List<Orders> ordersList = ordersRepository.findAllByUser(user.getId());
+
+		for(Orders order : ordersList){
+			List<GetOrdersMenuRes> menuResList = new ArrayList<>();
+			List<OrdersMenu> ordersMenuList = ordersMenuRepository.findAllByOrders(order);
+			for(OrdersMenu ordersMenu : ordersMenuList){
+				menuResList.add(GetOrdersMenuRes.builder()
+					.menuName(ordersMenu.getMenu().getName())
+					.count(ordersMenu.getCount()).build());
+			}
+			boolean isReviewed = false;
+			Review review = reviewRepository.findReviewByOrdersAndUser(order, user).orElse(null);
+			if(review != null) isReviewed = true;
+			ordersHistoryResList.add(OrdersHistoryRes.of(order, isReviewed, menuResList));
+		}
+
+//		List<Orders> ordersList = ordersRepository.findByCustomerOrdersAll(customerId);
+//		List<OrdersHistoryRes> ordersHistoryResList = new ArrayList<>();
 
 //		for (Orders orders : ordersList) {
 //			List<OrdersMenu> ordersMenuList = ordersMenuRepository.findAllByOrders(orders);

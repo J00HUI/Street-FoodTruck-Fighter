@@ -2,6 +2,7 @@ package com.ssafy.foodtruck.db.repository;
 
 import com.ssafy.foodtruck.db.entity.FoodTruck;
 import com.ssafy.foodtruck.db.entity.Orders;
+import com.ssafy.foodtruck.db.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -17,11 +18,17 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
 			"AND is_canceled = 0;", nativeQuery = true)
     List<Orders> findCustomerOrders(int customerId);
 
-    @Query(value = "SELECT * \n" +
-            "FROM orders \n" +
-            "WHERE user_id = :customerId \n" +
-            "AND is_done = 1", nativeQuery = true)
-    List<Orders> findByCustomerOrdersAll(int customerId);
+//    @Query(value = "SELECT * \n" +
+//            "FROM orders \n" +
+//            "WHERE user_id = :customerId \n" +
+//            "AND is_done = 1", nativeQuery = true)
+//    List<Orders> findByCustomerOrdersAll(int customerId);
+
+	@Query(value = "select *\n" +
+		"from orders \n" +
+		"where user_id = :userId \n" +
+		"order by reg_date desc;", nativeQuery = true)
+	List<Orders> findAllByUser(Integer userId);
 
     @Query(value = "SELECT * \n" +
             "FROM orders \n" +

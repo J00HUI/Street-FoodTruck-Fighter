@@ -46,7 +46,7 @@ public class FoodTruckService {
 		Schedule schedule = scheduleRepository.findScheduleByFoodTruckAndDate(foodTruckId).orElse(null);
 //		if(schedule == null) 오늘은 영업시간이 아닙니다.
 
-		List<Menu> findMenuList = menuRepository.findMenuByFoodTruck(foodTruck);
+		List<Menu> findMenuList = menuRepository.findAllByFoodTruck(foodTruck);
 		List<MenuDto> menuList = new ArrayList<>();
 		for(Menu menu : findMenuList){
 			menuList.add(MenuDto.of(menu));
@@ -63,6 +63,7 @@ public class FoodTruckService {
 		Integer numberOfPeople = 0;
 		Integer time = 0;
 
+//		return GetFoodTruckRes.of(menuList, foodTruck, grade, numberOfPeople, time);
 		return GetFoodTruckRes.of(menuList, foodTruck, schedule, grade, numberOfPeople, time);
 	}
 
@@ -148,7 +149,7 @@ public class FoodTruckService {
 
 	// 메뉴 삭제
 	public void deleteMenu(FoodTruck foodTruck){
-		List<Menu> menuList = menuRepository.findMenuByFoodTruck(foodTruck);
+		List<Menu> menuList = menuRepository.findAllByFoodTruck(foodTruck);
 		for(Menu menu : menuList){
 			try {
 				menuRepository.delete(menu);
@@ -179,13 +180,15 @@ public class FoodTruckService {
 	public List<GetFoodTruckReviewRes> getFoodTruckReview(Integer foodTruckId){
 		List<Review> findReviewList = reviewRepository.findAllByFoodTruckId(foodTruckId);
 		List<GetFoodTruckReviewRes> reviewList = new ArrayList<>();
+		System.out.println("리뷰 갯수 : " + findReviewList.size());
 
 		for(Review review : findReviewList){
 
 			reviewList.add(GetFoodTruckReviewRes.builder()
 					.id(review.getId())
 					.userId(review.getUser().getId())
-//					.ordersId(review.getOrders().getId())
+					.ordersId(review.getOrders().getId())
+					.content(review.getContent())
 					.grade(review.getGrade())
 					.src(review.getSrc())
 					.regDate(review.getRegDate())
@@ -204,7 +207,7 @@ public class FoodTruckService {
 			FoodTruck foodTruck = schedule.getFoodTruck();
 			if(foodTruck.getCategory() != getNearFoodTruckReq.getCategory()) continue;
 
-			List<Menu> menuList = menuRepository.findMenuByFoodTruck(foodTruck);
+			List<Menu> menuList = menuRepository.findAllByFoodTruck(foodTruck);
 			List<MenuDto> menuDtoList = new ArrayList<>();
 			for(Menu menu : menuList){
 				menuDtoList.add(MenuDto.of(menu));
@@ -235,7 +238,7 @@ public class FoodTruckService {
 			FoodTruck foodTruck = foodTruckRepository.findById(foodTruckId)
 				.orElseThrow(() -> new IllegalArgumentException(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE));
 
-			List<Menu> menuList = menuRepository.findMenuByFoodTruck(foodTruck);
+			List<Menu> menuList = menuRepository.findAllByFoodTruck(foodTruck);
 			List<MenuDto> menuDtoList = new ArrayList<>();
 			for(Menu menu : menuList){
 				menuDtoList.add(MenuDto.of(menu));
