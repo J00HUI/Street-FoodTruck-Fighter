@@ -75,8 +75,8 @@ public class OrdersController {
 		return new ResponseEntity<>(ordersService.getCeoOrdersAll(ceoId), HttpStatus.OK);
 	}
 
-	@PatchMapping("/{orderId}")
-	@ApiOperation(value = "Orders ID로 주문 취소", notes = "<strong>Orders ID를 통해 주문을 취소한다.</strong>")
+	@PatchMapping("/cancel/{orderId}")
+	@ApiOperation(value = "Orders ID로 주문 취소 - 사업자", notes = "<strong>Orders ID를 통해 주문을 취소한다.</strong>")
 	public ResponseEntity<?> cancelOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @PathVariable int orderId) {
 		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
 		ordersService.cancelOrders(ceoId, orderId);
