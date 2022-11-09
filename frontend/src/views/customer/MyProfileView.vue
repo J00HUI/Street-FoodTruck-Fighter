@@ -2,14 +2,16 @@
   <Header></Header>
   <div class="name">
     <div class="familyName">
-      <h1>윤</h1>
+      <h1>{{ nickname.substr(0, 1) }}</h1>
     </div>
-    <h3>{{curUserData.name}}</h3>
+    <h3>{{ nickname }}</h3>
+    <!-- <h3>{{curUserData.name}}</h3> -->
   </div>
 
   <div class="accountData">
     <label for="email"></label>
     <input
+      v-model="email"
       type="email"
       id="email"
       name="email"
@@ -21,6 +23,7 @@
     <div style="margin-top: 3%">
       <label for="phonenum"></label>
       <input
+        v-model="phone"
         type="text"
         id="phonenum"
         name="phonenum"
@@ -56,22 +59,26 @@
 
 <script>
 import Header from "@/components/customer/BackButtonHeader.vue";
-import {useMypageStore} from '@/stores/customer/mypage/mypage'
 export default {
   components: {
     Header,
   },
   setup() {
-    const store = useMypageStore()
-    const curUserData = sessionStorage.getItem("user")
-    let strFamilyName = curUserData.name.substr(0,1)
-    console.log(curUserData)
-    return{
-      store,
-      curUserData,
-      strFamilyName,
+    let curUserData = sessionStorage.getItem("user");
+    let nickname = JSON.parse(curUserData).nickname;
+    let email = JSON.parse(curUserData).email;
+    let phone = JSON.parse(curUserData).phone;
 
-    }
+    // let strFamilyName = curUserData.name.substr(0,1)
+    console.log(JSON.parse(curUserData));
+
+    return {
+      nickname,
+      email,
+      phone,
+      curUserData,
+      // strFamilyName,
+    };
   },
 };
 </script>
@@ -99,7 +106,7 @@ export default {
 .email,
 .pwd,
 .phonenum,
-.pwdcheck{
+.pwdcheck {
   width: 20rem;
   height: 4rem;
   margin-left: 2rem;
