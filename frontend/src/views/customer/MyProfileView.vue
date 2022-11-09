@@ -54,6 +54,18 @@
         style="text-align: center"
       />
     </div>
+
+    <div v-if="isUserType" style="margin-top: 3%" >
+      <label for="businessNumber"></label>
+      <input
+      v-model="businessNumber"
+        type="text"
+        id="businessNumber"
+        name="businessNumber"
+        class="businessNumber"
+        style="text-align: center"
+      />
+    </div>
   </div>
 </template>
 
@@ -68,8 +80,17 @@ export default {
     let nickname = JSON.parse(curUserData).nickname;
     let email = JSON.parse(curUserData).email;
     let phone = JSON.parse(curUserData).phone;
+    let businessNumber = JSON.parse(curUserData).businessNumber;
+    let userType = JSON.parse(curUserData).userType;
 
-    // let strFamilyName = curUserData.name.substr(0,1)
+    let isUserType = false
+    if(userType === 'CEO')
+    {
+      isUserType = true
+    }else{
+      isUserType = false
+    }
+    
     console.log(JSON.parse(curUserData));
 
     return {
@@ -77,7 +98,9 @@ export default {
       email,
       phone,
       curUserData,
-      // strFamilyName,
+      businessNumber,
+      userType,
+      isUserType,
     };
   },
 };
@@ -106,6 +129,7 @@ export default {
 .email,
 .pwd,
 .phonenum,
+.businessNumber,
 .pwdcheck {
   width: 20rem;
   height: 4rem;
