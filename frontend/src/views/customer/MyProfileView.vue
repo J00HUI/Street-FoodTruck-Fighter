@@ -2,14 +2,16 @@
   <Header></Header>
   <div class="name">
     <div class="familyName">
-      <h1>윤</h1>
+      <h1>{{ nickname.substr(0, 1) }}</h1>
     </div>
-    <h3>윤일준</h3>
+    <h3>{{ nickname }}</h3>
+    <!-- <h3>{{curUserData.name}}</h3> -->
   </div>
 
   <div class="accountData">
     <label for="email"></label>
     <input
+      v-model="email"
       type="email"
       id="email"
       name="email"
@@ -21,6 +23,7 @@
     <div style="margin-top: 3%">
       <label for="phonenum"></label>
       <input
+        v-model="phone"
         type="text"
         id="phonenum"
         name="phonenum"
@@ -51,6 +54,18 @@
         style="text-align: center"
       />
     </div>
+
+    <div v-if="isUserType" style="margin-top: 3%" >
+      <label for="businessNumber"></label>
+      <input
+      v-model="businessNumber"
+        type="text"
+        id="businessNumber"
+        name="businessNumber"
+        class="businessNumber"
+        style="text-align: center"
+      />
+    </div>
   </div>
 </template>
 
@@ -60,7 +75,34 @@ export default {
   components: {
     Header,
   },
-  setup() {},
+  setup() {
+    let curUserData = sessionStorage.getItem("user");
+    let nickname = JSON.parse(curUserData).nickname;
+    let email = JSON.parse(curUserData).email;
+    let phone = JSON.parse(curUserData).phone;
+    let businessNumber = JSON.parse(curUserData).businessNumber;
+    let userType = JSON.parse(curUserData).userType;
+
+    let isUserType = false
+    if(userType === 'CEO')
+    {
+      isUserType = true
+    }else{
+      isUserType = false
+    }
+    
+    console.log(JSON.parse(curUserData));
+
+    return {
+      nickname,
+      email,
+      phone,
+      curUserData,
+      businessNumber,
+      userType,
+      isUserType,
+    };
+  },
 };
 </script>
 
@@ -87,7 +129,8 @@ export default {
 .email,
 .pwd,
 .phonenum,
-.pwdcheck{
+.businessNumber,
+.pwdcheck {
   width: 20rem;
   height: 4rem;
   margin-left: 2rem;

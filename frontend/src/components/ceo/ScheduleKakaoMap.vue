@@ -77,6 +77,9 @@ export default {
               : "";
             detailAddr +=
               "<div>지번 주소 : " + result[0].address.address_name + "</div>";
+              dataCase.latitude = mouseEvent.latLng['La']
+              dataCase.longitude = mouseEvent.latLng['Ma']
+
 
             var content =
               '<div class="bAddr">' +
@@ -140,7 +143,8 @@ export default {
               if (status === kakao.maps.services.Status.OK) {
                 store.searchTypeData.iconType = true;
                 var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
+                dataCase.latitude = result[0].y
+                dataCase.longitude = result[0].x
                 marker.setPosition(coords);
                 marker.setMap(initMap.map);
                 var content =
@@ -202,5 +206,9 @@ export default {
   margin-top: 1px;
   font-weight: normal;
   font-size: 0.5rem;
+}
+.bAddr {
+  color: red;
+  border-radius: 5px;
 }
 </style>
