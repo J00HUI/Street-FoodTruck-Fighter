@@ -45,7 +45,7 @@ export const useAccountStore = defineStore("Account", {
         headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
-          sessionStorage.setItem("user", res.data);
+          sessionStorage.setItem("user", JSON.stringify(res.data));
           if (res.data.userType === "CEO") {
             router.push("/ceomain");
           } else if (res.data.userType === "USER") {
