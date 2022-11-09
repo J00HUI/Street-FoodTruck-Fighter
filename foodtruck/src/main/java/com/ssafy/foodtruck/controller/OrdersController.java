@@ -40,7 +40,7 @@ public class OrdersController {
 	}
 
 	@PatchMapping("/ceo/{ordersId}")
-	@ApiOperation(value = "Orders ID로 주문 접수", notes = "<strong>Orders ID를 통해 주문을 접수한다.</strong>")
+	@ApiOperation(value = "Orders ID로 주문 접수 - 사업자", notes = "<strong>Orders ID를 통해 주문을 접수한다.</strong>")
 	public ResponseEntity<?> acceptOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @RequestBody AcceptOrdersReq acceptOrdersReq) {
 		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
 		ordersService.acceptOrders(ceoId, acceptOrdersReq);
@@ -80,6 +80,14 @@ public class OrdersController {
 	public ResponseEntity<?> cancelOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @PathVariable int orderId) {
 		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
 		ordersService.cancelOrders(ceoId, orderId);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@PatchMapping("/done/{orderId}")
+	@ApiOperation(value = "주문 완료 - 사업자", notes = "<strong>Orders ID를 통해 주문을 완료한다.</strong>")
+	public ResponseEntity<?> doneOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @PathVariable int orderId) {
+		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
+		ordersService.doneOrders(ceoId, orderId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
