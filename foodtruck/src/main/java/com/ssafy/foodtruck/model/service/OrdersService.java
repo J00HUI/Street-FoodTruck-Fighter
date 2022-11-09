@@ -8,6 +8,7 @@ import com.ssafy.foodtruck.dto.request.RegisterOrdersReq;
 import com.ssafy.foodtruck.dto.response.*;
 import com.ssafy.foodtruck.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,9 +61,31 @@ public class OrdersService {
 
 	public List<CurrentOrdersHistoryRes> getCustomerOrders(int customerId) {
 		List<Orders> ordersList = ordersRepository.findCustomerOrders(customerId);
-		List<CurrentOrdersHistoryRes> currentOrdersHistoryResList = new ArrayList<>();
-		int count = ordersRepository.findByCount(customerId);
 
+		List<CurrentOrdersHistoryRes> currentOrdersHistoryResList = new ArrayList<>();
+
+		for(Orders orders : ordersList){
+			List<OrdersMenu> ordersMenuList = ordersMenuRepository.findAllByOrders(orders);
+			List<GetOrdersMenuRes> menuList = new ArrayList<>();
+
+			for(OrdersMenu ordersMenu : ordersMenuList){
+				menuList.add(GetOrdersMenuRes.builder()
+					.menuName(ordersMenu.getMenu().getName())
+					.count(ordersMenu.getCount())
+					.build());
+			}
+			currentOrdersHistoryResList.add(
+				CurrentOrdersHistoryRes.builder()
+					.ordersId(orders.getId())
+					.foodtruckName(orders.getFoodTruck().getName())
+					.acceptTime(orders.getDoneDate())
+					.src(orders.getFoodTruck().getSrc())
+					.menuList(menuList).build()
+			);
+		}
+
+
+//		int count = ordersRepository.findByCount(customerId);
 //		for (Orders orders : ordersList) {
 //			OrdersMenu ordersMenu = ordersMenuRepository.findById(orders.getId())
 //				.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
@@ -81,15 +104,15 @@ public class OrdersService {
 		List<Orders> ordersList = ordersRepository.findByCustomerOrdersAll(customerId);
 		List<OrdersHistoryRes> ordersHistoryResList = new ArrayList<>();
 
-		for (Orders orders : ordersList) {
-			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
-			ordersHistoryResList.add(
-				OrdersHistoryRes.builder()
-					.foodtruckName(orders.getFoodTruck().getName())
-					.menuName(ordersMenu.getMenu().getName())
-					.acceptTime(orders.getRegDate())
-					.build());
-		}
+//		for (Orders orders : ordersList) {
+//			List<OrdersMenu> ordersMenuList = ordersMenuRepository.findAllByOrders(orders);
+//			ordersHistoryResList.add(
+//				OrdersHistoryRes.builder()
+//					.foodtruckName(orders.getFoodTruck().getName())
+//					.menuName(ordersMenu.getMenu().getName())
+//					.acceptTime(orders.getRegDate())
+//					.build());
+//		}
 		return ordersHistoryResList;
 	}
 
@@ -101,15 +124,15 @@ public class OrdersService {
 		List<Orders> ordersList = ordersRepository.findByCeoOrders(foodTruck.getId());
 		List<CurrentOrdersListByFoodtruckRes> currentOrdersListByFoodtruckResponseList = new ArrayList<>();
 
-		for (Orders orders : ordersList) {
-			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
-			currentOrdersListByFoodtruckResponseList.add(
-				CurrentOrdersListByFoodtruckRes.builder()
-					.foodtruckName(orders.getFoodTruck().getName())
-					.menuName(ordersMenu.getMenu().getName())
-					.acceptTime(orders.getRegDate())
-					.build());
-		}
+//		for (Orders orders : ordersList) {
+//			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
+//			currentOrdersListByFoodtruckResponseList.add(
+//				CurrentOrdersListByFoodtruckRes.builder()
+//					.foodtruckName(orders.getFoodTruck().getName())
+//					.menuName(ordersMenu.getMenu().getName())
+//					.acceptTime(orders.getRegDate())
+//					.build());
+//		}
 		return currentOrdersListByFoodtruckResponseList;
 	}
 
@@ -121,16 +144,16 @@ public class OrdersService {
 		List<Orders> ordersList = ordersRepository.findByCeoOrdersAll(foodTruck.getId());
 		List<OrdersListByFoodtruckRes> ordersListByFoodtruckResponseList = new ArrayList<>();
 
-		for (Orders orders : ordersList) {
-			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
-
-			ordersListByFoodtruckResponseList.add(
-				OrdersListByFoodtruckRes.builder()
-					.foodtruckName(orders.getFoodTruck().getName())
-					.menuName(ordersMenu.getMenu().getName())
-					.acceptTime(orders.getRegDate())
-					.build());
-		}
+//		for (Orders orders : ordersList) {
+//			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
+//
+//			ordersListByFoodtruckResponseList.add(
+//				OrdersListByFoodtruckRes.builder()
+//					.foodtruckName(orders.getFoodTruck().getName())
+//					.menuName(ordersMenu.getMenu().getName())
+//					.acceptTime(orders.getRegDate())
+//					.build());
+//		}
 		return ordersListByFoodtruckResponseList;
 	}
 
