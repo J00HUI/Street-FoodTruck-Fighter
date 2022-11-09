@@ -11,7 +11,7 @@
     </nav>
     <div class="todayView">
       <Today></Today>
-      <Chart></Chart>
+      <!-- <Chart></Chart> -->
     </div>
     <Footer></Footer>
   </div>
@@ -20,13 +20,13 @@
 <script>
 import CeoHeader from "@/components/ceo/CeoHeader.vue";
 import Today from "@/components/ceo/SalesToday.vue";
-import Chart from "@/components/ceo/SalesGraph.vue";
+// import Chart from "@/components/ceo/SalesGraph.vue";
 import Footer from "@/components/ceo/CeoFooter.vue";
 export default {
   components: {
     CeoHeader,
     Today,
-    Chart,
+    // Chart,
     Footer
   }
 };

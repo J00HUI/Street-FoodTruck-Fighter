@@ -4,18 +4,26 @@ import axios from "axios";
 
 export const useKakaoStore = defineStore("Kakao", {
   state: () => {
+    
     const ceoMyData = {
       date: "",
       openTime: "",
       closeTime: "",
       address: "",
+      latitude: 0,
+      longtitudes: 0,
     };
     const scheduleData = {
-      date: "",
-      openTime: "",
-      closeTime: "",
       address: "",
+      latitude: 0,
+      longtitudes: 0,
+      scheduleDateDtoList: []
     };
+    const scheduleDateDtoListEx = {
+      endTime: "HH:mm",
+      startTime: "HH:mm",
+      workingDay: "yyyy-MM-dd"
+    }
     const searchTypeData = {
       iconType: false,
       viewType: null, // schedule과 my있음
@@ -46,6 +54,7 @@ export const useKakaoStore = defineStore("Kakao", {
       scheduleData,
       ceoMyData,
       searchTypeData,
+      scheduleDateDtoListEx,
     };
   },
   actions: {
