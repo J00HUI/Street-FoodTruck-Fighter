@@ -28,7 +28,6 @@ public class FoodtruckRes {
 			.id(foodtruck.getId())
 			.category(foodtruck.getCategory())
 			.name(foodtruck.getName())
-			.src(foodtruck.getSrc())
 			.phone(foodtruck.getPhone())
 			.description(foodtruck.getDescription())
 			.menuList(foodtruck.getMenuList())

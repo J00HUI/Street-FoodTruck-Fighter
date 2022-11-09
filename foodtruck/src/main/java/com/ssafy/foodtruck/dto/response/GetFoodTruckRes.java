@@ -67,7 +67,6 @@ public class GetFoodTruckRes {
 			.category(foodTruck.getCategory())
 			.phone(foodTruck.getPhone())
 			.description(foodTruck.getDescription())
-			.src(foodTruck.getSrc())
 			.workingDate(schedule.getWorkingDate())
 			.startTime(schedule.getStartTime())
 			.endTime(schedule.getEndTime())
