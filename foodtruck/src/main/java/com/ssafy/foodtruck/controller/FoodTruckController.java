@@ -1,8 +1,10 @@
 package com.ssafy.foodtruck.controller;
 
 import com.ssafy.foodtruck.common.Response;
+import com.ssafy.foodtruck.db.entity.FileEntity;
 import com.ssafy.foodtruck.db.entity.FoodTruck;
 import com.ssafy.foodtruck.db.entity.User;
+import com.ssafy.foodtruck.db.repository.FoodTruckRepository;
 import com.ssafy.foodtruck.dto.request.GetNearFoodTruckReq;
 import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReq;
 import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReviewReq;
@@ -18,11 +20,16 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import static com.ssafy.foodtruck.constant.FoodTruckConstant.*;
+
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -36,6 +43,7 @@ public class FoodTruckController {
 
 	private final FoodTruckService foodTruckService;
 
+	private final FoodTruckRepository foodTruckRepository;
 	private final UserService userService;
 
 	private final JwtTokenUtil jwtTokenUtil;
@@ -116,6 +124,21 @@ public class FoodTruckController {
 		result.put("data", foodTruckResList);
 		result.put("msg", SEARCH_FOODTRUCK_SUCCESS);
 		return ResponseEntity.ok().body(result);
+	}
+
+	@PostMapping("/upload")
+	public ResponseEntity<HttpStatus> saveFile(@RequestHeader("Authorization") String bearerToken, @RequestParam("file") MultipartFile file) throws IOException {
+		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
+		foodTruckService.saveFile(ceoId, file);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@GetMapping("/images")
+	@ResponseBody
+	public ResponseEntity<UrlResource> getFile(@RequestHeader("Authorization") String bearerToken) throws IOException{
+		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
+		FileEntity file = foodTruckService.getFile(ceoId);
+		return new ResponseEntity<>(new UrlResource("file:" + file.getSavedPath()), HttpStatus.OK);
 	}
 
 }
