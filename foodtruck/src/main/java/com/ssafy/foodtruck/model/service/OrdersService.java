@@ -3,11 +3,9 @@ package com.ssafy.foodtruck.model.service;
 import com.ssafy.foodtruck.db.entity.*;
 import com.ssafy.foodtruck.db.repository.*;
 import com.ssafy.foodtruck.dto.request.AcceptOrdersReq;
+import com.ssafy.foodtruck.dto.request.RegisterMenuReq;
 import com.ssafy.foodtruck.dto.request.RegisterOrdersReq;
-import com.ssafy.foodtruck.dto.response.CurrentOrdersHistoryRes;
-import com.ssafy.foodtruck.dto.response.CurrentOrdersListByFoodtruckRes;
-import com.ssafy.foodtruck.dto.response.OrdersHistoryRes;
-import com.ssafy.foodtruck.dto.response.OrdersListByFoodtruckRes;
+import com.ssafy.foodtruck.dto.response.*;
 import com.ssafy.foodtruck.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,14 +35,14 @@ public class OrdersService {
 			.build();
 		Orders savedOrders = ordersRepository.save(orders);
 
-		List<Integer> menuIdList = registerOrdersReq.getMenuIdList();
-		for(int menuId : menuIdList){
-			Menu menu = menuRepository.findById(menuId)
+		List<RegisterMenuReq> menuList = registerOrdersReq.getMenuList();
+		for(RegisterMenuReq menuReq : menuList){
+			Menu menu = menuRepository.findById(menuReq.getMenuId())
 				.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
-
 			ordersMenuRepository.save(OrdersMenu.builder()
 				.orders(savedOrders)
 				.menu(menu)
+				.count(menuReq.getCount())
 				.build());
 		}
 	}
@@ -61,21 +59,21 @@ public class OrdersService {
 	}
 
 	public List<CurrentOrdersHistoryRes> getCustomerOrders(int customerId) {
-		List<Orders> ordersList = ordersRepository.findByCustomerOrders(customerId);
+		List<Orders> ordersList = ordersRepository.findCustomerOrders(customerId);
 		List<CurrentOrdersHistoryRes> currentOrdersHistoryResList = new ArrayList<>();
 		int count = ordersRepository.findByCount(customerId);
 
-		for (Orders orders : ordersList) {
-			OrdersMenu ordersMenu = ordersMenuRepository.findById(orders.getId())
-				.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
-			currentOrdersHistoryResList.add(
-				CurrentOrdersHistoryRes.builder()
-					.foodtruckName(orders.getFoodTruck().getName())
-					.menuName(ordersMenu.getMenu().getName())
-					.acceptTime(orders.getRegDate())
-					.count(count)
-					.build());
-		}
+//		for (Orders orders : ordersList) {
+//			OrdersMenu ordersMenu = ordersMenuRepository.findById(orders.getId())
+//				.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
+//			currentOrdersHistoryResList.add(
+//				CurrentOrdersHistoryRes.builder()
+//					.foodtruckName(orders.getFoodTruck().getName())
+//					.menuName(ordersMenu.getMenu().getName())
+//					.acceptTime(orders.getRegDate())
+//					.count(count)
+//					.build());
+//		}
 		return currentOrdersHistoryResList;
 	}
 

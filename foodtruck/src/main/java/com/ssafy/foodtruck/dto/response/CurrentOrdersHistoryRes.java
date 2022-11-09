@@ -1,8 +1,10 @@
 package com.ssafy.foodtruck.dto.response;
 
+import com.ssafy.foodtruck.dto.MenuDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -10,9 +12,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CurrentOrdersHistoryRes {
-
+	private Integer ordersId;
     private String foodtruckName;
-    private String menuName;
 	private LocalDateTime acceptTime;
-	private Integer count;
+	private String src;
+	List<GetOrdersMenuRes> menuDtoList = new ArrayList<>();
 }

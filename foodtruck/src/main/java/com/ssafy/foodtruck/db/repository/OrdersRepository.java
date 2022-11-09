@@ -13,8 +13,9 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
             "FROM orders \n" +
             "WHERE user_id = :customerId \n" +
             "AND is_accepted = 1 \n" +
-            "AND is_done = 0", nativeQuery = true)
-    List<Orders> findByCustomerOrders(int customerId);
+            "AND is_done = 0 \n" +
+			"AND is_canceled = 0;", nativeQuery = true)
+    List<Orders> findCustomerOrders(int customerId);
 
     @Query(value = "SELECT * \n" +
             "FROM orders \n" +
