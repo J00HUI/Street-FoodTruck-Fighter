@@ -30,13 +30,25 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
 		"order by reg_date desc;", nativeQuery = true)
 	List<Orders> findAllByUser(Integer userId);
 
-    @Query(value = "SELECT * \n" +
-            "FROM orders \n" +
-            "WHERE foodtruck_id = :foodTruckId \n" +
-			"AND is_canceled = 0 \n" +
-            "AND is_done = 0 \n" +
-			"ORDER BY reg_date", nativeQuery = true)
-    List<Orders> findByCeoOrders(int foodTruckId);
+    @Query(value = "SELECT *\n" +
+		"FROM orders \n" +
+		"WHERE foodtruck_id = :foodTruckId \n" +
+		"AND is_canceled = 0 \n" +
+		"AND is_done = 0 \n" +
+		"AND is_accepted = 0 \n" +
+		"AND DATE_FORMAT(reg_date, \"%Y-%m-%d\") = CURDATE() \n" +
+		"ORDER BY reg_date;", nativeQuery = true)
+    List<Orders> findCeoOrdersNotAccepted(int foodTruckId);
+
+	@Query(value = "SELECT *\n" +
+		"FROM orders \n" +
+		"WHERE foodtruck_id = :foodTruckId \n" +
+		"AND is_canceled = 0 \n" +
+		"AND is_done = 0 \n" +
+		"AND is_accepted = 1 \n" +
+		"AND DATE_FORMAT(reg_date, \"%Y-%m-%d\") = CURDATE() \n" +
+		"ORDER BY reg_date;", nativeQuery = true)
+	List<Orders> findCeoOrdersAccepted(int foodTruckId);
 
     @Query(value = "SELECT * \n" +
             "FROM orders \n" +
