@@ -61,7 +61,7 @@
             name="pwdcheck"
             class="pwdcheck"
             placeholder="비밀번호 확인"
-            v-model="accontStore.userData.password"
+            v-model="accontStore.userData.passwordCheck"
             style="text-align: center"
           />
         </div>
@@ -119,7 +119,12 @@
         </div>
 
         <div style="margin-top: 10%">
-          <input type="button" value="다음" class="nextButtonCeo" />
+          <input
+            type="button"
+            value="다음"
+            class="nextButtonCeo"
+            @click="accontStore.signUp"
+          />
         </div>
       </form>
     </div>

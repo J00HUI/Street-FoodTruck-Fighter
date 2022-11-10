@@ -72,7 +72,24 @@ export const useAccountStore = defineStore("Account", {
       if (this.userData.email != "" && this.userData.password != "" && this.userData.passwordCheck != "" && this.userData.nickname != "" && this.userData.phone != "") { // 모든 정보 입력 검사
         if (this.userData.password === this.userData.passwordCheck) { // 비밀번호 검사
           if (this.signUpCheck.ceoSignUp === true) { // 사장님 회원가입
-            alert("사장님");
+            axios({
+              url: RF.user.signup(),
+              method: "post",
+              data: {
+                email: this.userData.email,
+                password: this.userData.password,
+                nickname: this.userData.nickname,
+                phone: this.userData.phone,
+                userType: "CEO",
+              },
+            })
+              .then((res) => {
+                console.log(res);
+                router.push("/");
+              })
+              .catch(() => {
+                alert("회원가입에 실패하였습니다.");
+              });
           } else if (this.signUpCheck.customerSignUp === true) { // 고객님 회원가입
             axios({
               url: RF.user.signup(),
@@ -87,6 +104,7 @@ export const useAccountStore = defineStore("Account", {
             })
               .then((res) => {
                 console.log(res);
+                router.push("/");
               })
               .catch(() => {
                 alert("회원가입에 실패하였습니다.");
