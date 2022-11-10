@@ -17,14 +17,16 @@
     <div style="margin-top: 1%">
       <span style="font-family: SCoreDream; font-style: normal; font-size: 100%"
         >아직 회원이 아니신가요?
-        <span
-          style="
-            color: #ffcd00;
-            font-family: SCoreDream;
-            font-style: normal;
-            font-size: 110%;
-          "
-          >회원가입</span
+        <router-link to="/signup" style="text-decoration: none">
+          <span
+            style="
+              color: #ffcd00;
+              font-family: SCoreDream;
+              font-style: normal;
+              font-size: 110%;
+            "
+            >회원가입</span
+          ></router-link
         ></span
       >
     </div>
@@ -55,7 +57,12 @@
           />
         </div>
         <div style="margin-top: 10%">
-          <input type="button" @click="accontStore.login" value="로그인" class="loginButton" />
+          <input
+            type="button"
+            @click="accontStore.login"
+            value="로그인"
+            class="loginButton"
+          />
         </div>
       </form>
     </div>
@@ -63,15 +70,16 @@
 </template>
 
 <script>
-import { useAccountStore } from '@/stores/account';
+import { useAccountStore } from "@/stores/account";
+
 export default {
   setup() {
-    const accontStore = useAccountStore()
-    
+    const accontStore = useAccountStore();
+
     return {
       accontStore,
-    }
-  }
+    };
+  },
 };
 </script>
 
