@@ -6,12 +6,11 @@ import com.ssafy.foodtruck.dto.request.CreateScheduleReq;
 import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReq;
 import com.ssafy.foodtruck.dto.request.UpdateScheduleReq;
 import com.ssafy.foodtruck.dto.response.GetScheduleRes;
+import com.ssafy.foodtruck.dto.response.OrdersListByFoodtruckRes;
 import com.ssafy.foodtruck.model.service.ScheduleService;
 import com.ssafy.foodtruck.model.service.UserService;
 import com.ssafy.foodtruck.util.JwtTokenUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -67,6 +66,12 @@ public class ScheduleController {
 	// 한달간 일정 조회
 	@GetMapping("/all")
 	@ApiOperation(value = "일정 조회", notes = "<strong>이번달 일정을 조회한다.</strong>")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "성공", response = GetScheduleRes.class),
+		@ApiResponse(code = 401, message = "인증 실패"),
+		@ApiResponse(code = 404, message = "사용자 없음"),
+		@ApiResponse(code = 500, message = "서버 오류")
+	})
 	public ResponseEntity<Map<String, Object>> getSchedule(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken){
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
 		List<GetScheduleRes> scheduleResList = scheduleService.getSchedule(user);

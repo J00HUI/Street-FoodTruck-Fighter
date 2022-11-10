@@ -8,7 +8,7 @@ import lombok.ToString;
 @Builder
 @Getter
 @ToString
-public class UserDtoRes {
+public class UserRes {
 
     private Integer id;
     private String businessNumber;

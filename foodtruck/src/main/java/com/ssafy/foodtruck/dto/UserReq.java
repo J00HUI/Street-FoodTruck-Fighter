@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
-public class UserDtoReq {
+public class UserReq {
 
     private Long id;
     private String email;
