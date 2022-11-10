@@ -63,5 +63,6 @@ public class Schedule extends BaseEntity {
 		this.latitude = updateScheduleReq.getLat();
 		this.longitude = updateScheduleReq.getLng();
 		this.address = updateScheduleReq.getAddress();
+		this.title = updateScheduleReq.getTitle();
 	}
 }

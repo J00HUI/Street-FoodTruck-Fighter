@@ -18,4 +18,5 @@ public class UpdateScheduleReq {
 	private Double lat; // 위도
 	private Double lng; // 경도
 	private String address; // 주소
+	private String title;
 }
