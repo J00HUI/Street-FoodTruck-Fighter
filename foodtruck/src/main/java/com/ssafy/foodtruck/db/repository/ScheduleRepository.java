@@ -29,11 +29,11 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
 	Optional<Schedule> findScheduleByFoodTruckAndDate(int foodTruckId);
 
 	// 이번달에 해당하는 스케줄을 가져온다.
-
 	@Query(value = "select *\n" +
 		"from schedule\n" +
 		"where foodtruck_id = :foodTruckId \n" +
-		"and working_date between :firstDate and :lastDate ;", nativeQuery = true)
+		"and working_date between :firstDate and :lastDate \n" +
+		"ORDER BY group_id;", nativeQuery = true)
 	List<Schedule> findScheduleByFoodTruckAndThisMonth(int foodTruckId, LocalDate firstDate, LocalDate lastDate);
 
 	@Query(value = "SELECT max(group_id) FROM schedule;", nativeQuery = true)

@@ -95,7 +95,10 @@ public class ScheduleService {
 				.endTime(schedule.getEndTime())
 				.latitude(schedule.getLatitude())
 				.longitude(schedule.getLongitude())
-				.address(schedule.getAddress()).build());
+				.address(schedule.getAddress())
+				.title(schedule.getTitle())
+				.groupId(schedule.getGroupId())
+				.build());
 		}
 
 		return scheduleResList;
