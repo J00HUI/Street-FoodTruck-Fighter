@@ -22,7 +22,10 @@ public class GetScheduleRes {
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
 	private LocalDateTime endTime;
+
 	private Double latitude;
 	private Double longitude;
 	private String address;
+	private String title;
+	private Integer groupId;
 }

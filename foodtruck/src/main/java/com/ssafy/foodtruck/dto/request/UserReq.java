@@ -1,4 +1,4 @@
-package com.ssafy.foodtruck.dto;
+package com.ssafy.foodtruck.dto.request;
 
 import com.ssafy.foodtruck.db.entity.UserType;
 import lombok.*;
@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
-public class UserDtoReq {
+public class UserReq {
 
     private Long id;
     private String email;

@@ -8,7 +8,7 @@ import com.auth0.jwt.exceptions.*;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ssafy.foodtruck.db.entity.User;
 import com.ssafy.foodtruck.db.repository.UserRepository;
-import com.ssafy.foodtruck.dto.UserDtoReq;
+import com.ssafy.foodtruck.dto.request.UserReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -128,7 +128,7 @@ public class JwtTokenUtil {
         }
     }
 
-    public JWToken createToken(UserDtoReq userDtoReq, Authentication auth) {
+    public JWToken createToken(UserReq userDtoReq, Authentication auth) {
         Date date = new Date();
         Long accessExpires = 24 * 60 * 60 * 1000L; // 1day
         Long refreshExpires = 60 * 60 * 24 * 15 * 1000L; // 15days
