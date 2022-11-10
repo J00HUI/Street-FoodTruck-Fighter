@@ -1,9 +1,12 @@
 package com.ssafy.foodtruck.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Builder
@@ -11,7 +14,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CurrentOrdersListByFoodtruckRes {
 
-	private String foodtruckName;
-    private String menuName;
+	private Integer ordersId;
+	private Integer orderUserId;
+	private boolean isAccepted;
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime acceptTime;
+	List<GetOrdersMenuRes> menuResList = new ArrayList<>();
+	// menuName, count
 }

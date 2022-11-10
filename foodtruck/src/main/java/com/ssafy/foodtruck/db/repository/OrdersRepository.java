@@ -32,10 +32,11 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
 
     @Query(value = "SELECT * \n" +
             "FROM orders \n" +
-            "WHERE foodtruck_id = :foodtruckId \n" +
-            "AND is_accepted = 1 \n" +
-            "AND is_done = 0", nativeQuery = true)
-    List<Orders> findByCeoOrders(int foodtruckId);
+            "WHERE foodtruck_id = :foodTruckId \n" +
+			"AND is_canceled = 0 \n" +
+            "AND is_done = 0 \n" +
+			"ORDER BY reg_date", nativeQuery = true)
+    List<Orders> findByCeoOrders(int foodTruckId);
 
     @Query(value = "SELECT * \n" +
             "FROM orders \n" +

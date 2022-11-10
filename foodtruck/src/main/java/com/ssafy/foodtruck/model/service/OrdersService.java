@@ -134,13 +134,37 @@ public class OrdersService {
 		return ordersHistoryResList;
 	}
 
-	public List<CurrentOrdersListByFoodtruckRes> getCeoOrders(int ceoId) {
-		User user = userRepository.findById(ceoId)
-			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
-		FoodTruck foodTruck = foodTruckRepository.findByUser(user)
+	public List<CurrentOrdersListByFoodtruckRes> getCeoOrders(User ceoUser) {
+		List<CurrentOrdersListByFoodtruckRes> currentOrdersListByFoodtruckResponseList = new ArrayList<>();
+		FoodTruck foodTruck = foodTruckRepository.findByUser(ceoUser)
 			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
 		List<Orders> ordersList = ordersRepository.findByCeoOrders(foodTruck.getId());
-		List<CurrentOrdersListByFoodtruckRes> currentOrdersListByFoodtruckResponseList = new ArrayList<>();
+
+		for(Orders orders : ordersList){
+			List<GetOrdersMenuRes> menuResList = new ArrayList<>();
+			List<OrdersMenu> ordersMenuList = ordersMenuRepository.findAllByOrders(orders);
+			for(OrdersMenu ordersMenu : ordersMenuList){
+				menuResList.add(GetOrdersMenuRes.builder()
+					.menuName(ordersMenu.getMenu().getName())
+					.count(ordersMenu.getCount())
+					.build());
+			}
+			currentOrdersListByFoodtruckResponseList.add(CurrentOrdersListByFoodtruckRes.builder()
+				.ordersId(orders.getId())
+				.orderUserId(orders.getUser().getId())
+				.isAccepted(orders.getIsAccepted())
+				.acceptTime(orders.getRegDate())
+				.menuResList(menuResList).build());
+		}
+
+		return currentOrdersListByFoodtruckResponseList;
+
+//		User user = userRepository.findById(ceoId)
+//			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
+//		FoodTruck foodTruck = foodTruckRepository.findByUser(user)
+//			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
+//		List<Orders> ordersList = ordersRepository.findByCeoOrders(foodTruck.getId());
+//		List<CurrentOrdersListByFoodtruckRes> currentOrdersListByFoodtruckResponseList = new ArrayList<>();
 
 //		for (Orders orders : ordersList) {
 //			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
@@ -151,7 +175,7 @@ public class OrdersService {
 //					.acceptTime(orders.getRegDate())
 //					.build());
 //		}
-		return currentOrdersListByFoodtruckResponseList;
+//		return currentOrdersListByFoodtruckResponseList;
 	}
 
 	public List<OrdersListByFoodtruckRes> getCeoOrdersAll(int ceoId) {
