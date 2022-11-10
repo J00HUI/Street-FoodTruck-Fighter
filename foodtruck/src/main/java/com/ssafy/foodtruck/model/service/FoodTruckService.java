@@ -58,8 +58,6 @@ public class FoodTruckService {
 			grade += r.getGrade();
 		}
 		grade /= findReviewList.size();
-		System.out.println("grade:" + grade);
-
 		Integer numberOfPeople = 0;
 		Integer time = 0;
 
