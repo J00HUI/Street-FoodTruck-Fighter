@@ -1,8 +1,8 @@
 package com.ssafy.foodtruck.controller;
 
 import com.ssafy.foodtruck.db.entity.User;
-import com.ssafy.foodtruck.dto.UserDtoReq;
-import com.ssafy.foodtruck.dto.UserDtoRes;
+import com.ssafy.foodtruck.dto.UserReq;
+import com.ssafy.foodtruck.dto.UserRes;
 import com.ssafy.foodtruck.model.service.UserService;
 import com.ssafy.foodtruck.util.JwtTokenUtil;
 import io.swagger.annotations.*;
@@ -31,7 +31,7 @@ public class UserController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> signup(@RequestBody @ApiParam(value="회원가입 정보", required = true) UserDtoReq userDtoReq) {
+    public ResponseEntity<?> signup(@RequestBody @ApiParam(value="회원가입 정보", required = true) UserReq userDtoReq) {
         userService.createUser(userDtoReq);
         return new ResponseEntity<>("signup success", HttpStatus.OK);
     }
@@ -46,7 +46,7 @@ public class UserController {
     })
     public ResponseEntity<?> getUserInfo(@RequestHeader("Authorization") String bearerToken) {
         User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
-        UserDtoRes userDtoRes = UserDtoRes.builder()
+        UserRes userDtoRes = UserRes.builder()
                 .businessNumber(user.getBusinessNumber())
                 .email(user.getEmail())
                 .userType(user.getUserType())
