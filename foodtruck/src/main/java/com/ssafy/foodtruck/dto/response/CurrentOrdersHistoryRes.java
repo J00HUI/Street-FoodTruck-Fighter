@@ -18,7 +18,6 @@ public class CurrentOrdersHistoryRes {
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime acceptTime;
-	private String src;
 	List<GetOrdersMenuRes> menuList = new ArrayList<>();
 	//menuName, count
 }

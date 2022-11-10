@@ -35,4 +35,8 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
 		"where foodtruck_id = :foodTruckId \n" +
 		"and working_date between :firstDate and :lastDate ;", nativeQuery = true)
 	List<Schedule> findScheduleByFoodTruckAndThisMonth(int foodTruckId, LocalDate firstDate, LocalDate lastDate);
+
+	@Query(value = "SELECT max(group_id) FROM schedule;", nativeQuery = true)
+	Optional<Integer> findMaxGroupId();
+
 }

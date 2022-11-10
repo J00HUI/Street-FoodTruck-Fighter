@@ -80,7 +80,6 @@ public class OrdersService {
 					.ordersId(orders.getId())
 					.foodtruckName(orders.getFoodTruck().getName())
 					.acceptTime(orders.getDoneDate())
-					.src(orders.getFoodTruck().getSrc())
 					.menuList(menuList).build()
 			);
 		}

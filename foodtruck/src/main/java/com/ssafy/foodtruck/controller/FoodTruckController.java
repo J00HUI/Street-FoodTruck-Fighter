@@ -110,7 +110,8 @@ public class FoodTruckController {
 	})
 	public ResponseEntity<?> getFoodTruckReview(@PathVariable("foodtruck_id") @ApiParam(value="푸드트럭 ID", required = true) Integer foodTruckId){
 		List<GetFoodTruckReviewRes> getFoodTruckReviewResList = foodTruckService.getFoodTruckReview(foodTruckId);
-		return ResponseEntity.ok().body(getFoodTruckReviewResList);
+		return new ResponseEntity<>(getFoodTruckReviewResList, HttpStatus.OK);
+//		return ResponseEntity.ok().body(getFoodTruckReviewResList);
 	}
 
 	// 지도와 가까운 푸드트럭 조회
