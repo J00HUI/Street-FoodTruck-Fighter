@@ -32,12 +32,6 @@ public class GetFoodTruckRes {
 
 	private String src; //이미지
 
-//	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-//	private LocalDateTime start_date; //시작일시
-//
-//	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-//	private LocalDateTime end_date; //종료일시
-
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private LocalDate workingDate;
 
