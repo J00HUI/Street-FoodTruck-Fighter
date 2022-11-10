@@ -14,6 +14,7 @@
     "@fullcalendar/list": "^5.11.3",
     "@fullcalendar/timegrid": "^5.11.3",
     "@fullcalendar/vue3": "^5.11.2",
+    "@splidejs/vue-splide": "^0.6.12",
     "axios": "^1.1.3",
     "chart.js": "^3.9.1",
     "core-js": "^3.8.3",
@@ -25,7 +26,10 @@
     "sockjs-client-node": "^1.0.0",
     "stompjs": "^2.3.3",
     "sweetalert2": "^11.6.0",
+    "swiper": "^8.4.4",
     "vue": "^3.2.13",
+    "vue-carousel-3d": "^1.0.1",
+    "vue-carousel-card": "^2.0.0",
     "vue-chart-3": "^3.1.8",
     "vue-chartjs": "^4.1.2",
     "vue-router": "^4.0.3"
