@@ -34,9 +34,14 @@ public class ScheduleService {
 		FoodTruck foodTruck = foodTruckRepository.findByUser(user)
 			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE));
 
+		Integer groupId = scheduleRepository.findMaxGroupId().orElse(0);
+		Integer nowGroupId = groupId + 1;
+
 		for(ScheduleDateDto dateDto : createScheduleReq.getScheduleDateDtoList()){
 			// 일정이 중복되게 등록되면 안됨 -> 테스트 코드 작성
 			final Schedule schedule = Schedule.builder()
+				.title(createScheduleReq.getTitle())
+				.groupId(nowGroupId)
 				.foodTruck(foodTruck)
 				.latitude(createScheduleReq.getLatitude())
 				.longitude(createScheduleReq.getLongtitude())
@@ -90,7 +95,10 @@ public class ScheduleService {
 				.endTime(schedule.getEndTime())
 				.latitude(schedule.getLatitude())
 				.longitude(schedule.getLongitude())
-				.address(schedule.getAddress()).build());
+				.address(schedule.getAddress())
+				.title(schedule.getTitle())
+				.groupId(schedule.getGroupId())
+				.build());
 		}
 
 		return scheduleResList;
