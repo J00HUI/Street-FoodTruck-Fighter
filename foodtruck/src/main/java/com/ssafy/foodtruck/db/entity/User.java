@@ -47,6 +47,10 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Orders> ordersList = new ArrayList<>();
 
+	@Builder.Default
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<Review> reviewList = new ArrayList<>();
+
     @Transient
     private Set<Authority> authorities;
 }
