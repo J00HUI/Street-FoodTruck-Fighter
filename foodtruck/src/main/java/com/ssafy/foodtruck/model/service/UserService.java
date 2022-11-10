@@ -3,7 +3,7 @@ package com.ssafy.foodtruck.model.service;
 import com.ssafy.foodtruck.db.entity.Authority;
 import com.ssafy.foodtruck.db.entity.User;
 import com.ssafy.foodtruck.db.repository.UserRepository;
-import com.ssafy.foodtruck.dto.UserReq;
+import com.ssafy.foodtruck.dto.request.UserReq;
 import com.ssafy.foodtruck.exception.ExistingEmailException;
 import com.ssafy.foodtruck.util.JwtTokenUtil;
 import com.ssafy.foodtruck.util.UserRole;

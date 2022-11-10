@@ -1,4 +1,4 @@
-package com.ssafy.foodtruck.dto;
+package com.ssafy.foodtruck.dto.request;
 
 import com.ssafy.foodtruck.db.entity.UserType;
 import lombok.*;
