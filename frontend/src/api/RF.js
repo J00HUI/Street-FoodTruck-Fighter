@@ -2,6 +2,7 @@
 const HOST = "https://k7b206.p.ssafy.io/api/"
 // const api = " api/"
 const AUTH = "auth/"
+const USER = 'user/'
 const CEO = 'ceo/'
 const CUSTOMER = 'customer/'
 const FOODTRUCK = "foodtruck/"
@@ -12,7 +13,7 @@ export default {
   user: {
     login: () => HOST + AUTH + "login",
     logout: ()=> HOST + AUTH + "logout",
-    signup: () => HOST + AUTH + "signup" ,
+    signup: () => HOST + USER + "signup" ,
     getUserInfo: () => HOST + 'user',
   },
   foodtruck:{
