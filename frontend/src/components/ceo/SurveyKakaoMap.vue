@@ -18,6 +18,7 @@ import skeweredfood from "@/assets/skeweredfood.svg";
 import ramen from "@/assets/ramen.svg";
 import pizza from "@/assets/pizza.svg";
 import drink from "@/assets/drink.svg";
+import xIcon from "@/assets/xicon.svg";
 export default {
   setup() {
     const store = useKakaoStore();
@@ -53,7 +54,7 @@ export default {
       var clusterer = new kakao.maps.MarkerClusterer({
         map: initMap.map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
         averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
-        minLevel: 1, // 클러스터 할 최소 지도 레벨
+        minLevel: 2, // 클러스터 할 최소 지도 레벨
         disableClickZoom: true // 클러스터 마커를 클릭했을 때 지도가 확대되지 않도록 설정한다
       });
       var imageSrc = null;
@@ -83,6 +84,8 @@ export default {
           imageSrc = pizza;
         } else if (item["category"] === "drink") {
           imageSrc = drink;
+        } else {
+          imageSrc = xIcon;
         }
 
         var imageSize = new kakao.maps.Size(56, 64); // 마커이미지의 크기입니다
