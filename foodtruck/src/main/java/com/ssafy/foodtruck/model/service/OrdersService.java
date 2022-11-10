@@ -146,4 +146,15 @@ public class OrdersService {
 		}
 		orders.setIsCanceled(true);
 	}
+
+	@Transactional
+	public void doneOrders(int ceoId, int orderId) {
+		Orders orders = ordersRepository.findById(orderId)
+		.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
+
+		if (ceoId != orders.getFoodTruck().getUser().getId()) {
+			throw new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER);
+		}
+		orders.setIsDone(true);
+	}
 }

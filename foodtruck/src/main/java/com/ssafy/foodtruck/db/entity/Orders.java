@@ -48,4 +48,8 @@ public class Orders extends BaseEntity {
     public void setIsCanceled(boolean isCanceled) {
         this.isCanceled = isCanceled;
     }
+
+	public void setIsDone(boolean isDone) {
+		this.isDone = isDone;
+	}
 }
