@@ -12,7 +12,7 @@
                 type="file"
                 accept=".gif, .jpg, .png"
               />
-              <img class="truckImg imgVisible" src alt />
+              <img id="#my" class="truckImg imgVisible" src alt />
               <img class="addIcon" src="@/assets/ceo/myAddImgIcon.svg" alt="추가" />
             </label>
 
