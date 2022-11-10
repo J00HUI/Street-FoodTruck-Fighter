@@ -1,8 +1,8 @@
 package com.ssafy.foodtruck.controller;
 
 import com.ssafy.foodtruck.db.entity.User;
-import com.ssafy.foodtruck.dto.UserReq;
-import com.ssafy.foodtruck.dto.UserRes;
+import com.ssafy.foodtruck.dto.request.UserReq;
+import com.ssafy.foodtruck.dto.response.UserRes;
 import com.ssafy.foodtruck.model.service.UserService;
 import com.ssafy.foodtruck.util.JwtTokenUtil;
 import io.swagger.annotations.*;
@@ -47,7 +47,7 @@ public class UserController {
     public ResponseEntity<?> getUserInfo(@RequestHeader("Authorization") String bearerToken) {
         User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
         UserRes userDtoRes = UserRes.builder()
-                .businessNumber(user.getBusinessNumber())
+//                .businessNumber(user.getBusinessNumber())
                 .email(user.getEmail())
                 .userType(user.getUserType())
                 .id(user.getId())

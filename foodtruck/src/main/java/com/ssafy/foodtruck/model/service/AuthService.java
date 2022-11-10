@@ -1,7 +1,7 @@
 package com.ssafy.foodtruck.model.service;
 
 import com.ssafy.foodtruck.db.entity.User;
-import com.ssafy.foodtruck.dto.UserReq;
+import com.ssafy.foodtruck.dto.request.UserReq;
 import com.ssafy.foodtruck.exception.InvalidEmailAndPasswordException;
 import com.ssafy.foodtruck.util.JWToken;
 import com.ssafy.foodtruck.util.JwtTokenUtil;

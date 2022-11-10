@@ -1,25 +1,19 @@
 package com.ssafy.foodtruck.controller;
 
-import com.ssafy.foodtruck.common.Response;
 import com.ssafy.foodtruck.db.entity.FileEntity;
-import com.ssafy.foodtruck.db.entity.FoodTruck;
 import com.ssafy.foodtruck.db.entity.User;
 import com.ssafy.foodtruck.db.repository.FoodTruckRepository;
-import com.ssafy.foodtruck.dto.UserReq;
 import com.ssafy.foodtruck.dto.request.GetNearFoodTruckReq;
 import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReq;
 import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReviewReq;
-import com.ssafy.foodtruck.dto.response.FoodtruckRes;
 import com.ssafy.foodtruck.dto.response.GetFoodTruckRes;
 import com.ssafy.foodtruck.dto.response.GetFoodTruckReviewRes;
 import com.ssafy.foodtruck.dto.response.GetNearFoodTruckRes;
-import com.ssafy.foodtruck.exception.NotFoundException;
 import com.ssafy.foodtruck.model.service.FoodTruckService;
 import com.ssafy.foodtruck.model.service.UserService;
 import com.ssafy.foodtruck.util.JwtTokenUtil;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -4,7 +4,7 @@ import com.ssafy.foodtruck.db.entity.FoodTruck;
 import com.ssafy.foodtruck.db.entity.User;
 import com.ssafy.foodtruck.db.entity.UserType;
 import com.ssafy.foodtruck.dto.JWTokenDto;
-import com.ssafy.foodtruck.dto.UserReq;
+import com.ssafy.foodtruck.dto.request.UserReq;
 import com.ssafy.foodtruck.dto.response.LoginCeoRes;
 import com.ssafy.foodtruck.model.service.AuthService;
 import com.ssafy.foodtruck.model.service.FoodTruckService;
