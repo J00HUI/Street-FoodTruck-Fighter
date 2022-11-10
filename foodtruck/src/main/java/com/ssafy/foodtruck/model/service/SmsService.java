@@ -38,7 +38,7 @@ public class SmsService {
 	//	@Value("e5424aca94ee4f758bf62765dbb13c8a")
 	private String secretKey = "GTVFjIAzyokUXcrff7pwGymtuk0MRefzaOMP8Jhf";
 
-	public SmsResponse sendSms(String recipientPhoneNumber) throws JsonProcessingException, UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException, URISyntaxException {
+	public SmsResponse sendSms(String phoneNumber) throws JsonProcessingException, UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException, URISyntaxException {
 		Long time = System.currentTimeMillis();
 		List<MessagesDto> messages = new ArrayList<>();
 		Random random = new Random();
@@ -47,7 +47,7 @@ public class SmsService {
 			String randomNumber = Integer.toString(random.nextInt(10));
 			numStr += randomNumber;
 		}
-		messages.add(new MessagesDto(recipientPhoneNumber, "스푸파 회원가입 인증번호는 [" + numStr + "]입니다. 호호"));
+		messages.add(new MessagesDto(phoneNumber, "스푸파 회원가입 인증번호는 [" + numStr + "]입니다. 호호"));
 
 
 		SmsRequest smsRequest = new SmsRequest("SMS", "COMM", "82", "01085104523", "내용", messages);
