@@ -68,21 +68,24 @@ public class OrdersController {
 		@ApiResponse(code = 500, message = "서버 오류")
 	})
 	public ResponseEntity<List<OrdersHistoryRes>> getCustomerOrdersAll(@RequestHeader(AUTHORIZATION) String bearerToken) {
-		int customerId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
-		return new ResponseEntity<>(ordersService.getCustomerOrdersAll(customerId), HttpStatus.OK);
+//		int customerId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
+		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
+		return new ResponseEntity<>(ordersService.getCustomerOrdersAll(user), HttpStatus.OK);
 	}
 
-	@GetMapping("/ceo")
-	@ApiOperation(value = "현재 주문내역 조회 - 사업자", notes = "<strong>Ceo ID를 통해 현재 주문내역 조회를 한다.</strong>")
-	@ApiResponses({
-		@ApiResponse(code = 200, message = "성공", response = CurrentOrdersListByFoodtruckRes.class),
-		@ApiResponse(code = 401, message = "인증 실패"),
-		@ApiResponse(code = 404, message = "사용자 없음"),
-		@ApiResponse(code = 500, message = "서버 오류")
-	})
-	public ResponseEntity<List<CurrentOrdersListByFoodtruckRes>> getCeoOrders(@RequestHeader(AUTHORIZATION) String bearerToken) {
-		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
-		return new ResponseEntity<>(ordersService.getCeoOrders(ceoId), HttpStatus.OK);
+	@GetMapping("/ceo/not/accepted")
+	@ApiOperation(value = "현재 수락되지 않은 주문내역 조회 - 사업자", notes = "<strong>Ceo ID를 통해 주문내역 조회를 한다.</strong>")
+	public ResponseEntity<List<CurrentOrdersListByFoodtruckRes>> getCeoOrdersNotAccepted(@RequestHeader(AUTHORIZATION) String bearerToken) {
+		User ceoUser = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
+//		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
+		return new ResponseEntity<>(ordersService.getCeoOrdersNotAccepted(ceoUser), HttpStatus.OK);
+	}
+
+	@GetMapping("/ceo/accepted")
+	@ApiOperation(value = "현재 수락된 주문내역 조회 - 사업자", notes = "<strong>Ceo ID를 통해 주문내역 조회를 한다.</strong>")
+	public ResponseEntity<List<CurrentOrdersListByFoodtruckRes>> getCeoOrdersAccepted(@RequestHeader(AUTHORIZATION) String bearerToken) {
+		User ceoUser = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
+		return new ResponseEntity<>(ordersService.getCeoOrdersAccepted(ceoUser), HttpStatus.OK);
 	}
 
 	@GetMapping("/ceo/all")
