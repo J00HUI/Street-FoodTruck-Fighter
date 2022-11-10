@@ -12,8 +12,25 @@ export const useCeoMyStore = defineStore("CeoMy", {
       openTime: "",
       closeTime: "",
     };
+    const newMenuData = {
+      name: null,
+      price: null,
+      img: null,
+      description: null,
+    };
+    const newMenuDataList = [];
+    const createImgUrl = null;
+    const createImgUrlList = [];
+    const myTypeData = {
+      modalView: false,
+    };
     return {
       myData,
+      newMenuData,
+      myTypeData,
+      newMenuDataList,
+      createImgUrl,
+      createImgUrlList,
     };
   },
   actions: {

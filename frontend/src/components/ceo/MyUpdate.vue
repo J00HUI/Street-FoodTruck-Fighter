@@ -14,8 +14,12 @@
   </label>
   <div id="ceo-default-address" class="truckInput inputText">
     <img src="@/assets/ceo/myEmptyMarkerIcon.svg" alt />
-    <img v-if="kakaoStore.searchTypeData.iconType === true" src="@/assets/ceo/addressIcon.svg" alt="">
-    <img v-if="kakaoStore.searchTypeData.iconType === false" src="@/assets/ceo/addressXIcon.svg" alt="">
+    <img v-if="kakaoStore.searchTypeData.iconType === true" src="@/assets/ceo/addressIcon.svg" alt />
+    <img
+      v-if="kakaoStore.searchTypeData.iconType === false"
+      src="@/assets/ceo/addressXIcon.svg"
+      alt
+    />
     <input
       type="text"
       v-model="kakaoStore.ceoMyData.address"
@@ -40,6 +44,8 @@
       <input style="padding-right:1rem" v-model="myStore.myData.closeTime" type="time" />
     </div>
   </label>
+  <button type="button" @click="modalToggle">메뉴추가</button>
+  <myMenu v-if="myStore.myTypeData.modalView"></myMenu>
   <button type="button" @click="myUpdate" class="updateButton">수정</button>
 </template>
 
@@ -48,8 +54,9 @@ import { ref } from "vue";
 import { useKakaoStore } from "@/stores/kakao";
 import { useCeoMyStore } from "@/stores/ceo/my.js";
 import defaultKakaoMap from "@/components/ceo/ScheduleKakaoMap.vue";
+import myMenu from "@/components/ceo/MyMenuModal.vue";
 export default {
-  components: { defaultKakaoMap },
+  components: { defaultKakaoMap, myMenu },
   setup() {
     const myStore = useCeoMyStore();
     const kakaoStore = useKakaoStore();
@@ -61,9 +68,12 @@ export default {
       toggle.value.isMap = !toggle.value.isMap;
     }
     function set_img(e) {
-      myStore.myData.truckImg = e.target.files[0];
-      let ImgUrl = URL.createObjectURL(e.target.files[0]);
-      e.target.nextElementSibling.src = ImgUrl;
+      if (myStore.createImgUrl !== null) {
+        URL.revokeObjectURL(myStore.createImgUrl);
+      }
+      myStore.newMenuData.img = e.target.files[0];
+      myStore.createImgUrl = URL.createObjectURL(e.target.files[0]);
+      e.target.nextElementSibling.src = myStore.createImgUrl;
       e.target.nextElementSibling.classList.remove("imgVisible");
       e.target.nextElementSibling.nextElementSibling.classList.add(
         "imgVisible"
@@ -75,7 +85,9 @@ export default {
     function inputType() {
       kakaoStore.searchTypeData.searchType = "input";
     }
-
+    function modalToggle() {
+      myStore.myTypeData.modalView = !myStore.myTypeData.modalView;
+    }
     return {
       myStore,
       kakaoStore,
@@ -83,7 +95,8 @@ export default {
       toggleMap,
       set_img,
       myUpdate,
-      inputType
+      inputType,
+      modalToggle
     };
   }
 };

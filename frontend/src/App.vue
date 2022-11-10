@@ -47,4 +47,10 @@ h1 {
   margin: 0px;
   /* 나중에 지울 것 */
 }
+body {
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none
+}
 </style>

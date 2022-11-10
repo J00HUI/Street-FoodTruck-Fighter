@@ -39,7 +39,7 @@ button {
   font-family: "SCoreDream";
   display: flex;
   width: 90%;
-  margin: 5%;
+  padding: 5%;
   justify-content: center;
   align-items: center;
 }
