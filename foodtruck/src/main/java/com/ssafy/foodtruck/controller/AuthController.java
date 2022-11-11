@@ -51,11 +51,12 @@ public class AuthController {
         JWToken jwt = authService.login(userReq);
 
 		// 로그인한 사용자가 CEO
-		if(userReq.getUserType() == UserType.CEO){
-			User user = userService.getUserByEmail(userReq.getEmail());
-			FoodTruck foodTruck = foodTruckService.getFoodTruckByUser(user);
+		User ceoUser = authService.getCeoUser(userReq.getEmail());
+		if(ceoUser != null){
+			FoodTruck foodTruck = foodTruckService.getFoodTruckByUser(ceoUser);
 			return new ResponseEntity<>(LoginCeoRes.of(jwt, foodTruck.getId()), HttpStatus.OK);
 		}
+
 //        ResponseCookie cookie = ResponseCookie.from("refresh-token", jwt.getRefreshToken())
 //                .maxAge(60*60*24*15)
 //                .httpOnly(true)
