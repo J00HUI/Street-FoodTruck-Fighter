@@ -12,7 +12,7 @@
                 type="file"
                 accept=".gif, .jpg, .png"
               />
-              <img id="#my" class="truckImg imgVisible" src alt />
+              <img id="my-menu-img" class="truckImg imgVisible" src alt />
               <img class="addIcon" src="@/assets/ceo/myAddImgIcon.svg" alt="추가" />
             </label>
 
@@ -47,10 +47,19 @@
               ></textarea>
             </label>
             <div class="newMenuList">
-              <img v-for="i in 5" :key="i" :id="i" class="newMenuIcon" />
+              <img
+                v-for="i in myStore.createImgUrlList.length"
+                @click="loadMenu(i - 1)"
+                :src="myStore.createImgUrlList[i - 1]"
+                :key="i"
+                :id="i"
+                class="newMenuIcon"
+              />
+              <img @click="newMenu" class="newMenuIcon" src="@/assets/ceo/myAddImgIcon.svg" alt />
             </div>
             <div class="buttons">
-              <button type="button" class="acceptbutton" @click="createMenu">등록</button>
+              <button type="button" class="acceptbutton" @click="createMenu">추가</button>
+              <button type="button" class="acceptbutton" @click="myStore.updateNewMenu">등록</button>
               <button type="button" class="acceptbutton" @click="modalToggle">취소</button>
             </div>
           </div>
@@ -72,28 +81,11 @@ export default {
       myStore.newMenuData.img = e.target.files[0];
       myStore.createImgUrl = URL.createObjectURL(e.target.files[0]);
       e.target.nextElementSibling.src = myStore.createImgUrl;
-
       e.target.nextElementSibling.classList.remove("imgVisible");
       e.target.nextElementSibling.nextElementSibling.classList.add(
         "imgVisible"
       );
     }
-    // function setNewMenuimg(e) {
-    //   myStore.imgUrlList.forEach(function(item) {
-    //     URL.revokeObjectURL(item);
-    //   });
-    //   myStore.imgUrlList.forEach(function() {
-    //     myStore.imgUrlList.pop();
-    //   });
-    //   myStore.newMenuData.img = e.target.files[0];
-    //   myStore.imgUrlList.push(URL.createObjectURL(e.target.files[0]));
-    //   e.target.nextElementSibling.src = myStore.imgUrlList[0];
-
-    //   e.target.nextElementSibling.classList.remove("imgVisible");
-    //   e.target.nextElementSibling.nextElementSibling.classList.add(
-    //     "imgVisible"
-    //   );
-    // }
     function modalToggle() {
       myStore.myTypeData.modalView = !myStore.myTypeData.modalView;
     }
@@ -107,22 +99,105 @@ export default {
       } else if (myStore.newMenuData.description === null) {
         alert("설명을 입력해주세요");
       } else {
+        // 이미지 박스 초기화 및 가리기
         URL.revokeObjectURL(myStore.createImgUrl);
-        myStore.newMenuData.img = null;
-        myStore.newMenuDataList.push(myStore.newMenuData);
+        myStore.createImgUrl = null;
+        const myMenuImg = document.getElementById("my-menu-img");
+        myMenuImg.src = null;
+        myMenuImg.classList.add("imgVisible");
+        myMenuImg.nextElementSibling.classList.remove("imgVisible");
+        // 정보 넣기
+        myStore.newMenuDataList[
+          myStore.myTypeData.newMenuIndex
+        ] = Object.assign({}, myStore.newMenuData);
+        if (
+          myStore.createImgUrlList[myStore.myTypeData.newMenuIndex] !== null
+        ) {
+          myStore.createImgUrlList[
+            myStore.myTypeData.newMenuIndex
+          ] = URL.createObjectURL(
+            myStore.newMenuDataList[myStore.myTypeData.newMenuIndex].img
+          );
+        }
         myStore.newMenuData = {
           name: null,
           price: null,
           img: null,
           description: null
         };
+        myStore.myTypeData.newMenuIndex += 1;
+        if (
+          myStore.myTypeData.newMenuIndex === myStore.newMenuDataList.length
+        ) {
+          myStore.newMenuDataList.push(myStore.newMenuData);
+        }
+        document.getElementById("my-new-menu-img").value = null;
+      }
+    }
+    function loadMenu(idx) {
+      // 만드 메뉴 정보 가져오기
+      myStore.myTypeData.newMenuIndex = idx;
+      myStore.newMenuData = myStore.newMenuDataList[idx];
+      URL.revokeObjectURL(myStore.createImgUrl);
+      myStore.createImgUrl = URL.createObjectURL(myStore.newMenuData.img);
+      const myMenuImg = document.getElementById("my-menu-img");
+      myMenuImg.src = myStore.createImgUrl;
+      myMenuImg.classList.remove("imgVisible");
+      myMenuImg.nextElementSibling.classList.add("imgVisible");
+    }
+    function newMenu() {
+      if (myStore.newMenuData.name === null || "") {
+        alert("이름을 입력해주세요");
+      } else if (myStore.newMenuData.price === null) {
+        alert("가격을 입력해주세요");
+      } else if (myStore.newMenuData.img === null) {
+        alert("이미지를 입력해주세요");
+      } else if (myStore.newMenuData.description === null) {
+        alert("설명을 입력해주세요");
+      } else {
+        // 이미지 박스 초기화 및 가리기
+        URL.revokeObjectURL(myStore.createImgUrl);
+        myStore.createImgUrl = null;
+
+        const myMenuImg = document.getElementById("my-menu-img");
+        myMenuImg.src = null;
+        myMenuImg.classList.add("imgVisible");
+        myMenuImg.nextElementSibling.classList.remove("imgVisible");
+        // 정보 넣기
+        myStore.newMenuDataList[
+          myStore.myTypeData.newMenuIndex
+        ] = Object.assign({}, myStore.newMenuData);
+        if (
+          myStore.createImgUrlList[myStore.myTypeData.newMenuIndex] !== null
+        ) {
+          myStore.createImgUrlList[
+            myStore.myTypeData.newMenuIndex
+          ] = URL.createObjectURL(
+            myStore.newMenuDataList[myStore.myTypeData.newMenuIndex].img
+          );
+        }
+        myStore.newMenuData = {
+          name: null,
+          price: null,
+          img: null,
+          description: null
+        };
+        myStore.myTypeData.newMenuIndex += 1;
+        if (
+          myStore.myTypeData.newMenuIndex === myStore.newMenuDataList.length
+        ) {
+          myStore.newMenuDataList.push(myStore.newMenuData);
+        }
+        document.getElementById("my-new-menu-img").value = null;
       }
     }
     return {
       myStore,
       setNewMenuimg,
       modalToggle,
-      createMenu
+      createMenu,
+      loadMenu,
+      newMenu
     };
   }
 };
@@ -161,7 +236,7 @@ export default {
   flex-direction: column;
   align-items: center;
   width: 90%;
-  height: 90%;
+  height: 95%;
   margin: auto;
 
   background-color: white;
@@ -202,7 +277,7 @@ textarea {
   scrollbar-width: none; /* Firefox */
   border: none;
   outline: none;
-  background-color: var(--color-purple-1) ole-pur;
+  background-color: var(--color-purple-1);
   font: 1rem "SCoreDream";
 }
 .newMenuTitle {
@@ -286,7 +361,7 @@ textarea::-webkit-scrollbar {
   font: 1rem "SCoreDream";
   border-radius: 2rem;
   margin: 1rem auto 1rem auto;
-  width: 30%;
+  width: 24%;
   height: 72%;
   color: white;
   background-color: var(--color-purple-2);
@@ -299,13 +374,22 @@ textarea::-webkit-scrollbar {
 }
 .newMenuList {
   white-space: nowrap;
+  overflow-x: scroll;
   width: 90%;
   margin: 0.5rem;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.newMenuList::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
 }
 .newMenuIcon {
   display: inline-block;
-  width: 2rem;
-  height: 2rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 0.2rem solid var(--color-purple-1);
+  margin-right: 1rem;
 }
 .descriptionIcon2 {
   vertical-align: bottom;

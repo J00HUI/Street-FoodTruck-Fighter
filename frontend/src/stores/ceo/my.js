@@ -18,11 +18,17 @@ export const useCeoMyStore = defineStore("CeoMy", {
       img: null,
       description: null,
     };
-    const newMenuDataList = [];
+    const newMenuDataList = [{
+      name: null,
+      price: null,
+      img: null,
+      description: null,
+    },];
     const createImgUrl = null;
     const createImgUrlList = [];
     const myTypeData = {
       modalView: false,
+      newMenuIndex:0,
     };
     return {
       myData,
@@ -34,6 +40,16 @@ export const useCeoMyStore = defineStore("CeoMy", {
     };
   },
   actions: {
+    updateNewMenu() {
+      //초기화
+      URL.revokeObjectURL(this.createImgUrl)
+      this.createImgUrlList.forEach(function(item) {
+        URL.revokeObjectURL(item)
+      })
+      location.reload();
+
+
+    },
     registerFoodTruck() {
       const token = localStorage.getItem("token");
       axios({
