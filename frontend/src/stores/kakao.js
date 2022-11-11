@@ -12,17 +12,6 @@ export const useKakaoStore = defineStore("Kakao", {
       latitude: 0,
       longtitudes: 0,
     };
-    const scheduleData = {
-      address: "",
-      latitude: 0,
-      longtitudes: 0,
-      scheduleDateDtoList: [],
-    };
-    const scheduleDateDtoListEx = {
-      endTime: "HH:mm",
-      startTime: "HH:mm",
-      workingDay: "yyyy-MM-dd",
-    };
     const searchTypeData = {
       iconType: false,
       viewType: null, // schedule과 my있음
@@ -54,10 +43,8 @@ export const useKakaoStore = defineStore("Kakao", {
       ],
       surveyData,
       currentAddress: "",
-      scheduleData,
       ceoMyData,
       searchTypeData,
-      scheduleDateDtoListEx,
     };
   },
   actions: {

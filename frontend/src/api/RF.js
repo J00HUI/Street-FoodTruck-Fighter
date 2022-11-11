@@ -39,5 +39,6 @@ export default {
   schedule: {
     setSchedule:() => HOST + 'schedule',
     cancelSchedule:(schedule_id) => HOST + SCHEDULE + `${schedule_id}`,
+    getSchedule:() => HOST + SCHEDULE + 'all'
   },
 }

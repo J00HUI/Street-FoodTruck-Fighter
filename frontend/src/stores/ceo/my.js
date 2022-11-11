@@ -12,6 +12,12 @@ export const useCeoMyStore = defineStore("CeoMy", {
       openTime: "",
       closeTime: "",
     };
+    const positionData = {
+      address: null,
+      latitude: null,
+      longitude: null,
+
+    }
     const newMenuData = {
       name: null,
       price: null,
@@ -37,6 +43,7 @@ export const useCeoMyStore = defineStore("CeoMy", {
       newMenuDataList,
       createImgUrl,
       createImgUrlList,
+      positionData, //예제
     };
   },
   actions: {

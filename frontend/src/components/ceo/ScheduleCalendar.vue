@@ -31,16 +31,14 @@ const options = reactive({
   weekends: true,
   dayMaxEvents: 3,
   eventMaxStack: 99,
-  longPressDelay: 500,
-  eventLongPressDelay: 500,
-  selectLongPressDelay: 500,
+  longPressDelay: 300,
+  eventLongPressDelay: 300,
+  selectLongPressDelay: 300,
   select: arg => {
     id.value = id.value + 1;
     const cal = arg.view.calendar;
-    console.log(cal.getEvents()[0]);
     // cal.unselect();
     let title = "?";
-    console.log
       // title = arg.startStr.slice(-5);
 
     colorIndex = Math.floor(Math.random() * 6)
