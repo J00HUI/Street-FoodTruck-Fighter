@@ -14,7 +14,7 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
 
 	@Query(value = "SELECT r.id, r.reg_date, content, grade, src, orders_id, r.user_id \n" +
 		"FROM orders as o\n" +
-		"LEFT JOIN review as r \n" +
+		"INNER JOIN review as r \n" +
 		"ON o.id = r.orders_id\n" +
 		"WHERE o.foodtruck_id = :foodTruckId \n" +
 		"Order by r.reg_date desc", nativeQuery = true)
