@@ -2,7 +2,8 @@
   <Header></Header>
   <div class="container">
     <div class="truck">
-      <h1>가게 이름</h1>
+      <!-- <h1>{{store.aboutStore.name}}</h1> -->
+      <h1>가게이름</h1>
       <form name="starForm" id="starForm">
         <fieldset>
           <input type="radio" name="rating" value="5" id="rate1" /><label
@@ -78,6 +79,8 @@ import Menu from "@/components/customer/OrderMenu.vue";
 import Info from "@/components/customer/OrderInfo.vue";
 import Review from "@/components/customer/OrderReview.vue";
 import { useMenuStore } from "@/stores/customer/menu/menu";
+import { useStoreDetail } from "@/stores/customer/menu/storeDetail";
+import { onMounted } from 'vue-demi';
 
 export default {
   components: {
@@ -87,6 +90,11 @@ export default {
     Review,
   },
   setup() {
+    
+    onMounted(()=>{
+      getInfo()
+    })
+
     const store = useMenuStore();
     function menuClick() {
       store.data = 1;
@@ -97,12 +105,19 @@ export default {
     function reviewClick() {
       store.data = 3;
     }
+    const storeDetail = useStoreDetail();
+    function getInfo() {
+      console.log('aaa')
+      storeDetail.getStoreInfo()
+    }
 
     return {
       store,
+      storeDetail,
       menuClick,
       infoClick,
       reviewClick,
+      getInfo,
     };
   },
 };

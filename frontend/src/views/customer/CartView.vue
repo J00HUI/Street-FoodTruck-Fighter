@@ -29,20 +29,31 @@
         </div>
       </div>
     </div>
-    <button class="payButton">
-      <p>7500원 결제하기</p>
+    <button class="payButton" @click="loginCheck">
+      <p >7500원 결제하기</p>
     </button>
   </div>
 </template>
 
 <script>
 import Header from "@/components/customer/BackButtonHeader.vue";
+import router from "@/router";
 export default {
   components: {
     Header,
   },
   setup() {
-    return {};
+    function loginCheck(){
+      if(localStorage.getItem('accessToken')==null || localStorage.getItem('accessToken')==''){
+        alert('로그인이 필요한 서비스 입니다!')
+        router.push("/login")
+      }else{
+        router.push("/pay")
+      }
+    }
+    return {
+      loginCheck,
+    };
   },
 };
 </script>
