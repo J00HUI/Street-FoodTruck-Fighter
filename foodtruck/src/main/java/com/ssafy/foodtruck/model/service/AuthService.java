@@ -1,6 +1,7 @@
 package com.ssafy.foodtruck.model.service;
 
 import com.ssafy.foodtruck.db.entity.User;
+import com.ssafy.foodtruck.db.entity.UserType;
 import com.ssafy.foodtruck.dto.request.UserReq;
 import com.ssafy.foodtruck.exception.InvalidEmailAndPasswordException;
 import com.ssafy.foodtruck.util.JWToken;
@@ -45,6 +46,12 @@ public class AuthService {
         User user = userService.getUserByEmail(userDtoReq.getEmail());
         return passwordEncoder.matches(userDtoReq.getPassword(), user.getPassword());
     }
+
+	public User getCeoUser(String email){
+		User user = userService.getUserByEmail(email);
+		if(user.getUserType() == UserType.CEO) return user;
+		return null;
+	}
 
     public void logout(String refreshToken) {
 //        redisUtil.delete(refreshToken);
