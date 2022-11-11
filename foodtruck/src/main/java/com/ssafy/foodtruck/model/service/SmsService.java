@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.foodtruck.dto.MessagesDto;
 import com.ssafy.foodtruck.dto.request.SmsRequest;
 import com.ssafy.foodtruck.dto.response.SmsResponse;
+import com.ssafy.foodtruck.util.RedisUtil;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -47,7 +48,7 @@ public class SmsService {
 			String randomNumber = Integer.toString(random.nextInt(10));
 			numStr += randomNumber;
 		}
-		messages.add(new MessagesDto(phoneNumber, "스푸파 회원가입 인증번호는 [" + numStr + "]입니다. 호호"));
+		messages.add(new MessagesDto(phoneNumber, "[스푸파] 인증번호 [" + numStr + "]를 입력해주세요. 호호"));
 
 
 		SmsRequest smsRequest = new SmsRequest("SMS", "COMM", "82", "01085104523", "내용", messages);
