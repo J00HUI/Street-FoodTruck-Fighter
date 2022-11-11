@@ -29,7 +29,7 @@ public class SmsController {
 
 	@GetMapping("")
 	public void test1(){
-		redisUtil.set("1",1,100000000);
+		redisUtil.set("1","lee bum yun",100000000);
 	}
 
 
