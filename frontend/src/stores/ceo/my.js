@@ -12,11 +12,44 @@ export const useCeoMyStore = defineStore("CeoMy", {
       openTime: "",
       closeTime: "",
     };
+    const newMenuData = {
+      name: null,
+      price: null,
+      img: null,
+      description: null,
+    };
+    const newMenuDataList = [{
+      name: null,
+      price: null,
+      img: null,
+      description: null,
+    },];
+    const createImgUrl = null;
+    const createImgUrlList = [];
+    const myTypeData = {
+      modalView: false,
+      newMenuIndex:0,
+    };
     return {
       myData,
+      newMenuData,
+      myTypeData,
+      newMenuDataList,
+      createImgUrl,
+      createImgUrlList,
     };
   },
   actions: {
+    updateNewMenu() {
+      //초기화
+      URL.revokeObjectURL(this.createImgUrl)
+      this.createImgUrlList.forEach(function(item) {
+        URL.revokeObjectURL(item)
+      })
+      location.reload();
+
+
+    },
     registerFoodTruck() {
       const token = localStorage.getItem("token");
       axios({
