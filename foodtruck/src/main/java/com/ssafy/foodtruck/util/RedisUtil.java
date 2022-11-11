@@ -1,29 +1,58 @@
 package com.ssafy.foodtruck.util;
 
+import com.ssafy.foodtruck.db.entity.OrdersErrorMessage;
+import com.ssafy.foodtruck.exception.NotEqualException;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Component
-@RequiredArgsConstructor
 public class RedisUtil {
 
-    private final RedisTemplate<String, Object> redisTemplate;
+	private StringRedisTemplate redisTemplate;
 
-    public void set(String key, Object o, long milliseconds){
-        redisTemplate.opsForValue().set(key, o, milliseconds, TimeUnit.MILLISECONDS);
-    }
+	private static StringRedisTemplate staticRedisTemplate;
 
-    public Object get(String key){
-        return redisTemplate.opsForValue().get(key);
-    }
+	@Autowired
+	public RedisUtil(StringRedisTemplate redisTemplate) {
+		this.redisTemplate = redisTemplate;
+	}
+
+	@PostConstruct
+	private void initStatic() {
+		staticRedisTemplate= this.redisTemplate;
+	}
+
+	public static void setDataExpired(String key, String value, long duration) {
+		Duration expireDuration = Duration.ofSeconds(duration);
+		staticRedisTemplate.opsForValue()
+			.set(key, value, expireDuration);
+	}
+
+	public static String getData(String key) {
+		return staticRedisTemplate.opsForValue()
+			.get(key);
+	}
+	public static void validateData(String key, String value) {
+		if (!getData(key).equals(value)) {
+			throw new NotEqualException(OrdersErrorMessage.NOT_EQUAL_VALIDATION_TOKEN);
+		}
+	}
 
     public boolean delete(String key){
         return redisTemplate.delete(key);
     }
+
     public boolean haskey(String key){
         return redisTemplate.hasKey(key);
     }

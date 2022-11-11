@@ -3,9 +3,11 @@ package com.ssafy.foodtruck.model.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.foodtruck.dto.MessagesDto;
+import com.ssafy.foodtruck.dto.SmsAuthReq;
 import com.ssafy.foodtruck.dto.request.SmsRequest;
 import com.ssafy.foodtruck.dto.response.SmsResponse;
 import com.ssafy.foodtruck.util.RedisUtil;
+import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -28,7 +30,10 @@ import java.util.Random;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class SmsService {
+
+	private final RedisUtil redisUtil;
 
 	//	@Value("ncp:sms:kr:282120488007:foodtruck")
 	private String serviceId = "ncp:sms:kr:282120488007:foodtruck";
@@ -68,6 +73,8 @@ public class SmsService {
 		restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
 		SmsResponse smsResponse = restTemplate.postForObject(new URI("https://sens.apigw.ntruss.com/sms/v2/services/" + this.serviceId + "/messages"), body, SmsResponse.class);
 
+		redisUtil.setDataExpired(phoneNumber, numStr, 60 * 3L);
+
 		return smsResponse;
 	}
 
@@ -99,5 +106,9 @@ public class SmsService {
 		String encodeBase64String = Base64.encodeBase64String(rawHmac);
 
 		return encodeBase64String;
+	}
+
+	public void authSms(SmsAuthReq smsAuthReq) {
+		redisUtil.validateData(smsAuthReq.getPhoneNumber(), smsAuthReq.getAuthToken());
 	}
 }
