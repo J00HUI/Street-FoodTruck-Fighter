@@ -21,8 +21,8 @@ public class PayService {
 	private static final String READY_ADDR = HOST + "/v1/payment/ready";
 	private static final String APPROVE_ADDR = HOST + "/v1/payment/approve";
 	private static final String ADMIN = "16d8a229832ac9d7e96d2dbf469efe17";
-//	private static final String DOMAIN = "https://localhost:8080/api/v1/pay";
-	private static final String DOMAIN = "https://k7b206.p.ssafy.io:3000/api/v1/pay";
+	private static final String DOMAIN = "https://localhost:8080/api/v1/pay";
+//	private static final String DOMAIN = "https://k7b206.p.ssafy.io:3000/api/v1/pay";
 
 	public PayReadyRes payReady(){
 
@@ -72,9 +72,9 @@ public class PayService {
 			//"total_amount=" + auctionResult.getAuctionDetail().getQuantity() * auctionResult.getAuctionedPrice() + "&" +//총 가격 -> 결제창에 보여지는 값.
 			"vat_amount=200&" + //세금?
 			"tax_free_amount=0&" + //비과세 금액인듯
-			"approval_url=" + "https://www.naver.com&" +
-			"cancel_url=" + "https://www.naver.com&" +
-			"fail_url=" + "https://www.naver.com&";
+			"approval_url=" + DOMAIN + "/success&" +
+			"cancel_url=" + DOMAIN+  "/cancel&" +
+			"fail_url=" + DOMAIN + "/fail";
 
 	}
 
