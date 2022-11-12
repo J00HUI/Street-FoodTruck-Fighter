@@ -1,7 +1,7 @@
 package com.ssafy.foodtruck.model.service;
 
 import com.ssafy.foodtruck.db.entity.User;
-import com.ssafy.foodtruck.dto.UserDtoReq;
+import com.ssafy.foodtruck.dto.request.UserReq;
 import com.ssafy.foodtruck.exception.InvalidEmailAndPasswordException;
 import com.ssafy.foodtruck.util.JWToken;
 import com.ssafy.foodtruck.util.JwtTokenUtil;
@@ -28,20 +28,20 @@ public class AuthService {
 
     //response.success(JwtTokenUtil.getToken(loginInfo.getEmail()), "login success", HttpStatus.OK)
 
-    public JWToken login(UserDtoReq userDtoReq) {
+    public JWToken login(UserReq userReq) {
         // 로그인 요청한 유저로부터 입력된 패스워드 와 디비에 저장된 유저의 암호화된 패스워드가 같은지 확인.(유효한 패스워드인지 여부 확인)
-        if (checkRightPw(userDtoReq)) {
+        if (checkRightPw(userReq)) {
             // 유효한 패스워드가 맞는 경우, 로그인 성공으로 응답.(액세스 토큰을 포함하여 응답값 전달)
 //            JwtTokenUtil.getToken(loginInfo.getEmail())
-            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDtoReq.getEmail(), userDtoReq.getPassword());
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userReq.getEmail(), userReq.getPassword());
             Authentication auth = authenticationManagerBuilder.getObject().authenticate(token);
             SecurityContextHolder.getContext().setAuthentication(auth);
-            return jwtTokenUtil.createToken(userDtoReq, auth);
+            return jwtTokenUtil.createToken(userReq, auth);
         }
         throw new InvalidEmailAndPasswordException();
     }
 
-    public boolean checkRightPw(UserDtoReq userDtoReq) {
+    public boolean checkRightPw(UserReq userDtoReq) {
         User user = userService.getUserByEmail(userDtoReq.getEmail());
         return passwordEncoder.matches(userDtoReq.getPassword(), user.getPassword());
     }

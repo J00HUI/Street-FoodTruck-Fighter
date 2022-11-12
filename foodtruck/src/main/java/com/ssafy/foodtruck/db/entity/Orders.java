@@ -40,6 +40,10 @@ public class Orders extends BaseEntity {
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
     private List<OrdersMenu> ordersMenuList = new ArrayList<>();
 
+//	@Builder.Default
+//	@OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)
+//	private Review review;
+
     public void setIsAccepted(boolean isAccepted, LocalDateTime doneDate) {
         this.isAccepted = isAccepted;
 		this.doneDate = doneDate;
@@ -48,4 +52,8 @@ public class Orders extends BaseEntity {
     public void setIsCanceled(boolean isCanceled) {
         this.isCanceled = isCanceled;
     }
+
+	public void setIsDone(boolean isDone) {
+		this.isDone = isDone;
+	}
 }

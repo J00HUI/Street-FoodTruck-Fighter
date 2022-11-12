@@ -9,11 +9,10 @@
         <span>매출 통계</span>
       </div>
     </nav>
-    <Today></Today>
-    <div>
-      <canvas id="myChart"></canvas>
+    <div class="todayView">
+      <Today></Today>
+      <!-- <Chart></Chart> -->
     </div>
-
     <Footer></Footer>
   </div>
 </template>
@@ -21,14 +20,15 @@
 <script>
 import CeoHeader from "@/components/ceo/CeoHeader.vue";
 import Today from "@/components/ceo/SalesToday.vue";
+// import Chart from "@/components/ceo/SalesGraph.vue";
 import Footer from "@/components/ceo/CeoFooter.vue";
 export default {
   components: {
     CeoHeader,
     Today,
+    // Chart,
     Footer
-  },
-    
+  }
 };
 </script>
 
@@ -50,5 +50,8 @@ export default {
 .underLine {
   border-bottom: 0.2rem solid black;
   color: black;
+}
+.todayView {
+  height: 60%;
 }
 </style>

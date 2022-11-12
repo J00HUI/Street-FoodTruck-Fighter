@@ -20,6 +20,13 @@ import java.time.format.DateTimeFormatter;
 public class Schedule extends BaseEntity {
 
 	@NotNull
+	private String title;
+
+	@NotNull
+	@Column(name = "group_Id")
+	private Integer groupId;
+
+	@NotNull
 	private LocalDate workingDate;
 
     @NotNull
@@ -46,14 +53,6 @@ public class Schedule extends BaseEntity {
     @JoinColumn(name = "foodtruck_id")
     private FoodTruck foodTruck;
 
-//	public void update(final RegisterFoodTruckReq registerFoodTruckReq){
-//		this.workingDate = LocalDate.parse(registerFoodTruckReq.get.getWorkingDay(), DateTimeFormatter.ISO_DATE);
-//		this.endTime = LocalDateTime.parse(registerFoodTruckReq.getEnd_date(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-//		this.startTime = LocalDateTime.parse(dateDto.getWorkingDay() + " " + dateDto.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
-//		this.latitude = registerFoodTruckReq.getLatitude();
-//		this.longitude = registerFoodTruckReq.getLongtitue();
-//		this.address = registerFoodTruckReq.getAddress();
-//	}
 	public void setIsValid(boolean isValid){
 		this.isValid = isValid;
 	}
@@ -64,5 +63,6 @@ public class Schedule extends BaseEntity {
 		this.latitude = updateScheduleReq.getLat();
 		this.longitude = updateScheduleReq.getLng();
 		this.address = updateScheduleReq.getAddress();
+		this.title = updateScheduleReq.getTitle();
 	}
 }

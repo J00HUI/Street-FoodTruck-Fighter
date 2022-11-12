@@ -16,19 +16,35 @@
         :key="idx"
       >{{item}}분</button>
       <div style="margin: 1rem 0 0 50%">
-        <button type="button" class="cancleButton">주문 취소</button>
-        <button type="button" class="acceptButton">주문 수락</button>
+        <button id="btn-cancle" @click="orderStore.cancelOrders" type="button" class="cancleButton">주문 취소</button>
+        <button id="btn-accept" @click="orderStore.acceptOrders" type="button" class="acceptButton">주문 수락</button>
       </div>
     </section>
   </div>
 </template>
 
 <script>
+import * as SockJs from 'sockjs-client';
+import { useCeoOrderStore } from '@/stores/ceo/order';
 export default {
   setup() {
+    const orderStore = useCeoOrderStore()
+    var Stomp = require("stompjs");
+    var sock = new SockJs("/stompTest");
+    var client = Stomp.over(sock);
+    client.connect({}, function() {
+      console.log("Connected stompTest!");
+      client.send("/TTT", {}, "msg:Haha~~~");
+      client.subscribe("/topic/message", function(event) {
+        console.log("!!!!!!!!event>>", event);
+      });
+    });
+    orderStore.getCeoOrders()
     const selectTime = [5, 10, 15, 20, 25];
+
     return {
-      selectTime
+      orderStore,
+      selectTime,
     };
   }
 };
@@ -50,6 +66,12 @@ h1 {
   padding: 5%;
   background-color: var(--color-purple-1);
   border-radius: 1rem;
+  border: 4px solid transparent; 
+  border-image:  linear-gradient(45deg, var(--color-pink-2) 0%, var(--color-purple-2) 100%);
+  border-image-slice: 1;
+  background-origin: border-box;
+  background-clip:  border-box;
+  
 }
 .newOrderNum {
   display: flex;
@@ -98,4 +120,11 @@ h1 {
   border-radius: 1rem;
   margin-left: 1rem;
 }
+.cancleButton:hover {
+  cursor: pointer;
+}
+.acceptButton:hover {
+  cursor: pointer;
+}
+
 </style>

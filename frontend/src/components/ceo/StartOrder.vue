@@ -12,7 +12,7 @@
       </div>
       <time class="orderTime">AM 10:10</time>
       <div style="margin: 1rem 0 0 50%">
-        <button type="button" class="cancleButton">취소</button>
+        <button type="button"  @click="orderStore.cancelOrders" class="cancleButton">취소</button>
         <button type="button" class="acceptButton">완료</button>
       </div>
     </section>
@@ -20,11 +20,15 @@
 </template>
 
 <script>
+import { useCeoOrderStore } from '@/stores/ceo/order';
 export default {
   setup() {
+    const orderStore = useCeoOrderStore()
     const selectTime = [5, 10, 15, 20, 25];
+    orderStore.getCeoOrdersAll()
     return {
-      selectTime
+      orderStore,
+      selectTime,
     };
   }
 };
@@ -38,6 +42,7 @@ h1 {
 .orderView {
   font-family: "SCoreDream";
   position: sticky;
+  min-height: 10px;
 
 }
 .orderBox {

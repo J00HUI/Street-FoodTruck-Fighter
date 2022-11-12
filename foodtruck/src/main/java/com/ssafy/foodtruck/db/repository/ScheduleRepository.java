@@ -22,17 +22,22 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
 	List<Schedule> findScheduleNearBy(Double lat, Double lng);
 
 	// 오늘 날짜에 해당하는 스케줄을 가져온다.
-	@Query(value = "select *\n" +
-		"from schedule\n" +
-		"where foodtruck_id = :foodTruckId \n" +
-		"and curdate() = working_date;", nativeQuery = true)
+	@Query(value = "SELECT *\n" +
+		"FROM schedule\n" +
+		"WHERE foodtruck_id = :foodTruckId \n" +
+		"And curdate() = working_date;", nativeQuery = true)
 	Optional<Schedule> findScheduleByFoodTruckAndDate(int foodTruckId);
 
 	// 이번달에 해당하는 스케줄을 가져온다.
-
-	@Query(value = "select *\n" +
-		"from schedule\n" +
-		"where foodtruck_id = :foodTruckId \n" +
-		"and working_date between :firstDate and :lastDate ;", nativeQuery = true)
+	@Query(value = "SELECT *\n" +
+		"FROM schedule\n" +
+		"WHERE foodtruck_id = :foodTruckId \n" +
+		"And working_date BETWEEN :firstDate And :lastDate \n" +
+		"ORDER BY group_id" +
+		"AND is_valid = true;", nativeQuery = true)
 	List<Schedule> findScheduleByFoodTruckAndThisMonth(int foodTruckId, LocalDate firstDate, LocalDate lastDate);
+
+	@Query(value = "SELECT max(group_id) FROM schedule;", nativeQuery = true)
+	Optional<Integer> findMaxGroupId();
+
 }

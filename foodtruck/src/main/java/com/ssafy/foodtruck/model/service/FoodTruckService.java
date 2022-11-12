@@ -10,20 +10,20 @@ import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReviewReq;
 import com.ssafy.foodtruck.dto.response.GetFoodTruckRes;
 import com.ssafy.foodtruck.dto.response.GetFoodTruckReviewRes;
 import com.ssafy.foodtruck.dto.response.GetNearFoodTruckRes;
+import com.ssafy.foodtruck.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.asm.Advice;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-import java.text.DateFormat;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 import static com.ssafy.foodtruck.constant.FoodTruckConstant.*;
 
@@ -31,12 +31,15 @@ import static com.ssafy.foodtruck.constant.FoodTruckConstant.*;
 @RequiredArgsConstructor
 public class FoodTruckService {
 
+	@Value("${file.dir}")
+	private String fileDir;
 	private final FoodTruckRepository foodTruckRepository;
 	private final ScheduleRepository scheduleRepository;
 	private final MenuRepository menuRepository;
 	private final OrdersRepository ordersRepository;
 	private final ReviewRepository reviewRepository;
-
+	private final FileRepository fileRepository;
+	private final UserRepository userRepository;
 	// 푸드트럭 정보 조회
 	public GetFoodTruckRes getFoodTruck(Integer foodTruckId){
 
@@ -46,7 +49,7 @@ public class FoodTruckService {
 		Schedule schedule = scheduleRepository.findScheduleByFoodTruckAndDate(foodTruckId).orElse(null);
 //		if(schedule == null) 오늘은 영업시간이 아닙니다.
 
-		List<Menu> findMenuList = menuRepository.findMenuByFoodTruck(foodTruck);
+		List<Menu> findMenuList = menuRepository.findAllByFoodTruck(foodTruck);
 		List<MenuDto> menuList = new ArrayList<>();
 		for(Menu menu : findMenuList){
 			menuList.add(MenuDto.of(menu));
@@ -58,11 +61,10 @@ public class FoodTruckService {
 			grade += r.getGrade();
 		}
 		grade /= findReviewList.size();
-		System.out.println("grade:" + grade);
-
 		Integer numberOfPeople = 0;
 		Integer time = 0;
 
+//		return GetFoodTruckRes.of(menuList, foodTruck, grade, numberOfPeople, time);
 		return GetFoodTruckRes.of(menuList, foodTruck, schedule, grade, numberOfPeople, time);
 	}
 
@@ -82,7 +84,6 @@ public class FoodTruckService {
 			.description(registerFoodTruckReq.getDescription())
 			.name(registerFoodTruckReq.getName())
 			.phone(registerFoodTruckReq.getPhone())
-			.src(registerFoodTruckReq.getSrc())
 			.build();
 
 		FoodTruck savedFoodTruck = foodTruckRepository.save(foodTruck);
@@ -148,7 +149,7 @@ public class FoodTruckService {
 
 	// 메뉴 삭제
 	public void deleteMenu(FoodTruck foodTruck){
-		List<Menu> menuList = menuRepository.findMenuByFoodTruck(foodTruck);
+		List<Menu> menuList = menuRepository.findAllByFoodTruck(foodTruck);
 		for(Menu menu : menuList){
 			try {
 				menuRepository.delete(menu);
@@ -179,16 +180,19 @@ public class FoodTruckService {
 	public List<GetFoodTruckReviewRes> getFoodTruckReview(Integer foodTruckId){
 		List<Review> findReviewList = reviewRepository.findAllByFoodTruckId(foodTruckId);
 		List<GetFoodTruckReviewRes> reviewList = new ArrayList<>();
+		System.out.println("리뷰 갯수 : " + findReviewList.size());
 
-		for(Review r : findReviewList){
+		for(Review review : findReviewList){
+
 			reviewList.add(GetFoodTruckReviewRes.builder()
-				.content(r.getContent())
-				.userId(r.getUser().getId())
-				.ordersId(r.getOrders().getId())
-				.grade(r.getGrade())
-				.src(r.getSrc())
-				.regDate(r.getRegDate())
-				.id(r.getId()).build());
+					.id(review.getId())
+					.userId(review.getUser().getId())
+					.ordersId(review.getOrders().getId())
+					.content(review.getContent())
+					.grade(review.getGrade())
+					.src(review.getSrc())
+					.regDate(review.getRegDate())
+				.build());
 		}
 		return reviewList;
 	}
@@ -208,7 +212,7 @@ public class FoodTruckService {
 
 			if(foodTruck.getCategory() != getNearFoodTruckReq.getCategory()) continue;
 
-			List<Menu> menuList = menuRepository.findMenuByFoodTruck(foodTruck);
+			List<Menu> menuList = menuRepository.findAllByFoodTruck(foodTruck);
 			List<MenuDto> menuDtoList = new ArrayList<>();
 			for(Menu menu : menuList){
 				menuDtoList.add(MenuDto.of(menu));
@@ -243,7 +247,7 @@ public class FoodTruckService {
 			FoodTruck foodTruck = foodTruckRepository.findById(foodTruckId)
 				.orElseThrow(() -> new IllegalArgumentException(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE));
 
-			List<Menu> menuList = menuRepository.findMenuByFoodTruck(foodTruck);
+			List<Menu> menuList = menuRepository.findAllByFoodTruck(foodTruck);
 			List<MenuDto> menuDtoList = new ArrayList<>();
 			for(Menu menu : menuList){
 				menuDtoList.add(MenuDto.of(menu));
@@ -267,5 +271,66 @@ public class FoodTruckService {
 	public FoodTruck getFoodTruckByUser(User user){
 		return foodTruckRepository.findByUser(user)
 			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE));
+	}
+
+	@Transactional
+	public void saveFile(int ceoId, MultipartFile files) throws IOException {
+
+		Optional<User> user = userRepository.findById(ceoId);
+
+		if(!user.isPresent()) {
+			return;
+		}
+
+		Optional<FoodTruck> foodTruck = foodTruckRepository.findByUser(user.get());
+
+		if(!foodTruck.isPresent()) {
+			return;
+		}
+
+		if (files.isEmpty()) {
+			return;
+		}
+
+		// 원래 파일 이름 추출
+		String origName = files.getOriginalFilename();
+
+		// 파일 이름으로 쓸 uuid 생성
+		String uuid = UUID.randomUUID().toString();
+
+		// 확장자 추출(ex : .png)
+		String extension = origName.substring(origName.lastIndexOf("."));
+
+		// uuid와 확장자 결합
+		String savedName = uuid + extension;
+
+		// 파일을 불러올 때 사용할 파일 경로
+		String savedPath = fileDir + savedName;
+
+		// 파일 엔티티 생성
+		FileEntity file = FileEntity.builder()
+			.orgNm(origName)
+			.savedNm(savedName)
+			.savedPath(savedPath)
+			.build();
+
+		// 실제로 로컬에 uuid를 파일명으로 저장
+		files.transferTo(new File(savedPath));
+
+		foodTruck.get().setFileEntity(file);
+	}
+
+	public FileEntity getFile(int ceoId) {
+		Optional<User> user = userRepository.findById(ceoId);
+		if(!user.isPresent()){
+			return null;
+		}
+
+		Optional<FoodTruck> foodTruck = foodTruckRepository.findByUser(user.get());
+		if(!foodTruck.isPresent()){
+			return null;
+		}
+
+		return foodTruck.get().getFileEntity();
 	}
 }

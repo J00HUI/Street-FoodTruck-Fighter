@@ -12,10 +12,23 @@
     <img src="@/assets/ceo/myCallIcon.svg" alt />
     <input id="truck-call-number" placeholder="전화번호" v-model="myStore.myData.callNumber" type="tel" />
   </label>
-  <div class="truckInput inputText">
+  <div id="ceo-default-address" class="truckInput inputText">
     <img src="@/assets/ceo/myEmptyMarkerIcon.svg" alt />
-    <input type="text" placeholder="위치" disabled />
-    <img class="markerIcon" src="@/assets/ceo/myMarkerIcon.svg" alt />
+    <img v-if="kakaoStore.searchTypeData.iconType === true" src="@/assets/ceo/addressIcon.svg" alt="">
+    <img v-if="kakaoStore.searchTypeData.iconType === false" src="@/assets/ceo/addressXIcon.svg" alt="">
+    <input
+      type="text"
+      v-model="kakaoStore.ceoMyData.address"
+      @focus="inputType"
+      style="padding:0px"
+      placeholder="위치"
+    />
+    <a href="#ceo-schedule-map">
+      <img @click="toggleMap" src="@/assets/ceo/myMarkerIcon.svg" alt />
+    </a>
+  </div>
+  <div class="ceoDefaultMap">
+    <defaultKakaoMap v-if="toggle.isMap"></defaultKakaoMap>
   </div>
   <label for="truck-operating" class="truckInput inputText">
     <div class="timeInputBox">
@@ -31,27 +44,46 @@
 </template>
 
 <script>
+import { ref } from "vue";
+import { useKakaoStore } from "@/stores/kakao";
 import { useCeoMyStore } from "@/stores/ceo/my.js";
+import defaultKakaoMap from "@/components/ceo/ScheduleKakaoMap.vue";
 export default {
+  components: { defaultKakaoMap },
   setup() {
     const myStore = useCeoMyStore();
+    const kakaoStore = useKakaoStore();
+    kakaoStore.searchTypeData.viewType = "my";
+    const toggle = ref({
+      isMap: false
+    });
+    function toggleMap() {
+      toggle.value.isMap = !toggle.value.isMap;
+    }
     function set_img(e) {
-      myStore.myData.truckImg = e.target.files[0]
+      myStore.myData.truckImg = e.target.files[0];
       let ImgUrl = URL.createObjectURL(e.target.files[0]);
       e.target.nextElementSibling.src = ImgUrl;
       e.target.nextElementSibling.classList.remove("imgVisible");
       e.target.nextElementSibling.nextElementSibling.classList.add(
         "imgVisible"
-      )
+      );
     }
     function myUpdate() {
-      console.log(myStore.myData)
+      console.log(myStore.myData);
     }
+    function inputType() {
+      kakaoStore.searchTypeData.searchType = "input";
+    }
+
     return {
       myStore,
+      kakaoStore,
+      toggle,
+      toggleMap,
       set_img,
-      myUpdate
-      
+      myUpdate,
+      inputType
     };
   }
 };
@@ -106,6 +138,8 @@ button {
   position: absolute;
   width: 100%;
   height: 100%;
+  top: 0%;
+  border-radius: 1rem;
   background-size: contain;
   background-repeat: no-repeat;
   z-index: 100;
@@ -121,10 +155,6 @@ label:hover {
 }
 .inputText {
   height: 8%;
-}
-.markerIcon {
-  position: absolute;
-  right: 1rem;
 }
 .timePlaceHoleder {
   padding: 0 0.7rem;
@@ -142,5 +172,14 @@ label:hover {
   color: white;
   background-color: var(--color-purple-2);
   filter: drop-shadow(0px 10px 22px rgba(149, 173, 254, 0.3));
+}
+.updateButton:hover {
+  cursor: pointer;
+}
+.ceoDefaultMap {
+  position: relative;
+  width: 88%;
+  margin: 6%;
+  border-radius: 1rem;
 }
 </style>

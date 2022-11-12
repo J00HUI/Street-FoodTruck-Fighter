@@ -7,6 +7,9 @@
         <div>붕어빵 100개</div>
         <div>잉어빵 10000000개</div>
         <div>잉어</div>
+        <div>잉어</div>
+        <div>잉어</div>
+        <div>잉어</div>
       </div>
       <div class="TodayTotal">총 300000000원</div>
     </section>
@@ -14,9 +17,12 @@
 </template>
 
 <script>
+import { useCeoOrderStore } from '@/stores/ceo/order';
 export default {
   setup() {
-    const selectTime = [5, 10, 15, 20, 25];
+    const orderStore = useCeoOrderStore()
+    orderStore.getCeoOrders()
+    const selectTime = [5, 10, 15, 20, 25]
     return {
       selectTime
     };
@@ -36,7 +42,7 @@ h1 {
   position: relative;
   box-sizing: border-box;
   width: 90%;
-  height: 100%;
+  height: auto;
   margin: 5%;
   padding: 5%;
   background-color: var(--color-purple-1);

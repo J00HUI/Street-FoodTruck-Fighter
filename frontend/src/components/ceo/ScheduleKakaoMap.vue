@@ -13,10 +13,17 @@
 
 <script>
 import { useKakaoStore } from "@/stores/kakao.js";
-import { onMounted } from "vue";
+import { onMounted, watch } from "vue";
+
 export default {
   setup() {
     const store = useKakaoStore();
+    let dataCase = null;
+    if (store.searchTypeData.viewType === "schedule") {
+      dataCase = store.scheduleData;
+    } else if (store.searchTypeData.viewType === "my") {
+      dataCase = store.ceoMyData;
+    }
     /* global kakao */
     onMounted(() => {
       if (window.kakao && window.kakao.maps) {
@@ -34,10 +41,10 @@ export default {
 
       const options = {
         center: new kakao.maps.LatLng(36.36880618678187, 127.37618869404398),
-        level: 5,
+        level: 5
       };
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
+        navigator.geolocation.getCurrentPosition(function(position) {
           var moveLatLng = new kakao.maps.LatLng(
             position.coords.latitude,
             position.coords.longitude
@@ -49,6 +56,8 @@ export default {
 
       // 주소-좌표 변환 객체를 생성합니다
       var geocoder = new kakao.maps.services.Geocoder();
+      store.searchTypeData.geocoder = geocoder;
+      store.searchTypeData.map = initMap.map;
 
       var marker = new kakao.maps.Marker(), // 클릭한 위치를 표시할 마커입니다
         infowindow = new kakao.maps.InfoWindow({ zindex: 1 }); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
@@ -57,48 +66,47 @@ export default {
       searchAddrFromCoords(initMap.map.getCenter(), displayCenterInfo);
 
       // 지도를 클릭했을 때 클릭 위치 좌표에 대한 주소정보를 표시하도록 이벤트를 등록합니다
-      kakao.maps.event.addListener(initMap.map, "click", function (mouseEvent) {
-        searchDetailAddrFromCoords(
-          mouseEvent.latLng,
-          function (result, status) {
-            if (status === kakao.maps.services.Status.OK) {
-              var detailAddr = result[0].road_address
-                ? "<div>도로명주소 : " +
-                  result[0].road_address.address_name +
-                  "</div>"
-                : "";
-              detailAddr +=
-                "<div>지번 주소 : " + result[0].address.address_name + "</div>";
+      kakao.maps.event.addListener(initMap.map, "click", function(mouseEvent) {
+        store.searchTypeData.searchType = "click";
+        searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
+          if (status === kakao.maps.services.Status.OK) {
+            var detailAddr = result[0].road_address
+              ? "<div>도로명주소 : " +
+                result[0].road_address.address_name +
+                "</div>"
+              : "";
+            detailAddr +=
+              "<div>지번 주소 : " + result[0].address.address_name + "</div>";
+              dataCase.latitude = mouseEvent.latLng['La']
+              dataCase.longitude = mouseEvent.latLng['Ma']
 
-              var content =
-                '<div class="bAddr">' +
-                '<span class="title">법정동 주소정보</span>' +
-                detailAddr +
-                "</div>";
 
-              // 마커를 클릭한 위치에 표시합니다
-              console.log(result);
-              if (result[0].road_address !== null) {
-                store.scheduleData.address = result[0].road_address.address_name;
-              } else if (result[0].address !== null) {
-                store.scheduleData.address = result[0].address.address_name;
-              } else {
-                store.scheduleData.address = '확인불가'
-              }
+            var content =
+              '<div class="bAddr">' +
+              '<span class="title">법정동 주소정보</span>' +
+              detailAddr +
+              "</div>";
 
-              marker.setPosition(mouseEvent.latLng);
-              marker.setMap(initMap.map);
-
-              // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
-              infowindow.setContent(content);
-              infowindow.open(initMap.map, marker);
+            if (result[0].road_address !== null) {
+              dataCase.address = result[0].road_address.address_name;
+            } else if (result[0].address !== null) {
+              dataCase.address = result[0].address.address_name;
+            } else {
+              dataCase.address = "확인불가";
             }
+
+            marker.setPosition(mouseEvent.latLng);
+            marker.setMap(initMap.map);
+
+            // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
+            infowindow.setContent(content);
+            infowindow.open(initMap.map, marker);
           }
-        );
+        });
       });
 
       // 중심 좌표나 확대 수준이 변경됐을 때 지도 중심 좌표에 대한 주소 정보를 표시하도록 이벤트를 등록합니다
-      kakao.maps.event.addListener(initMap.map, "idle", function () {
+      kakao.maps.event.addListener(initMap.map, "idle", function() {
         searchAddrFromCoords(initMap.map.getCenter(), displayCenterInfo);
       });
 
@@ -126,11 +134,42 @@ export default {
           }
         }
       }
+      watch(
+        () => dataCase.address,
+        address => {
+          if (store.searchTypeData.searchType === "input") {
+            geocoder.addressSearch(address, function(result, status) {
+              // 정상적으로 검색이 완료됐으면
+              if (status === kakao.maps.services.Status.OK) {
+                store.searchTypeData.iconType = true;
+                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                dataCase.latitude = result[0].y
+                dataCase.longitude = result[0].x
+                marker.setPosition(coords);
+                marker.setMap(initMap.map);
+                var content =
+                  '<div style="width:150px;text-align:center;padding:6px 0;">' +
+                  dataCase.address +
+                  "</div>";
+                infowindow.setContent(content);
+                infowindow.open(initMap.map, marker);
+
+                // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+                initMap.map.setCenter(coords);
+              } else {
+                store.searchTypeData.iconType = false;
+              }
+            });
+          }
+          store.searchTypeData.searchType = "input";
+        }
+      );
     };
+
     return {
-      store,
+      store
     };
-  },
+  }
 };
 </script>
 
@@ -169,9 +208,7 @@ export default {
   font-size: 0.5rem;
 }
 .bAddr {
-  padding: 5px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
+  color: red;
+  border-radius: 5px;
 }
 </style>

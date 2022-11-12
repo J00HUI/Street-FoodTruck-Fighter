@@ -10,5 +10,5 @@ import java.util.List;
 public class RegisterOrdersReq {
 
 	private Integer foodtruckId;
-	private List<Integer> menuIdList;
+	private List<RegisterMenuReq> menuList;
 }
