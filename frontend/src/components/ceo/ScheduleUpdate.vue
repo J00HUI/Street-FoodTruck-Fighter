@@ -9,7 +9,6 @@
         class="scheduleDateInput"
         max="3000-01-01"
         type="date"
-        v-model="scheduleStore.scheduleDateDto.workingDay"
       />
       <!-- <time style="padding: 0 4%" v-model="scheduleStore.scheduleAddForm.date">{{}}</time> -->
       <button>
@@ -24,14 +23,13 @@
       <span class="timePlaceHoleder">open</span>
       <input
         id="schedule-operating"
-        v-model="scheduleStore.scheduleDateDto.startTime"
         title="open"
         type="time"
       />
     </div>~
     <div class="timeInputBox">
       <span class="timePlaceHoleder">close</span>
-      <input style="padding-right:1rem" v-model="scheduleStore.scheduleDateDto.endTime" type="time" />
+      <input style="padding-right:1rem" type="time" />
     </div>
   </label>
 
@@ -57,7 +55,7 @@
   </div>
 
   <kakaoMap class="truckInput inputMap"></kakaoMap>
-  <button type="button" @click="scheduleUpdate" class="updateButton">수정</button>
+  <button type="button" @click="scheduleStore.setSchedule()" class="updateButton">수정</button>
 </template>
 
 <script>
@@ -76,9 +74,7 @@ export default {
       console.log();
       // scheduleStore.scheduleAddForm.date = scheduleStore.scheduleAddForm.date - 1
     }
-    function scheduleUpdate() {
-      console.log(scheduleStore.scheduleAddForm);
-    }
+
     function inputType() {
       kakaoStore.searchTypeData.searchType = "input";
     }
@@ -86,7 +82,6 @@ export default {
       scheduleStore,
       kakaoStore,
       yesterday,
-      scheduleUpdate,
       inputType
     };
   }

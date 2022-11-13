@@ -14,17 +14,34 @@ import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
 
 const store = useCeoScheduleStore();
-console.log(store);
 const id = ref(0);
-let colorIndex = Math.floor(Math.random() * 6)
-let   colorList = ["yellow","beige","orange","purple","blue", "pink", "green"]
+let colorIndex = Math.floor(Math.random() * 6);
+let colorList = [
+  "yellow",
+  "orange",
+  "purple",
+  "blue",
+  "pink",
+  "green",
+];
+const eventList = [];
+let eventsData = store.scheduleAddForm.scheduleDateDtoList;
+if (eventsData.length > 0) {
+  eventList.push({
+    title: store.scheduleAddForm.title,
+    start: eventsData[0].workingDay,
+    end: eventsData[eventsData.length - 1].workingDay,backgroundColor: "var(--color-" + colorList[colorIndex] + "-1)",
+      borderColor: "var(--color-" + colorList[colorIndex] + "-2)",
+  });
+}
+
 const options = reactive({
   plugins: [dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin],
   initialView: "dayGridMonth",
   headerToolbar: {
     left: "prev",
     center: "title",
-    right: "next today"
+    right: "next today",
   },
   editable: true,
   selectable: true,
@@ -34,15 +51,15 @@ const options = reactive({
   longPressDelay: 300,
   eventLongPressDelay: 300,
   selectLongPressDelay: 300,
-  select: arg => {
+  events: eventList,
+  select: (arg) => {
     id.value = id.value + 1;
     const cal = arg.view.calendar;
     // cal.unselect();
     let title = "?";
-      // title = arg.startStr.slice(-5);
+    // title = arg.startStr.slice(-5);
 
-    colorIndex = Math.floor(Math.random() * 6)
-    
+    colorIndex = Math.floor(Math.random() * 6);
     cal.addEvent({
       id: `${id.value}`,
       title: title,
@@ -53,25 +70,40 @@ const options = reactive({
       borderColor: "var(--color-" + colorList[colorIndex] + "-2)",
     });
   },
-  eventClick: () => {
+  eventClick: (e) => {
+    let end = e.event.end;
+    for (let str = e.event.start; str < end; str.setDate(str.getDate() + 1)) {
+      const scheduleDateDto = {
+        endTime: "00:00",
+        startTime: "00:00",
+        workingDay: null,
+      };
+      scheduleDateDto.workingDay = `${str.getFullYear()}-${str.getMonth()}-${str.getDate()}`;
+
+      store.scheduleAddForm.scheduleDateDtoList.push(scheduleDateDto);
+      console.log(scheduleDateDto.workingDay);
+    }
+    store.scheduleAddForm.title = e.event.title;
+    // console.log(e.event.title);
+
     router.push("/scheduleupdate");
   },
-  eventMouseEnter: arg => {
-    console.log(arg);
-    console.log(arg.event.target);
-  },
+  // eventMouseEnter: arg => {
+  //   console.log('이건가' + arg);
+  //   console.log(arg.event.taget);
+  // },
 
-  titleFormat: function(date) {
+  titleFormat: function (date) {
     return `${date.date.year}년 ${date.date.month + 1}월`;
   },
-  events: [],
+
   eventTimeFormat: {
     // like '14:30:00'
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
-    meridiem: false
-  }
+    meridiem: false,
+  },
 });
 </script>
 
