@@ -305,19 +305,20 @@ public class FoodTruckService {
 		String savedPath = fileDir + savedName;
 
 		// 파일 엔티티 생성
-		FileEntity file = FileEntity.builder()
+		FoodtruckImg file = FoodtruckImg.builder()
 			.orgNm(origName)
 			.savedNm(savedName)
 			.savedPath(savedPath)
+			.foodTruck(foodTruck.get())
 			.build();
 
 		// 실제로 로컬에 uuid를 파일명으로 저장
 		files.transferTo(new File(savedPath));
 
-		foodTruck.get().setFileEntity(file);
+		foodTruck.get().setFoodtruckImg(file);
 	}
 
-	public FileEntity getFile(int ceoId) {
+	public FoodtruckImg getFile(int ceoId) {
 		Optional<User> user = userRepository.findById(ceoId);
 		if(!user.isPresent()){
 			return null;
@@ -328,6 +329,6 @@ public class FoodTruckService {
 			return null;
 		}
 
-		return foodTruck.get().getFileEntity();
+		return foodTruck.get().getFoodtruckImg();
 	}
 }
