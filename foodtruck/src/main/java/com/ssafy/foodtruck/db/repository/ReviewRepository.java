@@ -3,7 +3,6 @@ package com.ssafy.foodtruck.db.repository;
 import com.ssafy.foodtruck.db.entity.Orders;
 import com.ssafy.foodtruck.db.entity.Review;
 import com.ssafy.foodtruck.db.entity.User;
-import com.ssafy.foodtruck.dto.response.GetFoodTruckReviewRes;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

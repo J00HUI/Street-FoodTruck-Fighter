@@ -1,9 +1,9 @@
 package com.ssafy.foodtruck.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ssafy.foodtruck.common.BaseResponseBody;
 import com.ssafy.foodtruck.db.entity.Category;
 import com.ssafy.foodtruck.db.entity.FoodTruck;
-import com.ssafy.foodtruck.db.entity.Menu;
 import com.ssafy.foodtruck.db.entity.Schedule;
 import com.ssafy.foodtruck.dto.MenuDto;
 import lombok.*;
@@ -18,7 +18,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class GetFoodTruckRes {
+public class GetFoodtruckRes extends BaseResponseBody {
 
 	private List<MenuDto> menuList = new ArrayList<>(); // 메뉴리스트
 
@@ -29,8 +29,6 @@ public class GetFoodTruckRes {
 	private String phone; //전화번호
 
 	private String description; //설명
-
-	private String src; //이미지
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private LocalDate workingDate;
@@ -45,7 +43,7 @@ public class GetFoodTruckRes {
 
 	private Double latitude; // 위도
 
-	private Double longtitue; // 경도
+	private Double longitude; // 경도
 
 	private String address; //주소
 
@@ -55,23 +53,31 @@ public class GetFoodTruckRes {
 
 	private Integer time; //예상시간
 
-	public static GetFoodTruckRes of(List<MenuDto> menuList, FoodTruck foodTruck, Schedule schedule, Double grade, Integer numberOfPeople, Integer time){
-		return new GetFoodTruckResBuilder()
-			.name(foodTruck.getName())
-			.category(foodTruck.getCategory())
-			.phone(foodTruck.getPhone())
-			.description(foodTruck.getDescription())
-			.workingDate(schedule.getWorkingDate())
-			.startTime(schedule.getStartTime())
-			.endTime(schedule.getEndTime())
-			.is_valid(schedule.getIsValid())
-			.latitude(schedule.getLatitude())
-			.longtitue(schedule.getLongitude())
-			.address(schedule.getAddress())
-			.grade(grade)
-			.numberOfPeople(numberOfPeople)
-			.time(time)
-			.menuList(menuList)
-			.build();
+	public static GetFoodtruckRes of(String messsage, List<MenuDto> menuList, FoodTruck foodTruck, Schedule schedule, Double grade, Integer numberOfPeople, Integer time){
+		GetFoodtruckRes res = new GetFoodtruckRes();
+		res.setMessage(messsage);
+		res.setMenuList(menuList);
+
+		res.setName(foodTruck.getName());
+		res.setCategory(foodTruck.getCategory());
+		res.setPhone(foodTruck.getPhone());
+		res.setDescription(foodTruck.getDescription());
+
+		if(schedule != null) {
+			res.setWorkingDate(schedule.getWorkingDate());
+			res.setStartTime(schedule.getStartTime());
+			res.setEndTime(schedule.getEndTime());
+			res.setIs_valid(schedule.getIsValid());
+			res.setLatitude(schedule.getLatitude());
+			res.setLongitude(schedule.getLongitude());
+			res.setAddress(schedule.getAddress());
+		} else {
+			res.setIs_valid(false);
+		}
+
+		res.setGrade(grade);
+		res.setNumberOfPeople(numberOfPeople);
+		res.setTime(time);
+		return res;
 	}
 }

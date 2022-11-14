@@ -1,7 +1,6 @@
 package com.ssafy.foodtruck.db.entity;
 
 
-import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReq;
 import com.ssafy.foodtruck.dto.request.UpdateScheduleReq;
 import com.sun.istack.NotNull;
 import lombok.*;

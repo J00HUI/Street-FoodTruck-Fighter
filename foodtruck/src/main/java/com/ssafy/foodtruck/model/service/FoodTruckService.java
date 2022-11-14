@@ -4,12 +4,12 @@ import com.ssafy.foodtruck.db.entity.*;
 import com.ssafy.foodtruck.db.repository.*;
 import com.ssafy.foodtruck.dto.MenuDto;
 import com.ssafy.foodtruck.dto.ScheduleDateDto;
-import com.ssafy.foodtruck.dto.request.GetNearFoodTruckReq;
-import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReq;
-import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReviewReq;
-import com.ssafy.foodtruck.dto.response.GetFoodTruckRes;
-import com.ssafy.foodtruck.dto.response.GetFoodTruckReviewRes;
-import com.ssafy.foodtruck.dto.response.GetNearFoodTruckRes;
+import com.ssafy.foodtruck.dto.request.GetNearFoodtruckReq;
+import com.ssafy.foodtruck.dto.request.RegisterFoodtruckReq;
+import com.ssafy.foodtruck.dto.request.RegisterFoodtruckReviewReq;
+import com.ssafy.foodtruck.dto.response.GetFoodtruckRes;
+import com.ssafy.foodtruck.dto.response.GetFoodtruckReviewRes;
+import com.ssafy.foodtruck.dto.response.GetNearFoodtruckRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import static com.ssafy.foodtruck.constant.FoodTruckConstant.*;
+import static com.ssafy.foodtruck.constant.FoodtruckConstant.*;
 
 @Service("foodTruckService")
 @RequiredArgsConstructor
@@ -32,21 +32,21 @@ public class FoodTruckService {
 
 	@Value("${file.dir}")
 	private String fileDir;
-	private final FoodTruckRepository foodTruckRepository;
+	private final FoodtruckRepository foodTruckRepository;
 	private final ScheduleRepository scheduleRepository;
 	private final MenuRepository menuRepository;
 	private final OrdersRepository ordersRepository;
 	private final ReviewRepository reviewRepository;
 	private final FileRepository fileRepository;
 	private final UserRepository userRepository;
+
 	// 푸드트럭 정보 조회
-	public GetFoodTruckRes getFoodTruck(Integer foodTruckId){
+	public GetFoodtruckRes getFoodTruck(Integer foodTruckId){
 
 		FoodTruck foodTruck = foodTruckRepository.findById(foodTruckId)
 			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE));
 
 		Schedule schedule = scheduleRepository.findScheduleByFoodTruckAndDate(foodTruckId).orElse(null);
-//		if(schedule == null) 오늘은 영업시간이 아닙니다.
 
 		List<Menu> findMenuList = menuRepository.findAllByFoodTruck(foodTruck);
 		List<MenuDto> menuList = new ArrayList<>();
@@ -63,12 +63,11 @@ public class FoodTruckService {
 		Integer numberOfPeople = 0;
 		Integer time = 0;
 
-//		return GetFoodTruckRes.of(menuList, foodTruck, grade, numberOfPeople, time);
-		return GetFoodTruckRes.of(menuList, foodTruck, schedule, grade, numberOfPeople, time);
+		return GetFoodtruckRes.of(GET_FOODTRUCK_SUCCESS, menuList, foodTruck, schedule, grade, numberOfPeople, time);
 	}
 
 	// 내 푸드트럭 등록
-	public void registerFoodTruck(RegisterFoodTruckReq registerFoodTruckReq, User user) throws IllegalAccessException {
+	public void registerFoodTruck(RegisterFoodtruckReq registerFoodTruckReq, User user) throws IllegalAccessException {
 		// 중복된 푸드트럭이 등록되었는지 검사
 		FoodTruck foodTruckUser = foodTruckRepository.findByUser(user).orElse(null);
 
@@ -104,7 +103,7 @@ public class FoodTruckService {
 			final Schedule schedule = Schedule.builder()
 				.foodTruck(savedFoodTruck)
 				.latitude(registerFoodTruckReq.getLatitude())
-				.longitude(registerFoodTruckReq.getLongtitue())
+				.longitude(registerFoodTruckReq.getLongitude())
 				.address(registerFoodTruckReq.getAddress())
 				.workingDate(LocalDate.parse(dateDto.getWorkingDay(), DateTimeFormatter.ISO_DATE))
 				.startTime(LocalDateTime.parse(dateDto.getWorkingDay() + " " + dateDto.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
@@ -116,7 +115,7 @@ public class FoodTruckService {
 	}
 
 	// 푸드트럭 수정
-	public void updateFoodTruck(RegisterFoodTruckReq registerFoodTruckReq, User user) throws IllegalAccessException {
+	public void updateFoodTruck(RegisterFoodtruckReq registerFoodTruckReq, User user) throws IllegalAccessException {
 		// 푸드트럭 찾기
 		FoodTruck foodTruck = foodTruckRepository.findByUser(user)
 			.orElseThrow(NoSuchElementException::new);
@@ -159,7 +158,7 @@ public class FoodTruckService {
 	}
 
 	// 푸드트럭 리뷰 등록
-	public void registerFoodTruckReview(RegisterFoodTruckReviewReq registerFoodTruckReviewReq, User user){
+	public void registerFoodTruckReview(RegisterFoodtruckReviewReq registerFoodTruckReviewReq, User user){
 		// 주문내역에서 찾음
 		Orders order = ordersRepository.findById(registerFoodTruckReviewReq.getOrdersId())
 			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_ORDERS_ERROR_MESSAGE));
@@ -176,14 +175,14 @@ public class FoodTruckService {
 	}
 
 	// 푸드트럭 리뷰 조회
-	public List<GetFoodTruckReviewRes> getFoodTruckReview(Integer foodTruckId){
+	public List<GetFoodtruckReviewRes> getFoodTruckReview(Integer foodTruckId){
 		List<Review> findReviewList = reviewRepository.findAllByFoodTruckId(foodTruckId);
-		List<GetFoodTruckReviewRes> reviewList = new ArrayList<>();
+		List<GetFoodtruckReviewRes> reviewList = new ArrayList<>();
 		System.out.println("리뷰 갯수 : " + findReviewList.size());
 
 		for(Review review : findReviewList){
 
-			reviewList.add(GetFoodTruckReviewRes.builder()
+			reviewList.add(GetFoodtruckReviewRes.builder()
 					.id(review.getId())
 					.userId(review.getUser().getId())
 					.ordersId(review.getOrders().getId())
@@ -197,12 +196,12 @@ public class FoodTruckService {
 	}
 
 	// 현재 위치와 가까운 푸드트럭 조회
-	public List<GetNearFoodTruckRes> getNearFoodTruck(GetNearFoodTruckReq getNearFoodTruckReq){
+	public List<GetNearFoodtruckRes> getNearFoodTruck(GetNearFoodtruckReq getNearFoodTruckReq){
 		List<Schedule> scheduleList = scheduleRepository.findScheduleNearBy(getNearFoodTruckReq.getLat(),getNearFoodTruckReq.getLng());
 		if(scheduleList.isEmpty())
 			throw new IllegalArgumentException("스케줄을 찾을 수 없습니다.");
 
-		List<GetNearFoodTruckRes> foodTruckList = new ArrayList<>();
+		List<GetNearFoodtruckRes> foodTruckList = new ArrayList<>();
 		for(Schedule schedule : scheduleList) {
 			// 카테고리에 해당하는 푸드트럭
 			FoodTruck foodTruck = schedule.getFoodTruck();
@@ -228,18 +227,18 @@ public class FoodTruckService {
 			}
 			grade /= findReviewList.size();
 
-			foodTruckList.add(GetNearFoodTruckRes.of(menuDtoList, foodTruck, schedule, grade));
+			foodTruckList.add(GetNearFoodtruckRes.of(menuDtoList, foodTruck, schedule, grade));
 		}
 
 		return foodTruckList;
 	}
 
 	// 푸드트럭 검색
-	public List<GetNearFoodTruckRes> searchFoodTruck(String keyword){
+	public List<GetNearFoodtruckRes> searchFoodTruck(String keyword){
 		// 키워드에 해당하는 푸드트럭 ID List 구하기
 		List<Integer> foodTruckIdList = foodTruckRepository.findAllByKeyword(keyword);
 
-		List<GetNearFoodTruckRes> foodTruckList = new ArrayList<>();
+		List<GetNearFoodtruckRes> foodTruckList = new ArrayList<>();
 
 		// 푸드트럭 ID 에 해당하는 푸드트럭 정보들 리턴
 		for(Integer foodTruckId : foodTruckIdList){
@@ -262,7 +261,7 @@ public class FoodTruckService {
 			Schedule schedule = scheduleRepository.findScheduleByFoodTruckAndDate(foodTruckId).orElse(null);
 //			if(schedule == null) 오늘은 운영시간이 아닙니다. 테스트 케이스 작성
 
-			foodTruckList.add(GetNearFoodTruckRes.of(menuDtoList, foodTruck, schedule, grade));
+			foodTruckList.add(GetNearFoodtruckRes.of(menuDtoList, foodTruck, schedule, grade));
 		}
 		return foodTruckList;
 	}

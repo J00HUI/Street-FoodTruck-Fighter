@@ -1,9 +1,7 @@
 package com.ssafy.foodtruck.controller;
 
-import com.auth0.jwt.JWT;
 import com.ssafy.foodtruck.db.entity.FoodTruck;
 import com.ssafy.foodtruck.db.entity.User;
-import com.ssafy.foodtruck.db.entity.UserType;
 import com.ssafy.foodtruck.dto.JWTokenDto;
 import com.ssafy.foodtruck.dto.request.UserReq;
 import com.ssafy.foodtruck.dto.response.LoginCeoRes;
@@ -27,7 +25,7 @@ import io.swagger.annotations.ApiResponse;
 
 import javax.servlet.http.HttpServletResponse;
 
-import static com.ssafy.foodtruck.constant.FoodTruckConstant.NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE;
+import static com.ssafy.foodtruck.constant.FoodtruckConstant.NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE;
 import static com.ssafy.foodtruck.constant.UserConstant.*;
 
 /**
@@ -61,16 +59,17 @@ public class AuthController {
 				FoodTruck foodTruck = foodTruckService.getFoodTruckByUser(ceoUser);
 
 				if(foodTruck != null){
-					return ResponseEntity.ok().body(LoginCeoRes.of(LOGIN_SUCCESS, jwt, foodTruck.getId()));
+					return new ResponseEntity<>(LoginCeoRes.of(LOGIN_SUCCESS, jwt, foodTruck.getId()), HttpStatus.OK);
 				} else {
-					return ResponseEntity.ok().body(JWTokenDto.of(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE, jwt));
+					return new ResponseEntity<>(JWTokenDto.of(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE, jwt), HttpStatus.OK);
 				}
 			} else {
-				return ResponseEntity.ok().body(JWTokenDto.of(LOGIN_SUCCESS, jwt));
+				return new ResponseEntity<>(JWTokenDto.of(LOGIN_SUCCESS, jwt), HttpStatus.OK);
 			}
 		} catch (InvalidEmailAndPasswordException ex){
-			return ResponseEntity.status(401).body(JWTokenDto.of(INVALIDE_EMAIL_AND_PASSWORD, null));
+			return new ResponseEntity<>(JWTokenDto.of(INVALIDE_EMAIL_AND_PASSWORD, null), HttpStatus.NOT_ACCEPTABLE);
 		}
+
 //        ResponseCookie cookie = ResponseCookie.from("refresh-token", jwt.getRefreshToken())
 //                .maxAge(60*60*24*15)
 //                .httpOnly(true)

@@ -1,6 +1,6 @@
 package com.ssafy.foodtruck.db.entity;
 
-import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReq;
+import com.ssafy.foodtruck.dto.request.RegisterFoodtruckReq;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.checkerframework.common.aliasing.qual.Unique;
@@ -49,7 +49,7 @@ public class FoodTruck extends BaseEntity {
 	@OneToMany(mappedBy = "foodTruck", cascade = CascadeType.ALL)
 	private List<Orders> ordersList = new ArrayList<>();
 
-	public void update(final RegisterFoodTruckReq registerFoodTruckReq) {
+	public void update(final RegisterFoodtruckReq registerFoodTruckReq) {
 		this.name = registerFoodTruckReq.getName();
 		this.category = registerFoodTruckReq.getCategory();
 		this.phone = registerFoodTruckReq.getPhone();
