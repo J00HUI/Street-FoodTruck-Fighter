@@ -1,12 +1,9 @@
 package com.ssafy.foodtruck.controller;
 
-import com.ssafy.foodtruck.common.Response;
 import com.ssafy.foodtruck.db.entity.User;
 import com.ssafy.foodtruck.dto.request.CreateScheduleReq;
-import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReq;
 import com.ssafy.foodtruck.dto.request.UpdateScheduleReq;
 import com.ssafy.foodtruck.dto.response.GetScheduleRes;
-import com.ssafy.foodtruck.dto.response.OrdersListByFoodtruckRes;
 import com.ssafy.foodtruck.model.service.ScheduleService;
 import com.ssafy.foodtruck.model.service.UserService;
 import com.ssafy.foodtruck.util.JwtTokenUtil;
@@ -19,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.ssafy.foodtruck.constant.FoodTruckConstant.GET_FOODTRUCK_SUCCESS;
 import static com.ssafy.foodtruck.constant.ScheduleConstant.*;
 
 /**
