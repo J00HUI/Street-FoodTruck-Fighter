@@ -53,26 +53,16 @@ public class AuthController {
 			if (ceoUser != null) {
 				FoodTruck foodTruck = foodTruckService.getFoodTruckByUser(ceoUser);
 
-<<<<<<< foodtruck/src/main/java/com/ssafy/foodtruck/controller/AuthController.java
 				if(foodTruck != null){
 					return new ResponseEntity<>(LoginCeoRes.of(LOGIN_SUCCESS, jwt, foodTruck.getId()), HttpStatus.OK);
-=======
-				if (foodTruck != null) {
-					return ResponseEntity.ok().body(LoginCeoRes.of(LOGIN_SUCCESS, jwt, foodTruck.getId()));
->>>>>>> foodtruck/src/main/java/com/ssafy/foodtruck/controller/AuthController.java
 				} else {
 					return new ResponseEntity<>(JWTokenDto.of(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE, jwt), HttpStatus.OK);
 				}
 			} else {
 				return new ResponseEntity<>(JWTokenDto.of(LOGIN_SUCCESS, jwt), HttpStatus.OK);
 			}
-<<<<<<< foodtruck/src/main/java/com/ssafy/foodtruck/controller/AuthController.java
 		} catch (InvalidEmailAndPasswordException ex){
 			return new ResponseEntity<>(JWTokenDto.of(INVALIDE_EMAIL_AND_PASSWORD, null), HttpStatus.NOT_ACCEPTABLE);
-=======
-		} catch (InvalidEmailAndPasswordException ex) {
-			return ResponseEntity.status(401).body(JWTokenDto.of(INVALIDE_EMAIL_AND_PASSWORD, null));
->>>>>>> foodtruck/src/main/java/com/ssafy/foodtruck/controller/AuthController.java
 		}
 
 //        ResponseCookie cookie = ResponseCookie.from("refresh-token", jwt.getRefreshToken())
