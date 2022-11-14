@@ -316,7 +316,6 @@ public class FoodTruckService {
 			.build();
 
 		// 실제로 로컬에 uuid를 파일명으로 저장
-		System.out.println(savedPath);
 		files.transferTo(new File(savedPath));
 
 		foodTruck.get().setFileEntity(file);
