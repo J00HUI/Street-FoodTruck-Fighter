@@ -79,8 +79,13 @@ public class FoodTruckController {
 	@ApiOperation(value = "푸드트럭 등록", notes = "<strong>내 푸드트럭을 등록한다.</strong>")
 	public ResponseEntity<?> registerFoodTruck(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken, @RequestBody @ApiParam(value="푸드트럭 정보", required = true) RegisterFoodTruckReq registerFoodTruckReq) throws IllegalAccessException {
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
-		foodTruckService.registerFoodTruck(registerFoodTruckReq, user);
-		return new ResponseEntity<>(REGISTER_FOODTRUCK_SUCCESS, HttpStatus.CREATED);
+
+		try {
+			foodTruckService.registerFoodTruck(registerFoodTruckReq, user);
+			return new ResponseEntity<>(REGISTER_FOODTRUCK_SUCCESS, HttpStatus.CREATED);
+		} catch (IllegalAccessException ex) {
+			return new ResponseEntity<>(DUPLICATED_FOODTRUCK_ERROR_MESSAGE, HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	// 푸드 트럭 수정
