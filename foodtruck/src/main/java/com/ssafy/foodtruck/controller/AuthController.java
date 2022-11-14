@@ -61,15 +61,15 @@ public class AuthController {
 				FoodTruck foodTruck = foodTruckService.getFoodTruckByUser(ceoUser);
 
 				if(foodTruck != null){
-					return ResponseEntity.ok().body(LoginCeoRes.of(LOGIN_SUCCESS, jwt, foodTruck.getId()));
+					return new ResponseEntity<>(LoginCeoRes.of(LOGIN_SUCCESS, jwt, foodTruck.getId()), HttpStatus.OK);
 				} else {
-					return ResponseEntity.ok().body(JWTokenDto.of(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE, jwt));
+					return new ResponseEntity<>(JWTokenDto.of(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE, jwt), HttpStatus.OK);
 				}
 			} else {
-				return ResponseEntity.ok().body(JWTokenDto.of(LOGIN_SUCCESS, jwt));
+				return new ResponseEntity<>(JWTokenDto.of(LOGIN_SUCCESS, jwt), HttpStatus.OK);
 			}
 		} catch (InvalidEmailAndPasswordException ex){
-			return ResponseEntity.status(401).body(JWTokenDto.of(INVALIDE_EMAIL_AND_PASSWORD, null));
+			return new ResponseEntity<>(JWTokenDto.of(INVALIDE_EMAIL_AND_PASSWORD, null), HttpStatus.NOT_ACCEPTABLE);
 		}
 //        ResponseCookie cookie = ResponseCookie.from("refresh-token", jwt.getRefreshToken())
 //                .maxAge(60*60*24*15)

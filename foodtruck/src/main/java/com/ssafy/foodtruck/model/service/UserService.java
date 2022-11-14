@@ -38,6 +38,12 @@ public class UserService {
 //    private final RedisUtil redisUtil;
 
     public void createUser(UserReq userDtoReq) {
+		// 아이디 중복 검사
+		User user = userRepository.findByEmail(userDtoReq.getEmail()).orElse(null);
+		if(user != null){
+			throw new ExistingEmailException();
+		}
+
         userRepository.save(User.builder()
                         .email(userDtoReq.getEmail())
                         .password(passwordEncoder.encode(userDtoReq.getPassword()))
