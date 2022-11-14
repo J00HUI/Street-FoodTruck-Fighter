@@ -181,7 +181,6 @@ public class FoodTruckService {
 		System.out.println("리뷰 갯수 : " + findReviewList.size());
 
 		for(Review review : findReviewList){
-
 			reviewList.add(GetFoodtruckReviewRes.builder()
 					.id(review.getId())
 					.userId(review.getUser().getId())
