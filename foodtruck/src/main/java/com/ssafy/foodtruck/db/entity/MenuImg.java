@@ -19,6 +19,6 @@ public class MenuImg extends BaseEntity{
 
 	private String savedPath;
 
-	@OneToOne(mappedBy = "menuImg", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "menuImg")
 	private Menu menu;
 }

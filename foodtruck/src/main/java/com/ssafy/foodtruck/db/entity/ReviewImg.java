@@ -19,6 +19,6 @@ public class ReviewImg extends BaseEntity {
 
 	private String savedPath;
 
-	@OneToOne(mappedBy = "reviewImg", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "reviewImg")
 	private Review review;
 }
