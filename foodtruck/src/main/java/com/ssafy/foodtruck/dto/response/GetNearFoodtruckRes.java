@@ -41,7 +41,7 @@ public class GetNearFoodtruckRes {
 	private Double grade; //평점
 
 	public static GetNearFoodtruckRes of(List<MenuDto> menuList, FoodTruck foodTruck, Schedule schedule, Double grade){
-		return new GetNearFoodTruckResBuilder()
+		return GetNearFoodtruckRes.builder()
 			.foodtruckId(foodTruck.getId())
 			.menuList(menuList)
 			.name(foodTruck.getName())
