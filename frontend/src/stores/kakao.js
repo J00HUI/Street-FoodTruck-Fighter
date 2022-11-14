@@ -167,7 +167,8 @@ export const useKakaoStore = defineStore("Kakao", {
         });
     },
     setHeaderAddress() {
-      const initMap = () => {
+      let mapCenter = this.mapCenter;
+      const initPosition = () => {
         if (navigator.geolocation) {
           /* global kakao */
           navigator.geolocation.getCurrentPosition(function (position) {
@@ -200,15 +201,17 @@ export const useKakaoStore = defineStore("Kakao", {
         }
       };
       if (window.kakao && window.kakao.maps) {
-        initMap();
+        initPosition();
+        console.log('if')
       } else {
+        console.log('else')
         const script = document.createElement("script");
-        script.onload = () => kakao.maps.load(initMap);
+        script.onload = () => kakao.maps.load(initPosition);
         script.src =
-          "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=44e203a985e2bc845fbbde8390a4fc5b&libraries=clusterer&libraries=services";
+          "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=44e203a985e2bc845fbbde8390a4fc5b&libraries=services,clusterer";
         document.head.appendChild(script);
       }
-      let mapCenter = this.mapCenter;
+
     },
   },
 });

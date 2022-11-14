@@ -4,13 +4,11 @@ import { defineStore } from "pinia";
 
 export const useCeoScheduleStore = defineStore("CeoSchedule", {
   state: () => {
-
     const scheduleAddForm = {
       address: null,
       latitude: null,
       longitude: null,
-      scheduleDateDtoList: [{endTime:"00:00",startTime:"00:00",workingDay:"2022-11-15"},
-      {endTime:"00:00",startTime:"00:00",workingDay:"2022-11-20"}
+      scheduleDateDtoList: [
       ],
       title: "string"
     }

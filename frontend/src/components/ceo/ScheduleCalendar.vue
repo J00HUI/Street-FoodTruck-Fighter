@@ -79,13 +79,10 @@ const options = reactive({
       start: arg.start,
       end: arg.end,
       allDay: true,
-      // backgroundColor: "var(--color-" + colorList[colorIndex] + "-1)",
-      // borderColor: "var(--color-" + colorList[colorIndex] + "-2)",
-      // textColor: "var(--color-" + colorList[colorIndex] + "-2)",
-      backgroundColor: backgroundColor[colorIndex],
-    borderColor: borderColor[colorIndex],
-    textColor: borderColor[colorIndex]
 
+      backgroundColor: backgroundColor[colorIndex],
+      borderColor: borderColor[colorIndex],
+      textColor: borderColor[colorIndex]
     });
   },
   eventClick: e => {
@@ -102,12 +99,11 @@ const options = reactive({
       console.log(scheduleDateDto.workingDay);
     }
     store.scheduleAddForm.title = e.event.title;
-    // console.log(e.event.title);
 
     router.push("/scheduleupdate");
   },
   // eventMouseEnter: arg => {
-  //   console.log('이건가' + arg);
+
   //   console.log(arg.event.taget);
   // },
 

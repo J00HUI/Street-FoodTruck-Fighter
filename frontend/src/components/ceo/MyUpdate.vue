@@ -22,7 +22,7 @@
     />
     <input
       type="text"
-      v-model="kakaoStore.ceoMyData.address"
+      v-model="myStore.positionData.address"
       @focus="inputType"
       style="padding:0px"
       placeholder="위치"
