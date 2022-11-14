@@ -63,7 +63,9 @@ public class FoodTruckService {
 		Integer numberOfPeople = 0;
 		Integer time = 0;
 
-		return GetFoodtruckRes.of(GET_FOODTRUCK_SUCCESS, menuList, foodTruck, schedule, grade, numberOfPeople, time);
+		FoodtruckImg foodtruckImg = foodTruck.getFoodtruckImg();
+
+		return GetFoodtruckRes.of(GET_FOODTRUCK_SUCCESS, menuList, foodTruck, schedule, grade, numberOfPeople, time, foodtruckImg);
 	}
 
 	// 내 푸드트럭 등록
@@ -226,7 +228,9 @@ public class FoodTruckService {
 			}
 			grade /= findReviewList.size();
 
-			foodTruckList.add(GetNearFoodtruckRes.of(menuDtoList, foodTruck, schedule, grade));
+			FoodtruckImg foodtruckImg = foodTruck.getFoodtruckImg();
+
+			foodTruckList.add(GetNearFoodtruckRes.of(menuDtoList, foodTruck, schedule, grade, foodtruckImg));
 		}
 
 		return foodTruckList;
@@ -260,7 +264,9 @@ public class FoodTruckService {
 			Schedule schedule = scheduleRepository.findScheduleByFoodTruckAndDate(foodTruckId).orElse(null);
 //			if(schedule == null) 오늘은 운영시간이 아닙니다. 테스트 케이스 작성
 
-			foodTruckList.add(GetNearFoodtruckRes.of(menuDtoList, foodTruck, schedule, grade));
+			FoodtruckImg foodtruckImg = foodTruck.getFoodtruckImg();
+
+			foodTruckList.add(GetNearFoodtruckRes.of(menuDtoList, foodTruck, schedule, grade, foodtruckImg));
 		}
 		return foodTruckList;
 	}
