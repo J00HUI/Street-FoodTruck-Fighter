@@ -37,7 +37,7 @@ public class FoodTruckService {
 	private final MenuRepository menuRepository;
 	private final OrdersRepository ordersRepository;
 	private final ReviewRepository reviewRepository;
-	private final FileRepository fileRepository;
+	private final FoodtruckImgRepository foodtruckImgRepository;
 	private final UserRepository userRepository;
 
 	// 푸드트럭 정보 조회
