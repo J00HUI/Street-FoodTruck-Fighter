@@ -1,5 +1,6 @@
 package com.ssafy.foodtruck.dto.response;
 
+import com.ssafy.foodtruck.common.BaseResponseBody;
 import com.ssafy.foodtruck.util.JWToken;
 import lombok.*;
 
@@ -8,18 +9,18 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class LoginCeoRes {
+public class LoginCeoRes extends BaseResponseBody {
 	private static final String BEARER = "Bearer";
 
 	private String grantType;
 	private String accessToken;
 	private Integer foodTruckId;
 
-	public static LoginCeoRes of(JWToken token, Integer foodTruckId) {
+	public static LoginCeoRes of(String message, JWToken token, Integer foodTruckId) {
 		LoginCeoRes loginCeoRes = new LoginCeoRes();
-		loginCeoRes.accessToken = token.getAccessToken();
-		loginCeoRes.grantType = BEARER;
-		loginCeoRes.foodTruckId = foodTruckId;
+		loginCeoRes.setMessage(message);
+		loginCeoRes.setGrantType(BEARER);
+		loginCeoRes.setFoodTruckId(foodTruckId);
 		return loginCeoRes;
 	}
 }

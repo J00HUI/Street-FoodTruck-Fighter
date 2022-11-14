@@ -269,8 +269,7 @@ public class FoodTruckService {
 	}
 
 	public FoodTruck getFoodTruckByUser(User user){
-		return foodTruckRepository.findByUser(user)
-			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE));
+		return foodTruckRepository.findByUser(user).orElse(null);
 	}
 
 	@Transactional
