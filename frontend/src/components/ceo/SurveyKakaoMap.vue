@@ -30,7 +30,7 @@ export default {
         const script = document.createElement("script");
         script.onload = () => kakao.maps.load(initMap);
         script.src =
-          "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=44e203a985e2bc845fbbde8390a4fc5b&libraries=clusterer";
+          "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=44e203a985e2bc845fbbde8390a4fc5b&libraries=services,clusterer";
         document.head.appendChild(script);
       }
     });
@@ -58,12 +58,7 @@ export default {
         store.mapCenter["longitude"] = initMap.map.getCenter()['La']
         store.getSurvey()
       });
-      var clusterer = new kakao.maps.MarkerClusterer({
-        map: initMap.map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
-        averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
-        minLevel: 2, // 클러스터 할 최소 지도 레벨
-        disableClickZoom: true // 클러스터 마커를 클릭했을 때 지도가 확대되지 않도록 설정한다
-      });
+
       var imageSrc = null;
 
       var markers = $(store.surveyData).map(function(i, item) {
@@ -108,6 +103,12 @@ export default {
           ),
           image: markerImage
         });
+      });
+      var clusterer = new kakao.maps.MarkerClusterer({
+        map: initMap.map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
+        averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
+        minLevel: 2, // 클러스터 할 최소 지도 레벨
+        disableClickZoom: true // 클러스터 마커를 클릭했을 때 지도가 확대되지 않도록 설정한다
       });
       clusterer.addMarkers(markers);
 

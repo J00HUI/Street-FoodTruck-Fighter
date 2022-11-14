@@ -20,13 +20,13 @@ import { onMounted, watch } from "vue";
 export default {
   setup() {
     const store = useKakaoStore();
-    const scheduleStore = useCeoScheduleStore()
-    const myStore = useCeoMyStore()
+    const scheduleStore = useCeoScheduleStore();
+    const myStore = useCeoMyStore();
     let dataCase = null;
     if (store.searchTypeData.viewType === "schedule") {
       dataCase = scheduleStore.scheduleAddForm;
     } else if (store.searchTypeData.viewType === "my") {
-      dataCase = myStore.ceoMyData;
+      dataCase = myStore.positionData;
     }
     /* global kakao */
     onMounted(() => {
@@ -36,7 +36,7 @@ export default {
         const script = document.createElement("script");
         script.onload = () => kakao.maps.load(initMap);
         script.src =
-          "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=44e203a985e2bc845fbbde8390a4fc5b&libraries=clusterer&libraries=services";
+          "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=44e203a985e2bc845fbbde8390a4fc5b&libraries=clusterer,services";
         document.head.appendChild(script);
       }
     });
@@ -63,9 +63,13 @@ export default {
       store.searchTypeData.geocoder = geocoder;
       store.searchTypeData.map = initMap.map;
 
-      var marker = new kakao.maps.Marker(), // 클릭한 위치를 표시할 마커입니다
-        infowindow = new kakao.maps.InfoWindow({ zindex: 1 }); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
+      var marker = new kakao.maps.Marker();
+      var customOverlay = new kakao.maps.CustomOverlay({
+        content: "",
+        position: null
+      });
 
+      customOverlay.setMap(initMap.map);
       // 현재 지도 중심좌표로 주소를 검색해서 지도 좌측 상단에 표시합니다
       searchAddrFromCoords(initMap.map.getCenter(), displayCenterInfo);
 
@@ -74,23 +78,20 @@ export default {
         store.searchTypeData.searchType = "click";
         searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
           if (status === kakao.maps.services.Status.OK) {
-            var detailAddr = result[0].road_address
-              ? "<div>도로명주소 : " +
-                result[0].road_address.address_name +
-                "</div>"
-              : "";
-            detailAddr +=
-              "<div>지번 주소 : " + result[0].address.address_name + "</div>";
-              dataCase.latitude = mouseEvent.latLng['La']
-              dataCase.longitude = mouseEvent.latLng['Ma']
-
+            var detailAddr = 
+              "<div>" + result[0].address.address_name + "</div>";
+            dataCase.latitude = mouseEvent.latLng["La"];
+            dataCase.longitude = mouseEvent.latLng["Ma"];
 
             var content =
               '<div class="bAddr">' +
-              '<span class="title">법정동 주소정보</span>' +
               detailAddr +
               "</div>";
 
+            customOverlay.setContent(content);
+            customOverlay.setPosition(mouseEvent.latLng);
+            // 커스텀 오버레이를 지도에 표시합니다
+            customOverlay.setMap(initMap.map, marker);
             if (result[0].road_address !== null) {
               dataCase.address = result[0].road_address.address_name;
             } else if (result[0].address !== null) {
@@ -98,13 +99,6 @@ export default {
             } else {
               dataCase.address = "확인불가";
             }
-
-            marker.setPosition(mouseEvent.latLng);
-            marker.setMap(initMap.map);
-
-            // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
-            infowindow.setContent(content);
-            infowindow.open(initMap.map, marker);
           }
         });
       });
@@ -147,16 +141,16 @@ export default {
               if (status === kakao.maps.services.Status.OK) {
                 store.searchTypeData.iconType = true;
                 var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-                dataCase.latitude = result[0].y
-                dataCase.longitude = result[0].x
+                dataCase.latitude = result[0].y;
+                dataCase.longitude = result[0].x;
                 marker.setPosition(coords);
                 marker.setMap(initMap.map);
                 var content =
-                  '<div style="width:150px;text-align:center;padding:6px 0;">' +
+                  '<div class="bAddr">' +
                   dataCase.address +
                   "</div>";
-                infowindow.setContent(content);
-                infowindow.open(initMap.map, marker);
+                customOverlay.setContent(content);
+                customOverlay.setPosition(new kakao.maps.LatLng(result[0].y, result[0].x));
 
                 // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
                 initMap.map.setCenter(coords);
@@ -177,7 +171,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 #ceo-survey-map {
   box-sizing: border-box;
   width: 90%;
@@ -212,7 +206,41 @@ export default {
   font-size: 0.5rem;
 }
 .bAddr {
-  color: red;
+  font: 1rem "SCoreDream";
+  color: black;
+  background-color: rgba(255, 255, 255, 0.2);
   border-radius: 5px;
+}
+.label {
+  margin-bottom: 96px;
+}
+.label * {
+  display: inline-block;
+  vertical-align: top;
+}
+.label .left {
+  background: url("https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_l.png")
+    no-repeat;
+  display: inline-block;
+  height: 24px;
+  overflow: hidden;
+  vertical-align: top;
+  width: 7px;
+}
+.label .center {
+  background: url(https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_bg.png)
+    repeat-x;
+  display: inline-block;
+  height: 24px;
+  font-size: 12px;
+  line-height: 24px;
+}
+.label .right {
+  background: url("https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_r.png") -1px
+    0 no-repeat;
+  display: inline-block;
+  height: 24px;
+  overflow: hidden;
+  width: 6px;
 }
 </style>

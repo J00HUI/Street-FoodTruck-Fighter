@@ -6,10 +6,10 @@
     <img src="@/assets/markerIcon.svg" alt />
     <address style="margin:auto; font-style: normal;">{{kakaoStore.mapCenter.address}}</address>
     <router-link to>
-      <img src="@/assets/noticeIcon.svg" alt />
+      <img class="headerImg" src="@/assets/noticeIcon.svg" alt />
     </router-link>
     <router-link to="/myprofile">
-      <img src="@/assets/humanIcon.svg" style="margin-left:1rem;" alt />
+      <img class="headerImg" src="@/assets/humanIcon.svg" style="margin-left:1rem;" alt />
     </router-link>
   </header>
 </template>
@@ -20,10 +20,7 @@ export default {
   setup() {
     const kakaoStore = useKakaoStore();
 
-
-
-      kakaoStore.setHeaderAddress()
-
+    kakaoStore.setHeaderAddress();
 
     function goBack() {
       window.history.back();
@@ -52,5 +49,8 @@ button {
   padding: 5%;
   justify-content: center;
   align-items: center;
+}
+.headerImg {
+vertical-align: middle;
 }
 </style>
