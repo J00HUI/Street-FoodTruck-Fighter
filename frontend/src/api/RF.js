@@ -30,11 +30,11 @@ export default {
   },
   orders: {
     customer:() => HOST + 'order',
-    acceptOrders: (order_id) => HOST + ORDER + CEO + `${order_id}`,
+    acceptOrders: () => HOST + ORDER + CEO + 'accepted',
     getCustomerOrdersAll: () => HOST + ORDER + CUSTOMER + 'all',
     getCeoOrders: () => HOST + ORDER + 'ceo',
     getCeoOrdersAll: () => HOST + ORDER + CEO + 'all',
-    cancelOrders: () => HOST + 'order',
+    cancelOrders: (orderId) => HOST + ORDER + 'cancel/' + `${orderId}`,
   },
   schedule: {
     setSchedule:() => HOST + 'schedule',

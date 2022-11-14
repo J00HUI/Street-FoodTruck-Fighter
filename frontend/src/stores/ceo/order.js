@@ -10,7 +10,7 @@ export const useCeoOrderStore = defineStore("CeoOrder", {
   },
   actions: {
     getCeoOrders() {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("accessToken");
       axios({
         url: RF.orders.getCeoOrders(),
         method: "get",

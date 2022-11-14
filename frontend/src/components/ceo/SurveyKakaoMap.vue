@@ -3,21 +3,33 @@
 </template>
 
 <script>
+import hotdog from "@/assets/ceo/Icon/hotdog.svg";
+import coffee from "@/assets/ceo/Icon/coffee.svg";
+import hamburger from "@/assets/ceo/Icon/hamburger.svg"
+import sweetpotato from "@/assets/ceo/Icon/sweetpotato.svg";
+import icecream from "@/assets/ceo/Icon/icecream.svg";
+import waffle from "@/assets/ceo/Icon/waffle.svg";
+import steak from "@/assets/ceo/Icon/steak.svg";
+import sandwich from "@/assets/ceo/Icon/sandwich.svg";
+import skeweredfood from "@/assets/ceo/Icon/skeweredfood.svg";
+import ramen from "@/assets/ceo/Icon/ramen.svg";
+import pizza from "@/assets/ceo/Icon/pizza.svg";
+import drink from "@/assets/ceo/Icon/drink.svg";
 import { useKakaoStore } from "@/stores/kakao.js";
 import { onMounted } from "vue";
 import $ from "jquery";
-import hotdog from "@/assets/hotdog.svg";
-import coffee from "@/assets/coffee.svg";
-import hamburger from "@/assets/hamburger.svg";
-import sweetpotato from "@/assets/sweetpotato.svg";
-import icecream from "@/assets/icecream.svg";
-import waffle from "@/assets/waffle.svg";
-import steak from "@/assets/steak.svg";
-import sandwich from "@/assets/sandwich.svg";
-import skeweredfood from "@/assets/skeweredfood.svg";
-import ramen from "@/assets/ramen.svg";
-import pizza from "@/assets/pizza.svg";
-import drink from "@/assets/drink.svg";
+// import hotdog from "@/assets/hotdog.svg";
+// import coffee from "@/assets/coffee.svg";
+// import hamburger from "@/assets/hamburger.svg"
+// import sweetpotato from "@/assets/sweetpotato.svg";
+// import icecream from "@/assets/icecream.svg";
+// import waffle from "@/assets/waffle.svg";
+// import steak from "@/assets/steak.svg";
+// import sandwich from "@/assets/sandwich.svg";
+// import skeweredfood from "@/assets/skeweredfood.svg";
+// import ramen from "@/assets/ramen.svg";
+// import pizza from "@/assets/pizza.svg";
+// import drink from "@/assets/drink.svg";
 import xIcon from "@/assets/xicon.svg";
 export default {
   setup() {
@@ -88,7 +100,7 @@ export default {
           imageSrc = xIcon;
         }
 
-        var imageSize = new kakao.maps.Size(56, 64); // 마커이미지의 크기입니다
+        var imageSize = new kakao.maps.Size(32, 48); // 마커이미지의 크기입니다
 
         // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
 

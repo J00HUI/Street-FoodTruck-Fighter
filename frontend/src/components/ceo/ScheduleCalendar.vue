@@ -16,13 +16,15 @@ import interactionPlugin from "@fullcalendar/interaction";
 const store = useCeoScheduleStore();
 const id = ref(0);
 let colorIndex = Math.floor(Math.random() * 6);
-let colorList = [
-  "yellow",
-  "orange",
-  "purple",
-  "blue",
-  "pink",
-  "green",
+let colorList = ["yellow", "orange", "purple", "blue", "pink", "green"];
+// 초기화
+store.scheduleTypeData.dateIdx = 0;
+store.scheduleDateDtoList = [
+  {
+    endTime: "00:00",
+    startTime: "00:00",
+    workingDay: "전체",
+  },
 ];
 const eventList = [];
 let eventsData = store.scheduleAddForm.scheduleDateDtoList;
@@ -30,8 +32,9 @@ if (eventsData.length > 0) {
   eventList.push({
     title: store.scheduleAddForm.title,
     start: eventsData[0].workingDay,
-    end: eventsData[eventsData.length - 1].workingDay,backgroundColor: "var(--color-" + colorList[colorIndex] + "-1)",
-      borderColor: "var(--color-" + colorList[colorIndex] + "-2)",
+    end: eventsData[eventsData.length - 1].workingDay,
+    backgroundColor: "var(--color-" + colorList[colorIndex] + "-1)",
+    borderColor: "var(--color-" + colorList[colorIndex] + "-2)",
   });
 }
 
@@ -80,7 +83,7 @@ const options = reactive({
       };
       scheduleDateDto.workingDay = `${str.getFullYear()}-${str.getMonth()}-${str.getDate()}`;
 
-      store.scheduleAddForm.scheduleDateDtoList.push(scheduleDateDto);
+      store.scheduleDateDtoList.push(scheduleDateDto);
       console.log(scheduleDateDto.workingDay);
     }
     store.scheduleAddForm.title = e.event.title;

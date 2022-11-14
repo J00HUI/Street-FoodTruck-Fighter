@@ -1,20 +1,29 @@
 <template>
   <label for="truck-name" class="truckInput inputText">
     <img src="@/assets/ceo/ScheduleCalendarIcon.svg" alt />
-    <div>
+    <span style="width: 70%">
       <button @click="yesterday">
         <img src="@/assets/ceo/nav2Back.svg" alt />
       </button>
       <input
         class="scheduleDateInput"
-        max="3000-01-01"
-        type="date"
+        disabled
+        type="text"
+        v-model="
+          scheduleStore.scheduleDateDtoList[
+            scheduleStore.scheduleTypeData.dateIdx
+          ].workingDay
+        "
       />
       <!-- <time style="padding: 0 4%" v-model="scheduleStore.scheduleAddForm.date">{{}}</time> -->
-      <button>
-        <img style="transform:rotate(180deg);" src="@/assets/ceo/nav2Back.svg" alt />
+      <button @click="tomorrow">
+        <img
+          style="transform: rotate(180deg)"
+          src="@/assets/ceo/nav2Back.svg"
+          alt
+        />
       </button>
-    </div>
+    </span>
 
     <!-- <input id="truck-name" placeholder="상호명" type="text" /> -->
   </label>
@@ -25,11 +34,19 @@
         id="schedule-operating"
         title="open"
         type="time"
+        v-model="scheduleStore.scheduleDateDtoList[
+        scheduleStore.scheduleTypeData.dateIdx
+        ].startTime" 
       />
-    </div>~
+    </div>
+    ~
     <div class="timeInputBox">
       <span class="timePlaceHoleder">close</span>
-      <input style="padding-right:1rem" type="time" />
+      <input style="padding-right: 1rem" type="time"         v-model="
+          scheduleStore.scheduleDateDtoList[
+            scheduleStore.scheduleTypeData.dateIdx
+          ].endTime
+        " />
     </div>
   </label>
 
@@ -49,32 +66,53 @@
       type="text"
       v-model="scheduleStore.scheduleAddForm.address"
       @focus="inputType"
-      style="padding:0px"
+      style="padding: 0px"
       placeholder="위치"
     />
   </div>
 
   <kakaoMap class="truckInput inputMap"></kakaoMap>
-  <button type="button" @click="scheduleStore.setSchedule()" class="updateButton">수정</button>
+  <button
+    type="button"
+    @click="scheduleStore.setSchedule()"
+    class="updateButton"
+  >
+    수정
+  </button>
 </template>
 
 <script>
 import kakaoMap from "@/components/ceo/ScheduleKakaoMap.vue";
 import { useCeoScheduleStore } from "@/stores/ceo/schedule";
 import { useKakaoStore } from "@/stores/kakao";
+import router from "@/router";
 export default {
   components: {
-    kakaoMap
+    kakaoMap,
   },
   setup() {
     const scheduleStore = useCeoScheduleStore();
-    const kakaoStore = useKakaoStore()
-    kakaoStore.searchTypeData.viewType = "schedule";
-    function yesterday() {
-      console.log();
-      // scheduleStore.scheduleAddForm.date = scheduleStore.scheduleAddForm.date - 1
+    const kakaoStore = useKakaoStore();
+    if (scheduleStore.scheduleDateDtoList.length === 1) {
+      router.push("/schedule");
     }
 
+    kakaoStore.searchTypeData.viewType = "schedule";
+    function yesterday() {
+      if (scheduleStore.scheduleTypeData.dateIdx > 0) {
+        scheduleStore.scheduleTypeData.dateIdx =
+          scheduleStore.scheduleTypeData.dateIdx - 1;
+      }
+    }
+    function tomorrow() {
+      if (
+        scheduleStore.scheduleTypeData.dateIdx <
+        scheduleStore.scheduleDateDtoList.length - 1
+      ) {
+        scheduleStore.scheduleTypeData.dateIdx =
+          scheduleStore.scheduleTypeData.dateIdx + 1;
+      }
+    }
     function inputType() {
       kakaoStore.searchTypeData.searchType = "input";
     }
@@ -82,9 +120,10 @@ export default {
       scheduleStore,
       kakaoStore,
       yesterday,
-      inputType
+      tomorrow,
+      inputType,
     };
-  }
+  },
 };
 </script>
 
@@ -156,6 +195,8 @@ input[type="time"] {
   width: 70%;
 }
 .scheduleDateInput {
+  text-align: center;
+  width: 50%;
   padding: 0;
   vertical-align: sub;
 }
