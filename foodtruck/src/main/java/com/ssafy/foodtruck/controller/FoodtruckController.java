@@ -94,30 +94,6 @@ public class FoodtruckController {
 		return new ResponseEntity<>(UPDATE_FOODTRUCK_SUCCESS, HttpStatus.OK);
 	}
 
-	// 리뷰 등록
-	@PostMapping("/review")
-	@ApiOperation(value = "리뷰 등록", notes = "<strong>주문내역에 리뷰를 등록한다.</strong>")
-	public ResponseEntity<?> registerFoodTruckReview(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken, @RequestBody @ApiParam(value="리뷰 정보", required = true) RegisterFoodtruckReviewReq registerFoodTruckReviewReq){
-		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
-		foodTruckService.registerFoodTruckReview(registerFoodTruckReviewReq, user);
-		return new ResponseEntity<>(REGISTER_REVIEW_SUCCESS, HttpStatus.CREATED);
-	}
-
-	// 리뷰 조회
-	@GetMapping("/review/{foodtruck_id}")
-	@ApiOperation(value = "리뷰 조회", notes = "<strong>푸드트럭 ID에 해당하는 리뷰를 조회한다.</strong>")
-	@ApiResponses({
-		@ApiResponse(code = 200, message = "성공", response = GetFoodtruckReviewRes.class),
-		@ApiResponse(code = 401, message = "인증 실패"),
-		@ApiResponse(code = 404, message = "사용자 없음"),
-		@ApiResponse(code = 500, message = "서버 오류")
-	})
-	public ResponseEntity<?> getFoodTruckReview(@PathVariable("foodtruck_id") @ApiParam(value="푸드트럭 ID", required = true) Integer foodTruckId){
-		List<GetFoodtruckReviewRes> getFoodTruckReviewResList = foodTruckService.getFoodTruckReview(foodTruckId);
-		return new ResponseEntity<>(getFoodTruckReviewResList, HttpStatus.OK);
-//		return ResponseEntity.ok().body(getFoodTruckReviewResList);
-	}
-
 	// 지도와 가까운 푸드트럭 조회
 	@PostMapping("/near")
 	@ApiOperation(value = "사용자 위치로 푸드트럭 조회", notes = "<strong>현재 위치에서 가까운 푸드트럭를 조회한다.</strong>")
@@ -147,17 +123,16 @@ public class FoodtruckController {
 	}
 
 	@PostMapping("/upload")
-	public ResponseEntity<HttpStatus> saveFile(@RequestHeader("Authorization") String bearerToken, @RequestParam("file") MultipartFile file) throws IOException {
+	public ResponseEntity<HttpStatus> saveFoodtruckImg(@RequestHeader("Authorization") String bearerToken, @RequestParam("file") MultipartFile file) throws IOException {
 		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
-		foodTruckService.saveFile(ceoId, file);
+		foodTruckService.saveFoodtruckImg(ceoId, file);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@GetMapping("/images")
+	@GetMapping("/image/{foodtruckId}")
 	@ResponseBody
-	public ResponseEntity<UrlResource> getFile(@RequestHeader("Authorization") String bearerToken) throws IOException{
-		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
-		FoodtruckImg file = foodTruckService.getFile(ceoId);
+	public ResponseEntity<UrlResource> getFoodtruckImg(@PathVariable Integer foodtruckId) throws IOException{
+		FoodtruckImg file = foodTruckService.getFoodtruckImg(foodtruckId);
 		return new ResponseEntity<>(new UrlResource("file:" + file.getSavedPath()), HttpStatus.OK);
 	}
 
