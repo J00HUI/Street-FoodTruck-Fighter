@@ -22,7 +22,6 @@ import xIcon from "@/assets/xicon.svg";
 export default {
   setup() {
     const store = useKakaoStore();
-    store.getSurvey()
     /* global kakao */
     onMounted(() => {
       if (window.kakao && window.kakao.maps) {
@@ -48,10 +47,17 @@ export default {
             position.coords.latitude,
             position.coords.longitude
           );
+          store.sur;
           initMap.map.panTo(moveLatLng);
         });
       }
+
       initMap.map = new kakao.maps.Map(container, options);
+      kakao.maps.event.addListener(initMap.map, "dragend", function() {
+        store.mapCenter["latitude"] = initMap.map.getCenter()['Ma']
+        store.mapCenter["longitude"] = initMap.map.getCenter()['La']
+        store.getSurvey()
+      });
       var clusterer = new kakao.maps.MarkerClusterer({
         map: initMap.map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
         averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정

@@ -3,7 +3,7 @@
     <div>
       <div style="display:flex">
         <img src="@/assets/markerIcon.svg" style="width:2.5rem;" alt />
-        <address class="header__text-style">주소</address>
+        <address class="header__text-style">{{kakaoStore.mapCenter.address}}</address>
       </div>
 
       <div class="header__name-style">
@@ -29,7 +29,17 @@
 </template>
 
 <script>
-export default {};
+import { useKakaoStore } from '@/stores/kakao';
+export default {
+  
+  setup() {
+    const kakaoStore = useKakaoStore()
+    kakaoStore.setHeaderAddress()
+    return {
+      kakaoStore
+    }
+  }
+};
 </script>
 
 <style scoped>
