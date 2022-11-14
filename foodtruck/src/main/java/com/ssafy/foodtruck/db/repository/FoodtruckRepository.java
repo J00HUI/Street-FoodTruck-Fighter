@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 import java.util.List;
 
-public interface FoodTruckRepository extends JpaRepository<FoodTruck, Integer> {
+public interface FoodtruckRepository extends JpaRepository<FoodTruck, Integer> {
 	Optional<FoodTruck> findByUser(User user);
 
 	@Query(value = "select distinct f.id\n" +

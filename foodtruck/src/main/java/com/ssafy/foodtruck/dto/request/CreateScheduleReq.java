@@ -14,6 +14,6 @@ public class CreateScheduleReq {
 	private String title;
 	List<ScheduleDateDto> scheduleDateDtoList;
 	private Double latitude;
-	private Double longtitude;
+	private Double longitude;
 	private String address;
 }

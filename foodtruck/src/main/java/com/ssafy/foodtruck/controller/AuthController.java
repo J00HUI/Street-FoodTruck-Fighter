@@ -20,9 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 
-import static com.ssafy.foodtruck.constant.FoodTruckConstant.NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE;
-import static com.ssafy.foodtruck.constant.UserConstant.INVALIDE_EMAIL_AND_PASSWORD;
-import static com.ssafy.foodtruck.constant.UserConstant.LOGIN_SUCCESS;
+import static com.ssafy.foodtruck.constant.FoodtruckConstant.NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE;
+import static com.ssafy.foodtruck.constant.UserConstant.*;
 
 /**
  * 인증 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -54,17 +53,28 @@ public class AuthController {
 			if (ceoUser != null) {
 				FoodTruck foodTruck = foodTruckService.getFoodTruckByUser(ceoUser);
 
+<<<<<<< foodtruck/src/main/java/com/ssafy/foodtruck/controller/AuthController.java
+				if(foodTruck != null){
+					return new ResponseEntity<>(LoginCeoRes.of(LOGIN_SUCCESS, jwt, foodTruck.getId()), HttpStatus.OK);
+=======
 				if (foodTruck != null) {
 					return ResponseEntity.ok().body(LoginCeoRes.of(LOGIN_SUCCESS, jwt, foodTruck.getId()));
+>>>>>>> foodtruck/src/main/java/com/ssafy/foodtruck/controller/AuthController.java
 				} else {
-					return ResponseEntity.ok().body(JWTokenDto.of(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE, jwt));
+					return new ResponseEntity<>(JWTokenDto.of(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE, jwt), HttpStatus.OK);
 				}
 			} else {
-				return ResponseEntity.ok().body(JWTokenDto.of(LOGIN_SUCCESS, jwt));
+				return new ResponseEntity<>(JWTokenDto.of(LOGIN_SUCCESS, jwt), HttpStatus.OK);
 			}
+<<<<<<< foodtruck/src/main/java/com/ssafy/foodtruck/controller/AuthController.java
+		} catch (InvalidEmailAndPasswordException ex){
+			return new ResponseEntity<>(JWTokenDto.of(INVALIDE_EMAIL_AND_PASSWORD, null), HttpStatus.NOT_ACCEPTABLE);
+=======
 		} catch (InvalidEmailAndPasswordException ex) {
 			return ResponseEntity.status(401).body(JWTokenDto.of(INVALIDE_EMAIL_AND_PASSWORD, null));
+>>>>>>> foodtruck/src/main/java/com/ssafy/foodtruck/controller/AuthController.java
 		}
+
 //        ResponseCookie cookie = ResponseCookie.from("refresh-token", jwt.getRefreshToken())
 //                .maxAge(60*60*24*15)
 //                .httpOnly(true)

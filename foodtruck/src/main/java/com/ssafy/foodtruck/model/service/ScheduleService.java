@@ -3,7 +3,7 @@ package com.ssafy.foodtruck.model.service;
 import com.ssafy.foodtruck.db.entity.FoodTruck;
 import com.ssafy.foodtruck.db.entity.Schedule;
 import com.ssafy.foodtruck.db.entity.User;
-import com.ssafy.foodtruck.db.repository.FoodTruckRepository;
+import com.ssafy.foodtruck.db.repository.FoodtruckRepository;
 import com.ssafy.foodtruck.db.repository.ScheduleRepository;
 import com.ssafy.foodtruck.dto.ScheduleDateDto;
 import com.ssafy.foodtruck.dto.request.CreateScheduleReq;
@@ -19,7 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ssafy.foodtruck.constant.FoodTruckConstant.NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE;
+import static com.ssafy.foodtruck.constant.FoodtruckConstant.NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE;
 import static com.ssafy.foodtruck.constant.ScheduleConstant.NOT_FOUND_SCHEDULE_ERROR_MESSAGE;
 
 @Service("scheduleService")
@@ -27,7 +27,7 @@ import static com.ssafy.foodtruck.constant.ScheduleConstant.NOT_FOUND_SCHEDULE_E
 public class ScheduleService {
 
 	private final ScheduleRepository scheduleRepository;
-	private final FoodTruckRepository foodTruckRepository;
+	private final FoodtruckRepository foodTruckRepository;
 
 	// 일정 등록
 	public void createSchedule(CreateScheduleReq createScheduleReq, User user){
@@ -44,7 +44,7 @@ public class ScheduleService {
 				.groupId(nowGroupId)
 				.foodTruck(foodTruck)
 				.latitude(createScheduleReq.getLatitude())
-				.longitude(createScheduleReq.getLongtitude())
+				.longitude(createScheduleReq.getLongitude())
 				.address(createScheduleReq.getAddress())
 				.workingDate(LocalDate.parse(dateDto.getWorkingDay(), DateTimeFormatter.ISO_DATE))
 				.startTime(LocalDateTime.parse(dateDto.getWorkingDay() + " " + dateDto.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
