@@ -4,7 +4,7 @@
       <img src="@/assets/ceo/nav2Back.svg" alt />
     </button>
     <img src="@/assets/markerIcon.svg" alt />
-    <address style="margin:auto;   font-style: normal;">주소</address>
+    <address style="margin:auto; font-style: normal;">{{kakaoStore.mapCenter.address}}</address>
     <router-link to>
       <img src="@/assets/noticeIcon.svg" alt />
     </router-link>
@@ -15,12 +15,22 @@
 </template>
 
 <script>
+import { useKakaoStore } from "@/stores/kakao.js";
 export default {
   setup() {
+    const kakaoStore = useKakaoStore();
+
+
+
+      kakaoStore.setHeaderAddress()
+
+
     function goBack() {
       window.history.back();
     }
+
     return {
+      kakaoStore,
       goBack
     };
   }
