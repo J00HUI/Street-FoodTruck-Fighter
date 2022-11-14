@@ -29,4 +29,8 @@ public class Review extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "orders_id")
     private Orders orders;
+
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "review_img_id")
+	private ReviewImg reviewImg;
 }

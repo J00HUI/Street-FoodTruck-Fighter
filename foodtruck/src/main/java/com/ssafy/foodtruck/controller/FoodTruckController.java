@@ -1,6 +1,6 @@
 package com.ssafy.foodtruck.controller;
 
-import com.ssafy.foodtruck.db.entity.FileEntity;
+import com.ssafy.foodtruck.db.entity.FoodtruckImg;
 import com.ssafy.foodtruck.db.entity.User;
 import com.ssafy.foodtruck.db.repository.FoodTruckRepository;
 import com.ssafy.foodtruck.dto.request.GetNearFoodTruckReq;
@@ -150,7 +150,7 @@ public class FoodTruckController {
 	@ResponseBody
 	public ResponseEntity<UrlResource> getFile(@RequestHeader("Authorization") String bearerToken) throws IOException{
 		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
-		FileEntity file = foodTruckService.getFile(ceoId);
+		FoodtruckImg file = foodTruckService.getFile(ceoId);
 		return new ResponseEntity<>(new UrlResource("file:" + file.getSavedPath()), HttpStatus.OK);
 	}
 
