@@ -95,7 +95,7 @@ const options = reactive({
       };
       scheduleDateDto.workingDay = `${str.getFullYear()}-${str.getMonth()}-${str.getDate()}`;
 
-      store.scheduleAddForm.scheduleDateDtoList.push(scheduleDateDto);
+      store.scheduleDateDtoList.push(scheduleDateDto);
       console.log(scheduleDateDto.workingDay);
     }
     store.scheduleAddForm.title = e.event.title;
