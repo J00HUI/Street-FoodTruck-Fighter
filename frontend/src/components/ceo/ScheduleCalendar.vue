@@ -16,22 +16,35 @@ import interactionPlugin from "@fullcalendar/interaction";
 const store = useCeoScheduleStore();
 const id = ref(0);
 let colorIndex = Math.floor(Math.random() * 6);
-let colorList = [
-  "yellow",
-  "orange",
-  "purple",
-  "blue",
-  "pink",
-  "green",
+const backgroundColor = [
+  "rgba(255, 99, 132, 0.2)",
+  "rgba(54, 162, 235, 0.2)",
+  "rgba(255, 206, 86, 0.2)",
+  "rgba(75, 192, 192, 0.2)",
+  "rgba(153, 102, 255, 0.2)",
+  "rgba(255, 159, 64, 0.2)"
 ];
+const borderColor = [
+  "rgba(255,99,132,1)",
+  "rgba(54, 162, 235, 1)",
+  "rgba(255, 206, 86, 1)",
+  "rgba(75, 192, 192, 1)",
+  "rgba(153, 102, 255, 1)",
+  "rgba(255, 159, 64, 1)"
+];
+// let colorList = ["yellow", "orange", "purple", "blue", "pink", "green"];
 const eventList = [];
 let eventsData = store.scheduleAddForm.scheduleDateDtoList;
 if (eventsData.length > 0) {
   eventList.push({
     title: store.scheduleAddForm.title,
     start: eventsData[0].workingDay,
-    end: eventsData[eventsData.length - 1].workingDay,backgroundColor: "var(--color-" + colorList[colorIndex] + "-1)",
-      borderColor: "var(--color-" + colorList[colorIndex] + "-2)",
+    end: eventsData[eventsData.length - 1].workingDay,
+    // backgroundColor: "var(--color-" + colorList[colorIndex] + "-1)",
+    // borderColor: "var(--color-" + colorList[colorIndex] + "-2)"
+    backgroundColor: backgroundColor[colorIndex],
+    borderColor: borderColor[colorIndex],
+    textColor: borderColor[colorIndex]
   });
 }
 
@@ -41,7 +54,7 @@ const options = reactive({
   headerToolbar: {
     left: "prev",
     center: "title",
-    right: "next today",
+    right: "next today"
   },
   editable: true,
   selectable: true,
@@ -52,7 +65,7 @@ const options = reactive({
   eventLongPressDelay: 300,
   selectLongPressDelay: 300,
   events: eventList,
-  select: (arg) => {
+  select: arg => {
     id.value = id.value + 1;
     const cal = arg.view.calendar;
     // cal.unselect();
@@ -66,17 +79,22 @@ const options = reactive({
       start: arg.start,
       end: arg.end,
       allDay: true,
-      backgroundColor: "var(--color-" + colorList[colorIndex] + "-1)",
-      borderColor: "var(--color-" + colorList[colorIndex] + "-2)",
+      // backgroundColor: "var(--color-" + colorList[colorIndex] + "-1)",
+      // borderColor: "var(--color-" + colorList[colorIndex] + "-2)",
+      // textColor: "var(--color-" + colorList[colorIndex] + "-2)",
+      backgroundColor: backgroundColor[colorIndex],
+    borderColor: borderColor[colorIndex],
+    textColor: borderColor[colorIndex]
+
     });
   },
-  eventClick: (e) => {
+  eventClick: e => {
     let end = e.event.end;
     for (let str = e.event.start; str < end; str.setDate(str.getDate() + 1)) {
       const scheduleDateDto = {
         endTime: "00:00",
         startTime: "00:00",
-        workingDay: null,
+        workingDay: null
       };
       scheduleDateDto.workingDay = `${str.getFullYear()}-${str.getMonth()}-${str.getDate()}`;
 
@@ -93,7 +111,7 @@ const options = reactive({
   //   console.log(arg.event.taget);
   // },
 
-  titleFormat: function (date) {
+  titleFormat: function(date) {
     return `${date.date.year}년 ${date.date.month + 1}월`;
   },
 
@@ -102,8 +120,8 @@ const options = reactive({
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
-    meridiem: false,
-  },
+    meridiem: false
+  }
 });
 </script>
 

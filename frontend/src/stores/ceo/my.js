@@ -58,7 +58,7 @@ export const useCeoMyStore = defineStore("CeoMy", {
 
     },
     registerFoodTruck() {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("accessToken");
       axios({
         url: RF.foodtruck.registerFoodTruck(),
         method: "post",
@@ -67,12 +67,12 @@ export const useCeoMyStore = defineStore("CeoMy", {
         .then((res) => {
           alert(res.data);
         })
-        .catc((err) => {
+        .catch((err) => {
           console.log(err);
         });
     },
     updateFoodTruck() {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("accessToken");
       axios({
         url: RF.foodtruck.updateFoodTruck(),
         method: "put",
@@ -81,12 +81,12 @@ export const useCeoMyStore = defineStore("CeoMy", {
         .then((res) => {
           alert(res.data);
         })
-        .catc((err) => {
+        .catch((err) => {
           console.log(err);
         });
     },
     getMyFoodTruck() {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("accessToken");
       axios({
         url: RF.foodtruck.getFoodTruck(),
         method: "get",
@@ -95,12 +95,12 @@ export const useCeoMyStore = defineStore("CeoMy", {
         .then((res) => {
           alert(res.data);
         })
-        .catc((err) => {
+        .catch((err) => {
           console.log(err);
         });
     },
     getNearFoodTruck() {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("accessToken");
       axios({
         url: RF.foodtruck.getNearFoodTruck(),
         method: "get",
@@ -109,7 +109,7 @@ export const useCeoMyStore = defineStore("CeoMy", {
         .then((res) => {
           alert(res.data);
         })
-        .catc((err) => {
+        .catch((err) => {
           console.log(err);
         });
     },

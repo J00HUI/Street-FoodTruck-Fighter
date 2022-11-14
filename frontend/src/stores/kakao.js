@@ -49,30 +49,30 @@ export const useKakaoStore = defineStore("Kakao", {
   },
   actions: {
     setSurvey() {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("accessToken");
       axios({
-        url: RF.foodtruck.survey(),
+        url: RF.survey.survey(),
         method: "post",
-        headers: { Authorization: "Bearer" + token },
+        headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
           alert(res.data);
         })
-        .catc((err) => {
+        .catch((err) => {
           console.log(err);
         });
     },
     getSurvey() {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("accessToken");
       axios({
-        url: RF.foodtruck.survey(),
+        url: RF.survey.survey(),
         method: "get",
-        headers: { Authorization: "Bearer" + token },
+        headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
           alert(res.data);
         })
-        .catc((err) => {
+        .catch((err) => {
           console.log(err);
         });
     },

@@ -9,8 +9,24 @@ export const useCeoOrderStore = defineStore("CeoOrder", {
     }
   },
   actions: {
+    getNotAcceptedOrder() {
+      const token = localStorage.getItem("accessToken");
+      axios({
+        url: RF.orders.getNotAcceptedOrder(),
+        method: "get",
+        headers: { Authorization: "Bearer " + token },
+      })
+        .then((res) => {
+          console.log('-----허락안된 주문--------')
+          console.log(res.data)
+        })
+        .catch((err) => {
+          alert('허락안된 주문')
+          console.log(err)
+        });
+    },
     getCeoOrders() {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("accessToken");
       axios({
         url: RF.orders.getCeoOrders(),
         method: "get",
@@ -18,7 +34,7 @@ export const useCeoOrderStore = defineStore("CeoOrder", {
       })
         .then((res) => {
           console.log('-----현재주문--------')
-          console.log(res)
+          console.log(res.data)
         })
         .catch((err) => {
           alert('현재주문 가져오기')
@@ -34,7 +50,7 @@ export const useCeoOrderStore = defineStore("CeoOrder", {
       })
         .then((res) => {
           console.log('-----모든주문--------')
-          console.log(res)
+          console.log(res.data)
         })
         .catch(() => {
           alert('주문목록 가져오기 실패')

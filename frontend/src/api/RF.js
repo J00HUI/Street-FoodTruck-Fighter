@@ -26,15 +26,18 @@ export default {
     search: (keyword) => HOST + FOODTRUCK + 'search/' + `${keyword}`,
   },
   survey: {
-    survey: () => HOST + 'survey/'
+    survey: () => HOST + 'survey',
+    surveyFind: () => HOST + 'survey/' + 'find',
   },
   orders: {
     customer:() => HOST + 'order',
     acceptOrders: (order_id) => HOST + ORDER + CEO + `${order_id}`,
+    getNotAcceptedOrder: () => HOST + ORDER + CEO + 'not/' + 'accepted',
     getCustomerOrdersAll: () => HOST + ORDER + CUSTOMER + 'all',
-    getCeoOrders: () => HOST + ORDER + 'ceo',
+    getCeoOrders: () => HOST + ORDER + CEO + 'accepted',
     getCeoOrdersAll: () => HOST + ORDER + CEO + 'all',
-    cancelOrders: () => HOST + 'order',
+    cancelOrders: (order_id) => HOST + ORDER + 'cancel' + `${order_id}`,
+    finishOrder: (order_id) => HOST + ORDER + 'done/' + `${order_id}`,
   },
   schedule: {
     setSchedule:() => HOST + 'schedule',
