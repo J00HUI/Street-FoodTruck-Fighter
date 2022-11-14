@@ -1,6 +1,6 @@
 package com.ssafy.foodtruck.config;
 
-import com.ssafy.foodtruck.auth.FoodTruckUserDetailService;
+import com.ssafy.foodtruck.auth.FoodtruckUserDetailService;
 import com.ssafy.foodtruck.auth.JwtAuthenticationFilter;
 import com.ssafy.foodtruck.exception.handler.JwtAccessDeniedHandler;
 import com.ssafy.foodtruck.exception.handler.JwtAuthenticationEntryPoint;
@@ -33,7 +33,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    private final FoodTruckUserDetailService userDetailService;
+    private final FoodtruckUserDetailService userDetailService;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final JwtAccessDeniedHandler accessDeniedHandler;

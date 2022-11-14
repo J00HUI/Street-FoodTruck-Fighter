@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import static com.ssafy.foodtruck.constant.FoodTruckConstant.*;
+import static com.ssafy.foodtruck.constant.FoodtruckConstant.*;
 
 @Service("foodTruckService")
 @RequiredArgsConstructor
@@ -32,7 +32,7 @@ public class FoodTruckService {
 
 	@Value("${file.dir}")
 	private String fileDir;
-	private final FoodTruckRepository foodTruckRepository;
+	private final FoodtruckRepository foodTruckRepository;
 	private final ScheduleRepository scheduleRepository;
 	private final MenuRepository menuRepository;
 	private final OrdersRepository ordersRepository;

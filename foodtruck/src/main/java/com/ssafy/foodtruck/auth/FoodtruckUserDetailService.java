@@ -16,7 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class FoodTruckUserDetailService implements UserDetailsService {
+public class FoodtruckUserDetailService implements UserDetailsService {
 
     private final UserRepository userRepository;
 

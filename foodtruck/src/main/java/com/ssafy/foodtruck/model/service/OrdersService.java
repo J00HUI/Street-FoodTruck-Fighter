@@ -24,7 +24,7 @@ public class OrdersService {
 	private final OrdersMenuRepository ordersMenuRepository;
 	private final MenuRepository menuRepository;
 	private final UserRepository userRepository;
-	private final FoodTruckRepository foodTruckRepository;
+	private final FoodtruckRepository foodTruckRepository;
 	private final ReviewRepository reviewRepository;
 
 	@Transactional

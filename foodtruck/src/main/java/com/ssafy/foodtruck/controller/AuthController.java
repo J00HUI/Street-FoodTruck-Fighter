@@ -1,9 +1,7 @@
 package com.ssafy.foodtruck.controller;
 
-import com.auth0.jwt.JWT;
 import com.ssafy.foodtruck.db.entity.FoodTruck;
 import com.ssafy.foodtruck.db.entity.User;
-import com.ssafy.foodtruck.db.entity.UserType;
 import com.ssafy.foodtruck.dto.JWTokenDto;
 import com.ssafy.foodtruck.dto.request.UserReq;
 import com.ssafy.foodtruck.dto.response.LoginCeoRes;
@@ -27,7 +25,7 @@ import io.swagger.annotations.ApiResponse;
 
 import javax.servlet.http.HttpServletResponse;
 
-import static com.ssafy.foodtruck.constant.FoodTruckConstant.NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE;
+import static com.ssafy.foodtruck.constant.FoodtruckConstant.NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE;
 import static com.ssafy.foodtruck.constant.UserConstant.*;
 
 /**

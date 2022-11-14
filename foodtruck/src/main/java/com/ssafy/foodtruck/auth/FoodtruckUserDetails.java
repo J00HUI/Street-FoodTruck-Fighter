@@ -9,12 +9,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 현재 액세스 토큰으로 부터 인증된 유저의 부가 상세정보(활성화 여부, 만료, 롤 등) 정의.
  */
-public class FoodTruckUserDetails implements UserDetails {
+public class FoodtruckUserDetails implements UserDetails {
     @Autowired
     User user;
     boolean accountNonExpired;
@@ -23,7 +22,7 @@ public class FoodTruckUserDetails implements UserDetails {
     boolean enabled = false;
     List<? extends GrantedAuthority> roles = new ArrayList<>();
 
-    public FoodTruckUserDetails(User user) {
+    public FoodtruckUserDetails(User user) {
         super();
         this.user = user;
 //        List<? extends GrantedAuthority> authorities = user.getAuthorities().stream().map(auth -> new SimpleGrantedAuthority(auth.getAuthName()))

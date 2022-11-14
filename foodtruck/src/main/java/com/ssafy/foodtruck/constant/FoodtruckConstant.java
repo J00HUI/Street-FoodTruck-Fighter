@@ -1,6 +1,6 @@
 package com.ssafy.foodtruck.constant;
 
-public class FoodTruckConstant {
+public class FoodtruckConstant {
 	public static final String REGISTER_FOODTRUCK_SUCCESS = "푸드트럭 등록 성공";
 	public static final String REGISTER_REVIEW_SUCCESS = "리뷰 등록 성공";
 	public static final String GET_FOODTRUCK_SUCCESS = "푸드트럭 조회 성공";
