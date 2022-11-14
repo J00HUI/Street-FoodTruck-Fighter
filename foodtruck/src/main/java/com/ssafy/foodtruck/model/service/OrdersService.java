@@ -29,7 +29,7 @@ public class OrdersService {
 
 	@Transactional
 	public void registerOrders(RegisterOrdersReq registerOrdersReq, User user) {
-		FoodTruck foodTruck = foodTruckRepository.findById(registerOrdersReq.getFoodTruckId())
+		FoodTruck foodTruck = foodTruckRepository.findById(registerOrdersReq.getFoodtruckId())
 			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
 		final Orders orders = Orders.builder()
 			.user(user)
@@ -78,7 +78,7 @@ public class OrdersService {
 			currentOrdersHistoryResList.add(
 				CurrentOrdersHistoryRes.builder()
 					.ordersId(orders.getId())
-					.foodTruckName(orders.getFoodTruck().getName())
+					.foodtruckName(orders.getFoodTruck().getName())
 					.acceptTime(orders.getDoneDate())
 					.menuList(menuList).build()
 			);

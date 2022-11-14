@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrdersListByFoodTruckRes {
 
-	private String foodTruckName;
+	private String foodtruckName;
     private String menuName;
 	private LocalDateTime acceptTime;
 }

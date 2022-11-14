@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class GetNearFoodTruckRes {
-	private Integer foodTruckId;		// 푸드트럭 Id
+	private Integer foodtruckId;		// 푸드트럭 Id
 	private List<MenuDto> menuList = new ArrayList<>(); // 메뉴리스트
 	private String name; //상호명
 	private Category category; //카테고리
@@ -42,7 +42,7 @@ public class GetNearFoodTruckRes {
 
 	public static GetNearFoodTruckRes of(List<MenuDto> menuList, FoodTruck foodTruck, Schedule schedule, Double grade){
 		return new GetNearFoodTruckResBuilder()
-			.foodTruckId(foodTruck.getId())
+			.foodtruckId(foodTruck.getId())
 			.menuList(menuList)
 			.name(foodTruck.getName())
 			.category(foodTruck.getCategory())

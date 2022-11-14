@@ -9,6 +9,6 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RegisterOrdersReq {
 
-	private Integer foodTruckId;
+	private Integer foodtruckId;
 	private List<RegisterMenuReq> menuList;
 }

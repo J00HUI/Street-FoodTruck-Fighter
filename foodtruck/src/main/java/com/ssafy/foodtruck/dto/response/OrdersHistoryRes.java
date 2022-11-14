@@ -15,7 +15,7 @@ import java.util.List;
 public class OrdersHistoryRes {
 
 	private Integer ordersId;
-    private String foodTruckName;
+    private String foodtruckName;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime acceptTime;
@@ -28,7 +28,7 @@ public class OrdersHistoryRes {
 	public static OrdersHistoryRes of(Orders orders, boolean isReviewed, List<GetOrdersMenuRes> menuResList){
 		return new OrdersHistoryResBuilder()
 			.ordersId(orders.getId())
-			.foodTruckName(orders.getFoodTruck().getName())
+			.foodtruckName(orders.getFoodTruck().getName())
 			.acceptTime(orders.getRegDate())
 			.isDone(orders.getIsDone())
 			.isCanceled(orders.getIsCanceled())
