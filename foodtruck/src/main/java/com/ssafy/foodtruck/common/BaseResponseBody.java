@@ -2,7 +2,9 @@ package com.ssafy.foodtruck.common;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -10,16 +12,12 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @ApiModel("BaseResponseBody")
 public class BaseResponseBody {
 	@ApiModelProperty(name="응답 메시지", example = "정상")
 	String message = null;
-
-	public BaseResponseBody() {}
-
-	public BaseResponseBody(String message){
-		this.message = message;
-	}
 
 	public static BaseResponseBody of(String message) {
 		BaseResponseBody body = new BaseResponseBody();
