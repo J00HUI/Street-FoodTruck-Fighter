@@ -311,6 +311,7 @@ public class FoodTruckService {
 			.orgNm(origName)
 			.savedNm(savedName)
 			.savedPath(savedPath)
+			.foodTruck(foodTruck.get())
 			.build();
 
 		// 실제로 로컬에 uuid를 파일명으로 저장
