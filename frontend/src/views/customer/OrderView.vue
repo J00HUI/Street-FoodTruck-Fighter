@@ -3,7 +3,7 @@
   <div class="container">
     <div class="truck">
       <!-- <h1>{{store.aboutStore.name}}</h1> -->
-      <h1>가게이름</h1>
+      <h1>{{ detailStore.aboutStore.data.name }}</h1>
       <form name="starForm" id="starForm">
         <fieldset>
           <input type="radio" name="rating" value="5" id="rate1" /><label
@@ -31,8 +31,8 @@
     </div>
     <div class="cardContainer">
       <div class="card">
-        <h1>대기인원 : 8명</h1>
-        <h3>예상 시간 : 10분</h3>
+        <h1>대기인원 : {{ detailStore.aboutStore.data.numberOfPeople }}명</h1>
+        <h3>예상 시간 : {{ detailStore.aboutStore.data.time }}분</h3>
       </div>
     </div>
 
@@ -68,9 +68,9 @@
     </div>
   </div>
 
-  <Menu v-if="store.data == 1"></Menu>
-  <Info v-if="store.data == 2"></Info>
-  <Review v-if="store.data == 3"></Review>
+  <Menu v-if="menuStore.data == 1"></Menu>
+  <Info v-if="menuStore.data == 2"></Info>
+  <Review v-if="menuStore.data == 3"></Review>
 </template>
 
 <script>
@@ -80,7 +80,7 @@ import Info from "@/components/customer/OrderInfo.vue";
 import Review from "@/components/customer/OrderReview.vue";
 import { useMenuStore } from "@/stores/customer/menu/menu";
 import { useStoreDetail } from "@/stores/customer/menu/storeDetail";
-import { onMounted } from 'vue-demi';
+import { onMounted } from "vue-demi";
 
 export default {
   components: {
@@ -90,34 +90,29 @@ export default {
     Review,
   },
   setup() {
-    
-    onMounted(()=>{
-      getInfo()
-    })
+    onMounted(() => {});
 
-    const store = useMenuStore();
+    const menuStore = useMenuStore();
+    const detailStore = useStoreDetail();
+
     function menuClick() {
-      store.data = 1;
+      menuStore.data = 1;
     }
     function infoClick() {
-      store.data = 2;
+      menuStore.data = 2;
     }
     function reviewClick() {
-      store.data = 3;
-    }
-    const storeDetail = useStoreDetail();
-    function getInfo() {
-      console.log('aaa')
-      storeDetail.getStoreInfo()
+      menuStore.data = 3;
     }
 
+    detailStore.getStoreInfo();
+
     return {
-      store,
-      storeDetail,
+      menuStore,
+      detailStore,
       menuClick,
       infoClick,
       reviewClick,
-      getInfo,
     };
   },
 };

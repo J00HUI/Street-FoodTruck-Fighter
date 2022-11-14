@@ -23,8 +23,6 @@
             <button @click="minusAmount">-</button>
             <div id="amount">
               <p>{{store.amount}}</p>
-              <!-- <span>{{amount}}</span> -->
-              <!-- <input type="text" v-model="amount" disabled />{{amount}} -->
             </div>
             <button @click="plusAmount">+</button>
           </div>

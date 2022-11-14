@@ -4,60 +4,77 @@ import RF from "@/api/RF.js";
 
 export const useStoreDetail = defineStore("storeDetail", {
   state: () => {
-    const storeInfo = {
-      storeName: '',
-      grade: 0.0,
-      wating: 0,
-      watingTime: 0,
-    };
-    const menu = {
-      menuName: '',
-      price: 0,
+    const aboutStore = {
+      data: {
+        address: "",
+        category: "",
+        description: "",
+        endTime: null,
+        grade: 0,
+        is_valid: true,
+        latitude: 0.0,
+        longtitue: 0.0,
+        menuList: [
+          {
+            id: 0,
+            name: "",
+            price: 0,
+            description: "",
+            src: 1,
+          },
+        ],
+        name: "",
+        numberOfPeople: 0,
+        phone: "",
+        src: null,
+        startTime: null,
+        time: 0,
+        workingDate: "",
+      },
     };
     // const aboutStore = {
-    //   storeImg: '',
-    //   storeName: '',
-    //   startTime: null,
-    //   endTime: null,
-    //   phoneNum: '',
-    //   place: '',
-    // };
-    const aboutStore = []
+    //   data :{
+    //     name : '',
+    //   }
+    // }
+    // const menuList = [{
+    //   id: 0,
+    //   name: "",
+    //   price: 0,
+    //   description: "",
+    //   src: null,
+    // }];
     const reviews = {
-      reviewImg : '',
-      reviewer : '',
-      grade : 0,
-      reviewDate : null,
-      content : '',
-    }
+      reviewImg: "",
+      reviewer: "",
+      grade: 0,
+      reviewDate: null,
+      content: "",
+    };
     return {
-      storeInfo,
-      menu,
+      amount: 0,
       aboutStore,
+      // menuList,
       reviews,
     };
   },
   actions: {
-    getStoreInfo(){
-      console.log('bbb')
-      const foodtruck_id = 1
-      console.log(RF.foodtruck.getFoodTruck(foodtruck_id))
-      // const token = localStorage.getItem('accessToken')
-      
+    getStoreInfo() {
+      const foodtruck_id = 1;
+
       axios({
         url: RF.foodtruck.getFoodTruck(foodtruck_id),
         method: "get",
-        // headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
-          console.log('ccc')
-          console.log(res)
-          this.aboutStore = res.data
-          // console.log(RF.foodtruck.getFoodTruck(foodtruck_id))
+          console.log(RF.foodtruck.getFoodTruck(foodtruck_id))
+          console.log(res.JSON + ' res.data');
+          this.aboutStore = res.data;
+          console.log(this.aboutStore.data + ' aboutStore.data');
         })
         .catch(() => {
-          console.log('error')
+          console.log("error");
         });
-    }
-  }
+    },
+  },
 });

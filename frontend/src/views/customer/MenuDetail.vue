@@ -8,7 +8,7 @@
       <div class="amount">
         <button @click="minusAmount">-</button>
         <div id="amount">
-          <p>12</p>
+          <p>{{detailStore.amount}}</p>
         </div>
         <button @click="plusAmount">+</button>
       </div>
@@ -17,30 +17,43 @@
     <div class="cardContainer">
       <div class="card">
         <div class="menuName">
-          <h3>[140g 소고기패티]시그니처버거</h3>
+          <!-- <h3 >{{detailStore.aboutStore.data.menuList['0'].name}}</h3> -->
+          <!-- <h3 >{{detailStore.aboutStore.data.menuList}}</h3> -->
+          <h3 >{{detailStore.aboutStore.data.name}}</h3>
         </div>
         <div class="detail">
-          <p2>버터향 가득한 수제번과 델리랩 특제소스와 치즈피클 양파까아지</p2>
+          <p class="p2">{{detailStore.aboutStore.data}}</p>
         </div>
       </div>
     </div>
 
     <button class="payButton">
-      <p>7500원 담기</p>
+      <p>{{detailStore.aboutStore.data}}원 담기</p>
     </button>
   </div>
 </template>
 
 <script>
 import Header from "@/components/customer/BackButtonHeader.vue";
+import { useStoreDetail } from "@/stores/customer/menu/storeDetail";
 export default {
   components: {
     Header,
   },
   setup() {
-    function minusAmount() {}
-    function plusAmount() {}
+    const detailStore = useStoreDetail();
+    detailStore.getStoreInfo();
+    console.log('detailStore',detailStore.aboutStore);
+    // console.log('메뉴는 ' + detailStore.aboutStore.menuList)
+    function minusAmount() {
+      if (detailStore.amount > 0) {detailStore.amount--;}
+      else {detailStore.amount = 0}
+    }
+    function plusAmount() {
+      detailStore.amount++;
+    }
     return {
+      detailStore,
       minusAmount,
       plusAmount,
     };
@@ -125,10 +138,11 @@ p {
 .detail {
   display: flex;
   height: 80%;
+  width: 70%;
   margin-top: 2rem;
   justify-content: center;
 }
-p2 {
+.p2 {
   font-family: "SCoreDream";
   width: 70%;
   display: -webkit-box;
