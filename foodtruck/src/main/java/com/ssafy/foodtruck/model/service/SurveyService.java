@@ -1,6 +1,6 @@
 package com.ssafy.foodtruck.model.service;
 
-import com.ssafy.foodtruck.db.entity.OrdersErrorMessage;
+import com.ssafy.foodtruck.constant.OrdersErrorMessage;
 import com.ssafy.foodtruck.db.entity.Survey;
 import com.ssafy.foodtruck.db.entity.User;
 import com.ssafy.foodtruck.db.entity.UserType;

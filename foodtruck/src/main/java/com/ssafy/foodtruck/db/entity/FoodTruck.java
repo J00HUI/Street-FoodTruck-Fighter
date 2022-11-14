@@ -39,8 +39,9 @@ public class FoodTruck extends BaseEntity {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@OneToOne(mappedBy = "foodTruck", cascade = CascadeType.ALL)
-	private FileEntity fileEntity;
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "foodtruck_img_id")
+	private FoodtruckImg foodtruckImg;
 
 	@Builder.Default
 	@OneToMany(mappedBy = "foodTruck", cascade = CascadeType.ALL)
@@ -59,7 +60,7 @@ public class FoodTruck extends BaseEntity {
 		this.description = registerFoodTruckReq.getDescription();
 	}
 
-	public void setFileEntity(FileEntity fileEntity) {
-		this.fileEntity = fileEntity;
+	public void setFoodtruckImg(FoodtruckImg foodtruckImg) {
+		this.foodtruckImg = foodtruckImg;
 	}
 }

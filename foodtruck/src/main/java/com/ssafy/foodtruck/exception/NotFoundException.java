@@ -1,6 +1,6 @@
 package com.ssafy.foodtruck.exception;
 
-import com.ssafy.foodtruck.db.entity.OrdersErrorMessage;
+import com.ssafy.foodtruck.constant.OrdersErrorMessage;
 
 public class NotFoundException extends RuntimeException {
 

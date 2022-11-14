@@ -31,7 +31,12 @@ public class Menu extends BaseEntity {
 	@JoinColumn(name = "foodtruck_id")
 	private FoodTruck foodTruck;
 
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "menu_img_id")
+	private MenuImg menuImg;
+
 	@Builder.Default
 	@OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)
 	private List<OrdersMenu> ordersMenuList = new ArrayList<>();
+
 }

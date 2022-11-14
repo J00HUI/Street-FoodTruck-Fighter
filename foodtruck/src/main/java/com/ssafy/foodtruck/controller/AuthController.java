@@ -5,6 +5,7 @@ import com.ssafy.foodtruck.db.entity.User;
 import com.ssafy.foodtruck.dto.JWTokenDto;
 import com.ssafy.foodtruck.dto.request.UserReq;
 import com.ssafy.foodtruck.dto.response.LoginCeoRes;
+import com.ssafy.foodtruck.exception.InvalidEmailAndPasswordException;
 import com.ssafy.foodtruck.model.service.AuthService;
 import com.ssafy.foodtruck.model.service.FoodTruckService;
 import com.ssafy.foodtruck.model.service.UserService;
@@ -18,6 +19,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+
+import static com.ssafy.foodtruck.constant.FoodTruckConstant.NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE;
+import static com.ssafy.foodtruck.constant.UserConstant.INVALIDE_EMAIL_AND_PASSWORD;
+import static com.ssafy.foodtruck.constant.UserConstant.LOGIN_SUCCESS;
 
 /**
  * 인증 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -42,15 +47,24 @@ public class AuthController {
 		@ApiResponse(code = 500, message = "서버 오류")
 	})
 	public ResponseEntity<?> login(@RequestBody @ApiParam(value = "로그인 정보", required = true) UserReq userReq, HttpServletResponse resp) {
-		JWToken jwt = authService.login(userReq);
+		try {
+			JWToken jwt = authService.login(userReq);
+			// 로그인한 사용자가 CEO
+			User ceoUser = authService.getCeoUser(userReq.getEmail());
+			if (ceoUser != null) {
+				FoodTruck foodTruck = foodTruckService.getFoodTruckByUser(ceoUser);
 
-		// 로그인한 사용자가 CEO
-		User ceoUser = authService.getCeoUser(userReq.getEmail());
-		if (ceoUser != null) {
-			FoodTruck foodTruck = foodTruckService.getFoodTruckByUser(ceoUser);
-			return new ResponseEntity<>(LoginCeoRes.of(jwt, foodTruck.getId()), HttpStatus.OK);
+				if (foodTruck != null) {
+					return ResponseEntity.ok().body(LoginCeoRes.of(LOGIN_SUCCESS, jwt, foodTruck.getId()));
+				} else {
+					return ResponseEntity.ok().body(JWTokenDto.of(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE, jwt));
+				}
+			} else {
+				return ResponseEntity.ok().body(JWTokenDto.of(LOGIN_SUCCESS, jwt));
+			}
+		} catch (InvalidEmailAndPasswordException ex) {
+			return ResponseEntity.status(401).body(JWTokenDto.of(INVALIDE_EMAIL_AND_PASSWORD, null));
 		}
-
 //        ResponseCookie cookie = ResponseCookie.from("refresh-token", jwt.getRefreshToken())
 //                .maxAge(60*60*24*15)
 //                .httpOnly(true)
@@ -61,7 +75,6 @@ public class AuthController {
 //                .build();
 //
 //        resp.setHeader("Set-Cookie", cookie.toString());
-		return new ResponseEntity<>(JWTokenDto.of(jwt), HttpStatus.OK);
 	}
 
 	@GetMapping("/logout")

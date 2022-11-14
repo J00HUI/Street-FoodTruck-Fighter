@@ -1,6 +1,6 @@
 package com.ssafy.foodtruck.util;
 
-import com.ssafy.foodtruck.db.entity.OrdersErrorMessage;
+import com.ssafy.foodtruck.constant.OrdersErrorMessage;
 import com.ssafy.foodtruck.exception.NotEqualException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
