@@ -1,5 +1,6 @@
 package com.ssafy.foodtruck.model.service;
 
+import com.ssafy.foodtruck.constant.OrdersErrorMessage;
 import com.ssafy.foodtruck.db.entity.*;
 import com.ssafy.foodtruck.db.repository.*;
 import com.ssafy.foodtruck.dto.request.AcceptOrdersReq;
@@ -8,7 +9,6 @@ import com.ssafy.foodtruck.dto.request.RegisterOrdersReq;
 import com.ssafy.foodtruck.dto.response.*;
 import com.ssafy.foodtruck.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
