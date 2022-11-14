@@ -1,18 +1,15 @@
 package com.ssafy.foodtruck.util;
 
-import com.ssafy.foodtruck.db.entity.OrdersErrorMessage;
+import com.ssafy.foodtruck.constant.OrdersErrorMessage;
 import com.ssafy.foodtruck.exception.NotEqualException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

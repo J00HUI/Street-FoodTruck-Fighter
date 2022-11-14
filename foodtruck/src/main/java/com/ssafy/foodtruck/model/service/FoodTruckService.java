@@ -10,7 +10,6 @@ import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReviewReq;
 import com.ssafy.foodtruck.dto.response.GetFoodTruckRes;
 import com.ssafy.foodtruck.dto.response.GetFoodTruckReviewRes;
 import com.ssafy.foodtruck.dto.response.GetNearFoodTruckRes;
-import com.ssafy.foodtruck.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -269,8 +268,7 @@ public class FoodTruckService {
 	}
 
 	public FoodTruck getFoodTruckByUser(User user){
-		return foodTruckRepository.findByUser(user)
-			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE));
+		return foodTruckRepository.findByUser(user).orElse(null);
 	}
 
 	@Transactional
@@ -308,19 +306,20 @@ public class FoodTruckService {
 		String savedPath = fileDir + savedName;
 
 		// 파일 엔티티 생성
-		FileEntity file = FileEntity.builder()
+		FoodtruckImg file = FoodtruckImg.builder()
 			.orgNm(origName)
 			.savedNm(savedName)
 			.savedPath(savedPath)
+			.foodTruck(foodTruck.get())
 			.build();
 
 		// 실제로 로컬에 uuid를 파일명으로 저장
 		files.transferTo(new File(savedPath));
 
-		foodTruck.get().setFileEntity(file);
+		foodTruck.get().setFoodtruckImg(file);
 	}
 
-	public FileEntity getFile(int ceoId) {
+	public FoodtruckImg getFile(int ceoId) {
 		Optional<User> user = userRepository.findById(ceoId);
 		if(!user.isPresent()){
 			return null;
@@ -331,6 +330,6 @@ public class FoodTruckService {
 			return null;
 		}
 
-		return foodTruck.get().getFileEntity();
+		return foodTruck.get().getFoodtruckImg();
 	}
 }
