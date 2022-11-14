@@ -71,6 +71,7 @@ public class AuthController {
 		} catch (InvalidEmailAndPasswordException ex){
 			return new ResponseEntity<>(JWTokenDto.of(INVALIDE_EMAIL_AND_PASSWORD, null), HttpStatus.NOT_ACCEPTABLE);
 		}
+
 //        ResponseCookie cookie = ResponseCookie.from("refresh-token", jwt.getRefreshToken())
 //                .maxAge(60*60*24*15)
 //                .httpOnly(true)

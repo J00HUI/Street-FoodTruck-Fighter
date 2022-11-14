@@ -20,6 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.xml.ws.Response;
+
 import static com.ssafy.foodtruck.constant.FoodTruckConstant.*;
 
 import java.io.IOException;
@@ -36,7 +38,6 @@ public class FoodTruckController {
 
 	private final FoodTruckService foodTruckService;
 
-	private final FoodTruckRepository foodTruckRepository;
 	private final UserService userService;
 
 	private final JwtTokenUtil jwtTokenUtil;
@@ -64,9 +65,13 @@ public class FoodTruckController {
 		@ApiResponse(code = 404, message = "사용자 없음"),
 		@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity<GetFoodTruckRes> getFoodTruck(@PathVariable("foodtruck_id") @ApiParam(value="푸드트럭 ID", required = true) Integer foodTruckId){
-		GetFoodTruckRes getFoodTruckRes = foodTruckService.getFoodTruck(foodTruckId);
-		return new ResponseEntity<>(getFoodTruckRes, HttpStatus.OK);
+	public ResponseEntity<?> getFoodTruck(@PathVariable("foodtruck_id") @ApiParam(value="푸드트럭 ID", required = true) Integer foodTruckId){
+		try {
+			GetFoodTruckRes getFoodTruckRes = foodTruckService.getFoodTruck(foodTruckId);
+			return new ResponseEntity<>(getFoodTruckRes, HttpStatus.OK);
+		} catch (IllegalArgumentException ex) {
+			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	// 푸드트럭 등록
@@ -75,7 +80,7 @@ public class FoodTruckController {
 	public ResponseEntity<?> registerFoodTruck(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken, @RequestBody @ApiParam(value="푸드트럭 정보", required = true) RegisterFoodTruckReq registerFoodTruckReq) throws IllegalAccessException {
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
 		foodTruckService.registerFoodTruck(registerFoodTruckReq, user);
-		return ResponseEntity.ok().body(REGISTER_FOODTRUCK_SUCCESS);
+		return new ResponseEntity<>(REGISTER_FOODTRUCK_SUCCESS, HttpStatus.CREATED);
 	}
 
 	// 푸드 트럭 수정
@@ -84,7 +89,7 @@ public class FoodTruckController {
 	public ResponseEntity<?> updateFoodTruck(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken, @RequestBody @ApiParam(value="푸드트럭 정보", required = true) RegisterFoodTruckReq registerFoodTruckReq) throws IllegalAccessException {
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
 		foodTruckService.updateFoodTruck(registerFoodTruckReq, user);
-		return ResponseEntity.ok().body(UPDATE_FOODTRUCK_SUCCESS);
+		return new ResponseEntity<>(UPDATE_FOODTRUCK_SUCCESS, HttpStatus.OK);
 	}
 
 	// 리뷰 등록
@@ -93,7 +98,7 @@ public class FoodTruckController {
 	public ResponseEntity<?> registerFoodTruckReview(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken, @RequestBody @ApiParam(value="리뷰 정보", required = true) RegisterFoodTruckReviewReq registerFoodTruckReviewReq){
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
 		foodTruckService.registerFoodTruckReview(registerFoodTruckReviewReq, user);
-		return ResponseEntity.ok().body(REGISTER_REVIEW_SUCCESS);
+		return new ResponseEntity<>(REGISTER_REVIEW_SUCCESS, HttpStatus.CREATED);
 	}
 
 	// 리뷰 조회

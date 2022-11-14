@@ -44,7 +44,7 @@ public class ScheduleService {
 				.groupId(nowGroupId)
 				.foodTruck(foodTruck)
 				.latitude(createScheduleReq.getLatitude())
-				.longitude(createScheduleReq.getLongtitude())
+				.longitude(createScheduleReq.getLongitude())
 				.address(createScheduleReq.getAddress())
 				.workingDate(LocalDate.parse(dateDto.getWorkingDay(), DateTimeFormatter.ISO_DATE))
 				.startTime(LocalDateTime.parse(dateDto.getWorkingDay() + " " + dateDto.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))

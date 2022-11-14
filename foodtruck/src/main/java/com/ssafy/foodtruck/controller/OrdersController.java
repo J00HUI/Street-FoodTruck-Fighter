@@ -91,12 +91,12 @@ public class OrdersController {
 	@GetMapping("/ceo/all")
 	@ApiOperation(value = "전체 주문내역 조회 - 사업자", notes = "<strong>Ceo ID를 통해 전체 주문내역 조회를 한다.</strong>")
 	@ApiResponses({
-		@ApiResponse(code = 200, message = "성공", response = OrdersListByFoodtruckRes.class),
+		@ApiResponse(code = 200, message = "성공", response = OrdersListByFoodTruckRes.class),
 		@ApiResponse(code = 401, message = "인증 실패"),
 		@ApiResponse(code = 404, message = "사용자 없음"),
 		@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity<List<OrdersListByFoodtruckRes>> getCeoOrdersAll(@RequestHeader(AUTHORIZATION) String bearerToken) {
+	public ResponseEntity<List<OrdersListByFoodTruckRes>> getCeoOrdersAll(@RequestHeader(AUTHORIZATION) String bearerToken) {
 		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
 		return new ResponseEntity<>(ordersService.getCeoOrdersAll(ceoId), HttpStatus.OK);
 	}

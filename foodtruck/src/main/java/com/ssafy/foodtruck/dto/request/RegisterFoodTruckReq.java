@@ -22,7 +22,7 @@ public class RegisterFoodTruckReq {
 	private String description; //설명
 	private String address; //주소
 	private Double latitude; // 위도
-	private Double longtitue; // 경도
+	private Double longitude; // 경도
 
 	List<ScheduleDateDto> dateDtoList;	// 운영시간리스트
 }

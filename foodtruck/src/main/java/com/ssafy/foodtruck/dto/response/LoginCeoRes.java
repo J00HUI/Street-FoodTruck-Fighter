@@ -20,6 +20,7 @@ public class LoginCeoRes extends BaseResponseBody {
 		LoginCeoRes loginCeoRes = new LoginCeoRes();
 		loginCeoRes.setMessage(message);
 		loginCeoRes.setGrantType(BEARER);
+		loginCeoRes.setAccessToken(token.getAccessToken());
 		loginCeoRes.setFoodTruckId(foodTruckId);
 		return loginCeoRes;
 	}

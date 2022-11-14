@@ -40,6 +40,7 @@ public class FoodTruckService {
 	private final ReviewRepository reviewRepository;
 	private final FileRepository fileRepository;
 	private final UserRepository userRepository;
+
 	// 푸드트럭 정보 조회
 	public GetFoodTruckRes getFoodTruck(Integer foodTruckId){
 
@@ -47,7 +48,6 @@ public class FoodTruckService {
 			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE));
 
 		Schedule schedule = scheduleRepository.findScheduleByFoodTruckAndDate(foodTruckId).orElse(null);
-//		if(schedule == null) 오늘은 영업시간이 아닙니다.
 
 		List<Menu> findMenuList = menuRepository.findAllByFoodTruck(foodTruck);
 		List<MenuDto> menuList = new ArrayList<>();
@@ -64,8 +64,7 @@ public class FoodTruckService {
 		Integer numberOfPeople = 0;
 		Integer time = 0;
 
-//		return GetFoodTruckRes.of(menuList, foodTruck, grade, numberOfPeople, time);
-		return GetFoodTruckRes.of(menuList, foodTruck, schedule, grade, numberOfPeople, time);
+		return GetFoodTruckRes.of(GET_FOODTRUCK_SUCCESS, menuList, foodTruck, schedule, grade, numberOfPeople, time);
 	}
 
 	// 내 푸드트럭 등록
@@ -105,7 +104,7 @@ public class FoodTruckService {
 			final Schedule schedule = Schedule.builder()
 				.foodTruck(savedFoodTruck)
 				.latitude(registerFoodTruckReq.getLatitude())
-				.longitude(registerFoodTruckReq.getLongtitue())
+				.longitude(registerFoodTruckReq.getLongitude())
 				.address(registerFoodTruckReq.getAddress())
 				.workingDate(LocalDate.parse(dateDto.getWorkingDay(), DateTimeFormatter.ISO_DATE))
 				.startTime(LocalDateTime.parse(dateDto.getWorkingDay() + " " + dateDto.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
