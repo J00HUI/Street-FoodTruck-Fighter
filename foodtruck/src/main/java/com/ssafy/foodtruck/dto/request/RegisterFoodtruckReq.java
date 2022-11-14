@@ -1,19 +1,17 @@
 package com.ssafy.foodtruck.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ssafy.foodtruck.db.entity.Category;
 import com.ssafy.foodtruck.dto.MenuDto;
 import com.ssafy.foodtruck.dto.ScheduleDateDto;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class RegisterFoodTruckReq {
+public class RegisterFoodtruckReq {
 	private List<MenuDto> menuList; // 메뉴리스트
 
 	private String name; //상호명

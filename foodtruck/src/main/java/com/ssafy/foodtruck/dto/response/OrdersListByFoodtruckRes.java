@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrdersListByFoodTruckRes {
+public class OrdersListByFoodtruckRes {
 
 	private String foodtruckName;
     private String menuName;

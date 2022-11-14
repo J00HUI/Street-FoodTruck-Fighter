@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ssafy.foodtruck.common.BaseResponseBody;
 import com.ssafy.foodtruck.db.entity.Category;
 import com.ssafy.foodtruck.db.entity.FoodTruck;
-import com.ssafy.foodtruck.db.entity.Menu;
 import com.ssafy.foodtruck.db.entity.Schedule;
 import com.ssafy.foodtruck.dto.MenuDto;
 import lombok.*;
@@ -19,7 +18,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class GetFoodTruckRes extends BaseResponseBody {
+public class GetFoodtruckRes extends BaseResponseBody {
 
 	private List<MenuDto> menuList = new ArrayList<>(); // 메뉴리스트
 
@@ -54,8 +53,8 @@ public class GetFoodTruckRes extends BaseResponseBody {
 
 	private Integer time; //예상시간
 
-	public static GetFoodTruckRes of(String messsage, List<MenuDto> menuList, FoodTruck foodTruck, Schedule schedule, Double grade, Integer numberOfPeople, Integer time){
-		GetFoodTruckRes res = new GetFoodTruckRes();
+	public static GetFoodtruckRes of(String messsage, List<MenuDto> menuList, FoodTruck foodTruck, Schedule schedule, Double grade, Integer numberOfPeople, Integer time){
+		GetFoodtruckRes res = new GetFoodtruckRes();
 		res.setMessage(messsage);
 		res.setMenuList(menuList);
 

@@ -7,7 +7,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class GetNearFoodTruckReq {
+public class GetNearFoodtruckReq {
 
 	private Double lat;
 	private Double lng;

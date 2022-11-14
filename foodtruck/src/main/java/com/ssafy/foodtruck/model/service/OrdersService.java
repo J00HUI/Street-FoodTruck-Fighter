@@ -203,13 +203,13 @@ public class OrdersService {
 		return currentOrdersListByFoodtruckResponseList;
 	}
 
-	public List<OrdersListByFoodTruckRes> getCeoOrdersAll(int ceoId) {
+	public List<OrdersListByFoodtruckRes> getCeoOrdersAll(int ceoId) {
 		User user = userRepository.findById(ceoId)
 			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
 		FoodTruck foodTruck = foodTruckRepository.findByUser(user)
 			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
 		List<Orders> ordersList = ordersRepository.findByCeoOrdersAll(foodTruck.getId());
-		List<OrdersListByFoodTruckRes> ordersListByFoodtruckResponseList = new ArrayList<>();
+		List<OrdersListByFoodtruckRes> ordersListByFoodtruckResponseList = new ArrayList<>();
 
 //		for (Orders orders : ordersList) {
 //			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());

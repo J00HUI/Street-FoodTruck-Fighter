@@ -1,7 +1,6 @@
 package com.ssafy.foodtruck.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ssafy.foodtruck.db.entity.Review;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -12,7 +11,7 @@ import java.time.LocalDateTime;
 //@AllArgsConstructor
 @Value	//lombok annotation to create constructor, equals and hash-code
 @Builder
-public class GetFoodTruckReviewRes{
+public class GetFoodtruckReviewRes {
 
 	private Integer id;	// 리뷰 ID
 	private Integer userId; // 작성자 ID
