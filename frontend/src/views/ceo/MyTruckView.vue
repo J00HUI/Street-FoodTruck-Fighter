@@ -1,6 +1,8 @@
 <template>
+  <div class="myView">
   <CeoHeader></CeoHeader>
 	<UpdateInput></UpdateInput>
+</div>
 
 </template>
 
@@ -16,4 +18,12 @@ export default {
 </script>
 
 <style>
+.myView{
+  position:relative;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  margin: 0px;
+
+}
 </style>
