@@ -4,10 +4,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ssafy.foodtruck.common.BaseResponseBody;
 import com.ssafy.foodtruck.db.entity.Category;
 import com.ssafy.foodtruck.db.entity.FoodTruck;
+import com.ssafy.foodtruck.db.entity.FoodtruckImg;
 import com.ssafy.foodtruck.db.entity.Schedule;
 import com.ssafy.foodtruck.dto.MenuDto;
 import lombok.*;
+import org.springframework.core.io.UrlResource;
 
+import java.net.MalformedURLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -53,15 +56,24 @@ public class GetFoodtruckRes extends BaseResponseBody {
 
 	private Integer time; //예상시간
 
-	public static GetFoodtruckRes of(String messsage, List<MenuDto> menuList, FoodTruck foodTruck, Schedule schedule, Double grade, Integer numberOfPeople, Integer time){
+	private UrlResource src; //이미지
+
+	public static GetFoodtruckRes of(String message, List<MenuDto> menuList, FoodTruck foodTruck, Schedule schedule, Double grade, Integer numberOfPeople, Integer time, FoodtruckImg foodtruckImg) {
 		GetFoodtruckRes res = new GetFoodtruckRes();
-		res.setMessage(messsage);
+		res.setMessage(message);
 		res.setMenuList(menuList);
 
 		res.setName(foodTruck.getName());
 		res.setCategory(foodTruck.getCategory());
 		res.setPhone(foodTruck.getPhone());
 		res.setDescription(foodTruck.getDescription());
+
+		//setSrc
+		try{
+			res.setSrc(new UrlResource("file:" + foodtruckImg.getSavedPath()));
+		} catch (MalformedURLException ex){
+			ex.printStackTrace();
+		}
 
 		if(schedule != null) {
 			res.setWorkingDate(schedule.getWorkingDate());

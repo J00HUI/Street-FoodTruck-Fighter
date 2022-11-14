@@ -3,10 +3,13 @@ package com.ssafy.foodtruck.dto.response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ssafy.foodtruck.db.entity.Category;
 import com.ssafy.foodtruck.db.entity.FoodTruck;
+import com.ssafy.foodtruck.db.entity.FoodtruckImg;
 import com.ssafy.foodtruck.db.entity.Schedule;
 import com.ssafy.foodtruck.dto.MenuDto;
 import lombok.*;
+import org.springframework.core.io.UrlResource;
 
+import java.net.MalformedURLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,7 +27,7 @@ public class GetNearFoodtruckRes {
 	private Category category; //카테고리
 	private String phone; //전화번호
 	private String description; //설명
-	private String src; //이미지
+	private UrlResource src; //이미지
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private LocalDate workingDate;	// 날짜
@@ -40,8 +43,9 @@ public class GetNearFoodtruckRes {
 
 	private Double grade; //평점
 
-	public static GetNearFoodtruckRes of(List<MenuDto> menuList, FoodTruck foodTruck, Schedule schedule, Double grade){
-		return GetNearFoodtruckRes.builder()
+	public static GetNearFoodtruckRes of(List<MenuDto> menuList, FoodTruck foodTruck, Schedule schedule, Double grade, FoodtruckImg foodtruckImg) {
+
+		GetNearFoodtruckRes res = GetNearFoodtruckRes.builder()
 			.foodtruckId(foodTruck.getId())
 			.menuList(menuList)
 			.name(foodTruck.getName())
@@ -56,5 +60,14 @@ public class GetNearFoodtruckRes {
 			.address(schedule.getAddress())
 			.grade(grade)
 			.build();
+
+		//setSrc
+		try{
+			res.setSrc(new UrlResource("file:" + foodtruckImg.getSavedPath()));
+		} catch (MalformedURLException ex){
+			ex.printStackTrace();
+		}
+
+		return res;
 	}
 }
