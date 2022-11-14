@@ -10,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class CreateScheduleReq {
+
 	private String title;
 	List<ScheduleDateDto> scheduleDateDtoList;
 	private Double latitude;

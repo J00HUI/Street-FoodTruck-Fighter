@@ -27,7 +27,7 @@ public class RedisUtil {
 
 	@PostConstruct
 	private void initStatic() {
-		staticRedisTemplate= this.redisTemplate;
+		staticRedisTemplate = this.redisTemplate;
 	}
 
 	public static void setDataExpired(String key, String value, long duration) {
@@ -40,21 +40,22 @@ public class RedisUtil {
 		return staticRedisTemplate.opsForValue()
 			.get(key);
 	}
+
 	public static void validateData(String key, String value) {
 		if (!getData(key).equals(value)) {
 			throw new NotEqualException(OrdersErrorMessage.NOT_EQUAL_VALIDATION_TOKEN);
 		}
 	}
 
-    public boolean delete(String key){
-        return redisTemplate.delete(key);
-    }
+	public boolean delete(String key) {
+		return redisTemplate.delete(key);
+	}
 
-    public boolean haskey(String key){
-        return redisTemplate.hasKey(key);
-    }
+	public boolean haskey(String key) {
+		return redisTemplate.hasKey(key);
+	}
 
-    public long getExpireTime(String key){
-        return redisTemplate.getExpire(key, TimeUnit.MILLISECONDS);
-    }
+	public long getExpireTime(String key) {
+		return redisTemplate.getExpire(key, TimeUnit.MILLISECONDS);
+	}
 }

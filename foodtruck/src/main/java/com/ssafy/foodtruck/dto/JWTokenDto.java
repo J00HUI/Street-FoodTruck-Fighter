@@ -11,18 +11,18 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class JWTokenDto extends BaseResponseBody {
 
-    private static final String BEARER = "Bearer";
+	private static final String BEARER = "Bearer";
 
-    private String grantType;
-    private String accessToken;
+	private String grantType;
+	private String accessToken;
 
-    public static JWTokenDto of(String message, JWToken token) {
-        JWTokenDto jwToken = new JWTokenDto();
+	public static JWTokenDto of(String message, JWToken token) {
+		JWTokenDto jwToken = new JWTokenDto();
 		jwToken.setMessage(message);
-		if(token != null)
+		if (token != null)
 			jwToken.setAccessToken(token.getAccessToken());
 		else jwToken.setAccessToken(null);
 		jwToken.setGrantType(BEARER);
-        return jwToken;
-    }
+		return jwToken;
+	}
 }

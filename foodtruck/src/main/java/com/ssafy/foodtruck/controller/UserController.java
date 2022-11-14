@@ -24,8 +24,8 @@ import static com.ssafy.foodtruck.constant.UserConstant.LOGIN_SUCCESS;
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserService userService;
-    private final JwtTokenUtil jwtTokenUtil;
+	private final UserService userService;
+	private final JwtTokenUtil jwtTokenUtil;
 
     @PostMapping("/signup")
     @ApiOperation(value = "회원 가입", notes = "<strong>이메일와 패스워드</strong>를 통해 회원가입 한다.")
@@ -44,24 +44,24 @@ public class UserController {
         return new ResponseEntity<>(LOGIN_SUCCESS, HttpStatus.CREATED);
     }
 
-    @GetMapping("")
-    @ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 401, message = "인증 실패"),
-            @ApiResponse(code = 404, message = "사용자 없음"),
-            @ApiResponse(code = 500, message = "서버 오류")
-    })
-    public ResponseEntity<?> getUserInfo(@RequestHeader("Authorization") String bearerToken) {
-        User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
-        UserRes userDtoRes = UserRes.builder()
+	@GetMapping("")
+	@ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "성공"),
+		@ApiResponse(code = 401, message = "인증 실패"),
+		@ApiResponse(code = 404, message = "사용자 없음"),
+		@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<?> getUserInfo(@RequestHeader("Authorization") String bearerToken) {
+		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
+		UserRes userDtoRes = UserRes.builder()
 //                .businessNumber(user.getBusinessNumber())
-                .email(user.getEmail())
-                .userType(user.getUserType())
-                .id(user.getId())
-                .nickname(user.getNickname())
-                .phone(user.getPhone())
-                .build();
-        return new ResponseEntity<>(userDtoRes ,HttpStatus.OK);
-    }
+			.email(user.getEmail())
+			.userType(user.getUserType())
+			.id(user.getId())
+			.nickname(user.getNickname())
+			.phone(user.getPhone())
+			.build();
+		return new ResponseEntity<>(userDtoRes, HttpStatus.OK);
+	}
 }

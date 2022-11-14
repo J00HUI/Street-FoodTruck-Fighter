@@ -16,32 +16,36 @@ import java.util.List;
 @AllArgsConstructor
 public class FoodTruck extends BaseEntity {
 
-    @Unique
-    @NotNull
-    @Column(length = 50)
-    private String name;
+	@Unique
+	@NotNull
+	@Column(length = 50)
+	private String name;
 
-    @Enumerated(value = EnumType.STRING)
-    @NotNull
-    private Category category;
+	@Enumerated(value = EnumType.STRING)
+	@Column(length = 200)
+	private String src;
 
-    @Column(length = 50)
-    private String phone;
+	@Enumerated
+	@NotNull
+	private Category category;
 
-    @Column(length = 200)
-    private String description;
+	@Column(length = 50)
+	private String phone;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private User user;
+	@Column(length = 200)
+	private String description;
+
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id")
+	private User user;
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "foodtruck_img_id")
 	private FoodtruckImg foodtruckImg;
 
-    @Builder.Default
-    @OneToMany(mappedBy = "foodTruck", cascade = CascadeType.ALL)
-    private List<Menu> menuList = new ArrayList<>();
+	@Builder.Default
+	@OneToMany(mappedBy = "foodTruck", cascade = CascadeType.ALL)
+	private List<Menu> menuList = new ArrayList<>();
 
 	@OneToMany(mappedBy = "foodTruck", cascade = CascadeType.ALL)
 	private List<Schedule> scheduleList = new ArrayList<>();

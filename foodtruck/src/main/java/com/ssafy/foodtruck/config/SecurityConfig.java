@@ -39,82 +39,82 @@ public class SecurityConfig {
     private final JwtAccessDeniedHandler accessDeniedHandler;
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
 
-    // Password 인코딩 방식에 BCrypt 암호화 방식 사용
-    @Bean
-    public static PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	// Password 인코딩 방식에 BCrypt 암호화 방식 사용
+	@Bean
+	public static PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    // DAO 기반으로 Authentication Provider를 생성
-    // BCrypt Password Encoder와 UserDetailService 구현체를 설정
-    @Bean
-    DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
-        daoAuthenticationProvider.setUserDetailsService(this.userDetailService);
-        return daoAuthenticationProvider;
-    }
+	// DAO 기반으로 Authentication Provider를 생성
+	// BCrypt Password Encoder와 UserDetailService 구현체를 설정
+	@Bean
+	DaoAuthenticationProvider authenticationProvider() {
+		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
+		daoAuthenticationProvider.setUserDetailsService(this.userDetailService);
+		return daoAuthenticationProvider;
+	}
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring()
-                .antMatchers(
-                        "/",
-                        "/swagger-ui/**",
-                        "/swagger-resources/**",
-                        "/v2/api-docs/**",
-                        "/webjars/**",
-                        "/h2-console/**",
-                        "/favicon.com");
-    }
+	@Bean
+	public WebSecurityCustomizer webSecurityCustomizer() {
+		return (web) -> web.ignoring()
+			.antMatchers(
+				"/",
+				"/swagger-ui/**",
+				"/swagger-resources/**",
+				"/v2/api-docs/**",
+				"/webjars/**",
+				"/h2-console/**",
+				"/favicon.com");
+	}
 
+	@Bean
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
+	}
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .httpBasic().disable()
-                .cors().configurationSource(corsConfigurationSource())
-                .and()
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		http
+			.httpBasic().disable()
+			.cors().configurationSource(corsConfigurationSource())
+			.and()
 
-                .csrf().disable()
-                .exceptionHandling()
-                .accessDeniedHandler(accessDeniedHandler)
-                .authenticationEntryPoint(authenticationEntryPoint)
-                .and()
+			.csrf().disable()
+			.exceptionHandling()
+			.accessDeniedHandler(accessDeniedHandler)
+			.authenticationEntryPoint(authenticationEntryPoint)
+			.and()
 
-                .headers()
-                .frameOptions()
-                .sameOrigin()
-                .and()
+			.headers()
+			.frameOptions()
+			.sameOrigin()
+			.and()
 
-                // 토큰 기반 인증이므로 세션 사용 하지않음
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+			// 토큰 기반 인증이므로 세션 사용 하지않음
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.and()
 
-                //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
-                .addFilter(new JwtAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), userService))
-                .authorizeRequests()
-			.antMatchers("/","/auth/login","/user/signup", "/phone/sms", "/phone", "/foodtruck/{foodtruck_id}", "/foodtruck/review/{foodtruck_id}", "/foodtruck/search/{keyword}").permitAll()
-                .anyRequest().authenticated(); //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
-        return http.build();
-    }
+			//HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
+			.addFilter(new JwtAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), userService))
+			.authorizeRequests()
+			.antMatchers("/", "/auth/login", "/user/signup", "/phone/sms", "/phone", "/foodtruck/{foodtruck_id}", "/foodtruck/review/{foodtruck_id}", "/foodtruck/search/{keyword}").permitAll()
+			.anyRequest().authenticated(); //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
+		return http.build();
+	}
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOriginPattern("*");
-        configuration.addAllowedMethod("*");
-        configuration.addAllowedHeader("*");
-        configuration.addExposedHeader(JwtTokenUtil.HEADER_STRING);
-        configuration.setAllowCredentials(true);
-        configuration.setMaxAge(3600L);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.addAllowedOriginPattern("*");
+		configuration.addAllowedMethod("*");
+		configuration.addAllowedHeader("*");
+		configuration.addExposedHeader(JwtTokenUtil.HEADER_STRING);
+		configuration.setAllowCredentials(true);
+		configuration.setMaxAge(3600L);
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
 }
