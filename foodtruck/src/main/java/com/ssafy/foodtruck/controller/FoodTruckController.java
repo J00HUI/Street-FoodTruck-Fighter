@@ -64,12 +64,9 @@ public class FoodTruckController {
 		@ApiResponse(code = 404, message = "사용자 없음"),
 		@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity<Map<String, Object>> getFoodTruck(@PathVariable("foodtruck_id") @ApiParam(value="푸드트럭 ID", required = true) Integer foodTruckId){
+	public ResponseEntity<GetFoodTruckRes> getFoodTruck(@PathVariable("foodtruck_id") @ApiParam(value="푸드트럭 ID", required = true) Integer foodTruckId){
 		GetFoodTruckRes getFoodTruckRes = foodTruckService.getFoodTruck(foodTruckId);
-		Map<String, Object> result = new HashMap<>();
-		result.put("data", getFoodTruckRes);
-		result.put("msg", GET_FOODTRUCK_SUCCESS);
-		return ResponseEntity.ok().body(result);
+		return new ResponseEntity<>(getFoodTruckRes, HttpStatus.OK);
 	}
 
 	// 푸드트럭 등록
@@ -123,13 +120,9 @@ public class FoodTruckController {
 		@ApiResponse(code = 404, message = "사용자 없음"),
 		@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity<Map<String, Object>> getNearFoodTruck(@RequestBody @ApiParam(value="사용자의 위치 정보와 카테고리", required = true) GetNearFoodTruckReq getNearFoodTruckReq){
+	public ResponseEntity<List<GetNearFoodTruckRes>> getNearFoodTruck(@RequestBody @ApiParam(value="사용자의 위치 정보와 카테고리", required = true) GetNearFoodTruckReq getNearFoodTruckReq){
 		List<GetNearFoodTruckRes> foodTruckResList = foodTruckService.getNearFoodTruck(getNearFoodTruckReq);
-
-		Map<String, Object> result = new HashMap<>();
-		result.put("data", foodTruckResList);
-		result.put("msg", GET_FOODTRUCK_SUCCESS);
-		return ResponseEntity.ok().body(result);
+		return new ResponseEntity<>(foodTruckResList, HttpStatus.OK);
 	}
 
 	// 푸드트럭 검색
@@ -141,13 +134,9 @@ public class FoodTruckController {
 		@ApiResponse(code = 404, message = "사용자 없음"),
 		@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity<Map<String, Object>> search(@PathVariable("keyword") @ApiParam(value="검색 키워드", required = true) String keyword){
+	public ResponseEntity<List<GetNearFoodTruckRes>> search(@PathVariable("keyword") @ApiParam(value="검색 키워드", required = true) String keyword){
 		List<GetNearFoodTruckRes> foodTruckResList = foodTruckService.searchFoodTruck(keyword);
-
-		Map<String, Object> result = new HashMap<>();
-		result.put("data", foodTruckResList);
-		result.put("msg", SEARCH_FOODTRUCK_SUCCESS);
-		return ResponseEntity.ok().body(result);
+		return new ResponseEntity<>(foodTruckResList, HttpStatus.OK);
 	}
 
 	@PostMapping("/upload")
