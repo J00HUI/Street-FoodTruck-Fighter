@@ -12,6 +12,7 @@ import com.ssafy.foodtruck.model.service.UserService;
 import com.ssafy.foodtruck.util.JwtTokenUtil;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,13 +73,9 @@ public class ScheduleController {
 		@ApiResponse(code = 404, message = "사용자 없음"),
 		@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity<Map<String, Object>> getSchedule(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken){
+	public ResponseEntity<List<GetScheduleRes>> getSchedule(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken) {
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
 		List<GetScheduleRes> scheduleResList = scheduleService.getSchedule(user);
-
-		Map<String, Object> result = new HashMap<>();
-		result.put("data", scheduleResList);
-		result.put("msg", GET_SCHEDULE_SUCCESS);
-		return ResponseEntity.ok().body(result);
+		return new ResponseEntity<>(scheduleResList, HttpStatus.OK);
 	}
 }
