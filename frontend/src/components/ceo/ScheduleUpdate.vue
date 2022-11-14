@@ -9,9 +9,8 @@
         class="scheduleDateInput"
         max="3000-01-01"
         type="date"
-        v-model="kakaoStore.scheduleData.date"
       />
-      <!-- <time style="padding: 0 4%" v-model="kakaoStore.scheduleData.date">{{}}</time> -->
+      <!-- <time style="padding: 0 4%" v-model="scheduleStore.scheduleAddForm.date">{{}}</time> -->
       <button>
         <img style="transform:rotate(180deg);" src="@/assets/ceo/nav2Back.svg" alt />
       </button>
@@ -24,20 +23,23 @@
       <span class="timePlaceHoleder">open</span>
       <input
         id="schedule-operating"
-        v-model="kakaoStore.scheduleData.openTime"
         title="open"
         type="time"
       />
     </div>~
     <div class="timeInputBox">
       <span class="timePlaceHoleder">close</span>
-      <input style="padding-right:1rem" v-model="kakaoStore.scheduleData.closeTime" type="time" />
+      <input style="padding-right:1rem" type="time" />
     </div>
   </label>
 
   <div id="truck-name" class="truckInput inputText">
     <img src="@/assets/ceo/myMarkerIcon.svg" alt />
-    <img v-if="kakaoStore.searchTypeData.iconType === true" src="@/assets/ceo/addressIcon.svg" alt />
+    <img
+      v-if="kakaoStore.searchTypeData.iconType === true"
+      src="@/assets/ceo/addressIcon.svg"
+      alt
+    />
     <img
       v-if="kakaoStore.searchTypeData.iconType === false"
       src="@/assets/ceo/addressXIcon.svg"
@@ -45,7 +47,7 @@
     />
     <input
       type="text"
-      v-model="kakaoStore.scheduleData.address"
+      v-model="scheduleStore.scheduleAddForm.address"
       @focus="inputType"
       style="padding:0px"
       placeholder="위치"
@@ -53,34 +55,34 @@
   </div>
 
   <kakaoMap class="truckInput inputMap"></kakaoMap>
-  <button type="button" @click="scheduleUpdate" class="updateButton">수정</button>
+  <button type="button" @click="scheduleStore.setSchedule()" class="updateButton">수정</button>
 </template>
 
 <script>
 import kakaoMap from "@/components/ceo/ScheduleKakaoMap.vue";
-import { useKakaoStore } from "@/stores/kakao.js";
+import { useCeoScheduleStore } from "@/stores/ceo/schedule";
+import { useKakaoStore } from "@/stores/kakao";
 export default {
   components: {
     kakaoMap
   },
   setup() {
-    const kakaoStore = useKakaoStore();
+    const scheduleStore = useCeoScheduleStore();
+    const kakaoStore = useKakaoStore()
     kakaoStore.searchTypeData.viewType = "schedule";
     function yesterday() {
       console.log();
-      // kakaoStore.scheduleData.date = kakaoStore.scheduleData.date - 1
+      // scheduleStore.scheduleAddForm.date = scheduleStore.scheduleAddForm.date - 1
     }
-    function scheduleUpdate() {
-      console.log(kakaoStore.scheduleData);
-    }
+
     function inputType() {
       kakaoStore.searchTypeData.searchType = "input";
     }
     return {
+      scheduleStore,
       kakaoStore,
       yesterday,
-      scheduleUpdate,
-      inputType,
+      inputType
     };
   }
 };

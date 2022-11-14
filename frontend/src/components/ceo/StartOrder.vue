@@ -25,7 +25,7 @@ export default {
   setup() {
     const orderStore = useCeoOrderStore()
     const selectTime = [5, 10, 15, 20, 25];
-    orderStore.getCeoOrdersAll()
+    orderStore.getCeoOrders()
     return {
       orderStore,
       selectTime,

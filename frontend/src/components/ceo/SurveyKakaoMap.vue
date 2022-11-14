@@ -22,6 +22,7 @@ import xIcon from "@/assets/xicon.svg";
 export default {
   setup() {
     const store = useKakaoStore();
+    store.getSurvey()
     /* global kakao */
     onMounted(() => {
       if (window.kakao && window.kakao.maps) {

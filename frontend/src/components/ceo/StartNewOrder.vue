@@ -39,8 +39,9 @@ export default {
         console.log("!!!!!!!!event>>", event);
       });
     });
-    orderStore.getCeoOrders()
+
     const selectTime = [5, 10, 15, 20, 25];
+    orderStore.getNotAcceptedOrder()
 
     return {
       orderStore,

@@ -12,17 +12,6 @@ export const useKakaoStore = defineStore("Kakao", {
       latitude: 0,
       longtitudes: 0,
     };
-    const scheduleData = {
-      address: "",
-      latitude: 0,
-      longtitudes: 0,
-      scheduleDateDtoList: [],
-    };
-    const scheduleDateDtoListEx = {
-      endTime: "HH:mm",
-      startTime: "HH:mm",
-      workingDay: "yyyy-MM-dd",
-    };
     const searchTypeData = {
       iconType: false,
       viewType: null, // schedule과 my있음
@@ -54,38 +43,36 @@ export const useKakaoStore = defineStore("Kakao", {
       ],
       surveyData,
       currentAddress: "",
-      scheduleData,
       ceoMyData,
       searchTypeData,
-      scheduleDateDtoListEx,
     };
   },
   actions: {
     setSurvey() {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("accessToken");
       axios({
-        url: RF.foodtruck.survey(),
+        url: RF.survey.survey(),
         method: "post",
-        headers: { Authorization: "Bearer" + token },
+        headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
           alert(res.data);
         })
-        .catc((err) => {
+        .catch((err) => {
           console.log(err);
         });
     },
     getSurvey() {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("accessToken");
       axios({
-        url: RF.foodtruck.survey(),
+        url: RF.survey.survey(),
         method: "get",
-        headers: { Authorization: "Bearer" + token },
+        headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
           alert(res.data);
         })
-        .catc((err) => {
+        .catch((err) => {
           console.log(err);
         });
     },

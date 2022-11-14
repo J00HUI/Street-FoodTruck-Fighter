@@ -13,16 +13,20 @@
 
 <script>
 import { useKakaoStore } from "@/stores/kakao.js";
+import { useCeoScheduleStore } from "@/stores/ceo/schedule";
+import { useCeoMyStore } from "@/stores/ceo/my";
 import { onMounted, watch } from "vue";
 
 export default {
   setup() {
     const store = useKakaoStore();
+    const scheduleStore = useCeoScheduleStore()
+    const myStore = useCeoMyStore()
     let dataCase = null;
     if (store.searchTypeData.viewType === "schedule") {
-      dataCase = store.scheduleData;
+      dataCase = scheduleStore.scheduleAddForm;
     } else if (store.searchTypeData.viewType === "my") {
-      dataCase = store.ceoMyData;
+      dataCase = myStore.ceoMyData;
     }
     /* global kakao */
     onMounted(() => {
