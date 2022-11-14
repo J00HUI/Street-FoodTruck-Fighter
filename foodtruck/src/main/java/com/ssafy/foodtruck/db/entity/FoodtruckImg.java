@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class FileEntity extends BaseEntity {
+public class FoodtruckImg extends BaseEntity {
 
 	private String orgNm;
 
@@ -17,7 +17,6 @@ public class FileEntity extends BaseEntity {
 
 	private String savedPath;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "foodtruck_id")
+	@OneToOne(mappedBy = "foodtruckImg", cascade = CascadeType.ALL)
 	private FoodTruck foodTruck;
 }
