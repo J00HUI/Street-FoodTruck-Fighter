@@ -1,7 +1,7 @@
 //package com.ssafy.foodtruck.controller;
 //
 //import com.ssafy.foodtruck.TestUtil;
-//import com.ssafy.foodtruck.db.entity.OrdersErrorMessage;
+//import com.ssafy.foodtruck.constant.OrdersErrorMessage;
 //import com.ssafy.foodtruck.db.entity.Message;
 //import com.ssafy.foodtruck.dto.RegisterOrdersReq;
 //import com.ssafy.foodtruck.model.service.OrdersService;

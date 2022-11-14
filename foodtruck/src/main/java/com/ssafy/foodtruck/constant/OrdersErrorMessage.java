@@ -1,4 +1,4 @@
-package com.ssafy.foodtruck.db.entity;
+package com.ssafy.foodtruck.constant;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
