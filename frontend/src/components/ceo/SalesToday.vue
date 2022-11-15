@@ -36,7 +36,6 @@ h1 {
 }
 .TodayView {
   font-family: "SCoreDream";
-  height: 28%;
 }
 .TodayBox {
   position: relative;
