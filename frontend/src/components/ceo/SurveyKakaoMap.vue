@@ -35,6 +35,7 @@ export default {
   setup() {
     const store = useKakaoStore();
     /* global kakao */
+    store.getSurvey()
     onMounted(() => {
       if (window.kakao && window.kakao.maps) {
         initMap();
@@ -69,6 +70,7 @@ export default {
         store.mapCenter["latitude"] = initMap.map.getCenter()['Ma']
         store.mapCenter["longitude"] = initMap.map.getCenter()['La']
         store.getSurvey()
+        clusterer.redraw();
       });
 
       var imageSrc = null;
@@ -137,6 +139,7 @@ export default {
         // 지도를 클릭된 클러스터의 마커의 위치를 기준으로 확대합니다
         initMap.map.setLevel(level, { anchor: cluster.getCenter() });
       });
+
     };
     return {};
   }
