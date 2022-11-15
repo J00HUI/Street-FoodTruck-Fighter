@@ -12,8 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.ssafy.foodtruck.constant.UserConstant.DUPLICATED_USER_ERROR_MESSAGE;
-import static com.ssafy.foodtruck.constant.UserConstant.LOGIN_SUCCESS;
+import static com.ssafy.foodtruck.constant.UserConstant.*;
 
 /**
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -41,7 +40,7 @@ public class UserController {
 		} catch (ExistingEmailException ex){
 			return new ResponseEntity<>(DUPLICATED_USER_ERROR_MESSAGE, HttpStatus.FORBIDDEN);
 		}
-        return new ResponseEntity<>(LOGIN_SUCCESS, HttpStatus.CREATED);
+        return new ResponseEntity<>(SIGNUP_SUCCESS, HttpStatus.CREATED);
     }
 
 	@GetMapping("")

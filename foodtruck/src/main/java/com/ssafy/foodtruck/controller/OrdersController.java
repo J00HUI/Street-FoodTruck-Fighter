@@ -4,6 +4,7 @@ import com.ssafy.foodtruck.db.entity.User;
 import com.ssafy.foodtruck.dto.request.AcceptOrdersReq;
 import com.ssafy.foodtruck.dto.request.RegisterOrdersReq;
 import com.ssafy.foodtruck.dto.response.*;
+import com.ssafy.foodtruck.exception.NotFoundException;
 import com.ssafy.foodtruck.model.service.OrdersService;
 import com.ssafy.foodtruck.model.service.UserService;
 import com.ssafy.foodtruck.util.JwtTokenUtil;
@@ -34,16 +35,24 @@ public class OrdersController {
 	@ApiOperation(value = "주문내역 등록", notes = "<strong>사용자가 주문내역을 등록한다.</strong>")
 	public ResponseEntity<?> registerOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @RequestBody RegisterOrdersReq registerOrdersReq) {
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
-		ordersService.registerOrders(registerOrdersReq, user);
-		return new ResponseEntity<>(HttpStatus.OK);
+		try {
+			ordersService.registerOrders(registerOrdersReq, user);
+			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (NotFoundException ex) {
+			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	@PatchMapping("/ceo/{ordersId}")
 	@ApiOperation(value = "Orders ID로 주문 접수 - 사업자", notes = "<strong>Orders ID를 통해 주문을 접수한다.</strong>")
 	public ResponseEntity<?> acceptOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @RequestBody AcceptOrdersReq acceptOrdersReq) {
 		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
-		ordersService.acceptOrders(ceoId, acceptOrdersReq);
-		return new ResponseEntity<>(HttpStatus.OK);
+		try {
+			ordersService.acceptOrders(ceoId, acceptOrdersReq);
+			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (NotFoundException ex) {
+			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	@GetMapping("/customer")
