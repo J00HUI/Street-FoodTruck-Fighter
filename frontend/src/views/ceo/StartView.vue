@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import * as SockJs from 'sockjs-client';
 import CeoHeader from "@/components/ceo/CeoHeader.vue";
 import NewOrder from "@/components/ceo/StartNewOrder.vue";
 import Order from "@/components/ceo/StartOrder.vue";
@@ -18,7 +19,16 @@ export default {
     Order,
   },
   setup() {
-    onMounted(() => {});
+    var Stomp = require("stompjs");
+    var sock = new SockJs("/stompTest");
+    var client = Stomp.over(sock);
+    client.connect({}, function() {
+      console.log("Connected stompTest!");
+      client.send("/TTT", {}, "msg:Haha~~~");
+      client.subscribe("/topic/message", function(event) {
+        console.log("!!!!!!!!event>>", event);
+      });
+    });onMounted(() => {});
 
     return {};
   },

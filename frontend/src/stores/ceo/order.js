@@ -4,8 +4,23 @@ import axios from "axios";
 
 export const useCeoOrderStore = defineStore("CeoOrder", {
   state: () => {
+    const acceptedOrder = [
+      {
+        "acceptTime": "yyyy-MM-dd HH:mm:ss",
+        "accepted": true,
+        "menuResList": [
+          {
+            "count": 0,
+            "menuName": "string"
+          }
+        ],
+        "orderUserId": 0,
+        "ordersId": 0
+      }
+    ]
     return {
       viewToggle: false,
+      acceptedOrder,
     }
   },
   actions: {
@@ -18,10 +33,12 @@ export const useCeoOrderStore = defineStore("CeoOrder", {
       })
         .then((res) => {
           console.log('-----허락안된 주문--------')
+          console.log(res)
           console.log(res.data)
         })
         .catch((err) => {
           alert('허락안된 주문')
+
           console.log(err)
         });
     },
@@ -34,6 +51,7 @@ export const useCeoOrderStore = defineStore("CeoOrder", {
       })
         .then((res) => {
           console.log('-----현재주문--------')
+          console.log(res)
           console.log(res.data)
         })
         .catch((err) => {

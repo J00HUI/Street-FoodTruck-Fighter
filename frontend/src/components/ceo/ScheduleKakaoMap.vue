@@ -208,7 +208,7 @@ export default {
 .bAddr {
   font: 1rem "SCoreDream";
   color: black;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.2s);
   border-radius: 5px;
 }
 .label {

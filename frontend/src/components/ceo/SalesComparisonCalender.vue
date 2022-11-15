@@ -4,7 +4,6 @@
 
 <script setup>
 import router from "@/router";
-import { useCeoScheduleStore } from "@/stores/ceo/schedule.js";
 import { reactive, ref } from "vue";
 import "@fullcalendar/core/vdom";
 import FullCalendar from "@fullcalendar/vue3";
@@ -13,7 +12,6 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
 
-const store = useCeoScheduleStore();
 const id = ref(0);
 let colorIndex = Math.floor(Math.random() * 6);
 const backgroundColor = [
@@ -32,21 +30,8 @@ const borderColor = [
   "rgba(153, 102, 255, 1)",
   "rgba(255, 159, 64, 1)"
 ];
-// let colorList = ["yellow", "orange", "purple", "blue", "pink", "green"];
+
 const eventList = [];
-let eventsData = store.scheduleAddForm.scheduleDateDtoList;
-if (eventsData.length > 0) {
-  eventList.push({
-    title: store.scheduleAddForm.title,
-    start: eventsData[0].workingDay,
-    end: eventsData[eventsData.length - 1].workingDay,
-    // backgroundColor: "var(--color-" + colorList[colorIndex] + "-1)",
-    // borderColor: "var(--color-" + colorList[colorIndex] + "-2)"
-    backgroundColor: backgroundColor[colorIndex],
-    borderColor: borderColor[colorIndex],
-    textColor: borderColor[colorIndex]
-  });
-}
 
 const options = reactive({
   plugins: [dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin],
@@ -68,9 +53,9 @@ const options = reactive({
   select: arg => {
     id.value = id.value + 1;
     const cal = arg.view.calendar;
-    // cal.unselect();
+
     let title = "?";
-    // title = arg.startStr.slice(-5);
+
 
     colorIndex = Math.floor(Math.random() * 6);
     cal.addEvent({
@@ -86,19 +71,10 @@ const options = reactive({
     });
   },
   eventClick: e => {
-    let end = e.event.end;
-    for (let str = e.event.start; str < end; str.setDate(str.getDate() + 1)) {
-      const scheduleDateDto = {
-        endTime: "00:00",
-        startTime: "00:00",
-        workingDay: null
-      };
-      scheduleDateDto.workingDay = `${str.getFullYear()}-${str.getMonth()}-${str.getDate()}`;
+    console.log(e)
+    // for (let str = e.event.start; str < end; str.setDate(str.getDate() + 1)) {
 
-      store.scheduleDateDtoList.push(scheduleDateDto);
-      console.log(scheduleDateDto.workingDay);
-    }
-    store.scheduleAddForm.title = e.event.title;
+    // }
 
     router.push("/scheduleupdate");
   },
@@ -129,7 +105,7 @@ const options = reactive({
   height: 80% !important;
 }
 .fc-button {
-  background-color: var(--color-purple-2) !important;
+  background-color: var(--color-yellow-2) !important;
   border: none !important;
 }
 .fc-day-sat {

@@ -8,7 +8,7 @@ import { onMounted } from "vue";
 import $ from "jquery";
 import hotdog from "@/assets/hotdog.svg";
 import coffee from "@/assets/coffee.svg";
-import hamburger from "@/assets/hamburger.svg";
+import hamburger from "@/assets/hamburger.svg"
 import sweetpotato from "@/assets/sweetpotato.svg";
 import icecream from "@/assets/icecream.svg";
 import waffle from "@/assets/waffle.svg";
@@ -23,6 +23,7 @@ export default {
   setup() {
     const store = useKakaoStore();
     /* global kakao */
+    store.getSurvey()
     onMounted(() => {
       if (window.kakao && window.kakao.maps) {
         initMap();
@@ -57,6 +58,7 @@ export default {
         store.mapCenter["latitude"] = initMap.map.getCenter()['Ma']
         store.mapCenter["longitude"] = initMap.map.getCenter()['La']
         store.getSurvey()
+        clusterer.redraw();
       });
 
       var imageSrc = null;
@@ -90,7 +92,7 @@ export default {
           imageSrc = xIcon;
         }
 
-        var imageSize = new kakao.maps.Size(56, 64); // 마커이미지의 크기입니다
+        var imageSize = new kakao.maps.Size(48, 62); // 마커이미지의 크기입니다
 
         // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
 
@@ -125,6 +127,7 @@ export default {
         // 지도를 클릭된 클러스터의 마커의 위치를 기준으로 확대합니다
         initMap.map.setLevel(level, { anchor: cluster.getCenter() });
       });
+
     };
     return {};
   }
