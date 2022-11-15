@@ -1,6 +1,6 @@
 package com.ssafy.foodtruck.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.*;
 import com.ssafy.foodtruck.common.BaseResponseBody;
 import com.ssafy.foodtruck.db.entity.Category;
 import com.ssafy.foodtruck.db.entity.FoodTruck;
@@ -8,19 +8,29 @@ import com.ssafy.foodtruck.db.entity.FoodtruckImg;
 import com.ssafy.foodtruck.db.entity.Schedule;
 import com.ssafy.foodtruck.dto.MenuDto;
 import lombok.*;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.core.serializer.Serializer;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
+import java.io.*;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
+//@Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class GetFoodtruckRes extends BaseResponseBody {
 
 	private List<MenuDto> menuList = new ArrayList<>(); // 메뉴리스트
@@ -56,7 +66,8 @@ public class GetFoodtruckRes extends BaseResponseBody {
 
 	private Integer time; //예상시간
 
-	private UrlResource src; //이미지
+//	@JsonIgnore
+	private byte[] src; //이미지
 
 	public static GetFoodtruckRes of(String message, List<MenuDto> menuList, FoodTruck foodTruck, Schedule schedule, Double grade, Integer numberOfPeople, Integer time, FoodtruckImg foodtruckImg) {
 		GetFoodtruckRes res = new GetFoodtruckRes();
@@ -69,11 +80,37 @@ public class GetFoodtruckRes extends BaseResponseBody {
 		res.setDescription(foodTruck.getDescription());
 
 		//setSrc
-		try{
-			res.setSrc(new UrlResource("file:" + foodtruckImg.getSavedPath()));
-		} catch (MalformedURLException ex){
+//		try{
+//			res.setSrc(new UrlResource("file:" + foodtruckImg.getSavedPath()));
+//		} catch (MalformedURLException ex){
+//			ex.printStackTrace();
+//		}
+
+//		try {
+//			Path path = Paths.get(foodtruckImg.getSavedPath());
+//			Resource resoure = new InputStreamResource(Files.newInputStream(path));
+//			File file = new File(foodtruckImg.getSavedPath());
+//		} catch (IOException ex) {
+//			ex.printStackTrace();
+//		}
+
+		try {
+			Path path = Paths.get(foodtruckImg.getSavedPath());
+			byte[] isr = Files.readAllBytes(path);
+
+			HttpHeaders respHeaders = new HttpHeaders();
+			respHeaders.setContentLength(isr.length);
+			respHeaders.setContentType(new MediaType("text", "json"));
+			respHeaders.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+			respHeaders.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + foodtruckImg.getSavedNm());
+
+			res.setSrc(isr);
+
+		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
+
+
 
 		if(schedule != null) {
 			res.setWorkingDate(schedule.getWorkingDate());

@@ -31,6 +31,7 @@ public class OrdersService {
 	public void registerOrders(RegisterOrdersReq registerOrdersReq, User user) {
 		FoodTruck foodTruck = foodTruckRepository.findById(registerOrdersReq.getFoodtruckId())
 			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
+
 		final Orders orders = Orders.builder()
 			.user(user)
 			.foodTruck(foodTruck)
@@ -38,9 +39,11 @@ public class OrdersService {
 		Orders savedOrders = ordersRepository.save(orders);
 
 		List<RegisterMenuReq> menuList = registerOrdersReq.getMenuList();
+
 		for(RegisterMenuReq menuReq : menuList){
 			Menu menu = menuRepository.findById(menuReq.getMenuId())
 				.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
+
 			ordersMenuRepository.save(OrdersMenu.builder()
 				.orders(savedOrders)
 				.menu(menu)
@@ -54,6 +57,7 @@ public class OrdersService {
 		Orders orders = ordersRepository.findById(acceptOrdersReq.getOrdersId())
 			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
 
+		// 주문이 사장님 아이디인지 확인
 		if (ceoId != orders.getFoodTruck().getUser().getId()) {
 			throw new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER);
 		}

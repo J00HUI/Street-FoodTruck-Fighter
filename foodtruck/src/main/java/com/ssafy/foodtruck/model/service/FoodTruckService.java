@@ -6,9 +6,7 @@ import com.ssafy.foodtruck.dto.MenuDto;
 import com.ssafy.foodtruck.dto.ScheduleDateDto;
 import com.ssafy.foodtruck.dto.request.GetNearFoodtruckReq;
 import com.ssafy.foodtruck.dto.request.RegisterFoodtruckReq;
-import com.ssafy.foodtruck.dto.request.RegisterFoodtruckReviewReq;
 import com.ssafy.foodtruck.dto.response.GetFoodtruckRes;
-import com.ssafy.foodtruck.dto.response.GetFoodtruckReviewRes;
 import com.ssafy.foodtruck.dto.response.GetNearFoodtruckRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,9 +33,7 @@ public class FoodTruckService {
 	private final FoodtruckRepository foodTruckRepository;
 	private final ScheduleRepository scheduleRepository;
 	private final MenuRepository menuRepository;
-	private final OrdersRepository ordersRepository;
 	private final ReviewRepository reviewRepository;
-	private final FoodtruckImgRepository foodtruckImgRepository;
 	private final UserRepository userRepository;
 
 	// 푸드트럭 정보 조회
@@ -117,10 +113,10 @@ public class FoodTruckService {
 	}
 
 	// 푸드트럭 수정
-	public void updateFoodTruck(RegisterFoodtruckReq registerFoodTruckReq, User user) throws IllegalAccessException {
+	public void updateFoodTruck(RegisterFoodtruckReq registerFoodTruckReq, User user) {
 		// 푸드트럭 찾기
 		FoodTruck foodTruck = foodTruckRepository.findByUser(user)
-			.orElseThrow(NoSuchElementException::new);
+			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE));
 
 		// 메뉴 삭제
 		deleteMenu(foodTruck);
@@ -159,48 +155,11 @@ public class FoodTruckService {
 		}
 	}
 
-	// 푸드트럭 리뷰 등록
-	public void registerFoodTruckReview(RegisterFoodtruckReviewReq registerFoodTruckReviewReq, User user){
-		// 주문내역에서 찾음
-		Orders order = ordersRepository.findById(registerFoodTruckReviewReq.getOrdersId())
-			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_ORDERS_ERROR_MESSAGE));
-		// Review 에서 찾음 -> 에러 (테스트 코드 작성) - 주문 내역 1번에 1번의 리뷰만 달 수 있다.
-
-		final Review review = Review.builder()
-			.user(user)
-			.orders(order)
-			.content(registerFoodTruckReviewReq.getContent())
-			.grade(registerFoodTruckReviewReq.getGrade())
-			.src(registerFoodTruckReviewReq.getSrc())
-			.build();
-		reviewRepository.save(review);
-	}
-
-	// 푸드트럭 리뷰 조회
-	public List<GetFoodtruckReviewRes> getFoodTruckReview(Integer foodTruckId){
-		List<Review> findReviewList = reviewRepository.findAllByFoodTruckId(foodTruckId);
-		List<GetFoodtruckReviewRes> reviewList = new ArrayList<>();
-		System.out.println("리뷰 갯수 : " + findReviewList.size());
-
-		for(Review review : findReviewList){
-			reviewList.add(GetFoodtruckReviewRes.builder()
-					.id(review.getId())
-					.userId(review.getUser().getId())
-					.ordersId(review.getOrders().getId())
-					.content(review.getContent())
-					.grade(review.getGrade())
-					.src(review.getSrc())
-					.regDate(review.getRegDate())
-				.build());
-		}
-		return reviewList;
-	}
-
 	// 현재 위치와 가까운 푸드트럭 조회
 	public List<GetNearFoodtruckRes> getNearFoodTruck(GetNearFoodtruckReq getNearFoodTruckReq){
 		List<Schedule> scheduleList = scheduleRepository.findScheduleNearBy(getNearFoodTruckReq.getLat(),getNearFoodTruckReq.getLng());
 		if(scheduleList.isEmpty())
-			throw new IllegalArgumentException("스케줄을 찾을 수 없습니다.");
+			throw new IllegalArgumentException(NOT_FOUND_SCHEDULE_ERROR_MESSAGE);
 
 		List<GetNearFoodtruckRes> foodTruckList = new ArrayList<>();
 		for(Schedule schedule : scheduleList) {
@@ -219,9 +178,9 @@ public class FoodTruckService {
 
 			Double grade = 0.0;
 			List<Review> findReviewList = reviewRepository.findAllByFoodTruckId(foodTruck.getId());
-			if(findReviewList.isEmpty()){
-				throw new IllegalArgumentException("리뷰가 없습니다.");
-			}
+//			if(findReviewList.isEmpty()){
+//				throw new IllegalArgumentException("리뷰가 없습니다.");
+//			}
 
 			for(Review r : findReviewList){
 				grade += r.getGrade();
@@ -276,7 +235,7 @@ public class FoodTruckService {
 	}
 
 	@Transactional
-	public void saveFile(int ceoId, MultipartFile files) throws IOException {
+	public void saveFoodtruckImg(int ceoId, MultipartFile files) throws IOException {
 
 		Optional<User> user = userRepository.findById(ceoId);
 
@@ -323,13 +282,9 @@ public class FoodTruckService {
 		foodTruck.get().setFoodtruckImg(file);
 	}
 
-	public FoodtruckImg getFile(int ceoId) {
-		Optional<User> user = userRepository.findById(ceoId);
-		if(!user.isPresent()){
-			return null;
-		}
+	public FoodtruckImg getFoodtruckImg(int foodtruckId) {
 
-		Optional<FoodTruck> foodTruck = foodTruckRepository.findByUser(user.get());
+		Optional<FoodTruck> foodTruck = foodTruckRepository.findById(foodtruckId);
 		if(!foodTruck.isPresent()){
 			return null;
 		}

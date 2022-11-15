@@ -19,9 +19,6 @@ public class Review extends BaseEntity {
 	@NotNull
 	private Integer grade;
 
-	@Column(length = 200)
-	private String src;
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User user;
@@ -33,4 +30,8 @@ public class Review extends BaseEntity {
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "review_img_id")
 	private ReviewImg reviewImg;
+
+	public void setReviewImg(ReviewImg reviewImg) {
+		this.reviewImg = reviewImg;
+	}
 }

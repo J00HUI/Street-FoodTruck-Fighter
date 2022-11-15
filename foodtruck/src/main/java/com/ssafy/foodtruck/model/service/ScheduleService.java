@@ -38,7 +38,6 @@ public class ScheduleService {
 		Integer nowGroupId = groupId + 1;
 
 		for(ScheduleDateDto dateDto : createScheduleReq.getScheduleDateDtoList()){
-			// 일정이 중복되게 등록되면 안됨 -> 테스트 코드 작성
 			final Schedule schedule = Schedule.builder()
 				.title(createScheduleReq.getTitle())
 				.groupId(nowGroupId)
@@ -75,16 +74,16 @@ public class ScheduleService {
 		scheduleRepository.save(schedule);
 	}
 
-	// 이번달 일정 조회
 	public List<GetScheduleRes> getSchedule(User user){
-		LocalDate today = LocalDate.now();
-		LocalDate firstDate = today.withDayOfMonth(1);
-		LocalDate lastDate = today.withDayOfMonth(today.lengthOfMonth());
+//		LocalDate today = LocalDate.now();
+//		LocalDate firstDate = today.withDayOfMonth(1);
+//		LocalDate lastDate = today.withDayOfMonth(today.lengthOfMonth());
 
 		FoodTruck foodtruck = foodTruckRepository.findByUser(user)
 			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE));
 
-		List<Schedule> findScheduleList = scheduleRepository.findScheduleByFoodTruckAndThisMonth(foodtruck.getId(), firstDate, lastDate);
+//		List<Schedule> findScheduleList = scheduleRepository.findScheduleByFoodTruckAndThisMonth(foodtruck.getId(), firstDate, lastDate);
+		List<Schedule> findScheduleList = scheduleRepository.findAllByFoodTruck(foodtruck);
 
 		List<GetScheduleRes> scheduleResList = new ArrayList<>();
 		for(Schedule schedule : findScheduleList){
