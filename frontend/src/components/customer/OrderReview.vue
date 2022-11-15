@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="cardContainer">
+  <div class="scroll">
+    <div v-for="(item, idx) in list" :key="idx" class="cardContainer">
       <div class="card">
         <!-- 사진 -->
         <div class="picture">
@@ -10,12 +10,12 @@
         <div class="detail">
           <!-- 이름과 별점 -->
           <div class="writer">
-            <h3>name</h3>
-            <p>star</p>
+            <h3>{{ reviewStore.reviewRoad[idx].userId }}</h3>
+            <p>⭐ {{ reviewStore.reviewRoad[idx].grade }}</p>
           </div>
           <!-- 리뷰 -->
           <div class="review">
-            <p>너무 맛있는 인생맛집 발견 ㅠㅠㅠㅠ</p>
+            <p class="content">{{ reviewStore.reviewRoad[idx].content }}</p>
           </div>
         </div>
       </div>
@@ -24,16 +24,43 @@
 </template>
 
 <script>
-export default {};
+import { useReviewRoadStore } from "@/stores/customer/review/reviewRoad";
+export default {
+  setup() {
+    const reviewStore = useReviewRoadStore();
+
+    reviewStore.getReview();
+
+    let list = 0;
+    list = reviewStore.reviewRoad;
+
+    return {
+      reviewStore,
+      list,
+    };
+  },
+};
 </script>
 
 <style scoped>
+.scroll{
+  overflow-y: auto;
+  height: 55%;
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  display: flex;
+  flex-direction: column;
+}
+.scroll::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
 /* card style start */
 .cardContainer {
   display: flex;
   justify-content: center;
-  margin-top: 1rem;
-  margin-bottom: 1.5rem;
+  margin-top: 0.7rem;
+  margin-bottom: 0.7rem;
 }
 .card {
   display: flex;
@@ -47,7 +74,10 @@ export default {};
   box-shadow: 2px 3px 15px -6px grey;
 }
 .picture {
-  height: 13rem;
+  height: 60%;
+}
+.detail{
+  height: 40%;
 }
 hr {
   width: 100%;
@@ -55,14 +85,20 @@ hr {
 }
 .writer {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   flex-direction: row;
-  align-items: left;
-  height: 2.5rem;
+  align-items: center;
+  height: 25%;
 }
 .review {
-  height: 30%;
-  margin-top: 5rem;
+  height: 75%;
+  margin-top: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.content{
+  overflow : auto;
+  height: auto;
 }
 /* cart style end */
 </style>
