@@ -33,6 +33,7 @@ export default {
     customer:() => HOST + 'order',
     acceptOrders: (order_id) => HOST + ORDER + CEO + `${order_id}`,
     getNotAcceptedOrder: () => HOST + ORDER + CEO + 'not/' + 'accepted',
+    getCustomerOrders: () => HOST + ORDER + 'customer',
     getCustomerOrdersAll: () => HOST + ORDER + CUSTOMER + 'all',
     getCeoOrders: () => HOST + ORDER + CEO + 'accepted',
     getCeoOrdersAll: () => HOST + ORDER + CEO + 'all',

@@ -4,19 +4,25 @@
       <img src="@/assets/ceo/nav2Back.svg" alt />
     </button>
     <img src="@/assets/markerIcon.svg" alt />
-    <address style="margin: auto; font-style: normal">주소</address>
+    <address style="margin: auto; font-style: normal">{{ kakaoStore.mapCenter.address }}</address>
     <img src="@/assets/noticeIcon.svg" alt />
     <img src="@/assets/humanIcon.svg" style="margin-left: 1rem" alt />
   </header>
 </template>
 
 <script>
+import { useKakaoStore } from "@/stores/kakao";
+
 export default {
   setup() {
+    const kakaoStore = useKakaoStore();
+    kakaoStore.setHeaderAddress();
+
     function goBack() {
       window.history.back();
     }
     return {
+      kakaoStore,
       goBack,
     };
   },
