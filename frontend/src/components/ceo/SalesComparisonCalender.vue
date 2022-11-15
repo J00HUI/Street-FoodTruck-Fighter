@@ -3,7 +3,6 @@
 </template>
 
 <script setup>
-import router from "@/router";
 import { reactive, ref } from "vue";
 import "@fullcalendar/core/vdom";
 import FullCalendar from "@fullcalendar/vue3";
@@ -11,27 +10,17 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
-
+import { useCeoSalesStore } from "@/stores/ceo/sales";
+const salesStore = useCeoSalesStore();
 const id = ref(0);
-let colorIndex = Math.floor(Math.random() * 6);
-const backgroundColor = [
-  "rgba(255, 99, 132, 0.2)",
-  "rgba(54, 162, 235, 0.2)",
-  "rgba(255, 206, 86, 0.2)",
-  "rgba(75, 192, 192, 0.2)",
-  "rgba(153, 102, 255, 0.2)",
-  "rgba(255, 159, 64, 0.2)"
-];
-const borderColor = [
-  "rgba(255,99,132,1)",
-  "rgba(54, 162, 235, 1)",
-  "rgba(255, 206, 86, 1)",
-  "rgba(75, 192, 192, 1)",
-  "rgba(153, 102, 255, 1)",
-  "rgba(255, 159, 64, 1)"
-];
 
-const eventList = [];
+const eventList = [
+  {
+    start: "2022-11-10",
+    end: "2022-11-11"
+  }
+];
+// const backColorList = [rgb(72, 131, 203),rgb(203, 72, 72)]
 
 const options = reactive({
   plugins: [dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin],
@@ -44,39 +33,70 @@ const options = reactive({
   editable: true,
   selectable: true,
   weekends: true,
-  dayMaxEvents: 3,
+  dayMaxEvents: 1,
   eventMaxStack: 99,
   longPressDelay: 300,
   eventLongPressDelay: 300,
   selectLongPressDelay: 300,
   events: eventList,
+
   select: arg => {
     id.value = id.value + 1;
     const cal = arg.view.calendar;
+    console.log(cal.getEvents());
+    let title = "";
+    if (salesStore.salesTypeData.addEventIdx === 0) {
+      cal.addEvent({
+        id: `${id.value}`,
+        title: title,
+        start: arg.end - 1,
+        end: arg.end,
+        allDay: true,
 
-    let title = "?";
+        backgroundColor: "rgb(72, 131, 203)"
+      });
+      salesStore.salesTypeData.addEventIdx += 1
+    } else if (salesStore.salesTypeData.addEventIdx === 1) {
+      cal.addEvent({
+        id: `${id.value}`,
+        title: title,
+        start: arg.end - 1,
+        end: arg.end,
+        allDay: true,
+
+        backgroundColor: "rgb(203, 72, 72)"
+      });
+      salesStore.salesTypeData.addEventIdx += 1
+    } else if (salesStore.salesTypeData.addEventIdx === 2) {
+      cal.addEvent({
+        id: `${id.value}`,
+        title: title,
+        start: arg.end - 1,
+        end: arg.end,
+        allDay: true,
+
+        backgroundColor: "rgb(72, 131, 203)"
+      });
+      salesStore.salesTypeData.addEventIdx -= 1
+    }
 
 
-    colorIndex = Math.floor(Math.random() * 6);
-    cal.addEvent({
-      id: `${id.value}`,
-      title: title,
-      start: arg.start,
-      end: arg.end,
-      allDay: true,
-
-      backgroundColor: backgroundColor[colorIndex],
-      borderColor: borderColor[colorIndex],
-      textColor: borderColor[colorIndex]
-    });
+    // 초록
+    // cal.addEvent({
+    //   id: `${id.value}`,
+    //   title: title,
+    //   start: arg.start,
+    //   end: arg.end,
+    //   allDay: true,
+    //   display: 'background',
+    //   backgroundColor: "rgba(89, 250, 99, 0.644)",
+    // });
   },
   eventClick: e => {
-    console.log(e)
+    console.log(e);
     // for (let str = e.event.start; str < end; str.setDate(str.getDate() + 1)) {
 
     // }
-
-    router.push("/scheduleupdate");
   },
   // eventMouseEnter: arg => {
 
@@ -123,6 +143,8 @@ const options = reactive({
 .fc-h-event {
   border: 2px solid;
   color: black;
+  color: rgb(203, 72, 72);
   /* text-shadow: 1px 0px black, -1px 0px black, 0px -1px black, 0px 1px black, 1px 1px black, -1px 1px black, 1px -1px black, -1px -1px black; */
 }
+
 </style>
