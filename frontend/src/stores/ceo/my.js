@@ -151,9 +151,11 @@ export const useCeoMyStore = defineStore("CeoMy", {
       if (this.createImgUrl !== null) {
         URL.revokeObjectURL(this.createImgUrl);
       }
+      var A8 = new Uint8Array(file)
+      var A16 = new Uint16Array(file)
 
-      var imgsrc = "data:image/png;base64," + window.btoa(String.fromCharCode.apply(null, new Uint8Array(file)));
-      console.log('디코드',window.btoa(null, new Uint8Array([file])))
+      var imgsrc = "data:image/png;base64," + window.btoa(String.fromCharCode.apply(null, ));
+      
       let e = document.getElementById('my-truck-img')
   
       this.myData.truckImg = imgsrc;
