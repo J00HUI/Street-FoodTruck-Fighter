@@ -44,22 +44,24 @@ public class GetNearFoodtruckRes {
 	private Double grade; //평점
 
 	public static GetNearFoodtruckRes of(List<MenuDto> menuList, FoodTruck foodTruck, Schedule schedule, Double grade, FoodtruckImg foodtruckImg) {
+		GetNearFoodtruckRes res = new GetNearFoodtruckRes();
+		res.setFoodtruckId(foodTruck.getId());
+		res.setMenuList(menuList);
+		res.setName(foodTruck.getName());
+		res.setCategory(foodTruck.getCategory());
+		res.setPhone(foodTruck.getPhone());
+		res.setDescription(foodTruck.getDescription());
 
-		GetNearFoodtruckRes res = GetNearFoodtruckRes.builder()
-			.foodtruckId(foodTruck.getId())
-			.menuList(menuList)
-			.name(foodTruck.getName())
-			.category(foodTruck.getCategory())
-			.phone(foodTruck.getPhone())
-			.description(foodTruck.getDescription())
-			.workingDate(schedule.getWorkingDate())
-			.startTime(schedule.getStartTime())
-			.endTime(schedule.getEndTime())
-			.latitude(schedule.getLatitude())
-			.longitude(schedule.getLongitude())
-			.address(schedule.getAddress())
-			.grade(grade)
-			.build();
+		if(schedule != null){
+			res.setWorkingDate(schedule.getWorkingDate());
+			res.setStartTime(schedule.getStartTime());
+			res.setEndTime(schedule.getEndTime());
+			res.setLatitude(schedule.getLatitude());
+			res.setLongitude(schedule.getLongitude());
+			res.setAddress(schedule.getAddress());
+		}
+
+		res.setGrade(grade);
 
 		//setSrc
 		try{

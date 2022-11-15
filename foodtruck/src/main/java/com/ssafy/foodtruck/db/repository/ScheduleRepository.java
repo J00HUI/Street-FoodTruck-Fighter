@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.List;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
-	Optional<Schedule> findByFoodTruck(FoodTruck foodTruck);
+	List<Schedule> findAllByFoodTruck(FoodTruck foodTruck);
 
 	@Query(value = "SELECT *\n" +
 		"FROM schedule\n" +
