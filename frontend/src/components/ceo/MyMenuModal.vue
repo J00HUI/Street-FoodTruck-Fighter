@@ -26,11 +26,12 @@
               />
             </label>
             <label for="new-menu-price" class="truckInput inputText">
-              <img style="width:1.5rem;" src="@/assets/ceo/myNewMenuName.svg" alt />
+              <img style="width:1.5rem;" src="@/assets/ceo/myPrice.svg" alt />
               <input
-                v-model="myStore.newMenuData.price"
+                @keyup="inputNumberFormat(this)"
                 id="new-menu-price"
                 type="text"
+                maxlength="20"
                 placeholder="가격을 입력해 주세요"
               />
             </label>
@@ -191,13 +192,14 @@ export default {
         document.getElementById("my-new-menu-img").value = null;
       }
     }
+ 
     return {
       myStore,
       setNewMenuimg,
       modalToggle,
       createMenu,
       loadMenu,
-      newMenu
+      newMenu,
     };
   }
 };
@@ -335,8 +337,8 @@ textarea {
 .descriptionIcon {
   position: relative;
   height: 1.5rem;
-  top: 1rem;
-  left: 1rem;
+  top: 1.1rem;
+  left: 1.1rem;
   display: block;
 }
 .descriptionLabel {
@@ -347,8 +349,8 @@ textarea {
 }
 .description {
   position: relative;
-  top: 1rem;
-  left: 1rem;
+  top: 1.5rem;
+  left: 1.5rem;
   width: calc(96% - 2rem);
   margin: auto;
   height: calc(80% - 2rem);
