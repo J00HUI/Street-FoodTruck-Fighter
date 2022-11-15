@@ -1,5 +1,5 @@
-// const HOST = "http://localhost:8000/api/"
-const HOST = "https://k7b206.p.ssafy.io/api/"
+const HOST = "http://localhost:8000/api/"
+// const HOST = "https://k7b206.p.ssafy.io/api/"
 // const api = " api/"
 const AUTH = "auth/"
 const USER = 'user/'

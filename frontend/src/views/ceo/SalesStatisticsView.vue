@@ -2,11 +2,11 @@
   <div style="position:relative; width:100%; height:100%">
     <CeoHeader></CeoHeader>
     <nav style="display:flex; height:8%">
-      <div class="salesNav">
-        <span class="underLine">오늘의 매출</span>
+      <div class="salesNav" @click="toDay">
+        <span id="sales-today" class="underLine">오늘의 매출</span>
       </div>
-      <div class="salesNav salesNavR">
-        <span>매출 통계</span>
+      <div class="salesNav salesNavR" @click="allDay">
+        <span id="sales-allday" class="">매출 통계</span>
       </div>
     </nav>
     <div class="todayView">
@@ -28,6 +28,24 @@ export default {
     Today,
     Chart,
     Footer
+  },
+  setup() {
+    // const todayE = document.getElementById('sales-today')
+    // const alldayE = document.getElementById('sales-allday')
+    // function toDay() {
+    //   console.log(todayE)
+    //   todayE.classList.add('underLine')
+
+    //   alldayE.classList.remove('underLine')
+    // }
+    // function allDay() {
+    //   todayE.classList.add('underLine')
+    //   alldayE.classList.remove('underLine')
+    // }
+    return {
+      // toDay,
+      // allDay
+    };
   }
 };
 </script>
@@ -50,8 +68,5 @@ export default {
 .underLine {
   border-bottom: 0.2rem solid black;
   color: black;
-}
-.todayView {
-
 }
 </style>
