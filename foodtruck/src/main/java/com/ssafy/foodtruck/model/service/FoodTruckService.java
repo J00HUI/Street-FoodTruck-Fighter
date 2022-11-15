@@ -113,10 +113,10 @@ public class FoodTruckService {
 	}
 
 	// 푸드트럭 수정
-	public void updateFoodTruck(RegisterFoodtruckReq registerFoodTruckReq, User user) throws IllegalAccessException {
+	public void updateFoodTruck(RegisterFoodtruckReq registerFoodTruckReq, User user) {
 		// 푸드트럭 찾기
 		FoodTruck foodTruck = foodTruckRepository.findByUser(user)
-			.orElseThrow(NoSuchElementException::new);
+			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE));
 
 		// 메뉴 삭제
 		deleteMenu(foodTruck);
@@ -159,7 +159,7 @@ public class FoodTruckService {
 	public List<GetNearFoodtruckRes> getNearFoodTruck(GetNearFoodtruckReq getNearFoodTruckReq){
 		List<Schedule> scheduleList = scheduleRepository.findScheduleNearBy(getNearFoodTruckReq.getLat(),getNearFoodTruckReq.getLng());
 		if(scheduleList.isEmpty())
-			throw new IllegalArgumentException("스케줄을 찾을 수 없습니다.");
+			throw new IllegalArgumentException(NOT_FOUND_SCHEDULE_ERROR_MESSAGE);
 
 		List<GetNearFoodtruckRes> foodTruckList = new ArrayList<>();
 		for(Schedule schedule : scheduleList) {
@@ -178,9 +178,9 @@ public class FoodTruckService {
 
 			Double grade = 0.0;
 			List<Review> findReviewList = reviewRepository.findAllByFoodTruckId(foodTruck.getId());
-			if(findReviewList.isEmpty()){
-				throw new IllegalArgumentException("리뷰가 없습니다.");
-			}
+//			if(findReviewList.isEmpty()){
+//				throw new IllegalArgumentException("리뷰가 없습니다.");
+//			}
 
 			for(Review r : findReviewList){
 				grade += r.getGrade();

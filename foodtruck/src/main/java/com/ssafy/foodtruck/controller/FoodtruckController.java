@@ -90,8 +90,12 @@ public class FoodtruckController {
 	@ApiOperation(value = "푸드트럭 수정", notes = "<strong>푸드트럭 정보를 수정한다.</strong>")
 	public ResponseEntity<?> updateFoodTruck(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken, @RequestBody @ApiParam(value="푸드트럭 정보", required = true) RegisterFoodtruckReq registerFoodTruckReq) throws IllegalAccessException {
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
-		foodTruckService.updateFoodTruck(registerFoodTruckReq, user);
-		return new ResponseEntity<>(UPDATE_FOODTRUCK_SUCCESS, HttpStatus.OK);
+		try {
+			foodTruckService.updateFoodTruck(registerFoodTruckReq, user);
+			return new ResponseEntity<>(UPDATE_FOODTRUCK_SUCCESS, HttpStatus.OK);
+		} catch (NoSuchElementException ex) {
+			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	// 지도와 가까운 푸드트럭 조회
@@ -103,9 +107,13 @@ public class FoodtruckController {
 		@ApiResponse(code = 404, message = "사용자 없음"),
 		@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity<List<GetNearFoodtruckRes>> getNearFoodTruck(@RequestBody @ApiParam(value="사용자의 위치 정보와 카테고리", required = true) GetNearFoodtruckReq getNearFoodTruckReq){
-		List<GetNearFoodtruckRes> foodTruckResList = foodTruckService.getNearFoodTruck(getNearFoodTruckReq);
-		return new ResponseEntity<>(foodTruckResList, HttpStatus.OK);
+	public ResponseEntity<?> getNearFoodTruck(@RequestBody @ApiParam(value="사용자의 위치 정보와 카테고리", required = true) GetNearFoodtruckReq getNearFoodTruckReq){
+		try {
+			List<GetNearFoodtruckRes> foodTruckResList = foodTruckService.getNearFoodTruck(getNearFoodTruckReq);
+			return new ResponseEntity<>(foodTruckResList, HttpStatus.OK);
+		} catch (IllegalArgumentException ex) {
+			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	// 푸드트럭 검색
@@ -117,9 +125,13 @@ public class FoodtruckController {
 		@ApiResponse(code = 404, message = "사용자 없음"),
 		@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity<List<GetNearFoodtruckRes>> search(@PathVariable("keyword") @ApiParam(value="검색 키워드", required = true) String keyword){
-		List<GetNearFoodtruckRes> foodTruckResList = foodTruckService.searchFoodTruck(keyword);
-		return new ResponseEntity<>(foodTruckResList, HttpStatus.OK);
+	public ResponseEntity<?> search(@PathVariable("keyword") @ApiParam(value="검색 키워드", required = true) String keyword){
+		try {
+			List<GetNearFoodtruckRes> foodTruckResList = foodTruckService.searchFoodTruck(keyword);
+			return new ResponseEntity<>(foodTruckResList, HttpStatus.OK);
+		} catch (IllegalArgumentException ex) {
+			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	@PostMapping("/upload")
@@ -130,7 +142,6 @@ public class FoodtruckController {
 	}
 
 	@GetMapping("/image/{foodtruckId}")
-	@ResponseBody
 	public ResponseEntity<UrlResource> getFoodtruckImg(@PathVariable Integer foodtruckId) throws IOException{
 		FoodtruckImg file = foodTruckService.getFoodtruckImg(foodtruckId);
 		return new ResponseEntity<>(new UrlResource("file:" + file.getSavedPath()), HttpStatus.OK);
