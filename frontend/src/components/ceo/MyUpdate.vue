@@ -60,6 +60,7 @@ export default {
   setup() {
     const myStore = useCeoMyStore();
     const kakaoStore = useKakaoStore();
+    myStore.getImg()
     kakaoStore.searchTypeData.viewType = "my";
     const toggle = ref({
       isMap: false
@@ -71,7 +72,7 @@ export default {
       if (myStore.createImgUrl !== null) {
         URL.revokeObjectURL(myStore.createImgUrl);
       }
-      myStore.newMenuData.img = e.target.files[0];
+      myStore.myData.truckImg = e.target.files[0];
       myStore.createImgUrl = URL.createObjectURL(e.target.files[0]);
       e.target.nextElementSibling.src = myStore.createImgUrl;
       e.target.nextElementSibling.classList.remove("imgVisible");
@@ -80,6 +81,7 @@ export default {
       );
     }
     function myUpdate() {
+      myStore.setImg()
       console.log(myStore.myData);
     }
     function inputType() {
