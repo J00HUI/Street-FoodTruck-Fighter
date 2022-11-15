@@ -113,6 +113,7 @@ export const useCeoMyStore = defineStore("CeoMy", {
         });
     },
     setImg() {
+
       var formData = new FormData();
       console.log(this.myData.truckImg);
       formData.append("file", this.myData.truckImg);
@@ -140,28 +141,25 @@ export const useCeoMyStore = defineStore("CeoMy", {
         .then((res) => {
           this.set_img(res.data)
           console.log(res)
-          
+
 
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    set_img(file) {
+    set_img(data) {
+     
       if (this.createImgUrl !== null) {
         URL.revokeObjectURL(this.createImgUrl);
       }
-      var A8 = new Uint8Array(file)
-      var A16 = new Uint16Array(file)
 
-      var imgsrc = "data:image/png;base64," + window.btoa(String.fromCharCode.apply(null, ));
-      
-      let e = document.getElementById('my-truck-img')
-  
-      this.myData.truckImg = imgsrc;
-      e.nextElementSibling.src = imgsrc;
-      e.nextElementSibling.classList.remove("imgVisible");
-      e.nextElementSibling.nextElementSibling.classList.add(
+      let imgTag = document.getElementById('my-truck-img')
+
+      this.myData.truckImg = file;
+      imgTag.nextElementSibling.src = URL.createObjectURL(file);
+      imgTag.nextElementSibling.classList.remove("imgVisible");
+      imgTag.nextElementSibling.nextElementSibling.classList.add(
         "imgVisible"
       );
     }
