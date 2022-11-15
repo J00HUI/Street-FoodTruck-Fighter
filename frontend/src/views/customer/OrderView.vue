@@ -6,11 +6,11 @@
       <h1>{{ detailStore.aboutStore.data.name }}</h1>
       <form name="starForm" id="starForm">
         <fieldset>
-          <input type="radio" name="rating" value="5" id="rate1" /><label
+          <input type="radio" name="rating" value="1" id="rate1" /><label
             for="rate1"
             >⭐</label
           >
-          <input type="radio" name="rating" value="4" id="rate2" /><label
+          <input type="radio" name="rating" value="2" id="rate2" /><label
             for="rate2"
             >⭐</label
           >
@@ -18,11 +18,11 @@
             for="rate3"
             >⭐</label
           >
-          <input type="radio" name="rating" value="2" id="rate4" /><label
+          <input type="radio" name="rating" value="4" id="rate4" /><label
             for="rate4"
             >⭐</label
           >
-          <input type="radio" name="rating" value="1" id="rate5" /><label
+          <input type="radio" name="rating" value="5" id="rate5" /><label
             for="rate5"
             >⭐</label
           >
@@ -81,6 +81,7 @@ import Review from "@/components/customer/OrderReview.vue";
 import { useMenuStore } from "@/stores/customer/menu/menu";
 import { useStoreDetail } from "@/stores/customer/menu/storeDetail";
 import { onMounted } from "vue-demi";
+import { useReviewRoadStore } from "@/stores/customer/review/reviewRoad";
 
 export default {
   components: {
@@ -106,6 +107,10 @@ export default {
     }
 
     detailStore.getStoreInfo();
+
+    const reviewStore = useReviewRoadStore();
+
+    reviewStore.getReview();
 
     return {
       menuStore,

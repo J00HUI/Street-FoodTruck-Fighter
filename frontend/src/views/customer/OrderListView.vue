@@ -26,8 +26,9 @@
         </div>
       </div>
     </div>
+    <Modal class="modal" v-if="showModal" @close="closeModal" />
   </div>
-  <Modal class="modal" v-if="showModal" @close="closeModal" />
+  
 </template>
 
 <script>
@@ -62,6 +63,10 @@ export default {
 </script>
 
 <style scoped>
+.container{
+  height: 100%;
+  width: 100%;
+}
 .orderDate {
   margin-left: 2rem;
   color: gray;
@@ -123,7 +128,8 @@ export default {
 .modal {
   position: fixed;
   top: 0;
-  left: 39.7%;
-  width: 24.8rem;
+  /* left: 30.7%; */
+  width: 25.1rem;
+  margin-left: 0rem;
 }
 </style>
