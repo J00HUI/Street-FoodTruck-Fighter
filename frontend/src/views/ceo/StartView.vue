@@ -1,8 +1,8 @@
 <template>
   <div style="display: flex; height: 844px; flex-direction: column">
     <CeoHeader></CeoHeader>
-    <!-- <NewOrder></NewOrder>
-    <Order class="orderScroll"></Order>-->
+    <NewOrder></NewOrder>
+    <Order class="orderScroll"></Order>
     <button type="button" id="btnSend">버튼</button>
   </div>
 </template>
@@ -10,14 +10,14 @@
 <script>
 import * as SockJs from "sockjs-client";
 import CeoHeader from "@/components/ceo/CeoHeader.vue";
-// import NewOrder from "@/components/ceo/StartNewOrder.vue";
-// import Order from "@/components/ceo/StartOrder.vue";
+import NewOrder from "@/components/ceo/StartNewOrder.vue";
+import Order from "@/components/ceo/StartOrder.vue";
 import $ from "jquery";
 export default {
   components: {
-    CeoHeader
-    // NewOrder,
-    // Order
+    CeoHeader,
+    NewOrder,
+    Order
   },
   setup() {
     $(document).ready(function() {
