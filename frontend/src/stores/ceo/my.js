@@ -135,29 +135,32 @@ export const useCeoMyStore = defineStore("CeoMy", {
       const token = localStorage.getItem("accessToken");
       axios({
         url: RF.foodtruck.getImg(1),
+        responseType:'blob',
         method: "get",
         headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
-          this.set_img(res.data)
-          console.log(res)
-
+          if (res.data !== null) {
+            this.set_img(res)
+          }
+         
 
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    set_img(data) {
+    set_img(res) {
      
       if (this.createImgUrl !== null) {
         URL.revokeObjectURL(this.createImgUrl);
       }
 
       let imgTag = document.getElementById('my-truck-img')
-
-      this.myData.truckImg = file;
-      imgTag.nextElementSibling.src = URL.createObjectURL(file);
+      const url = URL.createObjectURL(new Blob([res.data], { type: res.headers['content-type'] } ));
+      // this.myData.truckImg = file;
+      this.createImgUrl = url
+      imgTag.nextElementSibling.src = url;
       imgTag.nextElementSibling.classList.remove("imgVisible");
       imgTag.nextElementSibling.nextElementSibling.classList.add(
         "imgVisible"
