@@ -10,7 +10,7 @@
         <div class="detail">
           <!-- 이름과 별점 -->
           <div class="writer">
-            <h3>{{ reviewStore.reviewRoad[idx].userId }}</h3>
+            <h3>{{ reviewStore.reviewRoad[idx].userId }} 님 &nbsp;</h3>
             <p>⭐ {{ reviewStore.reviewRoad[idx].grade }}</p>
           </div>
           <!-- 리뷰 -->
@@ -85,7 +85,7 @@ hr {
 }
 .writer {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   flex-direction: row;
   align-items: center;
   height: 25%;
