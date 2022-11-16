@@ -91,7 +91,7 @@ public class FoodTruckService {
 				.foodTruck(savedFoodTruck)
 				.price(menuDto.getPrice())
 				.description(menuDto.getDescription())
-				.src(menuDto.getSrc()).build();
+				.build();
 
 			menuRepository.save(menu);
 		}
@@ -128,7 +128,7 @@ public class FoodTruckService {
 				.foodTruck(foodTruck)
 				.price(menuDto.getPrice())
 				.description(menuDto.getDescription())
-				.src(menuDto.getSrc()).build();
+				.build();
 
 			menuRepository.save(menu);
 		}
