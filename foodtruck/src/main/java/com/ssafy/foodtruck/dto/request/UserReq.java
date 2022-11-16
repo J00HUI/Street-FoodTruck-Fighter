@@ -11,7 +11,6 @@ import lombok.*;
 @ToString
 public class UserReq {
 
-    private Long id;
     private String email;
     private String businessNumber;
     private String password;

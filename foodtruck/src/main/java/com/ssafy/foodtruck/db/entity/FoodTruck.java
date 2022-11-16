@@ -34,7 +34,7 @@ public class FoodTruck extends BaseEntity {
 	@Column(length = 200)
 	private String description;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User user;
 

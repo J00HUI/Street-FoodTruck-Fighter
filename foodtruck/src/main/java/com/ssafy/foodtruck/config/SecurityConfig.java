@@ -105,9 +105,9 @@ public class SecurityConfig {
 				, "/phone/sms"
 				, "/phone"
 				, "/foodtruck/{foodtruck_id}"
-				, "/foodtruck/review/{foodtruck_id}"
 				, "/foodtruck/search/{keyword}"
-				, "/foodtruck/image/{foodtruckId}"
+				, "/foodtruck/image/{foodtruck_id}"
+				, "/review/{foodtruck_id}"
 			).permitAll()
 			.anyRequest().authenticated(); //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
 		return http.build();

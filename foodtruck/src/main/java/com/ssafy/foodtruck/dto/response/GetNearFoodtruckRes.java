@@ -21,6 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class GetNearFoodtruckRes {
+
 	private Integer foodtruckId;		// 푸드트럭 Id
 	private List<MenuDto> menuList = new ArrayList<>(); // 메뉴리스트
 	private String name; //상호명
@@ -37,6 +38,8 @@ public class GetNearFoodtruckRes {
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
 	private LocalDateTime endTime; // 종료일시
+	private String title;	// 스케줄 타이틀
+	private Integer groupId;	// 스케줄 그룹 ID
 	private Double latitude; // 위도
 	private Double longitude; // 경도
 	private String address; //주소
@@ -59,6 +62,8 @@ public class GetNearFoodtruckRes {
 			res.setLatitude(schedule.getLatitude());
 			res.setLongitude(schedule.getLongitude());
 			res.setAddress(schedule.getAddress());
+			res.setTitle(schedule.getTitle());
+			res.setGroupId(schedule.getGroupId());
 		}
 
 		res.setGrade(grade);

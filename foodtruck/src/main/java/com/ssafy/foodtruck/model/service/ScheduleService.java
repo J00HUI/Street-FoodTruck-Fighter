@@ -11,6 +11,7 @@ import com.ssafy.foodtruck.dto.request.UpdateScheduleReq;
 import com.ssafy.foodtruck.dto.response.GetScheduleRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -67,6 +68,7 @@ public class ScheduleService {
 	}
 
 	// 일정 취소
+	@Transactional
 	public void cancelSchedule(Integer scheduleId, User user) throws IllegalAccessException {
 		// 일정 푸트트럭 아이디와 user 비교 -> 다르면 수정 불가
 		Schedule schedule = scheduleRepository.findById(scheduleId)
