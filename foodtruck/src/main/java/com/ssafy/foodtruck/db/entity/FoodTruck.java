@@ -52,6 +52,9 @@ public class FoodTruck extends BaseEntity {
 	@OneToMany(mappedBy = "foodTruck", cascade = CascadeType.ALL)
 	private List<Orders> ordersList = new ArrayList<>();
 
+	@OneToMany(mappedBy = "foodTruck", cascade = CascadeType.ALL)
+	private List<Business> businessList = new ArrayList<>();
+
 	public void update(final RegisterFoodtruckReq registerFoodTruckReq) {
 		this.name = registerFoodTruckReq.getName();
 		this.category = registerFoodTruckReq.getCategory();
