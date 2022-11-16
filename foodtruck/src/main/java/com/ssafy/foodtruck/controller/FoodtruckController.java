@@ -147,4 +147,5 @@ public class FoodtruckController {
 		return new ResponseEntity<>(new UrlResource("file:" + file.getSavedPath()), HttpStatus.OK);
 	}
 
+
 }
