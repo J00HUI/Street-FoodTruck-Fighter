@@ -88,19 +88,6 @@ public class OrdersService {
 			);
 		}
 
-
-//		int count = ordersRepository.findByCount(customerId);
-//		for (Orders orders : ordersList) {
-//			OrdersMenu ordersMenu = ordersMenuRepository.findById(orders.getId())
-//				.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
-//			currentOrdersHistoryResList.add(
-//				CurrentOrdersHistoryRes.builder()
-//					.foodtruckName(orders.getFoodTruck().getName())
-//					.menuName(ordersMenu.getMenu().getName())
-//					.acceptTime(orders.getRegDate())
-//					.count(count)
-//					.build());
-//		}
 		return currentOrdersHistoryResList;
 	}
 
@@ -108,7 +95,7 @@ public class OrdersService {
 		List<OrdersHistoryRes> ordersHistoryResList = new ArrayList<>();
 		List<Orders> ordersList = ordersRepository.findAllByUser(user.getId());
 
-		for(Orders order : ordersList){
+		for(Orders order : ordersList) {
 			List<GetOrdersMenuRes> menuResList = new ArrayList<>();
 			List<OrdersMenu> ordersMenuList = ordersMenuRepository.findAllByOrders(order);
 			for(OrdersMenu ordersMenu : ordersMenuList){
@@ -122,25 +109,15 @@ public class OrdersService {
 			ordersHistoryResList.add(OrdersHistoryRes.of(order, isReviewed, menuResList));
 		}
 
-//		List<Orders> ordersList = ordersRepository.findByCustomerOrdersAll(customerId);
-//		List<OrdersHistoryRes> ordersHistoryResList = new ArrayList<>();
-
-//		for (Orders orders : ordersList) {
-//			List<OrdersMenu> ordersMenuList = ordersMenuRepository.findAllByOrders(orders);
-//			ordersHistoryResList.add(
-//				OrdersHistoryRes.builder()
-//					.foodtruckName(orders.getFoodTruck().getName())
-//					.menuName(ordersMenu.getMenu().getName())
-//					.acceptTime(orders.getRegDate())
-//					.build());
-//		}
 		return ordersHistoryResList;
 	}
 
 	public List<CurrentOrdersListByFoodtruckRes> getCeoOrdersNotAccepted(User ceoUser) {
 		List<CurrentOrdersListByFoodtruckRes> currentOrdersListByFoodtruckResponseList = new ArrayList<>();
+
 		FoodTruck foodTruck = foodTruckRepository.findByUser(ceoUser)
 			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
+
 		List<Orders> ordersList = ordersRepository.findCeoOrdersNotAccepted(foodTruck.getId());
 
 		for(Orders orders : ordersList){
@@ -161,28 +138,11 @@ public class OrdersService {
 		}
 
 		return currentOrdersListByFoodtruckResponseList;
-
-//		User user = userRepository.findById(ceoId)
-//			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
-//		FoodTruck foodTruck = foodTruckRepository.findByUser(user)
-//			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
-//		List<Orders> ordersList = ordersRepository.findByCeoOrders(foodTruck.getId());
-//		List<CurrentOrdersListByFoodtruckRes> currentOrdersListByFoodtruckResponseList = new ArrayList<>();
-
-//		for (Orders orders : ordersList) {
-//			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
-//			currentOrdersListByFoodtruckResponseList.add(
-//				CurrentOrdersListByFoodtruckRes.builder()
-//					.foodtruckName(orders.getFoodTruck().getName())
-//					.menuName(ordersMenu.getMenu().getName())
-//					.acceptTime(orders.getRegDate())
-//					.build());
-//		}
-//		return currentOrdersListByFoodtruckResponseList;
 	}
 
 	public List<CurrentOrdersListByFoodtruckRes> getCeoOrdersAccepted(User ceoUser) {
 		List<CurrentOrdersListByFoodtruckRes> currentOrdersListByFoodtruckResponseList = new ArrayList<>();
+
 		FoodTruck foodTruck = foodTruckRepository.findByUser(ceoUser)
 			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
 		List<Orders> ordersList = ordersRepository.findCeoOrdersAccepted(foodTruck.getId());
@@ -207,26 +167,25 @@ public class OrdersService {
 		return currentOrdersListByFoodtruckResponseList;
 	}
 
-	public List<OrdersListByFoodtruckRes> getCeoOrdersAll(int ceoId) {
-		User user = userRepository.findById(ceoId)
-			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
-		FoodTruck foodTruck = foodTruckRepository.findByUser(user)
-			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
-		List<Orders> ordersList = ordersRepository.findByCeoOrdersAll(foodTruck.getId());
-		List<OrdersListByFoodtruckRes> ordersListByFoodtruckResponseList = new ArrayList<>();
-
-//		for (Orders orders : ordersList) {
-//			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
+//	public List<OrdersListByFoodtruckRes> getCeoOrdersAll(int ceoId) {
 //
-//			ordersListByFoodtruckResponseList.add(
-//				OrdersListByFoodtruckRes.builder()
-//					.foodtruckName(orders.getFoodTruck().getName())
-//					.menuName(ordersMenu.getMenu().getName())
-//					.acceptTime(orders.getRegDate())
-//					.build());
+//		// 사장님 찾기
+//		User user = userRepository.findById(ceoId)
+//			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
+//
+//		// 사장님 푸드트럭
+//		FoodTruck foodTruck = foodTruckRepository.findByUser(user)
+//			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
+//
+//		List<Orders> ordersList = ordersRepository.findByCeoOrdersAll(foodTruck.getId());
+//		List<OrdersListByFoodtruckRes> ordersListByFoodtruckResponseList = new ArrayList<>();
+//
+//		for(Orders order : ordersList){
+//			ordersListByFoodtruckResponseList.add(OrdersListByFoodtruckRes.builder().build());
 //		}
-		return ordersListByFoodtruckResponseList;
-	}
+//
+//		return ordersListByFoodtruckResponseList;
+//	}
 
 	@Transactional
 	public void cancelOrders(int ceoId, int orderId) {
@@ -236,6 +195,7 @@ public class OrdersService {
 		if (ceoId != orders.getFoodTruck().getUser().getId()) {
 			throw new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER);
 		}
+
 		orders.setIsCanceled(true);
 	}
 

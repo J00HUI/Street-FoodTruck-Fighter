@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.ssafy.foodtruck.constant.FoodtruckConstant.DUPLICATED_REVIEW_ERROR_MESSAGE;
 import static com.ssafy.foodtruck.constant.FoodtruckConstant.NOT_FOUND_ORDERS_ERROR_MESSAGE;
 
 @Service("reviewService")
@@ -36,7 +37,11 @@ public class ReviewService {
 		// 주문내역에서 찾음
 		Orders order = ordersRepository.findById(registerFoodTruckReviewReq.getOrdersId())
 			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_ORDERS_ERROR_MESSAGE));
-		// Review 에서 찾음 -> 에러 (테스트 코드 작성) - 주문 내역 1번에 1번의 리뷰만 달 수 있다.
+		// 이미 리뷰를 단 사용자라면 throw
+		Review findReview = reviewRepository.findReviewByOrdersAndUser(order, user).orElse(null);
+		if(findReview != null){
+			throw new IllegalArgumentException(DUPLICATED_REVIEW_ERROR_MESSAGE);
+		}
 
 		Review review = Review.builder()
 			.user(user)
@@ -57,7 +62,7 @@ public class ReviewService {
 	public List<GetFoodtruckReviewRes> getFoodTruckReview(Integer foodTruckId){
 		List<Review> findReviewList = reviewRepository.findAllByFoodTruckId(foodTruckId);
 		List<GetFoodtruckReviewRes> reviewList = new ArrayList<>();
-		System.out.println("리뷰 갯수 : " + findReviewList.size());
+//		System.out.println("리뷰 갯수 : " + findReviewList.size());
 
 		for(Review review : findReviewList){
 			reviewList.add(GetFoodtruckReviewRes.builder()
