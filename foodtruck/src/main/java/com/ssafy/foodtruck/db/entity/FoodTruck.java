@@ -34,7 +34,7 @@ public class FoodTruck extends BaseEntity {
 	@Column(length = 200)
 	private String description;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User user;
 
@@ -51,6 +51,9 @@ public class FoodTruck extends BaseEntity {
 
 	@OneToMany(mappedBy = "foodTruck", cascade = CascadeType.ALL)
 	private List<Orders> ordersList = new ArrayList<>();
+
+	@OneToMany(mappedBy = "foodTruck", cascade = CascadeType.ALL)
+	private List<Business> businessList = new ArrayList<>();
 
 	public void update(final RegisterFoodtruckReq registerFoodTruckReq) {
 		this.name = registerFoodTruckReq.getName();

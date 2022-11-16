@@ -11,6 +11,7 @@ import com.ssafy.foodtruck.dto.request.UpdateScheduleReq;
 import com.ssafy.foodtruck.dto.response.GetScheduleRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,7 +20,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ssafy.foodtruck.constant.FoodtruckConstant.DUPLICATED_FOODTRUCK_ERROR_MESSAGE;
 import static com.ssafy.foodtruck.constant.FoodtruckConstant.NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE;
+import static com.ssafy.foodtruck.constant.ScheduleConstant.INCONSISTENCY_ID_SCHEDULE_ERROR_MESSAGE;
 import static com.ssafy.foodtruck.constant.ScheduleConstant.NOT_FOUND_SCHEDULE_ERROR_MESSAGE;
 
 @Service("scheduleService")
@@ -65,13 +68,19 @@ public class ScheduleService {
 	}
 
 	// 일정 취소
-	public void cancelSchedule(Integer scheduleId, User user){
-		// 일정 푸트트럭 아이디와 user 비교 -> 다르면 수정 불가 (테스트 코트 작성)
-
+	@Transactional
+	public void cancelSchedule(Integer scheduleId, User user) throws IllegalAccessException {
+		// 일정 푸트트럭 아이디와 user 비교 -> 다르면 수정 불가
 		Schedule schedule = scheduleRepository.findById(scheduleId)
 			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_SCHEDULE_ERROR_MESSAGE));
+		FoodTruck foodTruck = foodTruckRepository.findByUser(user)
+			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE));
+
+		if(foodTruck != schedule.getFoodTruck()){
+			throw new IllegalAccessException(INCONSISTENCY_ID_SCHEDULE_ERROR_MESSAGE);
+		}
+
 		schedule.setIsValid(false);
-		scheduleRepository.save(schedule);
 	}
 
 	public List<GetScheduleRes> getSchedule(User user){

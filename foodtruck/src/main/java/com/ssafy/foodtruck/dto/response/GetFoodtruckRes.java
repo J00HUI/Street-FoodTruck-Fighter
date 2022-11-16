@@ -52,6 +52,10 @@ public class GetFoodtruckRes extends BaseResponseBody {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
 	private LocalDateTime endTime;
 
+	private String title;
+
+	private Integer groupId;
+
 	private Boolean is_valid; //사용여부
 
 	private Double latitude; // 위도
@@ -94,23 +98,23 @@ public class GetFoodtruckRes extends BaseResponseBody {
 //			ex.printStackTrace();
 //		}
 
-		try {
-			Path path = Paths.get(foodtruckImg.getSavedPath());
-			byte[] isr = Files.readAllBytes(path);
+		if(foodtruckImg!=null) {
+			try {
+				Path path = Paths.get(foodtruckImg.getSavedPath());
+				byte[] isr = Files.readAllBytes(path);
 
-			HttpHeaders respHeaders = new HttpHeaders();
-			respHeaders.setContentLength(isr.length);
-			respHeaders.setContentType(new MediaType("text", "json"));
-			respHeaders.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-			respHeaders.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + foodtruckImg.getSavedNm());
+				HttpHeaders respHeaders = new HttpHeaders();
+				respHeaders.setContentLength(isr.length);
+				respHeaders.setContentType(new MediaType("text", "json"));
+				respHeaders.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+				respHeaders.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + foodtruckImg.getSavedNm());
 
-			res.setSrc(isr);
+				res.setSrc(isr);
 
-		} catch (IOException ex) {
-			ex.printStackTrace();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
 		}
-
-
 
 		if(schedule != null) {
 			res.setWorkingDate(schedule.getWorkingDate());
@@ -120,6 +124,8 @@ public class GetFoodtruckRes extends BaseResponseBody {
 			res.setLatitude(schedule.getLatitude());
 			res.setLongitude(schedule.getLongitude());
 			res.setAddress(schedule.getAddress());
+			res.setTitle(schedule.getTitle());
+			res.setGroupId(schedule.getGroupId());
 		} else {
 			res.setIs_valid(false);
 		}

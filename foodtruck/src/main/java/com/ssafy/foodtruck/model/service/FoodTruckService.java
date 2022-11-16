@@ -91,15 +91,20 @@ public class FoodTruckService {
 				.foodTruck(savedFoodTruck)
 				.price(menuDto.getPrice())
 				.description(menuDto.getDescription())
-				.src(menuDto.getSrc()).build();
+				.build();
 
 			menuRepository.save(menu);
 		}
+
+		Integer groupId = scheduleRepository.findMaxGroupId().orElse(0);
+		Integer nowGroupId = groupId + 1;
 
 		// 스케쥴 등록
 		for(ScheduleDateDto dateDto : registerFoodTruckReq.getDateDtoList()){
 			final Schedule schedule = Schedule.builder()
 				.foodTruck(savedFoodTruck)
+				.title(dateDto.getTitle())
+				.groupId(nowGroupId)
 				.latitude(registerFoodTruckReq.getLatitude())
 				.longitude(registerFoodTruckReq.getLongitude())
 				.address(registerFoodTruckReq.getAddress())
@@ -128,7 +133,7 @@ public class FoodTruckService {
 				.foodTruck(foodTruck)
 				.price(menuDto.getPrice())
 				.description(menuDto.getDescription())
-				.src(menuDto.getSrc()).build();
+				.build();
 
 			menuRepository.save(menu);
 		}

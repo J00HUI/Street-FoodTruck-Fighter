@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.ssafy.foodtruck.constant.FoodtruckConstant.DUPLICATED_REVIEW_ERROR_MESSAGE;
 import static com.ssafy.foodtruck.constant.FoodtruckConstant.NOT_FOUND_ORDERS_ERROR_MESSAGE;
 
 @Service("reviewService")
@@ -32,11 +33,15 @@ public class ReviewService {
 
 	// 푸드트럭 리뷰 등록
 	@Transactional
-	public void registerFoodTruckReview(RegisterFoodtruckReviewReq registerFoodTruckReviewReq, User user, MultipartFile file) {
+	public void registerFoodTruckReview(RegisterFoodtruckReviewReq registerFoodTruckReviewReq, User user) {
 		// 주문내역에서 찾음
 		Orders order = ordersRepository.findById(registerFoodTruckReviewReq.getOrdersId())
 			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_ORDERS_ERROR_MESSAGE));
-		// Review 에서 찾음 -> 에러 (테스트 코드 작성) - 주문 내역 1번에 1번의 리뷰만 달 수 있다.
+		// 이미 리뷰를 단 사용자라면 throw
+		Review findReview = reviewRepository.findReviewByOrdersAndUser(order, user).orElse(null);
+		if(findReview != null){
+			throw new IllegalArgumentException(DUPLICATED_REVIEW_ERROR_MESSAGE);
+		}
 
 		Review review = Review.builder()
 			.user(user)
@@ -46,18 +51,13 @@ public class ReviewService {
 			.build();
 		reviewRepository.save(review);
 
-		try{
-			saveReviewImg(review, file);
-		} catch (IOException ex){
-			ex.printStackTrace();
-		}
 	}
 
 	// 푸드트럭 리뷰 조회
 	public List<GetFoodtruckReviewRes> getFoodTruckReview(Integer foodTruckId){
 		List<Review> findReviewList = reviewRepository.findAllByFoodTruckId(foodTruckId);
 		List<GetFoodtruckReviewRes> reviewList = new ArrayList<>();
-		System.out.println("리뷰 갯수 : " + findReviewList.size());
+//		System.out.println("리뷰 갯수 : " + findReviewList.size());
 
 		for(Review review : findReviewList){
 			reviewList.add(GetFoodtruckReviewRes.builder()
@@ -73,7 +73,15 @@ public class ReviewService {
 	}
 
 	@Transactional
-	public void saveReviewImg(Review review, MultipartFile files) throws IOException {
+	public void saveReviewImg(Integer orderId, MultipartFile files) throws IOException {
+
+		Optional<Review> reviewOptional = reviewRepository.findByOrdersId(orderId);
+
+		if(!reviewOptional.isPresent()){
+			return;
+		}
+
+		Review review = reviewOptional.get();
 
 		//만약 이미지 파일이 들어있지 않다면 바로 종료
 		if(files.isEmpty()){

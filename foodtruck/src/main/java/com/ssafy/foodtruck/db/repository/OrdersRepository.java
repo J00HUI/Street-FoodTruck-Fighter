@@ -2,7 +2,6 @@ package com.ssafy.foodtruck.db.repository;
 
 import com.ssafy.foodtruck.db.entity.FoodTruck;
 import com.ssafy.foodtruck.db.entity.Orders;
-import com.ssafy.foodtruck.db.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -67,4 +66,5 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
 		"AND o.is_done = 0 \n" +
 		"GROUP BY om.menu_id", nativeQuery = true)
 	int findByCount(int customerId);
+
 }

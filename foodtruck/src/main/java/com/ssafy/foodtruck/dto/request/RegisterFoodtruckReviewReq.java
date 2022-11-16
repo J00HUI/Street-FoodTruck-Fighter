@@ -7,8 +7,8 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class RegisterFoodtruckReviewReq {
+
 	private Integer ordersId; // 주문내역 ID
 	private Integer grade; // 평점
 	private String content; // 리뷰
-	private String src; // 사진
 }

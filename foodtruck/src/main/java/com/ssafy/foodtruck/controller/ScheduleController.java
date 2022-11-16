@@ -59,13 +59,18 @@ public class ScheduleController {
 		}
 		return new ResponseEntity<>(UPDATE_SCHEDULE_SUCCESS, HttpStatus.OK);
 	}
+
 	// 일정 취소
 	@PatchMapping("/{schedule_id}")
 	@ApiOperation(value = "일정 취소", notes = "<strong>일정을 취소한다.</strong>")
 	public ResponseEntity<?> cancleSchedule(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken, @PathVariable("schedule_id") @ApiParam(value="스케쥴 ID", required = true) Integer scheduleId){
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
-		scheduleService.cancelSchedule(scheduleId, user);
-		return new ResponseEntity<>(CANCEL_SCHEDULE_SUCCESS, HttpStatus.OK);
+		try {
+			scheduleService.cancelSchedule(scheduleId, user);
+			return new ResponseEntity<>(CANCEL_SCHEDULE_SUCCESS, HttpStatus.OK);
+		} catch (Exception ex) {
+			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	@GetMapping("/all")
