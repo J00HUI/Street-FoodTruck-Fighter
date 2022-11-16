@@ -24,9 +24,27 @@ export const useCustomerOrderStore = defineStore("CustomerOrder", {
       },
     ];
 
+    const orderAllData = [
+      {
+        acceptTime: "",
+        canceled: true,
+        done: true,
+        foodtruckName: "",
+        menuResList: [
+          {
+            count: 0,
+            menuName: ""
+          }
+        ],
+        ordersId: 0,
+        reviewed: true
+      }
+    ]
+
     return {
       myOrderData,
       orderData,
+      orderAllData,
     };
   },
 
@@ -40,23 +58,24 @@ export const useCustomerOrderStore = defineStore("CustomerOrder", {
       })
         .then((res) => {
           this.orderData = res.data;
+          console.log(JSON.stringify(res.data) + ' res.data')
+        })
+        .catch(() => {
+          console.log("내 주문 내역 가져오기 실패");
+        });
+    },
 
-          //   this.orderData[0].foodtruckName;
-          //   this.orderData[0].menuList[0].menuName;
-          //   this.orderData[0].menuList[0].count;
-
-          //   console.log(this.orderData[0].foodtruckName);
-          //   console.log(this.orderData[0].menuList[0].menuName);
-          //   console.log(this.orderData[0].menuList[0].count);
-          //   console.log(res.data);
-          //   console.log(res.data[0].foodtruckName);
-          //   this.foodtruckName = res.data[0].foodtruckName;
-          //   this.menuList[0].menuName = res.data[0].menuList[0].menuName;
-          //   this.menuList[0].count = res.data[0].menuList[0].count;
-          //   console.log(this.foodtruckName);
-          //   console.log(res.data[0].menuList);
-          //   console.log(res.data[0].menuList[0].menuName);
-          //   console.log(res.data[0].menuList[0].count);
+    getCustomerOrdersAll() {
+      const token = localStorage.getItem("accessToken");
+      axios({
+        url: RF.orders.getCustomerOrdersAll(),
+        method: "get",
+        headers: { Authorization: "Bearer " + token },
+      })
+        .then((res) => {
+          this.orderAllData = res.data;
+          console.log(JSON.stringify(this.orderAllData) + ' orderAllData')
+          console.log(JSON.stringify(res.data) + ' res.data All')
         })
         .catch(() => {
           console.log("내 주문 내역 가져오기 실패");
