@@ -5,7 +5,8 @@
         <h3>푸드트럭 사진</h3>
       </div>
       <div>
-        <img src="@/assets/foodtruck.svg" alt />
+        <!-- <img src="@/assets/foodtruck.svg" alt /> -->
+        <img :src="detailStore.imgSet.img" alt="">
       </div>
     </div>
     <div class="infoContainer">
@@ -14,7 +15,7 @@
       </div>
       <div class="info">
         <div class="infoDetail">
-          <a>상호명</a>
+          <a>상 호 명</a>
           <a2>{{detailStore.aboutStore.data.name}}</a2>
         </div>
         <div class="infoDetail">
@@ -26,7 +27,7 @@
           <a2>{{detailStore.aboutStore.data.phone}}</a2>
         </div>
         <div class="infoDetail">
-          <a>위치</a>
+          <a>위&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;치</a>
           <a2>{{detailStore.aboutStore.data.address}}</a2>
         </div>
       </div>
@@ -38,10 +39,11 @@
 import { useStoreDetail } from "@/stores/customer/menu/storeDetail";
 export default {
   setup() {
-    
+
     const detailStore = useStoreDetail();
 
     detailStore.getStoreInfo();
+
 
     return {
       detailStore,
@@ -51,9 +53,7 @@ export default {
 </script>
 
 <style scoped>
-.container{
-  margin-left: 1.5rem;
-}
+
 .info {
   display: flex;
   justify-content: left;
@@ -73,5 +73,21 @@ a{
 }
 a2{
   margin-left: 1rem;
+}
+.pictureContainer{
+  width: 100%;
+}
+img{
+  margin-bottom: 00.5rem;
+  margin-left: 5%;
+  width: 90%;
+  height: 90%;
+}
+h3{
+  margin-left: 1.5rem;
+  margin-top: 0;
+}
+.info{
+  margin-left: 1.5rem;
 }
 </style>

@@ -98,11 +98,10 @@ export default {
 .modal-wrapper {
   position: fixed;
   z-index: 100;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
+  
   background-color: rgba(0, 0, 0, 0.5);
 }
 .modal-dialog {

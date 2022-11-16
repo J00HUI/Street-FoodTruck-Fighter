@@ -1,31 +1,46 @@
 <template>
-  <div class="cardContainer">
-    <div class="card" @click="showDetail">
-      <div class="picture">
-        <img src="@/assets/hamburger.svg" alt />
+  <div class="listContainer">
+    <div v-for="(item, idx) in detailStore.aboutStore.data.menuList" :key="idx" class="cardContainer">
+      <div class="card" @click="showDetail">
+        <div class="picture">
+          <img src="@/assets/hamburger.svg" alt />
+        </div>
+        <div class="detail">
+          <div class="storeName">
+            <h3>{{ detailStore.aboutStore.data.menuList[idx].name }}</h3>
+          </div>
+          <div class="orders">
+            <h4>{{ detailStore.aboutStore.data.menuList[idx].price }}원</h4>
+          </div>
+        </div>
       </div>
-      <div class="detail">
-        <div class="storeName">
-          <h3>맛있는 햄버거</h3>
-        </div>
-        <div class="orders">
-          <h4>7500원</h4>
-        </div>
+      <div>
+        <hr />
       </div>
     </div>
   </div>
-  <hr />
 </template>
 
 <script>
+import { useStoreDetail } from "@/stores/customer/menu/storeDetail";
 import router from "@/router";
 export default {
   components: {},
   setup() {
+    const detailStore = useStoreDetail();
+
+    detailStore.getStoreInfo();
+
+    // let list = [];
+    // list = detailStore.aboutStore.data.menuList;
+    // console.log('asdfasd '+ JSON.stringify(list))
+
     function showDetail() {
       router.push("/menudetail");
     }
     return {
+      detailStore,
+      // list,
       showDetail,
     };
   },
@@ -34,9 +49,21 @@ export default {
 
 <style scoped>
 /***************** card style start ******************/
+.listContainer {
+  width: 100%;
+  height: 70%;
+  overflow-y: auto;
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.listContainer::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
 .cardContainer {
   display: flex;
   justify-content: center;
+  flex-direction: column;
   margin-top: 1rem;
   margin-bottom: 1.5rem;
 }
@@ -55,6 +82,7 @@ hr {
 }
 .picture {
   margin-right: 1rem;
+  margin-left: 1rem;
 }
 
 /***************** card style end ******************/

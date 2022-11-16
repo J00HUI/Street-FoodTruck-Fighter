@@ -28,6 +28,7 @@
           >
         </fieldset>
       </form>
+      <h4 class="grade">{{ detailStore.aboutStore.data.grade }}</h4>
     </div>
     <div class="cardContainer">
       <div class="card">
@@ -96,6 +97,16 @@ export default {
     const menuStore = useMenuStore();
     const detailStore = useStoreDetail();
 
+    // star rate control
+    const star = detailStore.aboutStore.data.grade;
+    if (star > 0 && star < 2) {
+      // $('input:radio[name=playrtList]:input[value="son"]').attr(
+      //   "checked",
+      //   true
+      // );
+    }
+
+    // tab control
     function menuClick() {
       menuStore.data = 1;
     }
@@ -115,6 +126,7 @@ export default {
     return {
       menuStore,
       detailStore,
+      star,
       menuClick,
       infoClick,
       reviewClick,
@@ -136,6 +148,11 @@ export default {
   align-items: center;
   flex-direction: column;
   max-width: 100%;
+}
+.grade {
+  height: 1rem;
+  margin-top: 0.3rem;
+  margin-bottom: 00.3rem;
 }
 /***************** card ******************/
 .cardContainer {
