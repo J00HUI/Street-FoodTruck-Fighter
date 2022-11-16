@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.ssafy.foodtruck.constant.OrdersConsatnt.CANCELED_ORDERS_SUCCESS;
 import static com.ssafy.foodtruck.db.entity.Message.AUTHORIZATION;
 
 @RequiredArgsConstructor
@@ -43,7 +44,7 @@ public class OrdersController {
 		}
 	}
 
-	@PatchMapping("/ceo/{ordersId}")
+	@PatchMapping("/ceo/accept")
 	@ApiOperation(value = "Orders ID로 주문 접수 - 사업자", notes = "<strong>Orders ID를 통해 주문을 접수한다.</strong>")
 	public ResponseEntity<?> acceptOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @RequestBody AcceptOrdersReq acceptOrdersReq) {
 		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
@@ -84,45 +85,68 @@ public class OrdersController {
 
 	@GetMapping("/ceo/not/accepted")
 	@ApiOperation(value = "현재 수락되지 않은 주문내역 조회 - 사업자", notes = "<strong>Ceo ID를 통해 주문내역 조회를 한다.</strong>")
-	public ResponseEntity<List<CurrentOrdersListByFoodtruckRes>> getCeoOrdersNotAccepted(@RequestHeader(AUTHORIZATION) String bearerToken) {
+	public ResponseEntity<?> getCeoOrdersNotAccepted(@RequestHeader(AUTHORIZATION) String bearerToken) {
 		User ceoUser = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
-//		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
-		return new ResponseEntity<>(ordersService.getCeoOrdersNotAccepted(ceoUser), HttpStatus.OK);
+		try {
+			List<CurrentOrdersListByFoodtruckRes> currentOrdersListByFoodtruckResList = ordersService.getCeoOrdersNotAccepted(ceoUser);
+			return new ResponseEntity<>(currentOrdersListByFoodtruckResList, HttpStatus.OK);
+		} catch (NotFoundException ex) {
+			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	@GetMapping("/ceo/accepted")
 	@ApiOperation(value = "현재 수락된 주문내역 조회 - 사업자", notes = "<strong>Ceo ID를 통해 주문내역 조회를 한다.</strong>")
-	public ResponseEntity<List<CurrentOrdersListByFoodtruckRes>> getCeoOrdersAccepted(@RequestHeader(AUTHORIZATION) String bearerToken) {
+	public ResponseEntity<?> getCeoOrdersAccepted(@RequestHeader(AUTHORIZATION) String bearerToken) {
 		User ceoUser = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
-		return new ResponseEntity<>(ordersService.getCeoOrdersAccepted(ceoUser), HttpStatus.OK);
+		try {
+			List<CurrentOrdersListByFoodtruckRes> currentOrdersListByFoodtruckResList = ordersService.getCeoOrdersAccepted(ceoUser);
+			return new ResponseEntity<>(currentOrdersListByFoodtruckResList, HttpStatus.OK);
+		} catch (NotFoundException ex) {
+			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 
-	@GetMapping("/ceo/all")
-	@ApiOperation(value = "전체 주문내역 조회 - 사업자", notes = "<strong>Ceo ID를 통해 전체 주문내역 조회를 한다.</strong>")
-	@ApiResponses({
-		@ApiResponse(code = 200, message = "성공", response = OrdersListByFoodtruckRes.class),
-		@ApiResponse(code = 401, message = "인증 실패"),
-		@ApiResponse(code = 404, message = "사용자 없음"),
-		@ApiResponse(code = 500, message = "서버 오류")
-	})
-	public ResponseEntity<List<OrdersListByFoodtruckRes>> getCeoOrdersAll(@RequestHeader(AUTHORIZATION) String bearerToken) {
-		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
-		return new ResponseEntity<>(ordersService.getCeoOrdersAll(ceoId), HttpStatus.OK);
-	}
+//	@GetMapping("/ceo/all")
+//	@ApiOperation(value = "전체 주문내역 조회 - 사업자", notes = "<strong>Ceo ID를 통해 전체 주문내역 조회를 한다.</strong>")
+//	@ApiResponses({
+//		@ApiResponse(code = 200, message = "성공", response = OrdersListByFoodtruckRes.class),
+//		@ApiResponse(code = 401, message = "인증 실패"),
+//		@ApiResponse(code = 404, message = "사용자 없음"),
+//		@ApiResponse(code = 500, message = "서버 오류")
+//	})
+//	public ResponseEntity<?> getCeoOrdersAll(@RequestHeader(AUTHORIZATION) String bearerToken) {
+//		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
+//		try {
+//			List<OrdersListByFoodtruckRes> ordersListByFoodtruckResList = ordersService.getCeoOrdersAll(ceoId);
+//			return new ResponseEntity<>(ordersListByFoodtruckResList, HttpStatus.OK);
+//		} catch (NotFoundException ex) {
+//			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+//		}
+//	}
 
 	@PatchMapping("/cancel/{orderId}")
 	@ApiOperation(value = "Orders ID로 주문 취소 - 사업자", notes = "<strong>Orders ID를 통해 주문을 취소한다.</strong>")
 	public ResponseEntity<?> cancelOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @PathVariable int orderId) {
 		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
-		ordersService.cancelOrders(ceoId, orderId);
-		return new ResponseEntity<>(HttpStatus.OK);
+		try {
+			ordersService.cancelOrders(ceoId, orderId);
+			return new ResponseEntity<>(CANCELED_ORDERS_SUCCESS, HttpStatus.OK);
+		} catch (NotFoundException ex) {
+			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	@PatchMapping("/done/{orderId}")
 	@ApiOperation(value = "주문 완료 - 사업자", notes = "<strong>Orders ID를 통해 주문을 완료한다.</strong>")
 	public ResponseEntity<?> doneOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @PathVariable int orderId) {
 		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
-		ordersService.doneOrders(ceoId, orderId);
-		return new ResponseEntity<>(HttpStatus.OK);
+
+		try {
+			ordersService.doneOrders(ceoId, orderId);
+			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (NotFoundException ex) {
+			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 }

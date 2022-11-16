@@ -27,7 +27,7 @@ public class GetNearFoodtruckRes {
 	private Category category; //카테고리
 	private String phone; //전화번호
 	private String description; //설명
-	private UrlResource src; //이미지
+//	private UrlResource src; //이미지
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private LocalDate workingDate;	// 날짜
@@ -64,11 +64,11 @@ public class GetNearFoodtruckRes {
 		res.setGrade(grade);
 
 		//setSrc
-		try{
-			res.setSrc(new UrlResource("file:" + foodtruckImg.getSavedPath()));
-		} catch (MalformedURLException ex){
-			ex.printStackTrace();
-		}
+//		try{
+//			res.setSrc(new UrlResource("file:" + foodtruckImg.getSavedPath()));
+//		} catch (MalformedURLException ex){
+//			ex.printStackTrace();
+//		}
 
 		return res;
 	}

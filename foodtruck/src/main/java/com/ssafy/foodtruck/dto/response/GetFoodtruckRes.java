@@ -110,8 +110,6 @@ public class GetFoodtruckRes extends BaseResponseBody {
 			ex.printStackTrace();
 		}
 
-
-
 		if(schedule != null) {
 			res.setWorkingDate(schedule.getWorkingDate());
 			res.setStartTime(schedule.getStartTime());

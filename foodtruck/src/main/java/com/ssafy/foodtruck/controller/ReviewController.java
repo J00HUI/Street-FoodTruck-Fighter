@@ -38,8 +38,12 @@ public class ReviewController {
 													 @RequestBody @ApiParam(value="리뷰 정보", required = true) RegisterFoodtruckReviewReq registerFoodTruckReviewReq,
 													 @RequestParam("file") MultipartFile file){
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
-		reviewService.registerFoodTruckReview(registerFoodTruckReviewReq, user, file);
-		return new ResponseEntity<>(REGISTER_REVIEW_SUCCESS, HttpStatus.CREATED);
+		try {
+			reviewService.registerFoodTruckReview(registerFoodTruckReviewReq, user, file);
+			return new ResponseEntity<>(REGISTER_REVIEW_SUCCESS, HttpStatus.CREATED);
+		} catch (IllegalArgumentException ex) {
+			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	// 리뷰 조회
@@ -54,7 +58,6 @@ public class ReviewController {
 	public ResponseEntity<?> getFoodTruckReview(@PathVariable("foodtruck_id") @ApiParam(value="푸드트럭 ID", required = true) Integer foodTruckId){
 		List<GetFoodtruckReviewRes> getFoodTruckReviewResList = reviewService.getFoodTruckReview(foodTruckId);
 		return new ResponseEntity<>(getFoodTruckReviewResList, HttpStatus.OK);
-//		return ResponseEntity.ok().body(getFoodTruckReviewResList);
 	}
 
 	@GetMapping("/image/{reviewId}")

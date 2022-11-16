@@ -88,7 +88,7 @@ public class FoodtruckController {
 	// 푸드 트럭 수정
 	@PatchMapping()
 	@ApiOperation(value = "푸드트럭 수정", notes = "<strong>푸드트럭 정보를 수정한다.</strong>")
-	public ResponseEntity<?> updateFoodTruck(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken, @RequestBody @ApiParam(value="푸드트럭 정보", required = true) RegisterFoodtruckReq registerFoodTruckReq) throws IllegalAccessException {
+	public ResponseEntity<?> updateFoodTruck(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken, @RequestBody @ApiParam(value="푸드트럭 정보", required = true) RegisterFoodtruckReq registerFoodTruckReq) {
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
 		try {
 			foodTruckService.updateFoodTruck(registerFoodTruckReq, user);
