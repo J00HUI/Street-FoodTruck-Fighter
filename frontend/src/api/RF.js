@@ -51,8 +51,9 @@ export default {
   },
   review: {
     getReviewImg: (review_id) => HOST + REVIEW + "img/" + { review_id },
-    setReview: () => HOST + REVIEW + "review",
-    getReview: (foodtruck_id) => HOST + REVIEW + REVIEW + `${foodtruck_id}`,
+    setReviewImg: (order_id) => HOST + REVIEW + "upload" + `${order_id}`,
+    setReview: () => HOST + REVIEW,
+    getReview: (foodtruck_id) => HOST + REVIEW + `${foodtruck_id}`,
   },
   sms: {
     sendSMS: () => HOST + "phone",

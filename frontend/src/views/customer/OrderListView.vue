@@ -28,19 +28,21 @@
     </div>
     <Modal class="modal" v-if="showModal" @close="closeModal" />
   </div>
-  
 </template>
 
 <script>
 import Header from "@/components/customer/BackButtonHeader.vue";
 import Modal from "@/components/customer/ReviewModal.vue";
 import { ref } from "vue";
+import { useCustomerOrderStore } from "@/stores/customer/order/order";
 export default {
   components: {
     Header,
     Modal,
   },
   setup() {
+    const orderStore = useCustomerOrderStore();
+
     const showModal = ref(false);
 
     const openModal = () => {
@@ -53,7 +55,10 @@ export default {
       showModal.value = false;
     };
 
+    orderStore.getCustomerOrdersAll()
+
     return {
+      orderStore,
       showModal,
       openModal,
       closeModal,
@@ -63,9 +68,12 @@ export default {
 </script>
 
 <style scoped>
-.container{
+.container {
   height: 100%;
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
 }
 .orderDate {
   margin-left: 2rem;

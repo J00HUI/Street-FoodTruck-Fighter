@@ -43,7 +43,7 @@ export default {
 </script>
 
 <style scoped>
-.scroll{
+.scroll {
   overflow-y: auto;
   height: 55%;
 
@@ -76,7 +76,7 @@ export default {
 .picture {
   height: 60%;
 }
-.detail{
+.detail {
   height: 40%;
 }
 hr {
@@ -96,8 +96,8 @@ hr {
   padding-left: 1rem;
   padding-right: 1rem;
 }
-.content{
-  overflow : auto;
+.content {
+  overflow: auto;
   height: auto;
 }
 /* cart style end */
