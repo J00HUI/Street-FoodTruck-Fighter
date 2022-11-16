@@ -26,6 +26,9 @@ public class Orders extends BaseEntity {
     @ColumnDefault("false")
     private Boolean isCanceled;
 
+	@ColumnDefault("false")
+	private Boolean isPaied;
+
     private LocalDateTime doneDate;
 
     @ManyToOne(fetch = FetchType.LAZY)

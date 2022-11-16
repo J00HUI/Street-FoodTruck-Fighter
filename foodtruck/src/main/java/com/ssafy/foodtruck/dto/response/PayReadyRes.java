@@ -11,7 +11,5 @@ public class PayReadyRes {
 	String android_app_scheme;
 	String ios_app_scheme;
 	String created_at;
-	String msg;
-	String code;
-//	boolean tms_result;
+	boolean tms_result;
 }

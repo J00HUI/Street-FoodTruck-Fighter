@@ -27,8 +27,10 @@ public class OrdersService {
 	private final FoodtruckRepository foodTruckRepository;
 	private final ReviewRepository reviewRepository;
 
+
+	// 주문 내역을 등록하고, 카카오 페이 요청 시 필요한 데이터를 리턴
 	@Transactional
-	public void registerOrders(RegisterOrdersReq registerOrdersReq, User user) {
+	public RegisterOrdersRes registerOrders(RegisterOrdersReq registerOrdersReq, User user) {
 		FoodTruck foodTruck = foodTruckRepository.findById(registerOrdersReq.getFoodtruckId())
 			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
 
@@ -39,7 +41,9 @@ public class OrdersService {
 		Orders savedOrders = ordersRepository.save(orders);
 
 		List<RegisterMenuReq> menuList = registerOrdersReq.getMenuList();
-
+		String payMenuName = "";
+		Integer totalQuantity = 0;
+		Integer totalAmount = 0;
 		for(RegisterMenuReq menuReq : menuList){
 			Menu menu = menuRepository.findById(menuReq.getMenuId())
 				.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
@@ -49,7 +53,19 @@ public class OrdersService {
 				.menu(menu)
 				.count(menuReq.getCount())
 				.build());
+
+			if(payMenuName == "")
+				payMenuName = menu.getName()+" 외 " + (menuList.size()-1) + "개";
+			totalQuantity += menuReq.getCount();
+			totalAmount += menu.getPrice();
 		}
+
+		return RegisterOrdersRes.builder()
+			.orders(savedOrders)
+			.payMenuName(payMenuName)
+			.totalQuantity(totalQuantity)
+			.totalAmount(totalAmount)
+			.build();
 	}
 
 	@Transactional
