@@ -1,7 +1,7 @@
 <template>
   <div
     style="position: relative; margin-top: 7%"
-    v-if="accontStore.signUpCheck.ceoSignUp"
+    v-if="accountStore.signUpCheck.ceoSignUp"
   >
     <nav style="display: flex; height: 8%">
       <div class="salesNav" @click="signUpCeo">
@@ -15,7 +15,7 @@
 
   <div
     style="position: relative; margin-top: 7%"
-    v-if="accontStore.signUpCheck.customerSignUp"
+    v-if="accountStore.signUpCheck.customerSignUp"
   >
     <nav style="display: flex; height: 8%">
       <div class="salesNav salesNavL" @click="signUpCeo">
@@ -27,7 +27,7 @@
     </nav>
   </div>
 
-  <div style="text-align: center" v-if="accontStore.signUpCheck.ceoSignUp">
+  <div style="text-align: center" v-if="accountStore.signUpCheck.ceoSignUp">
     <div style="margin-top: 7%">
       <form action="/action_page.php">
         <label for="email"></label>
@@ -37,7 +37,7 @@
           name="email"
           class="email"
           placeholder="이메일"
-          v-model="accontStore.userData.email"
+          v-model="accountStore.userData.email"
           style="text-align: center"
         />
         <br />
@@ -49,7 +49,7 @@
             name="pwd"
             class="pwd"
             placeholder="비밀번호"
-            v-model="accontStore.userData.password"
+            v-model="accountStore.userData.password"
             style="text-align: center"
           />
         </div>
@@ -61,7 +61,7 @@
             name="pwdcheck"
             class="pwdcheck"
             placeholder="비밀번호 확인"
-            v-model="accontStore.userData.passwordCheck"
+            v-model="accountStore.userData.passwordCheck"
             style="text-align: center"
           />
         </div>
@@ -73,7 +73,7 @@
             name="nickname"
             class="nickname"
             placeholder="닉네임"
-            v-model="accontStore.userData.nickname"
+            v-model="accountStore.userData.nickname"
             style="text-align: center"
           />
         </div>
@@ -85,7 +85,7 @@
             name="phonenum"
             class="phonenum"
             placeholder="휴대폰 번호"
-            v-model="accontStore.userData.phone"
+            v-model="accountStore.userData.phone"
             style="text-align: center"
           />
           <input type="button" value="인증" class="checkButtonCeo" />
@@ -99,6 +99,7 @@
             name="numcheck"
             class="numcheck"
             placeholder="인증 번호"
+            v-model="accountStore.userData.verificationCode"
             style="text-align: center"
           />
           <input type="button" value="확인" class="checkButtonCeo" />
@@ -112,10 +113,10 @@
             name="ceonumcheck"
             class="ceonumcheck"
             placeholder="사업자 등록번호"
-            v-model="accontStore.userData.businessNumber"
+            v-model="accountStore.userData.businessNumber"
             style="text-align: center"
           />
-          <input type="button" value="인증" class="checkButtonCeo" />
+          <input type="button" value="인증" class="checkButtonCeo" @click="accountStore.checkBusinessNum" />
         </div>
 
         <div style="margin-top: 10%">
@@ -123,14 +124,14 @@
             type="button"
             value="다음"
             class="nextButtonCeo"
-            @click="accontStore.signUp"
+            @click="accountStore.signUp"
           />
         </div>
       </form>
     </div>
   </div>
 
-  <div style="text-align: center" v-if="accontStore.signUpCheck.customerSignUp">
+  <div style="text-align: center" v-if="accountStore.signUpCheck.customerSignUp">
     <div style="margin-top: 7%">
       <form action="/action_page.php">
         <label for="email"></label>
@@ -140,7 +141,7 @@
           name="email"
           class="email"
           placeholder="이메일"
-          v-model="accontStore.userData.email"
+          v-model="accountStore.userData.email"
           style="text-align: center"
         />
         <br />
@@ -152,7 +153,7 @@
             name="pwd"
             class="pwd"
             placeholder="비밀번호"
-            v-model="accontStore.userData.password"
+            v-model="accountStore.userData.password"
             style="text-align: center"
           />
         </div>
@@ -164,7 +165,7 @@
             name="pwdcheck"
             class="pwdcheck"
             placeholder="비밀번호 확인"
-            v-model="accontStore.userData.passwordCheck"
+            v-model="accountStore.userData.passwordCheck"
             style="text-align: center"
           />
         </div>
@@ -176,7 +177,7 @@
             name="nickname"
             class="nickname"
             placeholder="닉네임"
-            v-model="accontStore.userData.nickname"
+            v-model="accountStore.userData.nickname"
             style="text-align: center"
           />
         </div>
@@ -188,10 +189,10 @@
             name="phonenum"
             class="phonenum"
             placeholder="휴대폰 번호"
-            v-model="accontStore.userData.phone"
+            v-model="accountStore.userData.phone"
             style="text-align: center"
           />
-          <input type="button" value="인증" class="checkButton" />
+          <input type="button" value="인증" class="checkButton" @click="accountStore.sendNum"/>
         </div>
 
         <div style="margin-top: 3%">
@@ -202,9 +203,10 @@
             name="numcheck"
             class="numcheck"
             placeholder="인증 번호"
+            v-model="accountStore.userData.verificationCode"
             style="text-align: center"
           />
-          <input type="button" value="확인" class="checkButton" />
+          <input type="button" value="확인" class="checkButton" @click="accountStore.checkNum" />
         </div>
 
         <div style="margin-top: 10%">
@@ -212,7 +214,7 @@
             type="button"
             value="완료"
             class="nextButton"
-            @click="accontStore.signUp"
+            @click="accountStore.signUp"
           />
         </div>
       </form>
@@ -227,20 +229,20 @@ export default {
   components: {},
 
   setup() {
-    const accontStore = useAccountStore();
+    const accountStore = useAccountStore();
 
     function signUpCeo() {
-      accontStore.signUpCheck.ceoSignUp = true;
-      accontStore.signUpCheck.customerSignUp = false;
+      accountStore.signUpCheck.ceoSignUp = true;
+      accountStore.signUpCheck.customerSignUp = false;
     }
 
     function signUpCustomer() {
-      accontStore.signUpCheck.ceoSignUp = false;
-      accontStore.signUpCheck.customerSignUp = true;
+      accountStore.signUpCheck.ceoSignUp = false;
+      accountStore.signUpCheck.customerSignUp = true;
     }
 
     return {
-      accontStore,
+      accountStore,
       signUpCeo,
       signUpCustomer,
     };
