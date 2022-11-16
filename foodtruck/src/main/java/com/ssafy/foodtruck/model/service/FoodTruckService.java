@@ -118,7 +118,8 @@ public class FoodTruckService {
 	}
 
 	// 푸드트럭 수정
-	public void updateFoodTruck(RegisterFoodtruckReq registerFoodTruckReq, User user) {
+	@Transactional
+	public void updateFoodTruck(RegisterFoodtruckReq registerFoodTruckReq, User user, MultipartFile file) {
 		// 푸드트럭 찾기
 		FoodTruck foodTruck = foodTruckRepository.findByUser(user)
 			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE));
@@ -145,7 +146,6 @@ public class FoodTruckService {
 
 		// 푸드트럭 수정
 		foodTruck.update(registerFoodTruckReq);
-		foodTruckRepository.save(foodTruck);
 	}
 
 	// 메뉴 삭제
