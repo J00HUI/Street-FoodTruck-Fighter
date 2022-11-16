@@ -33,7 +33,7 @@ public class ReviewService {
 
 	// 푸드트럭 리뷰 등록
 	@Transactional
-	public void registerFoodTruckReview(RegisterFoodtruckReviewReq registerFoodTruckReviewReq, User user, MultipartFile file) {
+	public void registerFoodTruckReview(RegisterFoodtruckReviewReq registerFoodTruckReviewReq, User user) {
 		// 주문내역에서 찾음
 		Orders order = ordersRepository.findById(registerFoodTruckReviewReq.getOrdersId())
 			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_ORDERS_ERROR_MESSAGE));
@@ -51,11 +51,6 @@ public class ReviewService {
 			.build();
 		reviewRepository.save(review);
 
-		try{
-			saveReviewImg(review, file);
-		} catch (IOException ex){
-			ex.printStackTrace();
-		}
 	}
 
 	// 푸드트럭 리뷰 조회
@@ -78,7 +73,15 @@ public class ReviewService {
 	}
 
 	@Transactional
-	public void saveReviewImg(Review review, MultipartFile files) throws IOException {
+	public void saveReviewImg(Integer orderId, MultipartFile files) throws IOException {
+
+		Optional<Review> reviewOptional = reviewRepository.findByOrdersId(orderId);
+
+		if(!reviewOptional.isPresent()){
+			return;
+		}
+
+		Review review = reviewOptional.get();
 
 		//만약 이미지 파일이 들어있지 않다면 바로 종료
 		if(files.isEmpty()){

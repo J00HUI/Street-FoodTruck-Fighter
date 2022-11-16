@@ -12,7 +12,7 @@ import java.util.*;
 public interface ReviewRepository extends JpaRepository<Review, Integer> {
 	Optional<Review> findByOrders(Orders orders);
 
-	@Query(value = "SELECT r.id, r.user_id, r.orders_id, r.src, grade, content, r.reg_date, r.review_img_id \n" +
+	@Query(value = "SELECT r.id, r.user_id, r.orders_id, grade, content, r.reg_date, r.review_img_id \n" +
 		"FROM orders as o\n" +
 		"INNER JOIN review as r \n" +
 		"ON o.id = r.orders_id\n" +
@@ -21,4 +21,6 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
 	List<Review> findAllByFoodTruckId(int foodTruckId);
 
 	Optional<Review> findReviewByOrdersAndUser(Orders orders, User user);
+
+	Optional<Review> findByOrdersId(Integer orders_id);
 }

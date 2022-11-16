@@ -18,7 +18,6 @@ public class GetFoodtruckReviewRes {
 	private Integer ordersId; // 주문내역 ID
 	private Integer grade; // 평점
 	private String content; // 리뷰
-	private String src; // 사진
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime regDate;	// 등록날짜
 }
