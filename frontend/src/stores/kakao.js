@@ -203,16 +203,13 @@ export const useKakaoStore = defineStore("Kakao", {
       };
       if (window.kakao && window.kakao.maps) {
         initPosition();
-        console.log('if')
       } else {
-        console.log('else')
         const script = document.createElement("script");
         script.onload = () => kakao.maps.load(initPosition);
         script.src =
           "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=44e203a985e2bc845fbbde8390a4fc5b&libraries=services,clusterer";
         document.head.appendChild(script);
       }
-
     },
   },
 });

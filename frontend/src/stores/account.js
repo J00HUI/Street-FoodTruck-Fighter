@@ -46,6 +46,7 @@ export const useAccountStore = defineStore("Account", {
       })
         .then((res) => {
           console.log(res.data);
+          sessionStorage.setItem("foodTruck", res.data.foodTruckId);
           localStorage.setItem("accessToken", res.data.accessToken);
           this.getUserInfo(res.data.accessToken);
         })
