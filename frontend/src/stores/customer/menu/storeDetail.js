@@ -9,6 +9,7 @@ export const useStoreDetail = defineStore("storeDetail", {
         message: "",
         menuList: [
           {
+            menuId : "",
             name: "",
             price: 0,
             description: "",
@@ -63,7 +64,7 @@ export const useStoreDetail = defineStore("storeDetail", {
       })
         .then((res) => {
           // console.log(RF.foodtruck.getFoodTruck(foodtruck_id) + '   getFoodTruck')
-          console.log(JSON.stringify(res.data) + ' res.data');
+          // console.log(JSON.stringify(res.data) + ' res.data');
           this.aboutStore.data = res.data;
           // this.menuList.idx = this.aboutStore.data.menuList.length
           // console.log('storeDetail.js aboutStore.data '+ JSON.stringify(this.aboutStore.data))

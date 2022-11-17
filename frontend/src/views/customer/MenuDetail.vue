@@ -27,8 +27,8 @@
       </div>
     </div>
 
-    <button class="payButton">
-      <p id="price">{{detailStore.menuDetail.price * detailStore.amount}}원 담기</p>
+    <button class="payButton" @click="makeCart">
+      <p>{{detailStore.menuDetail.price * detailStore.amount}}원 담기</p>
     </button>
   </div>
 </template>
@@ -36,6 +36,7 @@
 <script>
 import Header from "@/components/customer/BackButtonHeader.vue";
 import { useStoreDetail } from "@/stores/customer/menu/storeDetail";
+import { useCartStore } from "@/stores/customer/order/cart";
 export default {
   components: {
     Header,
@@ -44,19 +45,29 @@ export default {
     const detailStore = useStoreDetail();
     detailStore.getStoreInfo();
     // console.log('detailStore',detailStore.aboutStore);
-    console.log(document.getElementById("price"))
+    // console.log((detailStore.menuDetail.price) * (detailStore.amount) + ' price')
     // console.log('메뉴는 ' + detailStore.aboutStore.menuList)
     function minusAmount() {
       if (detailStore.amount > 1) {detailStore.amount--;}
       // else {detailStore.amount = 0}
+      // console.log((detailStore.menuDetail.price) * (detailStore.amount) + ' price')
     }
     function plusAmount() {
       detailStore.amount++;
+      // console.log((detailStore.menuDetail.price) * (detailStore.amount) + ' price')
+    }
+    const cartStore = useCartStore();
+    function makeCart(){
+      cartStore.cart.foodtruckId = detailStore.aboutStore.foodtruckId
+      cartStore.cart.menuList.count = detailStore.amount
+      cartStore.cart.menuList.menuId = detailStore
     }
     return {
       detailStore,
+      cartStore,
       minusAmount,
       plusAmount,
+      makeCart,
     };
   },
 };

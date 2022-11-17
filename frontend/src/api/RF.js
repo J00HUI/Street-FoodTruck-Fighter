@@ -34,14 +34,13 @@ export default {
     surveyFind: () => HOST + "survey/" + "find",
   },
   orders: {
-    customer: () => HOST + "order",
-    acceptOrders: (order_id) => HOST + ORDER + CEO + `${order_id}`,
+    cancelOrders: (order_id) => HOST + ORDER + "cancel" + `${order_id}`,
+    acceptOrders: () => HOST + ORDER + CEO + "accept",
+    getCeoOrders: () => HOST + ORDER + CEO + "accepted",
     getNotAcceptedOrder: () => HOST + ORDER + CEO + "not/" + "accepted",
     getCustomerOrders: () => HOST + ORDER + "customer",
+    setCustomerOrders: () => HOST + ORDER + "customer",
     getCustomerOrdersAll: () => HOST + ORDER + CUSTOMER + "all",
-    getCeoOrders: () => HOST + ORDER + CEO + "accepted",
-    getCeoOrdersAll: () => HOST + ORDER + CEO + "all",
-    cancelOrders: (order_id) => HOST + ORDER + "cancel" + `${order_id}`,
     finishOrder: (order_id) => HOST + ORDER + "done/" + `${order_id}`,
   },
   schedule: {
