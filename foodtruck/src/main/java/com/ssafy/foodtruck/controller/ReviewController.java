@@ -62,7 +62,8 @@ public class ReviewController {
 	}
 
 	@PostMapping("/upload/{orders_id}")
-	public ResponseEntity<HttpStatus> saveReviewImg(@RequestHeader("Authorization") String bearerToken, @PathVariable Integer ordersId, @RequestParam("file") MultipartFile file) throws IOException {
+	public ResponseEntity<HttpStatus> saveReviewImg(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken,
+													@PathVariable Integer ordersId, @RequestParam("file") MultipartFile file) throws IOException {
 		int customerId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
 		//본인 리뷰인지 확인하는 과정 필요
 

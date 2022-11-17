@@ -13,6 +13,8 @@ import com.ssafy.foodtruck.model.service.PayService;
 import com.ssafy.foodtruck.model.service.UserService;
 import com.ssafy.foodtruck.util.JwtTokenUtil;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +43,9 @@ public class PayController {
 
 	// 결제 준비 -> 결제 버튼 누를 때 결제 정보를 받아와야 함.
 	@PostMapping
-	public ResponseEntity<?> payReady(@RequestHeader("Authorization") String bearerToken, @RequestBody RegisterOrdersReq registerOrdersReq){
+	@ApiOperation(value = "결제 준비 요청", notes = "<strong>주문내역 정보를 통해 카카오 Pay API에 결제 준비 요청을 한다.</strong>")
+	public ResponseEntity<?> payReady(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken,
+									  @RequestBody @ApiParam(value="주문내역 정보", required = true) RegisterOrdersReq registerOrdersReq){
 		System.out.println("payReady 호출됨");
 
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
@@ -67,7 +71,8 @@ public class PayController {
 	}
 
 	@GetMapping("/success")
-	public ResponseEntity<PayApprovalRes> paySuccess(@RequestParam String pg_token){
+	@ApiOperation(value = "결제 승인 요청", notes = "<strong>토큰을 통해 카카오 Pay API에 결제 승인 요청을 한다.</strong>")
+	public ResponseEntity<PayApprovalRes> paySuccess(@RequestParam @ApiParam(value="결제 승인 요청 토큰", required = true) String pg_token){
 		System.out.println("token: " + pg_token);
 		ResponseEntity<PayApprovalRes> payApprovalRes = payService.paySuccess(payApprovalDto, pg_token);
 
