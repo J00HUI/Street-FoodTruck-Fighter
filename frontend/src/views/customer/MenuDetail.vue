@@ -19,16 +19,16 @@
         <div class="menuName">
           <!-- <h3 >{{detailStore.aboutStore.data.menuList['0'].name}}</h3> -->
           <!-- <h3 >{{detailStore.aboutStore.data.menuList}}</h3> -->
-          <h3 >{{detailStore.aboutStore.data.name}}</h3>
+          <h3 >{{detailStore.menuDetail.name}}</h3>
         </div>
         <div class="detail">
-          <p class="p2">{{detailStore.aboutStore.data}}</p>
+          <p class="p2">{{detailStore.menuDetail.description}}</p>
         </div>
       </div>
     </div>
 
     <button class="payButton">
-      <p>{{detailStore.aboutStore.data}}원 담기</p>
+      <p id="price">{{detailStore.menuDetail.price * detailStore.amount}}원 담기</p>
     </button>
   </div>
 </template>
@@ -43,11 +43,12 @@ export default {
   setup() {
     const detailStore = useStoreDetail();
     detailStore.getStoreInfo();
-    console.log('detailStore',detailStore.aboutStore);
+    // console.log('detailStore',detailStore.aboutStore);
+    console.log(document.getElementById("price"))
     // console.log('메뉴는 ' + detailStore.aboutStore.menuList)
     function minusAmount() {
-      if (detailStore.amount > 0) {detailStore.amount--;}
-      else {detailStore.amount = 0}
+      if (detailStore.amount > 1) {detailStore.amount--;}
+      // else {detailStore.amount = 0}
     }
     function plusAmount() {
       detailStore.amount++;

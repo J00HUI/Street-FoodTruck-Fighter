@@ -7,23 +7,23 @@
       <form name="starForm" id="starForm">
         <fieldset>
           <input type="radio" name="rating" value="1" id="rate1" /><label
-            for="rate1"
+            for="lrate1"
             >⭐</label
           >
           <input type="radio" name="rating" value="2" id="rate2" /><label
-            for="rate2"
+            for="lrate2"
             >⭐</label
           >
           <input type="radio" name="rating" value="3" id="rate3" /><label
-            for="rate3"
+            for="lrate3"
             >⭐</label
           >
           <input type="radio" name="rating" value="4" id="rate4" /><label
-            for="rate4"
+            for="lrate4"
             >⭐</label
           >
           <input type="radio" name="rating" value="5" id="rate5" /><label
-            for="rate5"
+            for="lrate5"
             >⭐</label
           >
         </fieldset>
@@ -92,28 +92,13 @@ export default {
     Review,
   },
   setup() {
-    onMounted(() => {});
-
+    onMounted(() => {
+      detailStore.getStoreInfo();
+    });
+    // console.log(JSON.stringify(detailStore.aboutStore.data))
     const menuStore = useMenuStore();
     const detailStore = useStoreDetail();
 
-    // star rate control
-    const star = detailStore.aboutStore.data.grade;
-    if (star > 0 && star < 2) {
-      // $('input:radio[name=playrtList]:input[value="son"]').attr(
-      //   "checked",
-      //   true
-      // );
-      document.getElementById("rate1") == true
-    }else if(star>=2 && star<3){
-      document.getElementById("rate2") == true
-    }else if(star>=3 && star<4){
-      document.getElementById("rate3") == true
-    }else if(star>=4 && star<5){
-      document.getElementById("rate4") == true
-    }else if(star>=5){
-      document.getElementById("rate5") == true
-    }
 
     // tab control
     function menuClick() {
@@ -132,10 +117,45 @@ export default {
 
     reviewStore.getReview();
 
+
+    // // star rate control
+    // let star = 0 
+    // const rate1 = document.getElementById("lrate1")
+    // const rate2 = document.getElementById("rate2")
+    // const rate3 = document.getElementById("rate3")
+    // const rate4 = document.getElementById("rate4")
+    // const rate5 = document.getElementById("rate5")
+    // star = detailStore.aboutStore.data.grade;
+    // console.log('star ' + JSON.stringify  (detailStore.aboutStore.data.grade))
+    // console.log(star)
+    // if (star >= 0 && star < 2) {
+    //   $('input:radio[name=playrtList]:input[value="son"]').attr(
+    //     "checked",
+    //     true
+    //   );
+    //   document.getElementById("rate1") == true
+    //   // rate1 == true
+    //   // console.log('rate1 ' + rate1)
+    // }else if(detailStore.aboutStore.data.grade>=2 && detailStore.aboutStore.data.grade<3){
+    //   document.getElementById("rate2") == true
+
+    // }else if(star>=3 && star<4){
+    //   document.getElementById("rate3") == true
+    // }else if(star>=4 && star<5){
+    //   document.getElementById("rate4") == true
+    // }else if(star>=5){
+    //   document.getElementById("rate5") == true
+    // }
+
     return {
       menuStore,
       detailStore,
-      star,
+      // star,
+      // rate1,
+      // rate2,
+      // rate3,
+      // rate4,
+      // rate5,
       menuClick,
       infoClick,
       reviewClick,

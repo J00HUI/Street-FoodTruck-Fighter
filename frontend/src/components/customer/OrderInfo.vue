@@ -16,19 +16,19 @@
       <div class="info">
         <div class="infoDetail">
           <a>상 호 명</a>
-          <a2>{{detailStore.aboutStore.data.name}}</a2>
+          <a class="a2">{{detailStore.aboutStore.data.name}}</a>
         </div>
         <div class="infoDetail">
           <a>운영시간</a>
-          <a2>{{detailStore.aboutStore.data.startTime}} ~ {{detailStore.aboutStore.data.endTime}} </a2>
+          <a class="a2">{{detailStore.aboutStore.data.startTime}} ~ {{detailStore.aboutStore.data.endTime}} </a>
         </div>
         <div class="infoDetail">
           <a>전화번호</a>
-          <a2>{{detailStore.aboutStore.data.phone}}</a2>
+          <a class="a2">{{detailStore.aboutStore.data.phone}}</a>
         </div>
         <div class="infoDetail">
           <a>위&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;치</a>
-          <a2>{{detailStore.aboutStore.data.address}}</a2>
+          <a class="a2">{{detailStore.aboutStore.data.address}}</a>
         </div>
       </div>
     </div>
@@ -71,7 +71,7 @@ export default {
 a{
   width: 4rem;
 }
-a2{
+.a2{
   margin-left: 1rem;
 }
 .pictureContainer{

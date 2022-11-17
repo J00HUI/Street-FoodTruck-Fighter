@@ -29,7 +29,7 @@ export const useReviewRoadStore = defineStore("reviewRoad", {
           console.log(RF.review.getReview(foodtruck_id));
           //   console.log(JSON.stringify(res.data) + ' res.data');
           this.reviewRoad = res.data;
-            console.log(JSON.stringify(this.reviewRoad) + ' reviewRoad.data');
+            // console.log(JSON.stringify(this.reviewRoad) + ' reviewRoad.data');
           //   console.log(this.reviewRoad[0].userId)
         })
         .catch(() => {
