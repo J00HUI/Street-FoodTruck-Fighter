@@ -29,7 +29,7 @@ public class PayService {
 	private static final String APPROVE_ADDR = HOST + "/v1/payment/approve";
 	private static final String ADMIN_KEY = "16d8a229832ac9d7e96d2dbf469efe17";
 //	private static final String DOMAIN = "https://localhost:8080/api/v1/pay";
-	private static final String DOMAIN = "https://k7b206.p.ssafy.io/";
+	private static final String DOMAIN = "https://k7b206.p.ssafy.io";
 
 	public PayReadyRes payReady(RegisterOrdersRes registerOrdersRes){
 
