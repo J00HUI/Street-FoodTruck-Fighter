@@ -6,17 +6,11 @@ import com.ssafy.foodtruck.db.entity.Category;
 import com.ssafy.foodtruck.db.entity.FoodTruck;
 import com.ssafy.foodtruck.db.entity.FoodtruckImg;
 import com.ssafy.foodtruck.db.entity.Schedule;
-import com.ssafy.foodtruck.dto.MenuDto;
 import lombok.*;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.core.serializer.Serializer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -33,7 +27,7 @@ import java.util.List;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class GetFoodtruckRes extends BaseResponseBody {
 
-	private List<MenuDto> menuList = new ArrayList<>(); // 메뉴리스트
+	private List<MenuRes> menuList = new ArrayList<>(); // 메뉴리스트
 
 	private String name; //상호명
 
@@ -73,7 +67,7 @@ public class GetFoodtruckRes extends BaseResponseBody {
 //	@JsonIgnore
 	private byte[] src; //이미지
 
-	public static GetFoodtruckRes of(String message, List<MenuDto> menuList, FoodTruck foodTruck, Schedule schedule, Double grade, Integer numberOfPeople, Integer time, FoodtruckImg foodtruckImg) {
+	public static GetFoodtruckRes of(String message, List<MenuRes> menuList, FoodTruck foodTruck, Schedule schedule, Double grade, Integer numberOfPeople, Integer time, FoodtruckImg foodtruckImg) {
 		GetFoodtruckRes res = new GetFoodtruckRes();
 		res.setMessage(message);
 		res.setMenuList(menuList);

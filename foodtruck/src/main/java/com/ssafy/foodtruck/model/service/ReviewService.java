@@ -60,14 +60,8 @@ public class ReviewService {
 //		System.out.println("리뷰 갯수 : " + findReviewList.size());
 
 		for(Review review : findReviewList){
-			reviewList.add(GetFoodtruckReviewRes.builder()
-				.id(review.getId())
-				.userId(review.getUser().getId())
-				.ordersId(review.getOrders().getId())
-				.content(review.getContent())
-				.grade(review.getGrade())
-				.regDate(review.getRegDate())
-				.build());
+			ReviewImg reviewImg = review.getReviewImg();
+			reviewList.add(GetFoodtruckReviewRes.of(review.getId(), review.getUser().getId(), review.getOrders().getId(), review.getGrade(), review.getContent(), review.getRegDate(), reviewImg));
 		}
 		return reviewList;
 	}

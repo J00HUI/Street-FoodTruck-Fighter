@@ -5,14 +5,11 @@ import com.ssafy.foodtruck.db.entity.Category;
 import com.ssafy.foodtruck.db.entity.FoodTruck;
 import com.ssafy.foodtruck.db.entity.FoodtruckImg;
 import com.ssafy.foodtruck.db.entity.Schedule;
-import com.ssafy.foodtruck.dto.MenuDto;
 import lombok.*;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,7 +26,7 @@ import java.util.List;
 public class GetNearFoodtruckRes {
 
 	private Integer foodtruckId;		// 푸드트럭 Id
-	private List<MenuDto> menuList = new ArrayList<>(); // 메뉴리스트
+	private List<MenuRes> menuList = new ArrayList<>(); // 메뉴리스트
 	private String name; //상호명
 	private Category category; //카테고리
 	private String phone; //전화번호
@@ -52,7 +49,7 @@ public class GetNearFoodtruckRes {
 
 	private Double grade; //평점
 
-	public static GetNearFoodtruckRes of(List<MenuDto> menuList, FoodTruck foodTruck, Schedule schedule, Double grade, FoodtruckImg foodtruckImg) {
+	public static GetNearFoodtruckRes of(List<MenuRes> menuList, FoodTruck foodTruck, Schedule schedule, Double grade, FoodtruckImg foodtruckImg) {
 		GetNearFoodtruckRes res = new GetNearFoodtruckRes();
 		res.setFoodtruckId(foodTruck.getId());
 		res.setMenuList(menuList);
