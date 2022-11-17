@@ -104,6 +104,15 @@ export default {
       //   "checked",
       //   true
       // );
+      document.getElementById("rate1") == true
+    }else if(star>=2 && star<3){
+      document.getElementById("rate2") == true
+    }else if(star>=3 && star<4){
+      document.getElementById("rate3") == true
+    }else if(star>=4 && star<5){
+      document.getElementById("rate4") == true
+    }else if(star>=5){
+      document.getElementById("rate5") == true
     }
 
     // tab control

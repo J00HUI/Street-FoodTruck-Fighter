@@ -106,6 +106,21 @@ const routes = [
     name: "surveycheck",
     component: () => import("@/views/ceo/SurveyCheckView.vue"),
   },
+  {
+    path: "/paysuccess",
+    name: "paysuccess",
+    component: () => import("@/components/customer/PayOk.vue"),
+  },
+  {
+    path: "/payfail",
+    name: "payfail",
+    component: () => import("@/components/customer/PayFail.vue"),
+  },
+  {
+    path: "/paycancel",
+    name: "paycancel",
+    component: () => import("@/components/customer/PayCancel.vue"),
+  },
 ];
 
 const router = createRouter({
