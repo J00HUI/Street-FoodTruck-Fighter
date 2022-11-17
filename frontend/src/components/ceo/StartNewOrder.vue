@@ -58,7 +58,6 @@
 import { useCeoOrderStore } from "@/stores/ceo/order";
 import $ from "jquery";
 import RF from "@/api/RF";
-const token = localStorage.getItem('accessToken')
 
 export default {
   setup() {
@@ -70,51 +69,36 @@ export default {
       orderStore.orderTypeData.doneDate = time;
     }
 
+    start();
+    var evtsource = null;
+    function start() {
+      const ceo_id = JSON.parse(sessionStorage.getItem("user")).id;
+      // const token = localStorage.getItem("accessToken");
+      evtsource = new EventSource(RF.orders.getCeoOrders(ceo_id), {
+         withCredentials: true,
+      });
+      evtsource.onmessage = function(ev) {
+        console.log("on message: ", ev.data);
+      };
+      evtsource.onerror = function(err) {
+        console.log("on err: ", err);
+        stop();
+      };
+    }
+    function stop() {
+      if (evtsource != null) {
+        evtsource.close();
+        console.log("close EventSource");
+        evtsource = null;
+      }
+    }
 
-    var source = null;
-        function start() {
-          const source = new EventSource(RF.orders.getNotAcceptedOrder(), {
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        });
-            console.log("create EventSource");
-            source.onmessage = function(ev) {
-                console.log("on message: ", ev.data);
-                $("#stockValue").text(ev.data);
-            };
-            source.onerror = function(err) {
-                console.log("on err: ", err);
-                stop();
-            };
-        }
-        function stop() {
-            if (source != null) {
-                source.close();
-                console.log("close EventSource");
-                source = null;
-            }
-        }
-
-        $(document).ready(function(){
-            start();
-        });
-        $(window).on("unload", function () {
-            stop();
-        });
-
-
-
-
-
-
-
-
-
-
-
-
-
+    $(document).ready(function() {
+      start();
+    });
+    $(window).on("unload", function() {
+      stop();
+    });
 
     return {
       orderStore,
