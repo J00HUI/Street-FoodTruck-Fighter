@@ -21,12 +21,17 @@
 </template>
 
 <script>
+import { useStoreDetail } from "@/stores/customer/menu/storeDetail";
+
 export default {
   setup() {
+    const detailStore = useStoreDetail();
     function goBack() {
+      detailStore.amount = 1
       window.history.back()
     }
     return {
+      detailStore,
       goBack,
     }
   }
