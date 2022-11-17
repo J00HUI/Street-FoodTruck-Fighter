@@ -14,7 +14,8 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
             "WHERE user_id = :customerId \n" +
             "AND is_accepted = 1 \n" +
             "AND is_done = 0 \n" +
-			"AND is_canceled = 0;", nativeQuery = true)
+			"AND is_canceled = 0 \n" +
+			"AND is_paid = 1;", nativeQuery = true)
     List<Orders> findCustomerOrders(int customerId);
 
 //    @Query(value = "SELECT * \n" +
@@ -35,6 +36,7 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
 		"AND is_canceled = 0 \n" +
 		"AND is_done = 0 \n" +
 		"AND is_accepted = 0 \n" +
+		"AND is_paid = 1 \n" +
 		"AND DATE_FORMAT(reg_date, \"%Y-%m-%d\") = CURDATE() \n" +
 		"ORDER BY reg_date;", nativeQuery = true)
     List<Orders> findCeoOrdersNotAccepted(int foodTruckId);
@@ -45,6 +47,7 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
 		"AND is_canceled = 0 \n" +
 		"AND is_done = 0 \n" +
 		"AND is_accepted = 1 \n" +
+		"AND is_paid = 1 \n" +
 		"AND DATE_FORMAT(reg_date, \"%Y-%m-%d\") = CURDATE() \n" +
 		"ORDER BY reg_date;", nativeQuery = true)
 	List<Orders> findCeoOrdersAccepted(int foodTruckId);

@@ -26,6 +26,9 @@ public class Orders extends BaseEntity {
     @ColumnDefault("false")
     private Boolean isCanceled;
 
+	@ColumnDefault("false")
+	private Boolean isPaied;
+
     private LocalDateTime doneDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -50,10 +53,14 @@ public class Orders extends BaseEntity {
     }
 
     public void setIsCanceled(boolean isCanceled) {
-        this.isCanceled = isCanceled;
+		this.isCanceled = isCanceled;
     }
 
 	public void setIsDone(boolean isDone) {
 		this.isDone = isDone;
+	}
+
+	public void setIsPaied(boolean isPaied) {
+		this.isPaied = isPaied;
 	}
 }
