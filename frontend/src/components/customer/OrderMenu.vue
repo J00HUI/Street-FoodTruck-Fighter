@@ -1,7 +1,7 @@
 <template>
   <div class="listContainer">
-    <div v-for="(item, idx) in detailStore.aboutStore.data.menuList" :key="idx" class="cardContainer">
-      <div class="card" @click="showDetail">
+    <div v-for="(menu, idx) in detailStore.aboutStore.data.menuList" :key="idx" class="cardContainer">
+      <div class="card" @click="showDetail(menu)" >
         <div class="picture">
           <img src="@/assets/hamburger.svg" alt />
         </div>
@@ -35,7 +35,9 @@ export default {
     // list = detailStore.aboutStore.data.menuList;
     // console.log('asdfasd '+ JSON.stringify(list))
 
-    function showDetail() {
+    function showDetail(menu) {
+      detailStore.menuDetail = menu
+      console.log(menu)
       router.push("/menudetail");
     }
     return {
