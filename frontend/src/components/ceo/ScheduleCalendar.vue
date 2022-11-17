@@ -69,7 +69,7 @@ const options = reactive({
     id.value = id.value + 1;
     const cal = arg.view.calendar;
     // cal.unselect();
-    let title = "?";
+    let title = "등록";
     // title = arg.startStr.slice(-5);
 
     colorIndex = Math.floor(Math.random() * 6);

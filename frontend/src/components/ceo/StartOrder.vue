@@ -14,6 +14,7 @@
         <button type="button" class="acceptButton">완료</button>
       </div>
     </section>
+    <a href="https://www.flaticon.com/kr/free-icons/" title="타코야키 아이콘">타코야키 아이콘  제작자: Chanut-is-Industries - Flaticon</a>
   </div>
 </template>
 

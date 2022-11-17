@@ -5,12 +5,19 @@ import { defineStore } from "pinia";
 export const useCeoMyStore = defineStore("CeoMy", {
   state: () => {
     const myData = {
-      truckImg: "",
-      truckName: "",
-      callNumber: "",
+      address: "",
+      category: "",
+      dateDtoList: [],
+      description: "string",
+      latitude: 0,
+      longitude: 0,
       truckPosition: "",
-      openTime: "",
-      closeTime: "",
+      menuList: [],
+      name: "",
+      phone: "",
+
+      truckImg: "",
+
     };
     const positionData = {
       address: null,
@@ -36,6 +43,7 @@ export const useCeoMyStore = defineStore("CeoMy", {
     const myTypeData = {
       modalView: false,
       newMenuIndex: 0,
+      myCategoryIndex:0,
     };
     return {
       myData,
@@ -135,15 +143,16 @@ export const useCeoMyStore = defineStore("CeoMy", {
       const token = localStorage.getItem("accessToken");
       axios({
         url: RF.foodtruck.getImg(1),
-        responseType:'blob',
+        responseType: 'blob',
         method: "get",
         headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
+          console.log(res.data)
           if (res.data !== null) {
             this.set_img(res)
           }
-         
+
 
         })
         .catch((err) => {
@@ -151,13 +160,13 @@ export const useCeoMyStore = defineStore("CeoMy", {
         });
     },
     set_img(res) {
-     
+
       if (this.createImgUrl !== null) {
         URL.revokeObjectURL(this.createImgUrl);
       }
 
       let imgTag = document.getElementById('my-truck-img')
-      const url = URL.createObjectURL(new Blob([res.data], { type: res.headers['content-type'] } ));
+      const url = URL.createObjectURL(new Blob([res.data], { type: res.headers['content-type'] }));
       // this.myData.truckImg = file;
       this.createImgUrl = url
       imgTag.nextElementSibling.src = url;
