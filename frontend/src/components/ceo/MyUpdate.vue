@@ -29,16 +29,6 @@
   </label>
   <div id="ceo-default-address" class="truckInput inputText">
     <img :src="kakaoStore.searchTypeData.iconType" alt />
-    <img
-      v-if="kakaoStore.searchTypeData.iconType === true"
-      src="@/assets/ceo/addressIcon.svg"
-      alt
-    />
-    <img
-      v-if="kakaoStore.searchTypeData.iconType === false"
-      src="@/assets/ceo/addressXIcon.svg"
-      alt
-    />
     <input
       type="text"
       v-model="myStore.positionData.address"

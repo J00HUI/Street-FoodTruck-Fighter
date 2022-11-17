@@ -1,5 +1,9 @@
 <template>
-  <div id="ceo-survey-map"></div>
+  <div id="ceo-survey-map">
+    <div class="hAddr">
+      <span id="centerAddr"></span>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -8,7 +12,7 @@ import { onMounted } from "vue";
 import $ from "jquery";
 import hotdog from "@/assets/hotdog.svg";
 import coffee from "@/assets/coffee.svg";
-import hamburger from "@/assets/hamburger.svg"
+import hamburger from "@/assets/hamburger.svg";
 import sweetpotato from "@/assets/sweetpotato.svg";
 import icecream from "@/assets/icecream.svg";
 import waffle from "@/assets/waffle.svg";
@@ -23,7 +27,7 @@ export default {
   setup() {
     const store = useKakaoStore();
     /* global kakao */
-    store.getSurvey()
+    store.getSurvey();
     onMounted(() => {
       if (window.kakao && window.kakao.maps) {
         initMap();
@@ -55,12 +59,23 @@ export default {
 
       initMap.map = new kakao.maps.Map(container, options);
       kakao.maps.event.addListener(initMap.map, "dragend", function() {
-        store.mapCenter["latitude"] = initMap.map.getCenter()['Ma']
-        store.mapCenter["longitude"] = initMap.map.getCenter()['La']
-        store.getSurvey()
+        store.mapCenter["latitude"] = initMap.map.getCenter()["Ma"];
+        store.mapCenter["longitude"] = initMap.map.getCenter()["La"];
+        store.getSurvey();
         clusterer.redraw();
       });
+      var mapTypeControl = new kakao.maps.MapTypeControl();
 
+      // 지도에 컨트롤을 추가해야 지도위에 표시됩니다
+      // kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
+      initMap.map.addControl(
+        mapTypeControl,
+        kakao.maps.ControlPosition.TOPRIGHT
+      );
+
+      // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+      var zoomControl = new kakao.maps.ZoomControl();
+      initMap.map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
       var imageSrc = null;
 
       var markers = $(store.surveyData).map(function(i, item) {
@@ -113,7 +128,7 @@ export default {
         disableClickZoom: true // 클러스터 마커를 클릭했을 때 지도가 확대되지 않도록 설정한다
       });
       clusterer.addMarkers(markers);
-
+      var geocoder = new kakao.maps.services.Geocoder();
       // 마커 클러스터러에 클릭이벤트를 등록합니다
       // 마커 클러스터러를 생성할 때 disableClickZoom을 true로 설정하지 않은 경우
       // 이벤트 헨들러로 cluster 객체가 넘어오지 않을 수도 있습니다
@@ -127,7 +142,29 @@ export default {
         // 지도를 클릭된 클러스터의 마커의 위치를 기준으로 확대합니다
         initMap.map.setLevel(level, { anchor: cluster.getCenter() });
       });
+      function searchAddrFromCoords(coords, callback) {
+        // 좌표로 행정동 주소 정보를 요청합니다
+        geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback);
+      }
 
+      kakao.maps.event.addListener(initMap.map, "idle", function() {
+        searchAddrFromCoords(initMap.map.getCenter(), displayCenterInfo);
+      });
+      // 지도 좌측상단에 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
+      searchAddrFromCoords(initMap.map.getCenter(), displayCenterInfo);
+      function displayCenterInfo(result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+          var infoDiv = document.getElementById("centerAddr");
+
+          for (var i = 0; i < result.length; i++) {
+            // 행정동의 region_type 값은 'H' 이므로
+            if (result[i].region_type === "H") {
+              infoDiv.innerHTML = result[i].address_name;
+              break;
+            }
+          }
+        }
+      }
     };
     return {};
   }
@@ -142,5 +179,21 @@ export default {
   margin: 0px;
   border-radius: 1rem;
   margin: 5%;
+}
+.hAddr {
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  border-radius: 2px;
+  background: #fff;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: 100;
+  padding: 5px;
+}
+#centerAddr {
+  display: block;
+  margin-top: 1px;
+  font-weight: normal;
+  font-size: 1rem;
 }
 </style>
