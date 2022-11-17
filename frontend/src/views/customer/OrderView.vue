@@ -2,36 +2,38 @@
   <Header></Header>
   <div class="container">
     <div class="truck">
-      <h1>가게 이름</h1>
+      <!-- <h1>{{store.aboutStore.name}}</h1> -->
+      <h1>{{ detailStore.aboutStore.data.name }}</h1>
       <form name="starForm" id="starForm">
         <fieldset>
-          <input type="radio" name="rating" value="5" id="rate1" /><label
-            for="rate1"
+          <input type="radio" name="rating" value="1" id="rate1" /><label
+            for="lrate1"
             >⭐</label
           >
-          <input type="radio" name="rating" value="4" id="rate2" /><label
-            for="rate2"
+          <input type="radio" name="rating" value="2" id="rate2" /><label
+            for="lrate2"
             >⭐</label
           >
           <input type="radio" name="rating" value="3" id="rate3" /><label
-            for="rate3"
+            for="lrate3"
             >⭐</label
           >
-          <input type="radio" name="rating" value="2" id="rate4" /><label
-            for="rate4"
+          <input type="radio" name="rating" value="4" id="rate4" /><label
+            for="lrate4"
             >⭐</label
           >
-          <input type="radio" name="rating" value="1" id="rate5" /><label
-            for="rate5"
+          <input type="radio" name="rating" value="5" id="rate5" /><label
+            for="lrate5"
             >⭐</label
           >
         </fieldset>
       </form>
+      <h4 class="grade">{{ detailStore.aboutStore.data.grade }}</h4>
     </div>
     <div class="cardContainer">
       <div class="card">
-        <h1>대기인원 : 8명</h1>
-        <h3>예상 시간 : 10분</h3>
+        <h1>대기인원 : {{ detailStore.aboutStore.data.numberOfPeople }}명</h1>
+        <h3>예상 시간 : {{ detailStore.aboutStore.data.time }}분</h3>
       </div>
     </div>
 
@@ -67,9 +69,9 @@
     </div>
   </div>
 
-  <Menu v-if="store.data == 1"></Menu>
-  <Info v-if="store.data == 2"></Info>
-  <Review v-if="store.data == 3"></Review>
+  <Menu v-if="menuStore.data == 1"></Menu>
+  <Info v-if="menuStore.data == 2"></Info>
+  <Review v-if="menuStore.data == 3"></Review>
 </template>
 
 <script>
@@ -78,6 +80,9 @@ import Menu from "@/components/customer/OrderMenu.vue";
 import Info from "@/components/customer/OrderInfo.vue";
 import Review from "@/components/customer/OrderReview.vue";
 import { useMenuStore } from "@/stores/customer/menu/menu";
+import { useStoreDetail } from "@/stores/customer/menu/storeDetail";
+import { onMounted } from "vue-demi";
+import { useReviewRoadStore } from "@/stores/customer/review/reviewRoad";
 
 export default {
   components: {
@@ -87,19 +92,70 @@ export default {
     Review,
   },
   setup() {
-    const store = useMenuStore();
+    onMounted(() => {
+      detailStore.getStoreInfo();
+    });
+    // console.log(JSON.stringify(detailStore.aboutStore.data))
+    const menuStore = useMenuStore();
+    const detailStore = useStoreDetail();
+
+
+    // tab control
     function menuClick() {
-      store.data = 1;
+      menuStore.data = 1;
     }
     function infoClick() {
-      store.data = 2;
+      menuStore.data = 2;
     }
     function reviewClick() {
-      store.data = 3;
+      menuStore.data = 3;
     }
 
+    detailStore.getStoreInfo();
+
+    const reviewStore = useReviewRoadStore();
+
+    reviewStore.getReview();
+
+
+    // // star rate control
+    // let star = 0 
+    // const rate1 = document.getElementById("lrate1")
+    // const rate2 = document.getElementById("rate2")
+    // const rate3 = document.getElementById("rate3")
+    // const rate4 = document.getElementById("rate4")
+    // const rate5 = document.getElementById("rate5")
+    // star = detailStore.aboutStore.data.grade;
+    // console.log('star ' + JSON.stringify  (detailStore.aboutStore.data.grade))
+    // console.log(star)
+    // if (star >= 0 && star < 2) {
+    //   $('input:radio[name=playrtList]:input[value="son"]').attr(
+    //     "checked",
+    //     true
+    //   );
+    //   document.getElementById("rate1") == true
+    //   // rate1 == true
+    //   // console.log('rate1 ' + rate1)
+    // }else if(detailStore.aboutStore.data.grade>=2 && detailStore.aboutStore.data.grade<3){
+    //   document.getElementById("rate2") == true
+
+    // }else if(star>=3 && star<4){
+    //   document.getElementById("rate3") == true
+    // }else if(star>=4 && star<5){
+    //   document.getElementById("rate4") == true
+    // }else if(star>=5){
+    //   document.getElementById("rate5") == true
+    // }
+
     return {
-      store,
+      menuStore,
+      detailStore,
+      // star,
+      // rate1,
+      // rate2,
+      // rate3,
+      // rate4,
+      // rate5,
       menuClick,
       infoClick,
       reviewClick,
@@ -121,6 +177,11 @@ export default {
   align-items: center;
   flex-direction: column;
   max-width: 100%;
+}
+.grade {
+  height: 1rem;
+  margin-top: 0.3rem;
+  margin-bottom: 00.3rem;
 }
 /***************** card ******************/
 .cardContainer {

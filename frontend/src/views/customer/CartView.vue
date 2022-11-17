@@ -20,16 +20,16 @@
             <img class="deleteButton" src="@/assets/CloseButton.svg" alt />
           </div>
           <div class="amount">
-            <button>-</button>
+            <button @click="minusAmount">-</button>
             <div id="amount">
-              <p>12</p>
+              <p>{{store.amount}}</p>
             </div>
-            <button>+</button>
+            <button @click="plusAmount">+</button>
           </div>
         </div>
       </div>
     </div>
-    <button class="payButton">
+    <button class="payButton" @click="loginCheck">
       <p>7500원 결제하기</p>
     </button>
   </div>
@@ -37,12 +37,43 @@
 
 <script>
 import Header from "@/components/customer/BackButtonHeader.vue";
+import { useMenuStore } from "@/stores/customer/menu/menu";
+import router from "@/router";
 export default {
   components: {
     Header,
   },
   setup() {
-    return {};
+    const store = useMenuStore();
+    function loginCheck() {
+      if (
+        localStorage.getItem("accessToken") == null ||
+        localStorage.getItem("accessToken") == ""
+      ) {
+        alert("로그인이 필요한 서비스 입니다!");
+        router.push("/login");
+        
+      } else {
+        router.push("/pay");
+        
+      }
+    }
+    
+    function minusAmount() {
+      if (store.amount > 0) store.amount--;
+      else store.amount = 0;
+      console.log(store.amount)
+    }
+    function plusAmount() {
+      store.amount++;
+      console.log(store.amount)
+    }
+    return {
+      store,
+      loginCheck,
+      minusAmount,
+      plusAmount,
+    };
   },
 };
 </script>

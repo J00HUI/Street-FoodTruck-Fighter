@@ -4,23 +4,30 @@
       <img src="@/assets/ceo/nav2Back.svg" alt />
     </button>
     <img src="@/assets/markerIcon.svg" alt />
-    <address style="margin:auto;   font-style: normal;">주소</address>
+    <address style="margin:auto; font-style: normal;">{{kakaoStore.mapCenter.address}}</address>
     <router-link to>
-      <img src="@/assets/noticeIcon.svg" alt />
+      <img class="headerImg" src="@/assets/noticeIcon.svg" alt />
     </router-link>
     <router-link to="/myprofile">
-      <img src="@/assets/humanIcon.svg" style="margin-left:1rem;" alt />
+      <img class="headerImg" src="@/assets/humanIcon.svg" style="margin-left:1rem;" alt />
     </router-link>
   </header>
 </template>
 
 <script>
+import { useKakaoStore } from "@/stores/kakao.js";
 export default {
   setup() {
+    const kakaoStore = useKakaoStore();
+
+    kakaoStore.setHeaderAddress();
+
     function goBack() {
       window.history.back();
     }
+
     return {
+      kakaoStore,
       goBack
     };
   }
@@ -39,8 +46,11 @@ button {
   font-family: "SCoreDream";
   display: flex;
   width: 90%;
-  margin: 5%;
+  padding: 5%;
   justify-content: center;
   align-items: center;
+}
+.headerImg {
+vertical-align: middle;
 }
 </style>

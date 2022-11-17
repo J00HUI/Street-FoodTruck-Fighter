@@ -1,7 +1,7 @@
 <template>
   <CeoHeader></CeoHeader>
   <SurveySearch></SurveySearch>
-  <Icons></Icons>
+  <!-- <Icons></Icons> -->
   <KakaoMap></KakaoMap>
 </template>
 
@@ -9,12 +9,12 @@
 import CeoHeader from "@/components/ceo/CeoHeader.vue";
 import SurveySearch from "@/components/ceo/SurveySearchBar.vue";
 import KakaoMap from "@/components/ceo/SurveyKakaoMap.vue";
-import Icons from '@/components/ceo/SurveyIcons.vue'
+// import Icons from '@/components/ceo/SurveyIcons.vue'
 export default {
   components: {
     CeoHeader,
     SurveySearch,
-    Icons,
+    // Icons,
     KakaoMap,
   }
 };

@@ -3,12 +3,12 @@
     <div>
       <div style="display:flex">
         <img src="@/assets/markerIcon.svg" style="width:2.5rem;" alt />
-        <address class="header__text-style">주소</address>
+        <address class="header__text-style">{{kakaoStore.mapCenter.address}}</address>
       </div>
 
       <div class="header__name-style">
         <span>
-          <span class="header__text-style" style="margin: auto 0px auto 1.5rem; height:100%">이름님</span>
+          <span class="header__text-style" style="margin: auto 0px auto 1.5rem; height:100%">{{name}}님</span>
           <img src="@/assets/chefIcon.svg" style="width:1.25rem;" alt />
         </span>
         <span>
@@ -29,7 +29,19 @@
 </template>
 
 <script>
-export default {};
+import { useKakaoStore } from '@/stores/kakao';
+export default {
+  
+  setup() {
+    const kakaoStore = useKakaoStore()
+    kakaoStore.setHeaderAddress()
+    const name = JSON.parse(sessionStorage.getItem('user'))['nickname']
+    return {
+      kakaoStore,
+      name,
+    }
+  }
+};
 </script>
 
 <style scoped>

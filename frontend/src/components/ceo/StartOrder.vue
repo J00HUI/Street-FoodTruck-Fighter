@@ -1,34 +1,33 @@
 <template>
   <div class="orderView">
     <h1>수락된 주문 내역</h1>
-    <section class="orderBox" v-for="i in 5"
-    :key="i">
-      <div>대기번호</div>
-      <br>
-      <div>
-        <div>붕어빵 100개</div>
-        <div>잉어빵 10000000개</div>
-        <div>붕어</div>
+    <section class="orderBox" v-for="(order, o_i) in orderStore.acceptedOrder" :key="o_i">
+      <div>{{order.ordersId}}</div>
+      <br />
+      <div v-for="(menu, m_i) in order.menuResList"
+      :key="m_i">
+        <div>{{menu['menuName']}} {{menu['count']}}개</div>
       </div>
-      <time class="orderTime">AM 10:10</time>
+      <time class="orderTime">{{order['acceptTime'].slice(0,10)}} <br> {{order['acceptTime'].slice(10)}}</time>
       <div style="margin: 1rem 0 0 50%">
-        <button type="button"  @click="orderStore.cancelOrders" class="cancleButton">취소</button>
+        <button type="button" @click="orderStore.cancelOrders(order.ordersId)" class="cancleButton">취소</button>
         <button type="button" class="acceptButton">완료</button>
       </div>
     </section>
+  
   </div>
 </template>
 
 <script>
-import { useCeoOrderStore } from '@/stores/ceo/order';
+import { useCeoOrderStore } from "@/stores/ceo/order";
 export default {
   setup() {
-    const orderStore = useCeoOrderStore()
+    const orderStore = useCeoOrderStore();
     const selectTime = [5, 10, 15, 20, 25];
-    orderStore.getCeoOrdersAll()
+    orderStore.getCeoOrders();
     return {
       orderStore,
-      selectTime,
+      selectTime
     };
   }
 };
@@ -43,7 +42,6 @@ h1 {
   font-family: "SCoreDream";
   position: sticky;
   min-height: 10px;
-
 }
 .orderBox {
   position: relative;

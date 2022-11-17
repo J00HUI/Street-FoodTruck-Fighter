@@ -1,23 +1,50 @@
 <template>
   <header>
     <div>
-      <div style="display: flex">
+      <div style="display: flex" v-if="isNickname">
         <img src="@/assets/markerIcon.svg" style="width: 2.5rem" alt />
-        <address class="header__text-style">주소</address>
+        <address class="header__text-style">
+          {{ kakaoStore.mapCenter.address }}
+        </address>
       </div>
 
-      <div class="header__name-style">
+      <div class="header__name-style" v-if="isNickname">
         <span>
           <span
             class="header__text-style"
             style="margin: auto 0px auto 1.5rem; height: 100%"
-            >이름 님 😊</span
+            >{{ nickname }}님 😊</span
           >
         </span>
+
+        <img
+          src="@/assets/logout.svg"
+          style="width: 7.6%; margin-left: 39%"
+          alt
+          @click="logout"
+        />
+
         <span>
           <img src="@/assets/noticeIcon.svg" alt @click="gotoNotice" />
-          <img src="@/assets/humanIcon.svg" style="margin-left: 1rem" alt @click="gotoMyprofile" />
+          <img
+            src="@/assets/humanIcon.svg"
+            style="margin-left: 1rem"
+            alt
+            @click="gotoMyprofile"
+          />
         </span>
+      </div>
+
+      <div class="header__name-style" v-if="!isNickname">
+        <span>
+          <span
+            class="header__text-style"
+            style="margin: auto 0px auto 1.5rem; height: 100%"
+            >로그인을 해주세요 😊</span
+          >
+        </span>
+
+        <img src="@/assets/login.svg" style="width: 9%" alt @click="login" />
       </div>
     </div>
 
@@ -29,20 +56,60 @@
 </template>
 
 <script>
+import { useKakaoStore } from "@/stores/kakao";
 import router from "@/router";
+
 export default {
   setup() {
-    function gotoNotice(){
-      router.push('/myprofile')
+    let curUserData = sessionStorage.getItem("user");
+    let nickname = "";
+    let isNickname = false;
+
+    const kakaoStore = useKakaoStore();
+    kakaoStore.setHeaderAddress();
+
+    if (curUserData !== null) {
+      nickname = JSON.parse(curUserData).nickname;
+      isNickname = true;
     }
-    function gotoMyprofile(){
-      router.push('/notice')
+
+    // if (nickname != "") {
+    //   alert("gg");
+    //   nickname = JSON.parse(curUserData).nickname;
+    // }
+
+    function login() {
+      router.push("/login");
     }
-    return{
+
+    function logout() {
+      router.push("/login");
+      isNickname = false;
+
+      localStorage.clear();
+      sessionStorage.clear();
+
+      // 새로 고침 함수
+    }
+
+    function gotoNotice() {
+      router.push("/notice");
+    }
+
+    function gotoMyprofile() {
+      router.push("/myprofile");
+    }
+
+    return {
+      kakaoStore,
+      nickname,
+      isNickname,
       gotoNotice,
       gotoMyprofile,
-    }
-  }
+      login,
+      logout,
+    };
+  },
 };
 </script>
 

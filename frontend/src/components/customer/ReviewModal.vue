@@ -52,7 +52,7 @@
             </label>
 
             <div class="buttons">
-              <button class="button" id="regist">등록</button>
+              <button class="button" id="regist" @click="registerReview">등록</button>
               <button class="button" id="close" @click="onClose">취소</button>
             </div>
           </div>
@@ -79,11 +79,15 @@ export default {
         "imgVisible"
       );
     }
+    function registerReview(){
+
+    }
 
     return {
       myStore,
       onClose,
       set_img,
+      registerReview,
     };
   },
 };
@@ -94,10 +98,10 @@ export default {
 .modal-wrapper {
   position: fixed;
   z-index: 100;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  
   background-color: rgba(0, 0, 0, 0.5);
 }
 .modal-dialog {

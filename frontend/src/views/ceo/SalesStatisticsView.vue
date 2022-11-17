@@ -2,32 +2,57 @@
   <div style="position:relative; width:100%; height:100%">
     <CeoHeader></CeoHeader>
     <nav style="display:flex; height:8%">
-      <div class="salesNav">
-        <span class="underLine">오늘의 매출</span>
+      <div class="salesNav" @click="toDay">
+        <span id="sales-today" class="underLine">오늘의 매출</span>
       </div>
-      <div class="salesNav salesNavR">
-        <span>매출 통계</span>
+      <div class="salesNav salesNavR" @click="allDay">
+        <span id="sales-allday">매출 통계</span>
       </div>
     </nav>
-    <div class="todayView">
+    <div class="salesContent" v-if="!salesStore.salesTypeData.viewToggle">
       <Today></Today>
-      <!-- <Chart></Chart> -->
+      <Chart></Chart>
+    </div>
+    <div class="salesContent" v-if="salesStore.salesTypeData.viewToggle">
+      <Calendar></Calendar>
     </div>
     <Footer></Footer>
   </div>
 </template>
 
 <script>
+import { useCeoSalesStore } from "@/stores/ceo/sales.js";
 import CeoHeader from "@/components/ceo/CeoHeader.vue";
 import Today from "@/components/ceo/SalesToday.vue";
-// import Chart from "@/components/ceo/SalesGraph.vue";
+import Chart from "@/components/ceo/SalesGraph.vue";
+import Calendar from "@/components/ceo/SalesComparisonCalender.vue";
 import Footer from "@/components/ceo/CeoFooter.vue";
+
 export default {
   components: {
     CeoHeader,
     Today,
-    // Chart,
+    Chart,
+    Calendar,
     Footer
+  },
+  setup() {
+    const salesStore = useCeoSalesStore();
+    function toDay() {
+      document.getElementById("sales-today").classList.add("underLine");
+      document.getElementById("sales-allday").classList.remove("underLine");
+      salesStore.salesTypeData.viewToggle = false;
+    }
+    function allDay() {
+      document.getElementById("sales-today").classList.remove("underLine");
+      document.getElementById("sales-allday").classList.add("underLine");
+      salesStore.salesTypeData.viewToggle = true;
+    }
+    return {
+      salesStore,
+      toDay,
+      allDay
+    };
   }
 };
 </script>
@@ -51,7 +76,10 @@ export default {
   border-bottom: 0.2rem solid black;
   color: black;
 }
-.todayView {
-  height: 60%;
+.salesContent {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+  height: 80%;
 }
 </style>
