@@ -51,22 +51,12 @@
   </label>
 
   <div id="truck-name" class="truckInput inputText">
-    <img src="@/assets/ceo/myMarkerIcon.svg" alt />
-    <img
-      v-if="kakaoStore.searchTypeData.iconType === true"
-      src="@/assets/ceo/addressIcon.svg"
-      alt
-    />
-    <img
-      v-if="kakaoStore.searchTypeData.iconType === false"
-      src="@/assets/ceo/addressXIcon.svg"
-      alt
-    />
+    <img :src="kakaoStore.searchTypeData.iconType" alt />
     <input
       type="text"
       v-model="scheduleStore.scheduleAddForm.address"
       @focus="inputType"
-      style="padding: 0px"
+      style="width:60%"
       placeholder="위치"
     />
   </div>

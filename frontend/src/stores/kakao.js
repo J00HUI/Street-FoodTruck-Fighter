@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import RF from "@/api/RF";
 import axios from "axios";
-
+import emptyMarker from "@/assets/ceo/myEmptyMarkerIcon.svg"
 export const useKakaoStore = defineStore("Kakao", {
   state: () => {
     const ceoMyData = {
@@ -13,7 +13,7 @@ export const useKakaoStore = defineStore("Kakao", {
       longtitudes: 0,
     };
     const searchTypeData = {
-      iconType: false,
+      iconType:  emptyMarker,
       viewType: null, // schedule과 my있음
       searchType: "click", //'click'과 'input'존재
     };

@@ -28,7 +28,7 @@
     />
   </label>
   <div id="ceo-default-address" class="truckInput inputText">
-    <img src="@/assets/ceo/myEmptyMarkerIcon.svg" alt />
+    <img :src="kakaoStore.searchTypeData.iconType" alt />
     <img
       v-if="kakaoStore.searchTypeData.iconType === true"
       src="@/assets/ceo/addressIcon.svg"

@@ -8,7 +8,7 @@
 
       <div class="header__name-style">
         <span>
-          <span class="header__text-style" style="margin: auto 0px auto 1.5rem; height:100%">이름님</span>
+          <span class="header__text-style" style="margin: auto 0px auto 1.5rem; height:100%">{{name}}님</span>
           <img src="@/assets/chefIcon.svg" style="width:1.25rem;" alt />
         </span>
         <span>
@@ -35,8 +35,10 @@ export default {
   setup() {
     const kakaoStore = useKakaoStore()
     kakaoStore.setHeaderAddress()
+    const name = JSON.parse(sessionStorage.getItem('user'))['nickname']
     return {
-      kakaoStore
+      kakaoStore,
+      name,
     }
   }
 };
