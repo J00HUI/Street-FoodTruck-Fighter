@@ -4,8 +4,10 @@ import com.ssafy.foodtruck.db.entity.Category;
 import com.ssafy.foodtruck.dto.MenuDto;
 import com.ssafy.foodtruck.dto.ScheduleDateDto;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -23,4 +25,6 @@ public class RegisterFoodtruckReq {
 	private Double longitude; // 경도
 
 	List<ScheduleDateDto> dateDtoList;	// 운영시간리스트
+
+	private Map<String, MultipartFile> menuImgList; 	// 메뉴 이미지 리스트
 }
