@@ -69,6 +69,7 @@ public class PayController {
 	@GetMapping("/success")
 	public ResponseEntity<PayApprovalRes> paySuccess(@RequestParam String pg_token){
 		System.out.println("token: " + pg_token);
+		System.out.println("tid : " + payApprovalDto.getTid());
 		ResponseEntity<PayApprovalRes> payApprovalRes = payService.paySuccess(payApprovalDto, pg_token);
 
 		// 결제 완료 설정
