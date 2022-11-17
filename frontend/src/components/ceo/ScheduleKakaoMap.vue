@@ -16,16 +16,16 @@ import { useCeoScheduleStore } from "@/stores/ceo/schedule";
 import { useCeoMyStore } from "@/stores/ceo/my";
 import { onMounted, watch } from "vue";
 import truckMarker from "@/assets/ceo/mapTruck.svg";
-import emptyMarker from "@/assets/ceo/myEmptyMarkerIcon.svg";
-import addressIcon from "@/assets/ceo/addressIcon.svg";
-import addressXIcon from "@/assets/ceo/addressXIcon.svg";
+import emptyMarker from "@/assets/ceo/myEmptyMarkerIcon.svg"
+import addressIcon from "@/assets/ceo/addressIcon.svg"
+import addressXIcon from "@/assets/ceo/addressXIcon.svg"
 export default {
   setup() {
     const store = useKakaoStore();
     const scheduleStore = useCeoScheduleStore();
     const myStore = useCeoMyStore();
-    const iconType = [emptyMarker, addressIcon, addressXIcon];
-    console.log(iconType);
+    const iconType = [emptyMarker, addressIcon, addressXIcon]
+    console.log(iconType)
     let dataCase = null;
     if (store.searchTypeData.viewType === "schedule") {
       dataCase = scheduleStore.scheduleAddForm;
@@ -100,7 +100,7 @@ export default {
       // 지도를 클릭했을 때 클릭 위치 좌표에 대한 주소정보를 표시하도록 이벤트를 등록합니다
       kakao.maps.event.addListener(initMap.map, "click", function(mouseEvent) {
         store.searchTypeData.searchType = "click";
-        store.searchTypeData.iconType = iconType[0];
+        store.searchTypeData.iconType = iconType[0]
         searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
           if (status === kakao.maps.services.Status.OK) {
             var detailAddr =
@@ -108,10 +108,7 @@ export default {
             dataCase.latitude = mouseEvent.latLng["La"];
             dataCase.longitude = mouseEvent.latLng["Ma"];
 
-            var content =
-              '<div class="contentBox"><div class="bAddr">' +
-              detailAddr +
-              "</div></div>";
+            var content = '<div class="contentBox"><div class="bAddr">' + detailAddr + "</div></div>";
 
             customOverlay.setContent(content);
             customOverlay.setPosition(mouseEvent.latLng);
@@ -234,7 +231,7 @@ export default {
   font-weight: normal;
   font-size: 1rem;
 }
-.contentBox {
+.contentBox{
   height: 200px;
 }
 .bAddr {
