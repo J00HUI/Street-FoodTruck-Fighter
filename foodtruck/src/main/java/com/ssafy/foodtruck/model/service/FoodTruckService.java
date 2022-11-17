@@ -240,15 +240,8 @@ public class FoodTruckService {
 	}
 
 	@Transactional
-	public void saveFoodtruckImg(int ceoId, MultipartFile files) throws IOException {
-
-		Optional<User> user = userRepository.findById(ceoId);
-
-		if(!user.isPresent()) {
-			return;
-		}
-
-		Optional<FoodTruck> foodTruck = foodTruckRepository.findByUser(user.get());
+	public void saveFoodtruckImg(User user, MultipartFile files) throws IOException {
+		Optional<FoodTruck> foodTruck = foodTruckRepository.findByUser(user);
 
 		if(!foodTruck.isPresent()) {
 			return;

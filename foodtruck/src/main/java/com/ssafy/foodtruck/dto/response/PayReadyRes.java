@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class PayReadyRes {
+
 	String tid;
 	String next_redirect_app_url;
 	String next_redirect_mobile_url;
@@ -11,7 +12,5 @@ public class PayReadyRes {
 	String android_app_scheme;
 	String ios_app_scheme;
 	String created_at;
-	String msg;
-	String code;
-//	boolean tms_result;
+	boolean tms_result;
 }
