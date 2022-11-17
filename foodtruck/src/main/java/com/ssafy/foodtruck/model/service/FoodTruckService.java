@@ -34,7 +34,6 @@ public class FoodTruckService {
 	private final ScheduleRepository scheduleRepository;
 	private final MenuRepository menuRepository;
 	private final ReviewRepository reviewRepository;
-	private final UserRepository userRepository;
 
 	// 푸드트럭 정보 조회
 	public GetFoodtruckRes getFoodTruck(Integer foodTruckId){
@@ -65,7 +64,7 @@ public class FoodTruckService {
 	}
 
 	// 내 푸드트럭 등록
-	public void registerFoodTruck(RegisterFoodtruckReq registerFoodTruckReq, User user) throws IllegalAccessException {
+	public void registerFoodTruck(RegisterFoodtruckReq registerFoodTruckReq, User user) throws Exception {
 		// 중복된 푸드트럭이 등록되었는지 검사
 		FoodTruck foodTruckUser = foodTruckRepository.findByUser(user).orElse(null);
 
@@ -92,9 +91,55 @@ public class FoodTruckService {
 				.price(menuDto.getPrice())
 				.description(menuDto.getDescription())
 				.build();
-
 			menuRepository.save(menu);
 		}
+
+		// 메뉴 이미지 등록
+		Map<String, MultipartFile> menuImgList = registerFoodTruckReq.getMenuImgList();
+		menuImgList.forEach((menuName, file)->{
+			Optional<Menu> menu = menuRepository.findMenuByName(menuName);
+
+			if(!menu.isPresent()) {
+				return;
+			}
+
+			if (file.isEmpty()) {
+				return;
+			}
+
+			// 원래 파일 이름 추출
+			String origName = file.getOriginalFilename();
+
+			// 파일 이름으로 쓸 uuid 생성
+			String uuid = UUID.randomUUID().toString();
+
+			// 확장자 추출(ex : .png)
+			String extension = origName.substring(origName.lastIndexOf("."));
+
+			// uuid와 확장자 결합
+			String savedName = uuid + extension;
+
+			// 파일을 불러올 때 사용할 파일 경로
+			String savedPath = fileDir + savedName;
+
+			// 파일 엔티티 생성
+			MenuImg menuImg = MenuImg.builder()
+				.orgNm(origName)
+				.savedNm(savedName)
+				.savedPath(savedPath)
+				.menu(menu.get())
+				.build();
+
+			// 실제로 로컬에 uuid를 파일명으로 저장
+			try {
+				file.transferTo(new File(savedPath));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+
+			menu.get().setMenuImg(menuImg);
+		});
+
 
 		Integer groupId = scheduleRepository.findMaxGroupId().orElse(0);
 		Integer nowGroupId = groupId + 1;
@@ -137,6 +182,53 @@ public class FoodTruckService {
 
 			menuRepository.save(menu);
 		}
+
+		// 메뉴 이미지 등록
+		Map<String, MultipartFile> menuImgList = registerFoodTruckReq.getMenuImgList();
+		menuImgList.forEach((menuName, file)->{
+			Optional<Menu> menu = menuRepository.findMenuByName(menuName);
+
+			if(!menu.isPresent()) {
+				return;
+			}
+
+			if (file.isEmpty()) {
+				return;
+			}
+
+			// 원래 파일 이름 추출
+			String origName = file.getOriginalFilename();
+
+			// 파일 이름으로 쓸 uuid 생성
+			String uuid = UUID.randomUUID().toString();
+
+			// 확장자 추출(ex : .png)
+			String extension = origName.substring(origName.lastIndexOf("."));
+
+			// uuid와 확장자 결합
+			String savedName = uuid + extension;
+
+			// 파일을 불러올 때 사용할 파일 경로
+			String savedPath = fileDir + savedName;
+
+			// 파일 엔티티 생성
+			MenuImg menuImg = MenuImg.builder()
+				.orgNm(origName)
+				.savedNm(savedName)
+				.savedPath(savedPath)
+				.menu(menu.get())
+				.build();
+
+			// 실제로 로컬에 uuid를 파일명으로 저장
+			try {
+				file.transferTo(new File(savedPath));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+
+			menu.get().setMenuImg(menuImg);
+		});
+
 		// 스케쥴 수정
 //		Schedule schedule = scheduleRepository.findByFoodTruck(foodTruck)
 //			.orElseThrow(NoSuchElementException::new);

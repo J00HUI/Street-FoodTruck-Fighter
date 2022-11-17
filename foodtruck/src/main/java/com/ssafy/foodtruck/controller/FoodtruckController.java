@@ -87,6 +87,8 @@ public class FoodtruckController {
 			return new ResponseEntity<>(DUPLICATED_FOODTRUCK_ERROR_MESSAGE, HttpStatus.BAD_REQUEST);
 		} catch (IOException e){
 			return new ResponseEntity<>(SAVE_IMAGE_ERROR_MESSAGE, HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 
