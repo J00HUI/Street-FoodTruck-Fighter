@@ -10,6 +10,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MenuDto {
 
+	private Integer menuId;
 	private String name;
 	private Integer price;
 	private String description;
@@ -17,6 +18,7 @@ public class MenuDto {
 
 	public static MenuDto of(Menu menu){
 		return new MenuDtoBuilder()
+			.menuId(menu.getId())
 			.name(menu.getName())
 			.price(menu.getPrice())
 			.description(menu.getDescription())
