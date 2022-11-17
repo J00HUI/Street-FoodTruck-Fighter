@@ -65,6 +65,17 @@ export const useCeoMyStore = defineStore("CeoMy", {
       location.reload();
     },
     registerFoodTruck() {
+      var formData = new FormData()
+      formData.append("address", this.myData.address)
+      formData.append("category", this.myData.category)
+      formData.append("dateDtoList", this.myData.dateDtoList)
+      formData.append("description", this.myData.description)
+      formData.append("latitude", this.myData.latitude)
+      formData.append("longitude", this.myData.longitude)
+      formData.append("menuList", this.myData.menuList)
+      formData.append("name", this.myData.name)
+      formData.append("phone", this.myData.phone)
+      
       const token = localStorage.getItem("accessToken");
       axios({
         url: RF.foodtruck.registerFoodTruck(),

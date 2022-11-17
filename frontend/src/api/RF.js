@@ -35,9 +35,9 @@ export default {
   },
   orders: {
     cancelOrders: (order_id) => HOST + ORDER + "cancel" + `${order_id}`,
-    acceptOrders: () => HOST + ORDER + CEO + "accept",
-    getCeoOrders: () => HOST + ORDER + CEO + "accepted",
-    getNotAcceptedOrder: () => HOST + ORDER + CEO + "not/" + "accepted",
+    acceptOrders: () => HOST + ORDER + CEO + "accept/",
+    getCeoOrders: (ceo_id) => HOST + ORDER + CEO + "accepted" + `${ceo_id}`,
+    getNotAcceptedOrder: (ceo_id) => HOST + ORDER + CEO + "not/" + "accepted/" + `${ceo_id}`,
     getCustomerOrders: () => HOST + ORDER + "customer",
     setCustomerOrders: () => HOST + ORDER + "customer",
     getCustomerOrdersAll: () => HOST + ORDER + CUSTOMER + "all",
