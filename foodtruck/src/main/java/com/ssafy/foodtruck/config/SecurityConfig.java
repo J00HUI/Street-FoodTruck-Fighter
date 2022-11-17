@@ -108,6 +108,7 @@ public class SecurityConfig {
 				, "/foodtruck/search/{keyword}"
 				, "/foodtruck/image/{foodtruck_id}"
 				, "/review/{foodtruck_id}"
+				, "/v1/pay/success"
 			).permitAll()
 			.anyRequest().authenticated(); //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
 		return http.build();
