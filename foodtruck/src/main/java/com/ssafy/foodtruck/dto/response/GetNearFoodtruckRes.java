@@ -8,8 +8,14 @@ import com.ssafy.foodtruck.db.entity.Schedule;
 import com.ssafy.foodtruck.dto.MenuDto;
 import lombok.*;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -28,7 +34,7 @@ public class GetNearFoodtruckRes {
 	private Category category; //카테고리
 	private String phone; //전화번호
 	private String description; //설명
-//	private UrlResource src; //이미지
+	private byte[] src; //이미지
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private LocalDate workingDate;	// 날짜
@@ -66,14 +72,25 @@ public class GetNearFoodtruckRes {
 			res.setGroupId(schedule.getGroupId());
 		}
 
-		res.setGrade(grade);
+		if(foodtruckImg!=null) {
+			try {
+				Path path = Paths.get(foodtruckImg.getSavedPath());
+				byte[] isr = Files.readAllBytes(path);
 
-		//setSrc
-//		try{
-//			res.setSrc(new UrlResource("file:" + foodtruckImg.getSavedPath()));
-//		} catch (MalformedURLException ex){
-//			ex.printStackTrace();
-//		}
+				HttpHeaders respHeaders = new HttpHeaders();
+				respHeaders.setContentLength(isr.length);
+				respHeaders.setContentType(new MediaType("text", "json"));
+				respHeaders.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+				respHeaders.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + foodtruckImg.getSavedNm());
+
+				res.setSrc(isr);
+
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+
+		res.setGrade(grade);
 
 		return res;
 	}

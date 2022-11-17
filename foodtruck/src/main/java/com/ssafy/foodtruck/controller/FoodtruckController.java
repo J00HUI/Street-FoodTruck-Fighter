@@ -74,27 +74,37 @@ public class FoodtruckController {
 	// 푸드트럭 등록
 	@PostMapping()
 	@ApiOperation(value = "푸드트럭 등록", notes = "<strong>내 푸드트럭을 등록한다.</strong>")
-	public ResponseEntity<?> registerFoodTruck(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken, @RequestBody @ApiParam(value="푸드트럭 정보", required = true) RegisterFoodtruckReq registerFoodTruckReq) throws IllegalAccessException {
+	public ResponseEntity<?> registerFoodTruck(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken,
+											   @RequestBody @ApiParam(value="푸드트럭 정보", required = true) RegisterFoodtruckReq registerFoodTruckReq,
+											   @RequestParam("file") MultipartFile file) {
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
 
 		try {
 			foodTruckService.registerFoodTruck(registerFoodTruckReq, user);
+			foodTruckService.saveFoodtruckImg(user, file);
 			return new ResponseEntity<>(REGISTER_FOODTRUCK_SUCCESS, HttpStatus.CREATED);
 		} catch (IllegalAccessException ex) {
 			return new ResponseEntity<>(DUPLICATED_FOODTRUCK_ERROR_MESSAGE, HttpStatus.BAD_REQUEST);
+		} catch (IOException e){
+			return new ResponseEntity<>(SAVE_IMAGE_ERROR_MESSAGE, HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	// 푸드 트럭 수정
 	@PatchMapping()
 	@ApiOperation(value = "푸드트럭 수정", notes = "<strong>푸드트럭 정보를 수정한다.</strong>")
-	public ResponseEntity<?> updateFoodTruck(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken, @RequestBody @ApiParam(value="푸드트럭 정보", required = true) RegisterFoodtruckReq registerFoodTruckReq) {
+	public ResponseEntity<?> updateFoodTruck(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken,
+											 @RequestBody @ApiParam(value="푸드트럭 정보", required = true) RegisterFoodtruckReq registerFoodTruckReq,
+											 @RequestParam("file") MultipartFile file) {
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
 		try {
 			foodTruckService.updateFoodTruck(registerFoodTruckReq, user);
+			foodTruckService.saveFoodtruckImg(user, file);
 			return new ResponseEntity<>(UPDATE_FOODTRUCK_SUCCESS, HttpStatus.OK);
 		} catch (NoSuchElementException ex) {
 			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		} catch (IOException e){
+			return new ResponseEntity<>(SAVE_IMAGE_ERROR_MESSAGE, HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -134,12 +144,12 @@ public class FoodtruckController {
 		}
 	}
 
-	@PostMapping("/upload")
-	public ResponseEntity<HttpStatus> saveFoodtruckImg(@RequestHeader("Authorization") String bearerToken, @RequestParam("file") MultipartFile file) throws IOException {
-		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
-		foodTruckService.saveFoodtruckImg(ceoId, file);
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
+//	@PostMapping("/upload")
+//	public ResponseEntity<HttpStatus> saveFoodtruckImg(@RequestHeader("Authorization") String bearerToken, @RequestParam("file") MultipartFile file) throws IOException {
+//		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
+//		foodTruckService.saveFoodtruckImg(ceoId, file);
+//		return new ResponseEntity<>(HttpStatus.OK);
+//	}
 
 	@GetMapping("/image/{foodtruckId}")
 	public ResponseEntity<UrlResource> getFoodtruckImg(@PathVariable Integer foodtruckId) throws IOException{
