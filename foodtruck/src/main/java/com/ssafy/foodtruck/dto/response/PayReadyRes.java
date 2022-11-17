@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class PayReadyRes {
+
 	String tid;
 	String next_redirect_app_url;
 	String next_redirect_mobile_url;

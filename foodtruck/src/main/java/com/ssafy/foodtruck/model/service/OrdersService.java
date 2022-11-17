@@ -60,6 +60,7 @@ public class OrdersService {
 			totalAmount += menu.getPrice();
 		}
 
+		// 카카오페이에 필요한 데이터
 		return RegisterOrdersRes.builder()
 			.orders(savedOrders)
 			.payMenuName(payMenuName)
@@ -67,6 +68,15 @@ public class OrdersService {
 			.totalAmount(totalAmount)
 			.build();
 	}
+
+	// 카카오페이 결제 완료 건 is_paied true 로 변경
+	@Transactional
+	public void successPay(Integer ordersId){
+		Orders orders = ordersRepository.findById(ordersId)
+			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_ORDER));
+		orders.setIsPaied(true);
+	}
+
 
 	@Transactional
 	public void acceptOrders(int ceoId, AcceptOrdersReq acceptOrdersReq) {

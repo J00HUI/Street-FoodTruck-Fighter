@@ -1,11 +1,17 @@
 package com.ssafy.foodtruck.model.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.foodtruck.dto.PayApprovalDto;
+import com.ssafy.foodtruck.dto.response.PayApprovalRes;
 import com.ssafy.foodtruck.dto.response.PayReadyRes;
 import com.ssafy.foodtruck.dto.response.RegisterOrdersRes;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.result.Output;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -22,8 +28,8 @@ public class PayService {
 	private static final String READY_ADDR = HOST + "/v1/payment/ready";
 	private static final String APPROVE_ADDR = HOST + "/v1/payment/approve";
 	private static final String ADMIN_KEY = "16d8a229832ac9d7e96d2dbf469efe17";
-	private static final String DOMAIN = "https://localhost:8080/api/v1/pay";
-//	private static final String DOMAIN = "https://k7b206.p.ssafy.io:3000/api/v1/pay";
+//	private static final String DOMAIN = "https://localhost:8080/api/v1/pay";
+	private static final String DOMAIN = "https://k7b206.p.ssafy.io/";
 
 	public PayReadyRes payReady(RegisterOrdersRes registerOrdersRes){
 
@@ -77,7 +83,24 @@ public class PayService {
 			"fail_url=" + DOMAIN + "/fail";
 	}
 
-	public void paySuccess(){
+	public ResponseEntity<PayApprovalRes> paySuccess(PayApprovalDto payApprovalDto, String pg_token){
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
 
+		headers.add("Authorization", "KakaoAK " + ADMIN_KEY);
+		headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE);
+		headers.add("Content-Type",MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8");
+
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.add("cid", payApprovalDto.getCid());
+		params.add("tid", payApprovalDto.getTid());
+		params.add("partner_order_id",payApprovalDto.getPartner_order_id());
+		params.add("partner_user_id",payApprovalDto.getPartner_user_id());
+		params.add("pg_token",pg_token);
+
+
+		HttpEntity<MultiValueMap<String,String>> body
+			= new HttpEntity<>(params, headers);
+		return restTemplate.exchange(APPROVE_ADDR , HttpMethod.POST, body, PayApprovalRes.class);
 	}
 }

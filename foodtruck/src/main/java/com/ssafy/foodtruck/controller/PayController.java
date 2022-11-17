@@ -1,6 +1,7 @@
 package com.ssafy.foodtruck.controller;
 
 import com.ssafy.foodtruck.db.entity.User;
+import com.ssafy.foodtruck.dto.PayApprovalDto;
 import com.ssafy.foodtruck.dto.request.PayReadyReq;
 import com.ssafy.foodtruck.dto.request.RegisterOrdersReq;
 import com.ssafy.foodtruck.dto.response.PayApprovalRes;
@@ -36,9 +37,11 @@ public class PayController {
 
 	private final JwtTokenUtil jwtTokenUtil;
 
+	PayApprovalDto payApprovalDto;
+
 	// 결제 준비 -> 결제 버튼 누를 때 결제 정보를 받아와야 함.
 	@PostMapping
-	public ResponseEntity<?> payReady(@RequestHeader("Authorization") String bearerToken, RegisterOrdersReq registerOrdersReq){
+	public ResponseEntity<?> payReady(@RequestHeader("Authorization") String bearerToken, @RequestBody RegisterOrdersReq registerOrdersReq){
 		System.out.println("payReady 호출됨");
 
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
@@ -48,20 +51,29 @@ public class PayController {
 			// 헤더에 인증 키 + 구매 정보 기입해서 kakaopay ready API 호출
 			PayReadyRes payReadyRes = payService.payReady(registerOrdersRes);
 
-			// actionResult.get 을 통해 가져와서 넣어줌
+			// 승인 요청 받을 때 필요한 데이터
+			payApprovalDto = new PayApprovalDto(
+				"TC0ONETIME",
+				payReadyRes.getTid(),
+				String.valueOf(registerOrdersRes.getOrders().getId()),
+				String.valueOf(registerOrdersRes.getOrders().getUser().getId())
+			);
+
+			return new ResponseEntity<>(payReadyRes, HttpStatus.OK);
 
 		} catch (NotFoundException ex) {
 			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-
-		return null;
-//		return payReadyRes;
 	}
 
 	@GetMapping("/success")
 	public ResponseEntity<PayApprovalRes> paySuccess(@RequestParam String pg_token){
 		System.out.println("token: " + pg_token);
+		ResponseEntity<PayApprovalRes> payApprovalRes = payService.paySuccess(payApprovalDto, pg_token);
 
-		return null;
+		// 결제 완료 설정
+		ordersService.successPay(Integer.parseInt(payApprovalDto.getPartner_order_id()));
+
+		return payApprovalRes;
 	}
 }
