@@ -58,9 +58,13 @@ export default {
     }
     const cartStore = useCartStore();
     function makeCart(){
-      cartStore.cart.foodtruckId = detailStore.aboutStore.foodtruckId
-      cartStore.cart.menuList.count = detailStore.amount
-      cartStore.cart.menuList.menuId = detailStore
+      cartStore.cart.foodtruckId = detailStore.foodtruck_id
+      cartStore.cart.menuList[0].count = detailStore.amount
+      cartStore.cart.menuList[0].menuId = detailStore.menuDetail.menuId
+      cartStore.makeCustomerOrders()
+      console.log(JSON.stringify(cartStore.cart) + ' cart')
+      console.log(JSON.stringify(detailStore.menuDetail) + ' !!!!kkkk')
+
     }
     return {
       detailStore,

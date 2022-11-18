@@ -37,7 +37,7 @@ export default {
 
     function showDetail(menu) {
       detailStore.menuDetail = menu
-      console.log(menu)
+      console.log(JSON.stringify(menu) + ' ASDF')
       router.push("/menudetail");
     }
     return {

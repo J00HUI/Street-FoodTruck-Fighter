@@ -9,7 +9,7 @@ export const useStoreDetail = defineStore("storeDetail", {
         message: "",
         menuList: [
           {
-            menuId : "",
+            menuId: "",
             name: "",
             price: 0,
             description: "",
@@ -35,8 +35,8 @@ export const useStoreDetail = defineStore("storeDetail", {
       },
     };
     const imgSet = {
-      img: null
-    }
+      img: null,
+    };
     const reviews = {
       reviewImg: "",
       reviewer: "",
@@ -45,21 +45,25 @@ export const useStoreDetail = defineStore("storeDetail", {
       content: "",
     };
     const menuDetail = {
-    }
+      foodtruckId: 0,
+      menuList: [{ count: 0, menuId: 0 }],
+    };
+    // const foodtruck_id = sessionStorage.getItem("foodTruckId")
+    const foodtruck_id = 2;
+    const amount = 1;
     return {
       imgSet,
-      amount: 1,
+      amount,
       aboutStore,
       reviews,
       menuDetail,
+      foodtruck_id,
     };
   },
   actions: {
     getStoreInfo() {
-      const foodtruck_id = 2;
-
       axios({
-        url: RF.foodtruck.getFoodTruck(foodtruck_id),
+        url: RF.foodtruck.getFoodTruck(this.foodtruck_id),
         method: "get",
       })
         .then((res) => {
@@ -68,26 +72,23 @@ export const useStoreDetail = defineStore("storeDetail", {
           this.aboutStore.data = res.data;
           // this.menuList.idx = this.aboutStore.data.menuList.length
           // console.log('storeDetail.js aboutStore.data '+ JSON.stringify(this.aboutStore.data))
-          var imgsrc =
-            "data:image/png;base64," + res.data.src
-              this.imgSet.img = imgsrc
-              this.imgSet.img = imgsrc
-
+          var imgsrc = "data:image/png;base64," + res.data.src;
+          this.imgSet.img = imgsrc;
+          this.imgSet.img = imgsrc;
 
           // console.log(JSON.stringify(this.aboutStore.data.grade) + ' aboutStore.data');
-          let star = this.aboutStore.data.grade
+          let star = this.aboutStore.data.grade;
 
           if (star >= 0 && star < 2) {
-            document.getElementById("rate5").checked = true
-          }else if(star>=2 && star<3){
-            document.getElementById("rate4").checked = true
-      
-          }else if(star>=3 && star<4){
-            document.getElementById("rate3").checked = true
-          }else if(star>=4 && star<5){
-            document.getElementById("rate2").checked = true
-          }else if(star>=5){
-            document.getElementById("rate1").checked = true
+            document.getElementById("rate5").checked = true;
+          } else if (star >= 2 && star < 3) {
+            document.getElementById("rate4").checked = true;
+          } else if (star >= 3 && star < 4) {
+            document.getElementById("rate3").checked = true;
+          } else if (star >= 4 && star < 5) {
+            document.getElementById("rate2").checked = true;
+          } else if (star >= 5) {
+            document.getElementById("rate1").checked = true;
           }
         })
         .catch(() => {
