@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,15 +27,11 @@ public class MenuService {
 	private final FoodtruckRepository foodTruckRepository;
 	private final MenuRepository menuRepository;
 
-	public void registerMenu(RegisterMenuReq registerMenuReq, User user, List<MultipartFile> files) throws IOException {
+	public void registerMenu(RegisterMenuReq registerMenuReq, User user) throws IOException {
+
 		// user 에 해당하는 푸드트럭 조회
 		FoodTruck foodTruck = foodTruckRepository.findByUser(user)
 			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
-
-		// 메뉴 정보와 메뉴 이미지 리스트 갯수가 다르면 예외 처리
-		if(registerMenuReq.getMenuReqList().size() != files.size()){
-			throw new IllegalArgumentException();
-		}
 
 		for(int i=0; i<registerMenuReq.getMenuReqList().size(); i++){
 			MenuReq menuReq = registerMenuReq.getMenuReqList().get(i);
@@ -48,9 +43,6 @@ public class MenuService {
 				.description(menuReq.getDescription())
 				.build();
 			menuRepository.save(menu);
-
-			// 이미지 등록
-			saveMenuImg(menu.getId(), files.get(i));
 		}
 	}
 
@@ -94,6 +86,18 @@ public class MenuService {
 
 		menu.get().setMenuImg(menuImg);
 	}
+
+	public MenuImg getMenuImg(int menuId) {
+
+		Optional<Menu> menuOpt = menuRepository.findById(menuId);
+
+		if (!menuOpt.isPresent()) {
+			return null;
+		}
+
+		return menuOpt.get().getMenuImg();
+	}
+
 //
 //	public void updateMenu(){
 //		// 메뉴 삭제
