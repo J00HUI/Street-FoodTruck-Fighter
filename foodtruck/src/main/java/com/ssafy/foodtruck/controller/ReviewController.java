@@ -35,12 +35,14 @@ public class ReviewController {
 	@PostMapping
 	@ApiOperation(value = "리뷰 등록", notes = "<strong>주문내역에 리뷰를 등록한다.</strong>")
 	public ResponseEntity<?> registerFoodTruckReview(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken,
-													 @RequestBody @ApiParam(value="리뷰 정보", required = true) RegisterFoodtruckReviewReq registerFoodTruckReviewReq){
+													 @RequestBody @ApiParam(value="리뷰 정보", required = true) RegisterFoodtruckReviewReq registerFoodTruckReviewReq,
+													 @RequestParam("file") @ApiParam(value="리뷰 사진") MultipartFile file){
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
 		try {
 			reviewService.registerFoodTruckReview(registerFoodTruckReviewReq, user);
+			reviewService.saveReviewImg(registerFoodTruckReviewReq.getOrdersId(), file);
 			return new ResponseEntity<>(REGISTER_REVIEW_SUCCESS, HttpStatus.CREATED);
-		} catch (IllegalArgumentException ex) {
+		} catch (IllegalArgumentException | IOException ex) {
 			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -60,7 +62,8 @@ public class ReviewController {
 	}
 
 	@PostMapping("/upload/{orders_id}")
-	public ResponseEntity<HttpStatus> saveReviewImg(@RequestHeader("Authorization") String bearerToken, @PathVariable Integer ordersId, @RequestParam("file") MultipartFile file) throws IOException {
+	public ResponseEntity<HttpStatus> saveReviewImg(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken,
+													@PathVariable Integer ordersId, @RequestParam("file") MultipartFile file) throws IOException {
 		int customerId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
 		//본인 리뷰인지 확인하는 과정 필요
 

@@ -1,7 +1,8 @@
 package com.ssafy.foodtruck.dto.request;
 
 import com.ssafy.foodtruck.db.entity.Category;
-import com.ssafy.foodtruck.dto.MenuDto;
+import com.ssafy.foodtruck.dto.response.MenuReq;
+import com.ssafy.foodtruck.dto.response.MenuRes;
 import com.ssafy.foodtruck.dto.ScheduleDateDto;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,7 +15,7 @@ import java.util.Map;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class RegisterFoodtruckReq {
-	private List<MenuDto> menuList; // 메뉴리스트
+	private List<MenuReq> menuList; // 메뉴리스트
 
 	private String name; //상호명
 	private Category category; //카테고리

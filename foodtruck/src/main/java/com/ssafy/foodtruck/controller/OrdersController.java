@@ -10,6 +10,7 @@ import com.ssafy.foodtruck.model.service.OrdersService;
 import com.ssafy.foodtruck.model.service.UserService;
 import com.ssafy.foodtruck.util.JwtTokenUtil;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,8 @@ public class OrdersController {
 
 	@PostMapping("/customer")
 	@ApiOperation(value = "주문내역 등록", notes = "<strong>사용자가 주문내역을 등록한다.</strong>")
-	public ResponseEntity<?> registerOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @RequestBody RegisterOrdersReq registerOrdersReq) {
+	public ResponseEntity<?> registerOrders(@RequestHeader(AUTHORIZATION) @ApiParam(value="Access Token", required = true) String bearerToken,
+											@RequestBody @ApiParam(value="주문내역 정보", required = true) RegisterOrdersReq registerOrdersReq) {
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
 		try {
 			ordersService.registerOrders(registerOrdersReq, user);
@@ -49,8 +51,9 @@ public class OrdersController {
 	}
 
 	@PatchMapping("/ceo/accept")
-	@ApiOperation(value = "Orders ID로 주문 접수 - 사업자", notes = "<strong>Orders ID를 통해 주문을 접수한다.</strong>")
-	public ResponseEntity<?> acceptOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @RequestBody AcceptOrdersReq acceptOrdersReq) {
+	@ApiOperation(value = "주문 접수 - 사업자", notes = "<strong>Orders ID와 주문 완료 예상 시간을 통해 주문을 접수한다.</strong>")
+	public ResponseEntity<?> acceptOrders(@RequestHeader(AUTHORIZATION) @ApiParam(value="Access Token", required = true) String bearerToken,
+										  @RequestBody @ApiParam(value="주문내역 정보", required = true) AcceptOrdersReq acceptOrdersReq) {
 		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
 		try {
 			ordersService.acceptOrders(ceoId, acceptOrdersReq);
@@ -68,7 +71,7 @@ public class OrdersController {
 		@ApiResponse(code = 404, message = "사용자 없음"),
 		@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity<List<CurrentOrdersHistoryRes>> getCustomerOrders(@RequestHeader(AUTHORIZATION) String bearerToken) {
+	public ResponseEntity<List<CurrentOrdersHistoryRes>> getCustomerOrders(@RequestHeader(AUTHORIZATION) @ApiParam(value="Access Token", required = true) String bearerToken) {
 		int customerId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
 		return new ResponseEntity<>(ordersService.getCustomerOrders(customerId), HttpStatus.OK);
 	}
@@ -81,7 +84,7 @@ public class OrdersController {
 		@ApiResponse(code = 404, message = "사용자 없음"),
 		@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity<List<OrdersHistoryRes>> getCustomerOrdersAll(@RequestHeader(AUTHORIZATION) String bearerToken) {
+	public ResponseEntity<List<OrdersHistoryRes>> getCustomerOrdersAll(@RequestHeader(AUTHORIZATION) @ApiParam(value="Access Token", required = true) String bearerToken) {
 //		int customerId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
 		return new ResponseEntity<>(ordersService.getCustomerOrdersAll(user), HttpStatus.OK);
@@ -151,7 +154,8 @@ public class OrdersController {
 
 	@PatchMapping("/cancel/{orderId}")
 	@ApiOperation(value = "Orders ID로 주문 취소 - 사업자", notes = "<strong>Orders ID를 통해 주문을 취소한다.</strong>")
-	public ResponseEntity<?> cancelOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @PathVariable int orderId) {
+	public ResponseEntity<?> cancelOrders(@RequestHeader(AUTHORIZATION) @ApiParam(value="Access Token", required = true) String bearerToken,
+										  @PathVariable int orderId) {
 		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
 		try {
 			ordersService.cancelOrders(ceoId, orderId);
@@ -163,7 +167,8 @@ public class OrdersController {
 
 	@PatchMapping("/done/{orderId}")
 	@ApiOperation(value = "주문 완료 - 사업자", notes = "<strong>Orders ID를 통해 주문을 완료한다.</strong>")
-	public ResponseEntity<?> doneOrders(@RequestHeader(AUTHORIZATION) String bearerToken, @PathVariable int orderId) {
+	public ResponseEntity<?> doneOrders(@RequestHeader(AUTHORIZATION) @ApiParam(value="Access Token", required = true) String bearerToken,
+										@PathVariable @ApiParam(value="주문 ID", required = true) int orderId) {
 		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
 
 		try {

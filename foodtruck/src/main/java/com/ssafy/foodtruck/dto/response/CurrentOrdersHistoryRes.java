@@ -2,7 +2,6 @@ package com.ssafy.foodtruck.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ssafy.foodtruck.db.entity.FoodtruckImg;
-import com.ssafy.foodtruck.dto.MenuDto;
 import lombok.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;

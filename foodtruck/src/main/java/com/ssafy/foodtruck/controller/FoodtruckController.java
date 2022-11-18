@@ -76,7 +76,7 @@ public class FoodtruckController {
 	@ApiOperation(value = "푸드트럭 등록", notes = "<strong>내 푸드트럭을 등록한다.</strong>")
 	public ResponseEntity<?> registerFoodTruck(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken,
 											   @RequestBody @ApiParam(value="푸드트럭 정보", required = true) RegisterFoodtruckReq registerFoodTruckReq,
-											   @RequestParam("file") MultipartFile file) {
+											   @RequestParam("file") @ApiParam(value="푸드트럭 이미지", required = true) MultipartFile file) {
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
 
 		try {
@@ -97,7 +97,7 @@ public class FoodtruckController {
 	@ApiOperation(value = "푸드트럭 수정", notes = "<strong>푸드트럭 정보를 수정한다.</strong>")
 	public ResponseEntity<?> updateFoodTruck(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken,
 											 @RequestBody @ApiParam(value="푸드트럭 정보", required = true) RegisterFoodtruckReq registerFoodTruckReq,
-											 @RequestParam("file") MultipartFile file) {
+											 @RequestParam("file") @ApiParam(value="푸드트럭 이미지", required = true) MultipartFile file) {
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
 		try {
 			foodTruckService.updateFoodTruck(registerFoodTruckReq, user);

@@ -78,6 +78,7 @@ public class AuthController {
 	}
 
 	@GetMapping("/logout")
+	@ApiOperation(value = "로그아웃", notes = "<strong>Refresh Token</strong>을 통해 로그아웃 한다.")
 	public ResponseEntity<?> logout(@CookieValue(value = "refresh-token", required = false) String refreshToken, HttpServletResponse resp) {
 		authService.logout(refreshToken);
 //        ResponseCookie cookie = ResponseCookie.from("refresh-token",null)
