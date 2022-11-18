@@ -14,7 +14,6 @@ public class MenuRes {
 	private String name;
 	private Integer price;
 	private String description;
-//	private String src;
 
 	public static MenuRes of(Menu menu){
 		return new MenuResBuilder()
@@ -22,7 +21,6 @@ public class MenuRes {
 			.name(menu.getName())
 			.price(menu.getPrice())
 			.description(menu.getDescription())
-//			.src(menu.getSrc())
 			.build();
 	}
 }

@@ -21,9 +21,6 @@ public class FoodTruck extends BaseEntity {
 	@Column(length = 50)
 	private String name;
 
-	@Column(length = 200)
-	private String src;
-
 	@Enumerated(value = EnumType.STRING)
 	@NotNull
 	private Category category;

@@ -104,6 +104,7 @@ public class SecurityConfig {
 				, "/user/signup"
 				, "/phone/sms"
 				, "/phone"
+				, "/foodtruck"
 				, "/foodtruck/{foodtruck_id}"
 				, "/foodtruck/search/{keyword}"
 				, "/foodtruck/image/{foodtruck_id}"

@@ -1,14 +1,15 @@
 package com.ssafy.foodtruck.dto.request;
 
 import lombok.*;
-import java.util.List;
 
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RegisterOrdersReq {
+public class OrdersMenuReq {
 
-	private Integer foodtruckId;
-	private List<OrdersMenuReq> menuList;
+	private Integer menuId;
+	private Integer count;
 }
+
+//	private List<MenuReq> menuList; // 메뉴리스트
