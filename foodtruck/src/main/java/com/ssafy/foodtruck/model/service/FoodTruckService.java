@@ -82,175 +82,18 @@ public class FoodTruckService {
 			.phone(registerFoodTruckReq.getPhone())
 			.build();
 
-		FoodTruck savedFoodTruck = foodTruckRepository.save(foodTruck);
-
-		// 메뉴 등록
-		for(MenuReq menuReq : registerFoodTruckReq.getMenuList()){
-			final Menu menu = Menu.builder()
-				.name(menuReq.getName())
-				.foodTruck(savedFoodTruck)
-				.price(menuReq.getPrice())
-				.description(menuReq.getDescription())
-				.build();
-			menuRepository.save(menu);
-		}
-
-		// 메뉴 이미지 등록
-		Map<String, MultipartFile> menuImgList = registerFoodTruckReq.getMenuImgList();
-		menuImgList.forEach((menuName, file)->{
-			Optional<Menu> menu = menuRepository.findMenuByName(menuName);
-
-			if(!menu.isPresent()) {
-				return;
-			}
-
-			if (file.isEmpty()) {
-				return;
-			}
-
-			// 원래 파일 이름 추출
-			String origName = file.getOriginalFilename();
-
-			// 파일 이름으로 쓸 uuid 생성
-			String uuid = UUID.randomUUID().toString();
-
-			// 확장자 추출(ex : .png)
-			String extension = origName.substring(origName.lastIndexOf("."));
-
-			// uuid와 확장자 결합
-			String savedName = uuid + extension;
-
-			// 파일을 불러올 때 사용할 파일 경로
-			String savedPath = fileDir + savedName;
-
-			// 파일 엔티티 생성
-			MenuImg menuImg = MenuImg.builder()
-				.orgNm(origName)
-				.savedNm(savedName)
-				.savedPath(savedPath)
-				.menu(menu.get())
-				.build();
-
-			// 실제로 로컬에 uuid를 파일명으로 저장
-			try {
-				file.transferTo(new File(savedPath));
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-
-			menu.get().setMenuImg(menuImg);
-		});
-
-
-		Integer groupId = scheduleRepository.findMaxGroupId().orElse(0);
-		Integer nowGroupId = groupId + 1;
-
-		// 스케쥴 등록
-		for(ScheduleDateDto dateDto : registerFoodTruckReq.getDateDtoList()){
-			final Schedule schedule = Schedule.builder()
-				.foodTruck(savedFoodTruck)
-				.title(dateDto.getTitle())
-				.groupId(nowGroupId)
-				.latitude(registerFoodTruckReq.getLatitude())
-				.longitude(registerFoodTruckReq.getLongitude())
-				.address(registerFoodTruckReq.getAddress())
-				.workingDate(LocalDate.parse(dateDto.getWorkingDay(), DateTimeFormatter.ISO_DATE))
-				.startTime(LocalDateTime.parse(dateDto.getWorkingDay() + " " + dateDto.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
-				.endTime(LocalDateTime.parse(dateDto.getWorkingDay() + " " + dateDto.getEndTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
-				.isValid(true).build();
-
-			scheduleRepository.save(schedule);
-		}
+		foodTruckRepository.save(foodTruck);
 	}
 
 	// 푸드트럭 수정
+	@Transactional
 	public void updateFoodTruck(RegisterFoodtruckReq registerFoodTruckReq, User user) {
 		// 푸드트럭 찾기
 		FoodTruck foodTruck = foodTruckRepository.findByUser(user)
 			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE));
 
-		// 메뉴 삭제
-		deleteMenu(foodTruck);
-
-		// 새 메뉴 등록
-		for(MenuReq menuReq : registerFoodTruckReq.getMenuList()){
-			final Menu menu = Menu.builder()
-				.name(menuReq.getName())
-				.foodTruck(foodTruck)
-				.price(menuReq.getPrice())
-				.description(menuReq.getDescription())
-				.build();
-
-			menuRepository.save(menu);
-		}
-
-		// 메뉴 이미지 등록
-		Map<String, MultipartFile> menuImgList = registerFoodTruckReq.getMenuImgList();
-		menuImgList.forEach((menuName, file)->{
-			Optional<Menu> menu = menuRepository.findMenuByName(menuName);
-
-			if(!menu.isPresent()) {
-				return;
-			}
-
-			if (file.isEmpty()) {
-				return;
-			}
-
-			// 원래 파일 이름 추출
-			String origName = file.getOriginalFilename();
-
-			// 파일 이름으로 쓸 uuid 생성
-			String uuid = UUID.randomUUID().toString();
-
-			// 확장자 추출(ex : .png)
-			String extension = origName.substring(origName.lastIndexOf("."));
-
-			// uuid와 확장자 결합
-			String savedName = uuid + extension;
-
-			// 파일을 불러올 때 사용할 파일 경로
-			String savedPath = fileDir + savedName;
-
-			// 파일 엔티티 생성
-			MenuImg menuImg = MenuImg.builder()
-				.orgNm(origName)
-				.savedNm(savedName)
-				.savedPath(savedPath)
-				.menu(menu.get())
-				.build();
-
-			// 실제로 로컬에 uuid를 파일명으로 저장
-			try {
-				file.transferTo(new File(savedPath));
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-
-			menu.get().setMenuImg(menuImg);
-		});
-
-		// 스케쥴 수정
-//		Schedule schedule = scheduleRepository.findByFoodTruck(foodTruck)
-//			.orElseThrow(NoSuchElementException::new);
-//		schedule.update(registerFoodTruckReq);
-//		scheduleRepository.save(schedule);
-
 		// 푸드트럭 수정
 		foodTruck.update(registerFoodTruckReq);
-		foodTruckRepository.save(foodTruck);
-	}
-
-	// 메뉴 삭제
-	public void deleteMenu(FoodTruck foodTruck){
-		List<Menu> menuList = menuRepository.findAllByFoodTruck(foodTruck);
-		for(Menu menu : menuList){
-			try {
-				menuRepository.delete(menu);
-			} catch (DataIntegrityViolationException exception) {
-				throw new IllegalArgumentException();
-			}
-		}
 	}
 
 	// 현재 위치와 가까운 푸드트럭 조회

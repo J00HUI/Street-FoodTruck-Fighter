@@ -4,7 +4,7 @@ import com.ssafy.foodtruck.constant.OrdersErrorMessage;
 import com.ssafy.foodtruck.db.entity.*;
 import com.ssafy.foodtruck.db.repository.*;
 import com.ssafy.foodtruck.dto.request.AcceptOrdersReq;
-import com.ssafy.foodtruck.dto.request.RegisterMenuReq;
+import com.ssafy.foodtruck.dto.request.OrdersMenuReq;
 import com.ssafy.foodtruck.dto.request.RegisterOrdersReq;
 import com.ssafy.foodtruck.dto.response.*;
 import com.ssafy.foodtruck.exception.NotFoundException;
@@ -40,11 +40,11 @@ public class OrdersService {
 			.build();
 		Orders savedOrders = ordersRepository.save(orders);
 
-		List<RegisterMenuReq> menuList = registerOrdersReq.getMenuList();
+		List<OrdersMenuReq> menuList = registerOrdersReq.getMenuList();
 		String payMenuName = "";
 		Integer totalQuantity = 0;
 		Integer totalAmount = 0;
-		for(RegisterMenuReq menuReq : menuList){
+		for(OrdersMenuReq menuReq : menuList){
 			Menu menu = menuRepository.findById(menuReq.getMenuId())
 				.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
 

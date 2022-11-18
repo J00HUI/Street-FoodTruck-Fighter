@@ -25,9 +25,6 @@ public class Menu extends BaseEntity {
 	@Column(length = 200)
 	private String description;
 
-	@Column(length = 200)
-	private String src;
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "foodtruck_id")
 	private FoodTruck foodTruck;
