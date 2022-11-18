@@ -1,6 +1,7 @@
 package com.ssafy.foodtruck.controller;
 
 import com.ssafy.foodtruck.db.entity.User;
+import com.ssafy.foodtruck.db.repository.UserRepository;
 import com.ssafy.foodtruck.dto.request.AcceptOrdersReq;
 import com.ssafy.foodtruck.dto.request.RegisterOrdersReq;
 import com.ssafy.foodtruck.dto.response.*;
@@ -14,10 +15,14 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 
+import java.time.Duration;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ssafy.foodtruck.constant.OrdersConsatnt.CANCELED_ORDERS_SUCCESS;
 import static com.ssafy.foodtruck.db.entity.Message.AUTHORIZATION;
@@ -27,10 +32,9 @@ import static com.ssafy.foodtruck.db.entity.Message.AUTHORIZATION;
 @RequestMapping("/order")
 public class OrdersController {
 
+	private final UserRepository userRepository;
 	private final OrdersService ordersService;
-
 	private final UserService userService;
-
 	private final JwtTokenUtil jwtTokenUtil;
 
 	@PostMapping("/customer")
@@ -86,27 +90,46 @@ public class OrdersController {
 		return new ResponseEntity<>(ordersService.getCustomerOrdersAll(user), HttpStatus.OK);
 	}
 
-	@GetMapping("/ceo/not/accepted")
-	@ApiOperation(value = "현재 수락되지 않은 주문내역 조회 - 사업자", notes = "<strong>Ceo ID를 통해 수락되지 않은 주문내역 조회를 한다.</strong>")
-	public ResponseEntity<?> getCeoOrdersNotAccepted(@RequestHeader(AUTHORIZATION) @ApiParam(value="Access Token", required = true) String bearerToken) {
-		User ceoUser = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
-		try {
-			List<CurrentOrdersListByFoodtruckRes> currentOrdersListByFoodtruckResList = ordersService.getCeoOrdersNotAccepted(ceoUser);
-			return new ResponseEntity<>(currentOrdersListByFoodtruckResList, HttpStatus.OK);
-		} catch (NotFoundException ex) {
-			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+	//SSE
+	@GetMapping(path = "/ceo/not/accepted/{ceo_id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	@ApiOperation(value = "현재 수락되지 않은 주문내역 조회 - 사업자", notes = "<strong>Ceo ID를 통해 주문내역 조회를 한다.</strong>")
+	public Flux<?> getCeoOrdersNotAccepted(@PathVariable("ceo_id") int ceoId) {
+
+
+		Optional<User> ceoUserOpt = userRepository.findById(ceoId);
+
+		if(!ceoUserOpt.isPresent()){
+			return Flux.interval(Duration.ofHours(1))
+				.map(sequence -> "적절하지 못한 ceoId입니다.");
 		}
+
+		User ceoUser = ceoUserOpt.get();
+
+		List<CurrentOrdersListByFoodtruckRes> currentOrdersListByFoodtruckResList = ordersService.getCeoOrdersNotAccepted(ceoUser);
+		return Flux.interval(Duration.ofSeconds(1))
+			.map(sequence -> currentOrdersListByFoodtruckResList);
 	}
 
-	@GetMapping("/ceo/accepted")
-	@ApiOperation(value = "현재 수락된 주문내역 조회 - 사업자", notes = "<strong>Ceo ID를 통해 수락된 주문내역 조회를 한다.</strong>")
-	public ResponseEntity<?> getCeoOrdersAccepted(@RequestHeader(AUTHORIZATION) @ApiParam(value="Access Token", required = true) String bearerToken) {
-		User ceoUser = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
+	//SSE
+	@GetMapping("/ceo/accepted/{ceo_id}")
+	@ApiOperation(value = "현재 수락된 주문내역 조회 - 사업자", notes = "<strong>Ceo ID를 통해 주문내역 조회를 한다.</strong>")
+	public Flux<?> getCeoOrdersAccepted(@PathVariable("ceo_id") int ceoId) {
+		Optional<User> ceoUserOpt = userRepository.findById(ceoId);
+
+		if(!ceoUserOpt.isPresent()){
+			return Flux.interval(Duration.ofHours(1))
+				.map(sequence -> "적절하지 못한 ceoId입니다.");
+		}
+
+		User ceoUser = ceoUserOpt.get();
+
 		try {
 			List<CurrentOrdersListByFoodtruckRes> currentOrdersListByFoodtruckResList = ordersService.getCeoOrdersAccepted(ceoUser);
-			return new ResponseEntity<>(currentOrdersListByFoodtruckResList, HttpStatus.OK);
+			return Flux.interval(Duration.ofSeconds(1))
+				.map(sequence -> currentOrdersListByFoodtruckResList);
 		} catch (NotFoundException ex) {
-			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+			return Flux.interval(Duration.ofHours(1))
+				.map(sequence -> "적절하지 못한 ceoId입니다.");
 		}
 	}
 
@@ -127,6 +150,7 @@ public class OrdersController {
 //			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 //		}
 //	}
+
 
 	@PatchMapping("/cancel/{orderId}")
 	@ApiOperation(value = "Orders ID로 주문 취소 - 사업자", notes = "<strong>Orders ID를 통해 주문을 취소한다.</strong>")
@@ -154,4 +178,5 @@ public class OrdersController {
 			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
+
 }

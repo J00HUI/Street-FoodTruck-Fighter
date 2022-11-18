@@ -74,6 +74,7 @@ public class PayController {
 	@ApiOperation(value = "결제 승인 요청", notes = "<strong>토큰을 통해 카카오 Pay API에 결제 승인 요청을 한다.</strong>")
 	public ResponseEntity<PayApprovalRes> paySuccess(@RequestParam @ApiParam(value="결제 승인 요청 토큰", required = true) String pg_token){
 		System.out.println("token: " + pg_token);
+		System.out.println("tid : " + payApprovalDto.getTid());
 		ResponseEntity<PayApprovalRes> payApprovalRes = payService.paySuccess(payApprovalDto, pg_token);
 
 		// 결제 완료 설정
