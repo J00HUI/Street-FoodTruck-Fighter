@@ -56,15 +56,50 @@
 
 <script>
 import { useCeoOrderStore } from "@/stores/ceo/order";
+import $ from "jquery";
+import RF from "@/api/RF";
+
 export default {
   setup() {
     const orderStore = useCeoOrderStore();
 
     const selectTime = [5, 10, 15, 20, 25];
-    orderStore.getNotAcceptedOrder();
+
     function getDoneDate(time) {
       orderStore.orderTypeData.doneDate = time;
     }
+
+    start();
+    var evtsource = null;
+    function start() {
+      const ceo_id = JSON.parse(sessionStorage.getItem("user")).id;
+      // const token = localStorage.getItem("accessToken");
+      evtsource = new EventSource(RF.orders.getCeoOrders(ceo_id), {
+         withCredentials: true,
+      });
+      evtsource.onmessage = function(ev) {
+        console.log("on message: ", ev.data);
+      };
+      evtsource.onerror = function(err) {
+        console.log("on err: ", err);
+        stop();
+      };
+    }
+    function stop() {
+      if (evtsource != null) {
+        evtsource.close();
+        console.log("close EventSource");
+        evtsource = null;
+      }
+    }
+
+    $(document).ready(function() {
+      start();
+    });
+    $(window).on("unload", function() {
+      stop();
+    });
+
     return {
       orderStore,
       selectTime,

@@ -161,6 +161,7 @@ export const useKakaoStore = defineStore("Kakao", {
       })
         .then((res) => {
           console.log(res);
+          console.log('메렁')
           // this.surveyData = res.data
         })
         .catch((err) => {
