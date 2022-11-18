@@ -1,4 +1,4 @@
-package com.ssafy.foodtruck.dto.response;
+package com.ssafy.foodtruck.dto.request;
 
 import com.ssafy.foodtruck.db.entity.Menu;
 import lombok.*;

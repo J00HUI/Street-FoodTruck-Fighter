@@ -74,7 +74,7 @@ public class OrdersService {
 	public void successPay(Integer ordersId){
 		Orders orders = ordersRepository.findById(ordersId)
 			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_ORDER));
-		orders.setIsPaied(true);
+		orders.setIsPaid(true);
 	}
 
 
