@@ -16,7 +16,6 @@ import java.util.List;
 public class FoodtruckRes {
 	private Integer id;
 	private String name;
-	private String src;
 	private Category category;
 	private String phone;
 	private String description;

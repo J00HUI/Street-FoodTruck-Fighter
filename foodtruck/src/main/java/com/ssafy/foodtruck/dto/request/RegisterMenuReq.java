@@ -1,6 +1,10 @@
 package com.ssafy.foodtruck.dto.request;
 
+import com.ssafy.foodtruck.dto.response.MenuReq;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Builder
@@ -8,6 +12,5 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RegisterMenuReq {
 
-	private Integer menuId;
-	private Integer count;
+	private List<MenuReq> menuReqList = new ArrayList<>();
 }

@@ -4,9 +4,7 @@ import com.ssafy.foodtruck.db.entity.FoodtruckImg;
 import com.ssafy.foodtruck.db.entity.User;
 import com.ssafy.foodtruck.dto.request.GetNearFoodtruckReq;
 import com.ssafy.foodtruck.dto.request.RegisterFoodtruckReq;
-import com.ssafy.foodtruck.dto.request.RegisterFoodtruckReviewReq;
 import com.ssafy.foodtruck.dto.response.GetFoodtruckRes;
-import com.ssafy.foodtruck.dto.response.GetFoodtruckReviewRes;
 import com.ssafy.foodtruck.dto.response.GetNearFoodtruckRes;
 import com.ssafy.foodtruck.model.service.FoodTruckService;
 import com.ssafy.foodtruck.model.service.UserService;
@@ -75,8 +73,8 @@ public class FoodtruckController {
 	@PostMapping()
 	@ApiOperation(value = "푸드트럭 등록", notes = "<strong>내 푸드트럭을 등록한다.</strong>")
 	public ResponseEntity<?> registerFoodTruck(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken,
-											   @RequestBody @ApiParam(value="푸드트럭 정보", required = true) RegisterFoodtruckReq registerFoodTruckReq,
-											   @RequestParam("file") @ApiParam(value="푸드트럭 이미지", required = true) MultipartFile file) {
+											   @RequestPart(value = "data") @ApiParam(value="푸드트럭 정보", required = true) RegisterFoodtruckReq registerFoodTruckReq,
+											   @RequestPart(value = "file") @ApiParam(value="푸드트럭 이미지", required = true) MultipartFile file) {
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
 
 		try {
@@ -86,9 +84,11 @@ public class FoodtruckController {
 		} catch (IllegalAccessException ex) {
 			return new ResponseEntity<>(DUPLICATED_FOODTRUCK_ERROR_MESSAGE, HttpStatus.BAD_REQUEST);
 		} catch (IOException e){
+			e.printStackTrace();
 			return new ResponseEntity<>(SAVE_IMAGE_ERROR_MESSAGE, HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			e.printStackTrace();
+			return new ResponseEntity<>("알 수 없는 에러", HttpStatus.BAD_REQUEST);
 		}
 	}
 
