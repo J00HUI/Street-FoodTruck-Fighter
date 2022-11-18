@@ -1,6 +1,5 @@
 package com.ssafy.foodtruck.dto.request;
 
-import com.ssafy.foodtruck.dto.response.MenuReq;
 import lombok.*;
 
 import java.util.ArrayList;
