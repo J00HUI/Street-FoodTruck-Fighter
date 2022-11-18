@@ -46,8 +46,8 @@ public class MenuController {
 	@PostMapping
 	@ApiOperation(value = " 메뉴 등록", notes = "<strong>내 메뉴를 등록한다.</strong>")
 	public ResponseEntity<?> registerFoodTruck(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken,
-											   @RequestBody @ApiParam(value="메뉴 정보", required = true) RegisterMenuReq registerMenuReq,
-											   @RequestParam("files") @ApiParam(value="메뉴 이미지 리스트", required = true) List<MultipartFile> files) {
+											   @RequestPart(value = "data") @ApiParam(value="메뉴 정보", required = true) RegisterMenuReq registerMenuReq,
+											   @RequestPart(value = "files") @ApiParam(value="메뉴 이미지 리스트", required = true) List<MultipartFile> files) {
 
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
 

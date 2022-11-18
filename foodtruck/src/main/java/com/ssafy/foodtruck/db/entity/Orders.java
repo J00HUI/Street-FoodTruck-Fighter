@@ -60,7 +60,7 @@ public class Orders extends BaseEntity {
 		this.isDone = isDone;
 	}
 
-	public void setIsPaied(boolean isPaid) {
+	public void setIsPaid(boolean isPaid) {
 		this.isPaid = isPaid;
 	}
 }

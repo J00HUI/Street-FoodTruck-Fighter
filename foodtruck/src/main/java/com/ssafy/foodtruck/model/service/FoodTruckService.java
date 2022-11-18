@@ -2,25 +2,19 @@ package com.ssafy.foodtruck.model.service;
 
 import com.ssafy.foodtruck.db.entity.*;
 import com.ssafy.foodtruck.db.repository.*;
-import com.ssafy.foodtruck.dto.response.MenuReq;
 import com.ssafy.foodtruck.dto.response.MenuRes;
-import com.ssafy.foodtruck.dto.ScheduleDateDto;
 import com.ssafy.foodtruck.dto.request.GetNearFoodtruckReq;
 import com.ssafy.foodtruck.dto.request.RegisterFoodtruckReq;
 import com.ssafy.foodtruck.dto.response.GetFoodtruckRes;
 import com.ssafy.foodtruck.dto.response.GetNearFoodtruckRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static com.ssafy.foodtruck.constant.FoodtruckConstant.*;

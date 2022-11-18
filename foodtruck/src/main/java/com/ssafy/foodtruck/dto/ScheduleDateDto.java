@@ -9,8 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 public class ScheduleDateDto {
 
-	private String title;
-
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private String workingDay;		// 날짜
 

@@ -35,7 +35,7 @@ public class FoodTruck extends BaseEntity {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "foodtruck_img_id")
 	private FoodtruckImg foodtruckImg;
 
