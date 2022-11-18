@@ -2,7 +2,8 @@ package com.ssafy.foodtruck.model.service;
 
 import com.ssafy.foodtruck.db.entity.*;
 import com.ssafy.foodtruck.db.repository.*;
-import com.ssafy.foodtruck.dto.MenuDto;
+import com.ssafy.foodtruck.dto.response.MenuReq;
+import com.ssafy.foodtruck.dto.response.MenuRes;
 import com.ssafy.foodtruck.dto.ScheduleDateDto;
 import com.ssafy.foodtruck.dto.request.GetNearFoodtruckReq;
 import com.ssafy.foodtruck.dto.request.RegisterFoodtruckReq;
@@ -44,9 +45,9 @@ public class FoodTruckService {
 		Schedule schedule = scheduleRepository.findScheduleByFoodTruckAndDate(foodTruckId).orElse(null);
 
 		List<Menu> findMenuList = menuRepository.findAllByFoodTruck(foodTruck);
-		List<MenuDto> menuList = new ArrayList<>();
+		List<MenuRes> menuList = new ArrayList<>();
 		for(Menu menu : findMenuList){
-			menuList.add(MenuDto.of(menu));
+			menuList.add(MenuRes.of(menu));
 		}
 
 		Double grade = 0.0;
@@ -84,12 +85,12 @@ public class FoodTruckService {
 		FoodTruck savedFoodTruck = foodTruckRepository.save(foodTruck);
 
 		// 메뉴 등록
-		for(MenuDto menuDto : registerFoodTruckReq.getMenuList()){
+		for(MenuReq menuReq : registerFoodTruckReq.getMenuList()){
 			final Menu menu = Menu.builder()
-				.name(menuDto.getName())
+				.name(menuReq.getName())
 				.foodTruck(savedFoodTruck)
-				.price(menuDto.getPrice())
-				.description(menuDto.getDescription())
+				.price(menuReq.getPrice())
+				.description(menuReq.getDescription())
 				.build();
 			menuRepository.save(menu);
 		}
@@ -172,12 +173,12 @@ public class FoodTruckService {
 		deleteMenu(foodTruck);
 
 		// 새 메뉴 등록
-		for(MenuDto menuDto : registerFoodTruckReq.getMenuList()){
+		for(MenuReq menuReq : registerFoodTruckReq.getMenuList()){
 			final Menu menu = Menu.builder()
-				.name(menuDto.getName())
+				.name(menuReq.getName())
 				.foodTruck(foodTruck)
-				.price(menuDto.getPrice())
-				.description(menuDto.getDescription())
+				.price(menuReq.getPrice())
+				.description(menuReq.getDescription())
 				.build();
 
 			menuRepository.save(menu);
@@ -268,9 +269,9 @@ public class FoodTruckService {
 			if(foodTruck.getCategory() != getNearFoodTruckReq.getCategory()) continue;
 
 			List<Menu> menuList = menuRepository.findAllByFoodTruck(foodTruck);
-			List<MenuDto> menuDtoList = new ArrayList<>();
+			List<MenuRes> menuResList = new ArrayList<>();
 			for(Menu menu : menuList){
-				menuDtoList.add(MenuDto.of(menu));
+				menuResList.add(MenuRes.of(menu));
 			}
 
 			Double grade = 0.0;
@@ -286,7 +287,7 @@ public class FoodTruckService {
 
 			FoodtruckImg foodtruckImg = foodTruck.getFoodtruckImg();
 
-			foodTruckList.add(GetNearFoodtruckRes.of(menuDtoList, foodTruck, schedule, grade, foodtruckImg));
+			foodTruckList.add(GetNearFoodtruckRes.of(menuResList, foodTruck, schedule, grade, foodtruckImg));
 		}
 
 		return foodTruckList;
@@ -305,9 +306,9 @@ public class FoodTruckService {
 				.orElseThrow(() -> new IllegalArgumentException(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE));
 
 			List<Menu> menuList = menuRepository.findAllByFoodTruck(foodTruck);
-			List<MenuDto> menuDtoList = new ArrayList<>();
+			List<MenuRes> menuResList = new ArrayList<>();
 			for(Menu menu : menuList){
-				menuDtoList.add(MenuDto.of(menu));
+				menuResList.add(MenuRes.of(menu));
 			}
 
 			Double grade = 0.0;
@@ -322,7 +323,7 @@ public class FoodTruckService {
 
 			FoodtruckImg foodtruckImg = foodTruck.getFoodtruckImg();
 
-			foodTruckList.add(GetNearFoodtruckRes.of(menuDtoList, foodTruck, schedule, grade, foodtruckImg));
+			foodTruckList.add(GetNearFoodtruckRes.of(menuResList, foodTruck, schedule, grade, foodtruckImg));
 		}
 		return foodTruckList;
 	}

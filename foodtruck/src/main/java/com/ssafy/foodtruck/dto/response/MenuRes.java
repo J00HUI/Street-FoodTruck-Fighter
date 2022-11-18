@@ -1,4 +1,4 @@
-package com.ssafy.foodtruck.dto;
+package com.ssafy.foodtruck.dto.response;
 
 import com.ssafy.foodtruck.db.entity.Menu;
 import lombok.*;
@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MenuDto {
+public class MenuRes {
 
 	private Integer menuId;
 	private String name;
@@ -16,8 +16,8 @@ public class MenuDto {
 	private String description;
 //	private String src;
 
-	public static MenuDto of(Menu menu){
-		return new MenuDtoBuilder()
+	public static MenuRes of(Menu menu){
+		return new MenuResBuilder()
 			.menuId(menu.getId())
 			.name(menu.getName())
 			.price(menu.getPrice())

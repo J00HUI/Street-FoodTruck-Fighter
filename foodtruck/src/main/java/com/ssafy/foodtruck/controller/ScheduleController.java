@@ -74,7 +74,7 @@ public class ScheduleController {
 	}
 
 	@GetMapping("/all")
-	@ApiOperation(value = "일정 조회", notes = "<strong>이번달 일정을 조회한다.</strong>")
+	@ApiOperation(value = "일정 조회", notes = "<strong>일정을 조회한다.</strong>")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "성공", response = GetScheduleRes.class),
 		@ApiResponse(code = 401, message = "인증 실패"),

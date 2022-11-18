@@ -27,7 +27,7 @@ public class Orders extends BaseEntity {
     private Boolean isCanceled;
 
 	@ColumnDefault("false")
-	private Boolean isPaied;
+	private Boolean isPaid;
 
     private LocalDateTime doneDate;
 
@@ -61,6 +61,6 @@ public class Orders extends BaseEntity {
 	}
 
 	public void setIsPaied(boolean isPaied) {
-		this.isPaied = isPaied;
+		this.isPaid = isPaied;
 	}
 }

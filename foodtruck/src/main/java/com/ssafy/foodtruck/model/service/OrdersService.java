@@ -100,18 +100,11 @@ public class OrdersService {
 			List<GetOrdersMenuRes> menuList = new ArrayList<>();
 
 			for(OrdersMenu ordersMenu : ordersMenuList){
-				menuList.add(GetOrdersMenuRes.builder()
-					.menuName(ordersMenu.getMenu().getName())
-					.count(ordersMenu.getCount())
-					.build());
+				menuList.add(GetOrdersMenuRes.of(ordersMenu.getMenu().getName(), ordersMenu.getCount(), ordersMenu.getMenu().getMenuImg()));
 			}
 			currentOrdersHistoryResList.add(
-				CurrentOrdersHistoryRes.builder()
-					.ordersId(orders.getId())
-					.foodtruckName(orders.getFoodTruck().getName())
-					.acceptTime(orders.getDoneDate())
-					.menuList(menuList).build()
-			);
+				CurrentOrdersHistoryRes.of(orders.getId(), orders.getFoodTruck().getName(), orders.getFoodTruck().getFoodtruckImg(), orders.getRegDate(), menuList));
+			;
 		}
 
 		return currentOrdersHistoryResList;
@@ -125,9 +118,7 @@ public class OrdersService {
 			List<GetOrdersMenuRes> menuResList = new ArrayList<>();
 			List<OrdersMenu> ordersMenuList = ordersMenuRepository.findAllByOrders(order);
 			for(OrdersMenu ordersMenu : ordersMenuList){
-				menuResList.add(GetOrdersMenuRes.builder()
-					.menuName(ordersMenu.getMenu().getName())
-					.count(ordersMenu.getCount()).build());
+				menuResList.add(GetOrdersMenuRes.of(ordersMenu.getMenu().getName(), ordersMenu.getCount(), ordersMenu.getMenu().getMenuImg()));
 			}
 			boolean isReviewed = false;
 			Review review = reviewRepository.findReviewByOrdersAndUser(order, user).orElse(null);
