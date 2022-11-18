@@ -54,6 +54,19 @@ public class FoodtruckController {
 //		return new ResponseEntity<>(FoodtruckRes.of(foodTruck), HttpStatus.OK);
 //	}
 
+	@PostMapping("/upload")
+	public ResponseEntity<HttpStatus> saveFoodtruckImg(@RequestHeader("Authorization") String bearerToken, @RequestParam("file") MultipartFile file) throws IOException {
+		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
+
+		Optional<User> userOptional = userRepository.findById(ceoId);
+		if(!userOptional.isPresent()){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		foodTruckService.saveFoodtruckImg(userOptional.get(), file);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
 	// 푸드트럭 정보를 가져옴
 	@GetMapping("/{foodtruck_id}")
 	@ApiOperation(value = "푸드트럭 ID 로 푸드트럭 조회", notes = "<strong>푸드트럭 ID 를 통해 푸드트럭 정보를 조회한다.</strong>")
@@ -146,19 +159,6 @@ public class FoodtruckController {
 		} catch (IllegalArgumentException ex) {
 			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-	}
-
-	@PostMapping("/upload")
-	public ResponseEntity<HttpStatus> saveFoodtruckImg(@RequestHeader("Authorization") String bearerToken, @RequestParam("file") MultipartFile file) throws IOException {
-		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
-
-		Optional<User> userOptional = userRepository.findById(ceoId);
-		if(!userOptional.isPresent()){
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-
-		foodTruckService.saveFoodtruckImg(userOptional.get(), file);
-		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@GetMapping("/image/{foodtruckId}")
