@@ -11,19 +11,13 @@ export const useCeoMyStore = defineStore("CeoMy", {
       description: "string",
       latitude: 0,
       longitude: 0,
-      truckPosition: "",
+      menuImgList: {},
       menuList: [],
+      file: "",
       name: "",
       phone: "",
-
-      truckImg: "",
-
     };
-    const positionData = {
-      address: null,
-      latitude: null,
-      longitude: null,
-    };
+
     const newMenuData = {
       name: null,
       price: null,
@@ -43,7 +37,7 @@ export const useCeoMyStore = defineStore("CeoMy", {
     const myTypeData = {
       modalView: false,
       newMenuIndex: 0,
-      myCategoryIndex:0,
+      myCategoryIndex: 0,
     };
     return {
       myData,
@@ -52,7 +46,6 @@ export const useCeoMyStore = defineStore("CeoMy", {
       newMenuDataList,
       createImgUrl,
       createImgUrlList,
-      positionData, //예제
     };
   },
   actions: {
@@ -65,17 +58,18 @@ export const useCeoMyStore = defineStore("CeoMy", {
       location.reload();
     },
     registerFoodTruck() {
-      var formData = new FormData()
-      formData.append("address", this.myData.address)
-      formData.append("category", this.myData.category)
-      formData.append("dateDtoList", this.myData.dateDtoList)
-      formData.append("description", this.myData.description)
-      formData.append("latitude", this.myData.latitude)
-      formData.append("longitude", this.myData.longitude)
-      formData.append("menuList", this.myData.menuList)
-      formData.append("name", this.myData.name)
-      formData.append("phone", this.myData.phone)
-      
+      // var formData = new FormData()
+      // let error = 0
+//       let l_length = Object.keys(this.myData).length
+//       for (let i = 0; i < l_length; i ++) {
+//         if(this.myData[i] === null)
+//         error = error + 1
+//         break
+//         } else {
+// pass
+//       }
+
+
       const token = localStorage.getItem("accessToken");
       axios({
         url: RF.foodtruck.registerFoodTruck(),
@@ -83,7 +77,7 @@ export const useCeoMyStore = defineStore("CeoMy", {
         headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
-          alert(res.data);
+          console.log(res)
         })
         .catch((err) => {
           console.log(err);

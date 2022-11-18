@@ -31,7 +31,7 @@
     <img :src="kakaoStore.searchTypeData.iconType" alt />
     <input
       type="text"
-      v-model="myStore.positionData.address"
+      v-model="myStore.myData.address"
       @focus="inputType"
       style="padding: 0px"
       placeholder="위치"
@@ -116,7 +116,7 @@ export default {
       if (myStore.createImgUrl !== null) {
         URL.revokeObjectURL(myStore.createImgUrl);
       }
-      myStore.myData.truckImg = e.target.files[0];
+      myStore.myData.file = e.target.files[0];
       myStore.createImgUrl = URL.createObjectURL(e.target.files[0]);
       e.target.nextElementSibling.src = myStore.createImgUrl;
       e.target.nextElementSibling.classList.remove("imgVisible");
@@ -125,7 +125,7 @@ export default {
       );
     }
     function myUpdate() {
-      myStore.setImg();
+      myStore.registerFoodTruck();
       console.log(myStore.myData);
     }
     function inputType() {
@@ -137,6 +137,7 @@ export default {
     function changeCategory() {
       myStore.myTypeData.myCategoryIndex =
         (myStore.myTypeData.myCategoryIndex + 1) % categoryList.length;
+        myStore.myData.category = categoryList[myStore.myTypeData.myCategoryIndex][1]
     }
     return {
       myStore,

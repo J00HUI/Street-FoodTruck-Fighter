@@ -58,4 +58,7 @@ export default {
     sendSMS: () => HOST + "phone",
     checkSMS: () => HOST + PHONE + "sms",
   },
+  business: {
+    businessPath: () => HOST + 'business'
+  }
 };
