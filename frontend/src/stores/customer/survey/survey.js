@@ -32,8 +32,7 @@ export const useCustomerSurveyStore = defineStore("CustomerSurvey", {
           longitude: this.surveyData.longitude,
         },
       })
-        .then((res) => {
-          console.log(res.data);
+        .then(() => {
           console.log("원해요 푸드트럭 등록 성공");
         })
         .catch(() => {
