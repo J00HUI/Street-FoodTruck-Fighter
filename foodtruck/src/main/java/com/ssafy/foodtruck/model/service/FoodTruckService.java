@@ -103,7 +103,7 @@ public class FoodTruckService {
 			if(foodTruck == null)
 				throw new IllegalArgumentException(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE);
 
-			if(foodTruck.getCategory() != getNearFoodTruckReq.getCategory()) continue;
+			if(!getNearFoodTruckReq.getCategory().equals(Category.전체) && foodTruck.getCategory() != getNearFoodTruckReq.getCategory()) continue;
 
 			List<Menu> menuList = menuRepository.findAllByFoodTruck(foodTruck);
 			List<MenuRes> menuResList = new ArrayList<>();
