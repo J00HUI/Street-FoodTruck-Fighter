@@ -68,19 +68,19 @@ public class BusinessService {
 	}
 
 	public List<GetBusinessRes> getBusinuess(User user) {
-		Optional<FoodTruck> foodTruck = foodtruckRepository.findByUser(user);
-		if(!foodTruck.isPresent()){
+		Optional<FoodTruck> foodTruckOpt = foodtruckRepository.findByUser(user);
+		if(!foodTruckOpt.isPresent()){
 			return null;
 		}
 
-		Optional<List<Business>> businessList = businessRepository.findBusinessByFoodtruckId(foodTruck.get().getId());
-		if(!businessList.isPresent()){
+		Optional<List<Business>> businessListOpt = businessRepository.findBusinessByFoodtruckId(foodTruckOpt.get().getId());
+		if(!businessListOpt.isPresent()){
 			return null;
 		}
 
 		List<GetBusinessRes> list = new ArrayList<>();
 
-		for(Business business : businessList.get()) {
+		for(Business business : businessListOpt.get()) {
 			list.add(GetBusinessRes.of(business));
 		}
 
