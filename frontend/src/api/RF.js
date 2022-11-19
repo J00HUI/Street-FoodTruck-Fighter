@@ -10,6 +10,7 @@ const REVIEW = "review/";
 const ORDER = "order/";
 const SCHEDULE = "schedule/";
 const PHONE = "phone/";
+const MENU = "menu/"
 export default {
   user: {
     login: () => HOST + AUTH + "login",
@@ -26,7 +27,7 @@ export default {
     getNearFoodTruck: () => HOST + FOODTRUCK + "near",
     updateFoodTruck: () => HOST + "foodtruck",
     search: (keyword) => HOST + FOODTRUCK + "search/" + `${keyword}`,
-    setImg: () => HOST + FOODTRUCK + "upload",
+    setImg: () => HOST + FOODTRUCK + CEO + "upload",
     getImg: (foodtruck_id) => HOST + FOODTRUCK + "image/" + `${foodtruck_id}`,
   },
   survey: {
@@ -34,14 +35,13 @@ export default {
     surveyFind: () => HOST + "survey/" + "find",
   },
   orders: {
-    customer: () => HOST + "order",
-    acceptOrders: (order_id) => HOST + ORDER + CEO + `${order_id}`,
-    getNotAcceptedOrder: () => HOST + ORDER + CEO + "not/" + "accepted",
-    getCustomerOrders: () => HOST + ORDER + "customer",
-    getCustomerOrdersAll: () => HOST + ORDER + CUSTOMER + "all",
-    getCeoOrders: () => HOST + ORDER + CEO + "accepted",
-    getCeoOrdersAll: () => HOST + ORDER + CEO + "all",
     cancelOrders: (order_id) => HOST + ORDER + "cancel" + `${order_id}`,
+    acceptOrders: () => HOST + ORDER + CEO + "accept/",
+    getCeoOrders: (ceo_id) => HOST + ORDER + CEO + "accepted/" + `${ceo_id}`,
+    getNotAcceptedOrder: (ceo_id) => HOST + ORDER + CEO + "not/" + "accepted/" + `${ceo_id}`,
+    getCustomerOrders: () => HOST + ORDER + "customer",
+    setCustomerOrders: () => HOST + ORDER + "customer",
+    getCustomerOrdersAll: () => HOST + ORDER + CUSTOMER + "all",
     finishOrder: (order_id) => HOST + ORDER + "done/" + `${order_id}`,
   },
   schedule: {
@@ -59,4 +59,13 @@ export default {
     sendSMS: () => HOST + "phone",
     checkSMS: () => HOST + PHONE + "sms",
   },
+  business: {
+    businessPath: () => HOST + 'business'
+  },
+  menu: {
+    setMenu: () => HOST + 'menu',
+    getMenuImg: (menu_id) => HOST + MENU + "image/" + `${menu_id}`,
+    setMenuImg: () => HOST + MENU + "upload",
+    updateMenu:() => HOST + MENU + "update",
+  }
 };

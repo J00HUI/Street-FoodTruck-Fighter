@@ -7,23 +7,13 @@ export const useCeoMyStore = defineStore("CeoMy", {
     const myData = {
       address: "",
       category: "",
-      dateDtoList: [],
       description: "string",
       latitude: 0,
       longitude: 0,
-      truckPosition: "",
-      menuList: [],
       name: "",
       phone: "",
-
-      truckImg: "",
-
     };
-    const positionData = {
-      address: null,
-      latitude: null,
-      longitude: null,
-    };
+
     const newMenuData = {
       name: null,
       price: null,
@@ -43,7 +33,9 @@ export const useCeoMyStore = defineStore("CeoMy", {
     const myTypeData = {
       modalView: false,
       newMenuIndex: 0,
-      myCategoryIndex:0,
+      myCategoryIndex: 0,
+      truckImg: null,
+      is_update: false,
     };
     return {
       myData,
@@ -52,7 +44,6 @@ export const useCeoMyStore = defineStore("CeoMy", {
       newMenuDataList,
       createImgUrl,
       createImgUrlList,
-      positionData, //예제
     };
   },
   actions: {
@@ -64,15 +55,24 @@ export const useCeoMyStore = defineStore("CeoMy", {
       });
       location.reload();
     },
-    registerFoodTruck() {
+
+
+    setFoodTruck() {
+      // let formData = new FormData()
+      // formData.append('file', this.myTypeData.truckImg)
       const token = localStorage.getItem("accessToken");
       axios({
         url: RF.foodtruck.registerFoodTruck(),
         method: "post",
-        headers: { Authorization: "Bearer " + token },
+        headers: {
+          Authorization: "Bearer " + token,
+
+        },
+        data: this.myData,
       })
-        .then((res) => {
-          alert(res.data);
+        .then(() => {
+
+          this.setImg()
         })
         .catch((err) => {
           console.log(err);
@@ -82,11 +82,13 @@ export const useCeoMyStore = defineStore("CeoMy", {
       const token = localStorage.getItem("accessToken");
       axios({
         url: RF.foodtruck.updateFoodTruck(),
-        method: "put",
+        method: "patch",
         headers: { Authorization: "Bearer " + token },
+        data:this.myData,
       })
-        .then((res) => {
-          alert(res.data);
+        .then(() => {
+
+          this.setImg()
         })
         .catch((err) => {
           console.log(err);
@@ -94,37 +96,25 @@ export const useCeoMyStore = defineStore("CeoMy", {
     },
     getMyFoodTruck() {
       const token = localStorage.getItem("accessToken");
+      const truckId = sessionStorage.getItem("foodTruck")
       axios({
-        url: RF.foodtruck.getFoodTruck(),
+        url: RF.foodtruck.getFoodTruck(truckId),
         method: "get",
         headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
-          alert(res.data);
+          this.myTypeData.is_update = true
+          console.log(res.data)
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    getNearFoodTruck() {
-      const token = localStorage.getItem("accessToken");
-      axios({
-        url: RF.foodtruck.getNearFoodTruck(),
-        method: "get",
-        headers: { Authorization: "Bearer " + token },
-      })
-        .then((res) => {
-          alert(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    setImg() {
 
+    setImg() {
       var formData = new FormData();
       console.log(this.myData.truckImg);
-      formData.append("file", this.myData.truckImg);
+      formData.append("file", this.myTypeData.truckImg);
       const token = localStorage.getItem("accessToken");
       axios({
         url: RF.foodtruck.setImg(),
@@ -133,24 +123,26 @@ export const useCeoMyStore = defineStore("CeoMy", {
         data: formData,
       })
         .then((res) => {
-          console.log(res.data);
+          console.log(res);
         })
         .catch((err) => {
           console.log(err);
         });
     },
     getImg() {
+      const truckId = sessionStorage.getItem("foodTruck")
       const token = localStorage.getItem("accessToken");
       axios({
-        url: RF.foodtruck.getImg(1),
+        url: RF.foodtruck.getImg(truckId),
         responseType: 'blob',
         method: "get",
         headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
+          console.log('가져와줘잉')
           console.log(res.data)
           if (res.data !== null) {
-            this.set_img(res)
+            this.drawTruckImg(res)
           }
 
 
@@ -159,7 +151,8 @@ export const useCeoMyStore = defineStore("CeoMy", {
           console.log(err);
         });
     },
-    set_img(res) {
+    // 아래 함수 임의 사용금지
+    drawTruckImg(res) {
 
       if (this.createImgUrl !== null) {
         URL.revokeObjectURL(this.createImgUrl);

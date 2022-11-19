@@ -31,7 +31,7 @@
     <img :src="kakaoStore.searchTypeData.iconType" alt />
     <input
       type="text"
-      v-model="myStore.positionData.address"
+      v-model="myStore.myData.address"
       @focus="inputType"
       style="padding: 0px"
       placeholder="위치"
@@ -88,9 +88,11 @@ export default {
   setup() {
     const myStore = useCeoMyStore();
     const kakaoStore = useKakaoStore();
+    myStore.getMyFoodTruck();
+    myStore.getImg()
     const categoryList = [
       [categoryIcon, "카테고리"],
-      [coffee, "커피"],
+      [coffee, "카페"],
       [drink, "음료"],
       [hamburger, "햄버거"],
       [hotdog, "핫도그"],
@@ -104,7 +106,7 @@ export default {
       [waffle, "와플"],
     ];
     console.log(myStore.myTypeData.myCategoryIndex);
-    myStore.getImg();
+    // myStore.getImg();
     kakaoStore.searchTypeData.viewType = "my";
     const toggle = ref({
       isMap: false,
@@ -116,7 +118,7 @@ export default {
       if (myStore.createImgUrl !== null) {
         URL.revokeObjectURL(myStore.createImgUrl);
       }
-      myStore.myData.truckImg = e.target.files[0];
+      myStore.myTypeData.truckImg = e.target.files[0];
       myStore.createImgUrl = URL.createObjectURL(e.target.files[0]);
       e.target.nextElementSibling.src = myStore.createImgUrl;
       e.target.nextElementSibling.classList.remove("imgVisible");
@@ -125,8 +127,11 @@ export default {
       );
     }
     function myUpdate() {
-      myStore.setImg();
-      console.log(myStore.myData);
+      if (myStore.myTypeData) {
+        myStore.updateFoodTruck();
+      } else {
+        myStore.setFoodTruck();
+      }
     }
     function inputType() {
       kakaoStore.searchTypeData.searchType = "input";
@@ -137,6 +142,8 @@ export default {
     function changeCategory() {
       myStore.myTypeData.myCategoryIndex =
         (myStore.myTypeData.myCategoryIndex + 1) % categoryList.length;
+      myStore.myData.category =
+        categoryList[myStore.myTypeData.myCategoryIndex][1];
     }
     return {
       myStore,
@@ -200,7 +207,6 @@ button {
 }
 
 .truckImg {
-  
   position: absolute;
   width: 100%;
   height: 100%;
@@ -249,7 +255,7 @@ label:hover {
   border-radius: 1rem;
 }
 *::placeholder {
-  color: black
+  color: black;
 }
 .categoryInput {
   font: 1rem "SCoreDream";

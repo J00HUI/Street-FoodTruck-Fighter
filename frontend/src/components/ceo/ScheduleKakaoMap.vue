@@ -16,21 +16,20 @@ import { useCeoScheduleStore } from "@/stores/ceo/schedule";
 import { useCeoMyStore } from "@/stores/ceo/my";
 import { onMounted, watch } from "vue";
 import truckMarker from "@/assets/ceo/mapTruck.svg";
-import emptyMarker from "@/assets/ceo/myEmptyMarkerIcon.svg"
-import addressIcon from "@/assets/ceo/addressIcon.svg"
-import addressXIcon from "@/assets/ceo/addressXIcon.svg"
+import emptyMarker from "@/assets/ceo/myEmptyMarkerIcon.svg";
+import addressIcon from "@/assets/ceo/addressIcon.svg";
+import addressXIcon from "@/assets/ceo/addressXIcon.svg";
 export default {
   setup() {
     const store = useKakaoStore();
     const scheduleStore = useCeoScheduleStore();
     const myStore = useCeoMyStore();
-    const iconType = [emptyMarker, addressIcon, addressXIcon]
-    console.log(iconType)
+    const iconType = [emptyMarker, addressIcon, addressXIcon];
     let dataCase = null;
     if (store.searchTypeData.viewType === "schedule") {
       dataCase = scheduleStore.scheduleAddForm;
     } else if (store.searchTypeData.viewType === "my") {
-      dataCase = myStore.positionData;
+      dataCase = myStore.myData;
     }
     /* global kakao */
     onMounted(() => {
@@ -49,10 +48,10 @@ export default {
 
       const options = {
         center: new kakao.maps.LatLng(36.36880618678187, 127.37618869404398),
-        level: 5
+        level: 5,
       };
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
+        navigator.geolocation.getCurrentPosition(function (position) {
           var moveLatLng = new kakao.maps.LatLng(
             position.coords.latitude,
             position.coords.longitude
@@ -74,11 +73,11 @@ export default {
       var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
       var marker = new kakao.maps.Marker({
-        image: markerImage // 마커이미지 설정
+        image: markerImage, // 마커이미지 설정
       });
       var customOverlay = new kakao.maps.CustomOverlay({
         content: "",
-        position: null
+        position: null,
       });
 
       customOverlay.setMap(initMap.map);
@@ -98,37 +97,43 @@ export default {
       var zoomControl = new kakao.maps.ZoomControl();
       initMap.map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
       // 지도를 클릭했을 때 클릭 위치 좌표에 대한 주소정보를 표시하도록 이벤트를 등록합니다
-      kakao.maps.event.addListener(initMap.map, "click", function(mouseEvent) {
+      kakao.maps.event.addListener(initMap.map, "click", function (mouseEvent) {
         store.searchTypeData.searchType = "click";
-        store.searchTypeData.iconType = iconType[0]
-        searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
-          if (status === kakao.maps.services.Status.OK) {
-            var detailAddr =
-              "<div>" + result[0].address.address_name + "</div>";
-            dataCase.latitude = mouseEvent.latLng["La"];
-            dataCase.longitude = mouseEvent.latLng["Ma"];
+        store.searchTypeData.iconType = iconType[0];
+        searchDetailAddrFromCoords(
+          mouseEvent.latLng,
+          function (result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+              var detailAddr =
+                "<div>" + result[0].address.address_name + "</div>";
+              dataCase.latitude = mouseEvent.latLng["Ma"];
+              dataCase.longitude = mouseEvent.latLng["La"];
 
-            var content = '<div class="contentBox"><div class="bAddr">' + detailAddr + "</div></div>";
+              var content =
+                '<div class="contentBox"><div class="bAddr">' +
+                detailAddr +
+                "</div></div>";
 
-            customOverlay.setContent(content);
-            customOverlay.setPosition(mouseEvent.latLng);
-            // 커스텀 오버레이를 지도에 표시합니다
-            customOverlay.setMap(initMap.map, marker);
-            marker.setPosition(mouseEvent.latLng);
-            marker.setMap(initMap.map);
-            if (result[0].road_address !== null) {
-              dataCase.address = result[0].road_address.address_name;
-            } else if (result[0].address !== null) {
-              dataCase.address = result[0].address.address_name;
-            } else {
-              dataCase.address = "확인불가";
+              customOverlay.setContent(content);
+              customOverlay.setPosition(mouseEvent.latLng);
+              // 커스텀 오버레이를 지도에 표시합니다
+              customOverlay.setMap(initMap.map, marker);
+              marker.setPosition(mouseEvent.latLng);
+              marker.setMap(initMap.map);
+              if (result[0].road_address !== null) {
+                dataCase.address = result[0].road_address.address_name;
+              } else if (result[0].address !== null) {
+                dataCase.address = result[0].address.address_name;
+              } else {
+                dataCase.address = "확인불가";
+              }
             }
           }
-        });
+        );
       });
 
       // 중심 좌표나 확대 수준이 변경됐을 때 지도 중심 좌표에 대한 주소 정보를 표시하도록 이벤트를 등록합니다
-      kakao.maps.event.addListener(initMap.map, "idle", function() {
+      kakao.maps.event.addListener(initMap.map, "idle", function () {
         searchAddrFromCoords(initMap.map.getCenter(), displayCenterInfo);
       });
 
@@ -158,9 +163,9 @@ export default {
       }
       watch(
         () => dataCase.address,
-        address => {
+        (address) => {
           if (store.searchTypeData.searchType === "input") {
-            geocoder.addressSearch(address, function(result, status) {
+            geocoder.addressSearch(address, function (result, status) {
               // 정상적으로 검색이 완료됐으면
               if (status === kakao.maps.services.Status.OK) {
                 store.searchTypeData.iconType = iconType[1];
@@ -191,9 +196,9 @@ export default {
     };
 
     return {
-      store
+      store,
     };
-  }
+  },
 };
 </script>
 
@@ -231,7 +236,7 @@ export default {
   font-weight: normal;
   font-size: 1rem;
 }
-.contentBox{
+.contentBox {
   height: 200px;
 }
 .bAddr {

@@ -4,9 +4,17 @@
       <img src="@/assets/ceo/nav2Back.svg" alt />
     </button>
     <img src="@/assets/markerIcon.svg" alt />
-    <address style="margin: auto; font-style: normal">{{ kakaoStore.mapCenter.address }}</address>
-    <img src="@/assets/noticeIcon.svg" alt />
-    <img src="@/assets/humanIcon.svg" style="margin-left: 1rem" alt />
+    <address style="margin: auto; font-style: normal">
+      {{ kakaoStore.mapCenter.address }}
+    </address>
+
+    <router-link to="/notice" style="text-decoration: none">
+      <img src="@/assets/noticeIcon.svg" alt />
+    </router-link>
+
+    <router-link to="/myprofile" style="text-decoration: none">
+      <img src="@/assets/humanIcon.svg" style="margin-left: 1rem" alt />
+    </router-link>
   </header>
 </template>
 

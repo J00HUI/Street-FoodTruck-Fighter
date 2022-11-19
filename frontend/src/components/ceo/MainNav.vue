@@ -5,7 +5,8 @@
       <span class="main__date-time">
         <time>2022/10/25 토요일</time>
         <address class="main__date-address">
-          <img src="@/assets/clockIcon.svg" style="width:1rem;" alt /> 월, 수, 금 09:00 ~ 11:00
+          <img src="@/assets/clockIcon.svg" style="width: 1rem" alt /> 월, 수,
+          금 09:00 ~ 11:00
         </address>
       </span>
     </div>
@@ -16,12 +17,12 @@
             <img class="main__nav-img" src="@/assets/ceo/navOpen.svg" alt />
           </button>
         </router-link>
-        
-        <router-link to="/start">
+
+        <span @click="salesStore.setStatistics">
           <button type="button" class="main__nav-style">
             <img class="main__nav-img" src="@/assets/ceo/navClose.svg" alt />
           </button>
-        </router-link>
+        </span>
       </div>
 
       <div class="nav__a-link">
@@ -45,8 +46,12 @@
 </template>
 
 <script>
+import { useCeoSalesStore } from "@/stores/ceo/sales.js";
 export default {
-
+  setup() {
+    const salesStore = useCeoSalesStore();
+    return { salesStore };
+  },
 };
 </script>
 
@@ -81,7 +86,7 @@ img {
   margin: auto 0 auto 0;
 }
 .main__nav-box {
-  height: 10%;
+  height: 100%;
   margin: 4%;
 }
 .main__nav-style {
@@ -95,16 +100,16 @@ img {
 .main__nav-img {
   height: 15%;
   margin: 10%;
-
 }
 
 .nav__a-link {
   display: flex;
   justify-content: space-around;
 }
-.nav__a-link::before, .nav__a-link::after {
+.nav__a-link::before,
+.nav__a-link::after {
   display: inline-block;
-  content: '';
+  content: "";
 }
 .nav__a-style {
   height: 15%;

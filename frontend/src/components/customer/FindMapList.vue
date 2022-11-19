@@ -20,10 +20,10 @@
   <div style="position: relative; margin-top: 7%" v-if="isMap">
     <nav style="display: flex; height: 8%">
       <div class="salesNav" @click="findMap()">
-        <span class="underLine">지도</span>
+        <span class="underLine" style="cursor: pointer">지도</span>
       </div>
       <div class="salesNav salesNavR" @click="findList()">
-        <span>목록</span>
+        <span style="cursor: pointer">목록</span>
       </div>
     </nav>
   </div>
@@ -31,10 +31,10 @@
   <div style="position: relative; margin-top: 7%" v-if="isList">
     <nav style="display: flex; height: 8%">
       <div class="salesNav salesNavL" @click="findMap()">
-        <span>지도</span>
+        <span style="cursor: pointer">지도</span>
       </div>
       <div class="salesNav" style="border-right: none" @click="findList()">
-        <span class="underLine">목록</span>
+        <span class="underLine" style="cursor: pointer">목록</span>
       </div>
     </nav>
   </div>

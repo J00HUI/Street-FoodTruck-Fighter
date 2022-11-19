@@ -20,8 +20,7 @@
         padding-top: 10%;
       "
     >
-      원하시는 푸드트럭을<br />선택해주세요! {{ kakaoStore.mapCenter.address }}
-      {{ kakaoStore.mapCenter.latitude }} {{ kakaoStore.mapCenter.longitude }}
+      원하시는 푸드트럭을<br />선택해주세요!
     </div>
     <div
       style="
@@ -161,7 +160,12 @@
   </div>
 
   <div style="text-align: center">
-    <input type="button" value="제출" class="SubmitButton" />
+    <input
+      type="button"
+      value="제출"
+      class="SubmitButton"
+      @click="surveyStore.setCustomerSurvey"
+    />
   </div>
 
   <MapModal class="modal" v-if="isModal" @close="closeMap" />
@@ -183,9 +187,21 @@ export default {
     const kakaoStore = useKakaoStore();
     kakaoStore.setHeaderAddress();
 
+    function location() {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        surveyStore.surveyData.latitude = position.coords.latitude;
+        surveyStore.surveyData.longitude = position.coords.longitude;
+
+        surveyStore.surveyData.address = kakaoStore.mapCenter.address;
+      });
+    }
+
+    location();
+
     return {
       surveyStore,
       kakaoStore,
+      location,
     };
   },
 
@@ -258,7 +274,6 @@ export default {
   width: 0;
   height: 0;
 }
-
 /* IMAGE STYLES */
 [type="radio"] + img {
   cursor: pointer;
