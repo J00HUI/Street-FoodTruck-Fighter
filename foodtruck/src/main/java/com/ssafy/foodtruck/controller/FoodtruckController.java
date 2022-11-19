@@ -54,7 +54,7 @@ public class FoodtruckController {
 //		return new ResponseEntity<>(FoodtruckRes.of(foodTruck), HttpStatus.OK);
 //	}
 
-	@PostMapping("/upload")
+	@PostMapping("/ceo/upload")
 	public ResponseEntity<HttpStatus> saveFoodtruckImg(@RequestHeader("Authorization") String bearerToken, @RequestParam("file") MultipartFile file) throws IOException {
 		int ceoId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
 
