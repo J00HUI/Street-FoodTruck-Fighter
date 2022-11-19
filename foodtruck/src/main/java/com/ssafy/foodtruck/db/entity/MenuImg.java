@@ -19,6 +19,6 @@ public class MenuImg extends BaseEntity{
 
 	private String savedPath;
 
-	@OneToOne(mappedBy = "menuImg")
-	private Menu menu;
+//	@OneToOne(mappedBy = "menuImg")
+//	private Menu menu;
 }
