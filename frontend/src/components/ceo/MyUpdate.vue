@@ -88,6 +88,8 @@ export default {
   setup() {
     const myStore = useCeoMyStore();
     const kakaoStore = useKakaoStore();
+    myStore.getMyFoodTruck();
+    myStore.getImg()
     const categoryList = [
       [categoryIcon, "카테고리"],
       [coffee, "카페"],
@@ -125,7 +127,11 @@ export default {
       );
     }
     function myUpdate() {
-      myStore.registerFoodTruck();
+      if (myStore.myTypeData) {
+        myStore.updateFoodTruck();
+      } else {
+        myStore.setFoodTruck();
+      }
     }
     function inputType() {
       kakaoStore.searchTypeData.searchType = "input";
@@ -136,7 +142,8 @@ export default {
     function changeCategory() {
       myStore.myTypeData.myCategoryIndex =
         (myStore.myTypeData.myCategoryIndex + 1) % categoryList.length;
-        myStore.myData.category = categoryList[myStore.myTypeData.myCategoryIndex][1]
+      myStore.myData.category =
+        categoryList[myStore.myTypeData.myCategoryIndex][1];
     }
     return {
       myStore,
@@ -200,7 +207,6 @@ button {
 }
 
 .truckImg {
-  
   position: absolute;
   width: 100%;
   height: 100%;
@@ -249,7 +255,7 @@ label:hover {
   border-radius: 1rem;
 }
 *::placeholder {
-  color: black
+  color: black;
 }
 .categoryInput {
   font: 1rem "SCoreDream";

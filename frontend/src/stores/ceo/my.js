@@ -5,13 +5,13 @@ import { defineStore } from "pinia";
 export const useCeoMyStore = defineStore("CeoMy", {
   state: () => {
     const myData = {
-      name: "",
-      category: "",
-      phone: "",
-      description: "string",
       address: "",
+      category: "",
+      description: "string",
       latitude: 0,
       longitude: 0,
+      name: "",
+      phone: "",
     };
 
     const newMenuData = {
@@ -35,6 +35,7 @@ export const useCeoMyStore = defineStore("CeoMy", {
       newMenuIndex: 0,
       myCategoryIndex: 0,
       truckImg: null,
+      is_update: false,
     };
     return {
       myData,
@@ -56,69 +57,38 @@ export const useCeoMyStore = defineStore("CeoMy", {
     },
 
 
-
-
-
-
-    registerFoodTruck() {
-      console.log(this.myData)
-      let formData = new FormData()
-      let blob = new Blob([JSON.stringify(this.myData)], { type: "application/json" });
-      formData.append('file', this.myTypeData.truckImg)
-      formData.append("data", blob)
-      for (var key of formData.keys()) {
-        console.log(key);
-   }
-               
-   // FormData의 value 확인
-   for (var value of formData.values()) {
-        console.log(value);
-   }
+    setFoodTruck() {
+      // let formData = new FormData()
+      // formData.append('file', this.myTypeData.truckImg)
       const token = localStorage.getItem("accessToken");
-
-      axios.post(RF.foodtruck.registerFoodTruck(), formData, {
+      axios({
+        url: RF.foodtruck.registerFoodTruck(),
+        method: "post",
         headers: {
           Authorization: "Bearer " + token,
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-        .then((res) => {
-          console.log(res)
 
+        },
+        data: this.myData,
+      })
+        .then(() => {
+
+          this.setImg()
         })
         .catch((err) => {
-          console.log(err)
-        })
-
-
-
-
-
-      //   axios({
-      //     url: RF.foodtruck.registerFoodTruck(),
-      //     method: "post",
-      //     headers: {
-      //       Authorization: "Bearer " + token,
-      //       'Content-Type': 'multipart/formdata',
-      //     },
-      //     data: formData,
-      //   })
-      //     .then((res) => {
-      //       console.log(res)
-      //     })
-      //     .catch((err) => {
-      //       console.log(err);
-      //     });
+          console.log(err);
+        });
     },
     updateFoodTruck() {
       const token = localStorage.getItem("accessToken");
       axios({
         url: RF.foodtruck.updateFoodTruck(),
-        method: "put",
+        method: "patch",
         headers: { Authorization: "Bearer " + token },
+        data:this.myData,
       })
-        .then((res) => {
-          alert(res.data);
+        .then(() => {
+
+          this.setImg()
         })
         .catch((err) => {
           console.log(err);
@@ -126,37 +96,25 @@ export const useCeoMyStore = defineStore("CeoMy", {
     },
     getMyFoodTruck() {
       const token = localStorage.getItem("accessToken");
+      const truckId = sessionStorage.getItem("foodTruck")
       axios({
-        url: RF.foodtruck.getFoodTruck(),
+        url: RF.foodtruck.getFoodTruck(truckId),
         method: "get",
         headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
-          alert(res.data);
+          this.myTypeData.is_update = true
+          console.log(res.data)
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    getNearFoodTruck() {
-      const token = localStorage.getItem("accessToken");
-      axios({
-        url: RF.foodtruck.getNearFoodTruck(),
-        method: "get",
-        headers: { Authorization: "Bearer " + token },
-      })
-        .then((res) => {
-          alert(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    setImg() {
 
+    setImg() {
       var formData = new FormData();
       console.log(this.myData.truckImg);
-      formData.append("file", this.myData.truckImg);
+      formData.append("file", this.myTypeData.truckImg);
       const token = localStorage.getItem("accessToken");
       axios({
         url: RF.foodtruck.setImg(),
@@ -165,21 +123,23 @@ export const useCeoMyStore = defineStore("CeoMy", {
         data: formData,
       })
         .then((res) => {
-          console.log(res.data);
+          console.log(res);
         })
         .catch((err) => {
           console.log(err);
         });
     },
     getImg() {
+      const truckId = sessionStorage.getItem("foodTruck")
       const token = localStorage.getItem("accessToken");
       axios({
-        url: RF.foodtruck.getImg(1),
+        url: RF.foodtruck.getImg(truckId),
         responseType: 'blob',
         method: "get",
         headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
+          console.log('가져와줘잉')
           console.log(res.data)
           if (res.data !== null) {
             this.set_img(res)
@@ -191,6 +151,7 @@ export const useCeoMyStore = defineStore("CeoMy", {
           console.log(err);
         });
     },
+    // 아래 함수 임의 사용금지
     set_img(res) {
 
       if (this.createImgUrl !== null) {
