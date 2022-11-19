@@ -127,17 +127,18 @@ public class ScheduleService {
 
 					groupId = schedule.getGroupId();
 					scheduleDateDtoList.clear();
+
+					scheduleDateDtoList.add(ScheduleDateDto.builder()
+						.workingDay(schedule.getWorkingDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+						.startTime(schedule.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")))
+						.endTime(schedule.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")))
+						.build());
+
 				}
 			}
 
 			// 마지막 스케줄 add
 			Schedule lastSchedule = findScheduleList.get(findScheduleList.size()-1);
-			scheduleDateDtoList.add(ScheduleDateDto.builder()
-				.workingDay(lastSchedule.getWorkingDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-				.startTime(lastSchedule.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")))
-				.endTime(lastSchedule.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")))
-				.build());
-
 			scheduleResList.add(GetScheduleRes.builder()
 				.ScheduleId(lastSchedule.getId())
 				.latitude(lastSchedule.getLatitude())
