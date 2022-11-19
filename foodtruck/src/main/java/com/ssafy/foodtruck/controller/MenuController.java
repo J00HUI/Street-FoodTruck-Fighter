@@ -71,7 +71,7 @@ public class MenuController {
 
 	@PostMapping("/upload")
 	public ResponseEntity<HttpStatus> saveMenuImg(@RequestHeader("Authorization") String bearerToken,
-												  @RequestParam Integer menuId,
+												  @RequestHeader("menuId") Integer menuId,
 												  @RequestParam("file") MultipartFile file) throws IOException {
 		menuService.saveMenuImg(menuId, file);
 		return new ResponseEntity<>(HttpStatus.OK);
