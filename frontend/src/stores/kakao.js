@@ -22,12 +22,14 @@ export const useKakaoStore = defineStore("Kakao", {
       longitude: 0,
       address: null,
     };
-    const surveyData = [
+    const surveyData = [{
+    }
      
     ];
     return {
       s_markers_info: [],
       surveyData,
+      is_survey_update: false,
       currentAddress: "",
       ceoMyData,
       searchTypeData,
@@ -47,6 +49,8 @@ export const useKakaoStore = defineStore("Kakao", {
         .then((res) => {
           console.log(res.data);
           this.surveyData = res.data
+          this.is_survey_update = true
+
         })
         .catch(() => {
          alert('정보를 불러오지 못했습니다')

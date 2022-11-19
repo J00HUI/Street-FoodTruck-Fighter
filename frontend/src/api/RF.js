@@ -26,7 +26,7 @@ export default {
     getNearFoodTruck: () => HOST + FOODTRUCK + "near",
     updateFoodTruck: () => HOST + "foodtruck",
     search: (keyword) => HOST + FOODTRUCK + "search/" + `${keyword}`,
-    setImg: () => HOST + FOODTRUCK + "upload",
+    setImg: () => HOST + FOODTRUCK + CEO + "upload",
     getImg: (foodtruck_id) => HOST + FOODTRUCK + "image/" + `${foodtruck_id}`,
   },
   survey: {
