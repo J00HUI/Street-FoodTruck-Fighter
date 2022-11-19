@@ -10,6 +10,7 @@ const REVIEW = "review/";
 const ORDER = "order/";
 const SCHEDULE = "schedule/";
 const PHONE = "phone/";
+const MENU = "menu/"
 export default {
   user: {
     login: () => HOST + AUTH + "login",
@@ -60,5 +61,10 @@ export default {
   },
   business: {
     businessPath: () => HOST + 'business'
+  },
+  menu: {
+    setMenu: () => HOST + 'menu',
+    getMenuImg: (menu_id) => HOST + MENU + "image/" + `${menu_id}`,
+    setMenuImg: () => HOST + MENU + "upload",
   }
 };
