@@ -19,6 +19,6 @@ public class ReviewImg extends BaseEntity {
 
 	private String savedPath;
 
-	@OneToOne(mappedBy = "reviewImg")
-	private Review review;
+//	@OneToOne(mappedBy = "reviewImg")
+//	private Review review;
 }

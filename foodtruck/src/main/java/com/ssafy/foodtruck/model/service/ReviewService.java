@@ -102,7 +102,7 @@ public class ReviewService {
 			.orgNm(origName)
 			.savedNm(savedName)
 			.savedPath(savedPath)
-			.review(review)
+//			.review(review)
 			.build();
 
 		// 실제로 로컬에 uuid를 파일명으로 저장
