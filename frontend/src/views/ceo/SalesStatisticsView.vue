@@ -38,6 +38,7 @@ export default {
   },
   setup() {
     const salesStore = useCeoSalesStore();
+    salesStore.getStatistics()
     function toDay() {
       document.getElementById("sales-today").classList.add("underLine");
       document.getElementById("sales-allday").classList.remove("underLine");

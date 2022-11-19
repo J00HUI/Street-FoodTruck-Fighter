@@ -90,7 +90,7 @@ export default {
     const kakaoStore = useKakaoStore();
     const categoryList = [
       [categoryIcon, "카테고리"],
-      [coffee, "커피"],
+      [coffee, "카페"],
       [drink, "음료"],
       [hamburger, "햄버거"],
       [hotdog, "핫도그"],
@@ -104,7 +104,7 @@ export default {
       [waffle, "와플"],
     ];
     console.log(myStore.myTypeData.myCategoryIndex);
-    myStore.getImg();
+    // myStore.getImg();
     kakaoStore.searchTypeData.viewType = "my";
     const toggle = ref({
       isMap: false,
@@ -116,7 +116,7 @@ export default {
       if (myStore.createImgUrl !== null) {
         URL.revokeObjectURL(myStore.createImgUrl);
       }
-      myStore.myData.file = e.target.files[0];
+      myStore.myTypeData.truckImg = e.target.files[0];
       myStore.createImgUrl = URL.createObjectURL(e.target.files[0]);
       e.target.nextElementSibling.src = myStore.createImgUrl;
       e.target.nextElementSibling.classList.remove("imgVisible");
@@ -126,7 +126,6 @@ export default {
     }
     function myUpdate() {
       myStore.registerFoodTruck();
-      console.log(myStore.myData);
     }
     function inputType() {
       kakaoStore.searchTypeData.searchType = "input";

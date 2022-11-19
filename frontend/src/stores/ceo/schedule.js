@@ -4,6 +4,7 @@ import { defineStore } from "pinia";
 
 export const useCeoScheduleStore = defineStore("CeoSchedule", {
   state: () => {
+    const scheduleList = []
     const scheduleDateDtoList = [{
       endTime: "00:00",
       startTime: "00:00",
@@ -16,12 +17,13 @@ export const useCeoScheduleStore = defineStore("CeoSchedule", {
       longitude: null,
       scheduleDateDtoList: [
       ],
-      title: "string"
+      title: "+추가"
     }
     const scheduleTypeData = {
       dateIdx: 0
     }
     return {
+      scheduleList,
       scheduleDateDtoList,
       scheduleAddForm,
       viewToggle: false,
@@ -30,6 +32,8 @@ export const useCeoScheduleStore = defineStore("CeoSchedule", {
   },
   actions: {
     setSchedule() {
+      this.scheduleAddForm.scheduleDateDtoList = this.scheduleDateDtoList.slice(1)
+      console.log(this.scheduleAddForm)
       const token = localStorage.getItem("accessToken");
       axios({
         url: RF.schedule.setSchedule(),
@@ -46,6 +50,7 @@ export const useCeoScheduleStore = defineStore("CeoSchedule", {
         });
     },
     getSchedule() {
+
       const token = localStorage.getItem("accessToken");
       console.log(token)
       axios({
@@ -54,8 +59,20 @@ export const useCeoScheduleStore = defineStore("CeoSchedule", {
         headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
-          console.log(res)
+          // let scehdule = {
+          //   title  : 'event2',
+          //   start  : '2022-11-19',
+          //   end    : '2022-11-30',
+          // }
+          // this.scheduleList.push(scehdule)
+          
+          // res.data.forEach((item, idx) => {
+            
+            
+            
+          // });
           console.log(res.data)
+          console.log(this.scheduleList)
         })
         .catch((err) => {
           console.log(err);

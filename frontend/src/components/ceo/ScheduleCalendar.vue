@@ -64,12 +64,12 @@ const options = reactive({
   longPressDelay: 300,
   eventLongPressDelay: 300,
   selectLongPressDelay: 300,
-  events: eventList,
+  events: store.scheduleList,
   select: arg => {
     id.value = id.value + 1;
     const cal = arg.view.calendar;
     // cal.unselect();
-    let title = "등록";
+    let title = "+스케쥴";
     // title = arg.startStr.slice(-5);
 
     colorIndex = Math.floor(Math.random() * 6);
@@ -93,7 +93,8 @@ const options = reactive({
         startTime: "00:00",
         workingDay: null
       };
-      scheduleDateDto.workingDay = `${str.getFullYear()}-${str.getMonth()}-${str.getDate()}`;
+      console.log(str)
+      scheduleDateDto.workingDay = str.toISOString().substring(0,10);
 
       store.scheduleDateDtoList.push(scheduleDateDto);
       console.log(scheduleDateDto.workingDay);

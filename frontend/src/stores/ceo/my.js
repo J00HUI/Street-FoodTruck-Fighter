@@ -5,17 +5,13 @@ import { defineStore } from "pinia";
 export const useCeoMyStore = defineStore("CeoMy", {
   state: () => {
     const myData = {
-      address: "",
+      name: "",
       category: "",
-      dateDtoList: [],
+      phone: "",
       description: "string",
+      address: "",
       latitude: 0,
       longitude: 0,
-      menuImgList: {},
-      menuList: [],
-      file: "",
-      name: "",
-      phone: "",
     };
 
     const newMenuData = {
@@ -38,6 +34,7 @@ export const useCeoMyStore = defineStore("CeoMy", {
       modalView: false,
       newMenuIndex: 0,
       myCategoryIndex: 0,
+      truckImg: null,
     };
     return {
       myData,
@@ -57,31 +54,61 @@ export const useCeoMyStore = defineStore("CeoMy", {
       });
       location.reload();
     },
+
+
+
+
+
+
     registerFoodTruck() {
-      // var formData = new FormData()
-      // let error = 0
-//       let l_length = Object.keys(this.myData).length
-//       for (let i = 0; i < l_length; i ++) {
-//         if(this.myData[i] === null)
-//         error = error + 1
-//         break
-//         } else {
-// pass
-//       }
-
-
+      console.log(this.myData)
+      let formData = new FormData()
+      let blob = new Blob([JSON.stringify(this.myData)], { type: "application/json" });
+      formData.append('file', this.myTypeData.truckImg)
+      formData.append("data", blob)
+      for (var key of formData.keys()) {
+        console.log(key);
+   }
+               
+   // FormData의 value 확인
+   for (var value of formData.values()) {
+        console.log(value);
+   }
       const token = localStorage.getItem("accessToken");
-      axios({
-        url: RF.foodtruck.registerFoodTruck(),
-        method: "post",
-        headers: { Authorization: "Bearer " + token },
+
+      axios.post(RF.foodtruck.registerFoodTruck(), formData, {
+        headers: {
+          Authorization: "Bearer " + token,
+          'Content-Type': 'multipart/form-data'
+        }
       })
         .then((res) => {
           console.log(res)
+
         })
         .catch((err) => {
-          console.log(err);
-        });
+          console.log(err)
+        })
+
+
+
+
+
+      //   axios({
+      //     url: RF.foodtruck.registerFoodTruck(),
+      //     method: "post",
+      //     headers: {
+      //       Authorization: "Bearer " + token,
+      //       'Content-Type': 'multipart/formdata',
+      //     },
+      //     data: formData,
+      //   })
+      //     .then((res) => {
+      //       console.log(res)
+      //     })
+      //     .catch((err) => {
+      //       console.log(err);
+      //     });
     },
     updateFoodTruck() {
       const token = localStorage.getItem("accessToken");
