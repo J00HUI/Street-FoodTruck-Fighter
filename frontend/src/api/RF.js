@@ -66,5 +66,6 @@ export default {
     setMenu: () => HOST + 'menu',
     getMenuImg: (menu_id) => HOST + MENU + "image/" + `${menu_id}`,
     setMenuImg: () => HOST + MENU + "upload",
+    updateMenu:() => HOST + MENU + "update",
   }
 };

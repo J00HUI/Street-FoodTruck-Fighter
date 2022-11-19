@@ -88,13 +88,14 @@ const options = reactive({
   eventClick: e => {
     let end = e.event.end;
     for (let str = e.event.start; str < end; str.setDate(str.getDate() + 1)) {
+      
       const scheduleDateDto = {
         endTime: "00:00",
         startTime: "00:00",
         workingDay: null
       };
-      console.log(str)
-      scheduleDateDto.workingDay = str.toISOString().substring(0,10);
+      // 한국 시간대 설정
+      scheduleDateDto.workingDay = new Date(str.getTime() -  str.getTimezoneOffset() * 60000).toISOString().substring(0,10);
 
       store.scheduleDateDtoList.push(scheduleDateDto);
       console.log(scheduleDateDto.workingDay);
