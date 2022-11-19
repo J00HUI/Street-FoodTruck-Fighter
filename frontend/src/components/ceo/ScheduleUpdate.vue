@@ -24,8 +24,17 @@
         />
       </button>
     </span>
-
-    <!-- <input id="truck-name" placeholder="상호명" type="text" /> -->
+  </label>
+  <label for="schedule-title" class="truckInput inputText">
+    <img style="width: 1.3rem" src="@/assets/ceo/scheduleTitleIcon.svg" alt />
+    <input
+      id="schedule-title"
+      type="text"
+      v-model="scheduleStore.scheduleAddForm.title"
+      @focus="inputType"
+      style="width: 60%"
+      placeholder=""
+    />
   </label>
   <label for="schedule-operating" class="truckInput inputText">
     <div class="timeInputBox">
@@ -34,19 +43,27 @@
         id="schedule-operating"
         title="open"
         type="time"
-        v-model="scheduleStore.scheduleDateDtoList[
-        scheduleStore.scheduleTypeData.dateIdx
-        ].startTime" 
+        @change="setStartTime"
+        v-model="
+          scheduleStore.scheduleDateDtoList[
+            scheduleStore.scheduleTypeData.dateIdx
+          ].startTime
+        "
       />
     </div>
     ~
     <div class="timeInputBox">
       <span class="timePlaceHoleder">close</span>
-      <input style="padding-right: 1rem" type="time"         v-model="
+      <input
+        style="padding-right: 1rem"
+        type="time"
+        @change="setEndTime"
+        v-model="
           scheduleStore.scheduleDateDtoList[
             scheduleStore.scheduleTypeData.dateIdx
           ].endTime
-        " />
+        "
+      />
     </div>
   </label>
 
@@ -56,7 +73,7 @@
       type="text"
       v-model="scheduleStore.scheduleAddForm.address"
       @focus="inputType"
-      style="width:60%"
+      style="width: 60%"
       placeholder="위치"
     />
   </div>
@@ -106,11 +123,29 @@ export default {
     function inputType() {
       kakaoStore.searchTypeData.searchType = "input";
     }
+    function setStartTime(e) {
+      scheduleStore.scheduleTypeData.dateIdx;
+      if (scheduleStore.scheduleTypeData.dateIdx === 0) {
+        scheduleStore.scheduleDateDtoList.forEach(
+          (item) => (item.startTime = e.target.value)
+        );
+      }
+    }
+    function setEndTime(e) {
+      scheduleStore.scheduleTypeData.dateIdx;
+      if (scheduleStore.scheduleTypeData.dateIdx === 0) {
+        scheduleStore.scheduleDateDtoList.forEach(
+          (item) => (item.endTime = e.target.value)
+        );
+      }
+    }
     return {
       scheduleStore,
       kakaoStore,
       yesterday,
       tomorrow,
+      setStartTime,
+      setEndTime,
       inputType,
     };
   },

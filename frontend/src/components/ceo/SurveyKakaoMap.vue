@@ -10,6 +10,7 @@
 import { useKakaoStore } from "@/stores/kakao.js";
 import { onMounted } from "vue";
 import $ from "jquery";
+
 import hotdog from "@/assets/hotdog.svg";
 import coffee from "@/assets/coffee.svg";
 import hamburger from "@/assets/hamburger.svg";
@@ -52,7 +53,6 @@ export default {
             position.coords.latitude,
             position.coords.longitude
           );
-          store.sur;
           initMap.map.panTo(moveLatLng);
         });
       }
@@ -77,34 +77,19 @@ export default {
       var zoomControl = new kakao.maps.ZoomControl();
       initMap.map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
       var imageSrc = null;
-
+      const categoryImgList = [hamburger, hotdog, coffee, sweetpotato, icecream, waffle, steak, sandwich, skeweredfood, ramen, pizza, drink, xIcon]
+      const categoryList = ["햄버거", "핫도그", "카페", "고구마", "아이스크림", "와플", "스테이크", "샌드위치", "꼬치", "라면", "피자", "음료수"]
+      const categoryLength = categoryList.length
       var markers = $(store.surveyData).map(function(i, item) {
-        if (item["category"] === "hotdog") {
-          imageSrc = hotdog; // 마커이미지의 주소입니다
-        } else if (item["category"] === "coffee") {
-          imageSrc = coffee; // 마커이미지의 주소입니다
-        } else if (item["category"] === "hamburger") {
-          imageSrc = hamburger; // 마커이미지의 주소입니다
-        } else if (item["category"] === "sweetpotato") {
-          imageSrc = sweetpotato; // 마커이미지의 주소입니다
-        } else if (item["category"] === "icecream") {
-          imageSrc = icecream; // 마커이미지의 주소입니다
-        } else if (item["category"] === "waffle") {
-          imageSrc = waffle;
-        } else if (item["category"] === "steak") {
-          imageSrc = steak;
-        } else if (item["category"] === "sandwich") {
-          imageSrc = sandwich;
-        } else if (item["category"] === "skeweredfood") {
-          imageSrc = skeweredfood;
-        } else if (item["category"] === "ramen") {
-          imageSrc = ramen;
-        } else if (item["category"] === "pizza") {
-          imageSrc = pizza;
-        } else if (item["category"] === "drink") {
-          imageSrc = drink;
-        } else {
-          imageSrc = xIcon;
+        for (let m_i = 0; m_i < categoryLength + 1; m_i ++)
+        {
+          if (m_i === categoryLength) {
+            imageSrc = categoryImgList[categoryLength]
+          }
+          if (item["category"] === categoryList[m_i]) {
+            imageSrc = categoryImgList[m_i]
+            break
+          }
         }
 
         var imageSize = new kakao.maps.Size(48, 62); // 마커이미지의 크기입니다

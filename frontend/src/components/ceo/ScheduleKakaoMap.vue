@@ -25,7 +25,6 @@ export default {
     const scheduleStore = useCeoScheduleStore();
     const myStore = useCeoMyStore();
     const iconType = [emptyMarker, addressIcon, addressXIcon];
-    console.log(iconType);
     let dataCase = null;
     if (store.searchTypeData.viewType === "schedule") {
       dataCase = scheduleStore.scheduleAddForm;

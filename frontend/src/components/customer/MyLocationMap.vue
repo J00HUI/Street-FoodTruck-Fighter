@@ -56,7 +56,11 @@ export default {
         // 좌표로 행정동 주소 정보를 요청합니다
         geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback);
       }
-      searchAddrFromCoords(initMap.map.getCenter(), displayCenterInfo);
+      
+      kakao.maps.event.addListener(initMap.map, "dragend", function () {
+        searchAddrFromCoords(initMap.map.getCenter(), displayCenterInfo);
+      });
+
       function displayCenterInfo(result, status) {
         if (status === kakao.maps.services.Status.OK) {
           var infoDiv = document.getElementById("centerAddr");
