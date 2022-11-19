@@ -26,7 +26,7 @@ public class Orders extends BaseEntity {
     @ColumnDefault("false")
     private Boolean isCanceled;
 
-	@ColumnDefault("false")
+	@ColumnDefault("true")
 	private Boolean isPaid;
 
     private LocalDateTime doneDate;
