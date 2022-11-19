@@ -140,6 +140,24 @@ public class MenuService {
 		return list;
     }
 
+	public void deleteMenu(Integer menuId, User user) {
+		Optional<Menu> menuOptional = menuRepository.findById(menuId);
+
+		//해당 menuId에 해당하는 메뉴가 없다면 종료
+		if(!menuOptional.isPresent()){
+			return;
+		}
+
+		Menu menu = menuOptional.get();
+
+		//메뉴 주인이 아닐때는 종료
+		if(menu.getFoodTruck().getUser().getId() != user.getId()){
+			return;
+		}
+
+		menuRepository.deleteById(menuId);
+	}
+
 //
 //	public void updateMenu(){
 //		// 메뉴 삭제
