@@ -16,6 +16,8 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class RedisUtil {
 
+	private static String SUCCESS = "success";
+
 	private StringRedisTemplate redisTemplate;
 
 	private static StringRedisTemplate staticRedisTemplate;
@@ -41,9 +43,11 @@ public class RedisUtil {
 			.get(key);
 	}
 
-	public static void validateData(String key, String value) {
+	public static String validateData(String key, String value) {
 		if (!getData(key).equals(value)) {
 			throw new NotEqualException(OrdersErrorMessage.NOT_EQUAL_VALIDATION_TOKEN);
+		} else {
+			return SUCCESS;
 		}
 	}
 
