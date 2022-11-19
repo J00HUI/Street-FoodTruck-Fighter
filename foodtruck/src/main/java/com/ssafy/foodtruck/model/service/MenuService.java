@@ -6,8 +6,11 @@ import com.ssafy.foodtruck.db.repository.FoodtruckRepository;
 import com.ssafy.foodtruck.db.repository.MenuRepository;
 import com.ssafy.foodtruck.dto.request.MenuReq;
 import com.ssafy.foodtruck.dto.request.RegisterMenuReq;
+import com.ssafy.foodtruck.dto.request.UpdateMenuReq;
+import com.ssafy.foodtruck.dto.response.MenuRes;
 import com.ssafy.foodtruck.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.checkerframework.checker.nullness.Opt;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -43,6 +48,24 @@ public class MenuService {
 				.description(menuReq.getDescription())
 				.build();
 			menuRepository.save(menu);
+		}
+	}
+
+	@Transactional
+	public void updateMenu(List<UpdateMenuReq> updateMenuReqList, User user) {
+		for(UpdateMenuReq updateMenuReq : updateMenuReqList) {
+			Optional<Menu> menuOptional = menuRepository.findById(updateMenuReq.getMenuId());
+
+			//존재하지 않는다면 다음 요청 확인
+			if(!menuOptional.isPresent()){
+				continue;
+			}
+
+			//존재한다면 받은 값으로 수정
+			Menu menu = menuOptional.get();
+			menu.setDescription(updateMenuReq.getDescription());
+			menu.setName(updateMenuReq.getName());
+			menu.setPrice(updateMenuReq.getPrice());
 		}
 	}
 
@@ -97,6 +120,25 @@ public class MenuService {
 
 		return menuOpt.get().getMenuImg();
 	}
+
+    public List<MenuRes> getMenuList(Integer foodtruckId) {
+		//푸드트럭 id로 푸드트럭 객체 가져오기
+		Optional<FoodTruck> foodTruckOptional = foodTruckRepository.findById(foodtruckId);
+		if(!foodTruckOptional.isPresent()){
+			new RuntimeException("아쉽게도 메뉴가 없네요...");
+		}
+
+		//해당 푸드트럭 메뉴 가져오기
+		List<Menu> menuList = menuRepository.findAllByFoodTruck(foodTruckOptional.get());
+		List<MenuRes> list = new ArrayList<>();
+
+		//Entity를 Dto로 변경
+		for(Menu menu : menuList) {
+			list.add(MenuRes.of(menu));
+		}
+
+		return list;
+    }
 
 //
 //	public void updateMenu(){
