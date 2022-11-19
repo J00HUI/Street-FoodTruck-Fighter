@@ -5,6 +5,7 @@ import com.ssafy.foodtruck.db.entity.MenuImg;
 import com.ssafy.foodtruck.db.entity.User;
 import com.ssafy.foodtruck.db.repository.UserRepository;
 import com.ssafy.foodtruck.dto.request.RegisterMenuReq;
+import com.ssafy.foodtruck.dto.request.UpdateMenuReq;
 import com.ssafy.foodtruck.exception.NotFoundException;
 import com.ssafy.foodtruck.model.service.FoodTruckService;
 import com.ssafy.foodtruck.model.service.MenuService;
@@ -51,7 +52,7 @@ public class MenuController {
 	// 메뉴 등록
 	@PostMapping
 	@ApiOperation(value = " 메뉴 등록", notes = "<strong>내 메뉴를 등록한다.</strong>")
-	public ResponseEntity<?> registerFoodTruck(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken,
+	public ResponseEntity<?> registerMenu(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken,
 											   @RequestBody @ApiParam(value="메뉴 정보", required = true) RegisterMenuReq registerMenuReq) {
 
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
@@ -66,6 +67,22 @@ public class MenuController {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	@PostMapping("/update")
+	@ApiOperation(value = " 메뉴 수정", notes = "<strong>내 메뉴를 수정한다.</strong>")
+	public ResponseEntity<?> updateMenu(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken,
+											   @RequestBody @ApiParam(value="메뉴 정보", required = true) List<UpdateMenuReq> updateMenuReqList) {
+
+		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
+		menuService.updateMenu(updateMenuReqList, user);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@GetMapping("/customer/{foodtruck_id}")
+	@ApiOperation(value = " 메뉴 조회", notes = "<strong>내 메뉴를 조회한다.</strong>")
+	public ResponseEntity<?> getFoodTruck(@PathVariable("foodtruck_id") Integer foodtruckId) {
+		return new ResponseEntity<>(menuService.getMenuList(foodtruckId), HttpStatus.OK);
 	}
 
 
