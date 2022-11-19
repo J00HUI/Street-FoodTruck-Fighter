@@ -79,6 +79,16 @@ public class MenuController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+	@DeleteMapping("/{menu_id}")
+	@ApiOperation(value = " 메뉴 삭제", notes = "<strong>내 메뉴를 삭제한다.</strong>")
+	public ResponseEntity<?> deleteMenu(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken,
+										@PathVariable("menu_id") Integer menuId) {
+
+		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
+		menuService.deleteMenu(menuId, user);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
 	@GetMapping("/customer/{foodtruck_id}")
 	@ApiOperation(value = " 메뉴 조회", notes = "<strong>내 메뉴를 조회한다.</strong>")
 	public ResponseEntity<?> getFoodTruck(@PathVariable("foodtruck_id") Integer foodtruckId) {
