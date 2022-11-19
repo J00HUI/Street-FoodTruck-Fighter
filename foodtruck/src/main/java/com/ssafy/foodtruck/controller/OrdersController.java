@@ -92,7 +92,7 @@ public class OrdersController {
 
 	//SSE
 	@GetMapping(path = "/ceo/not/accepted/{ceo_id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-	@ApiOperation(value = "현재 수락되지 않은 주문내역 조회 - 사업자", notes = "<strong>Ceo ID를 통해 주문내역 조회를 한다.</strong>")
+	@ApiOperation(value = "현재 수락되지 않은 주문내역 조회 - 사업자 (SSE)", notes = "<strong>Ceo ID를 통해 주문내역 조회를 한다.</strong>")
 	public Flux<?> getCeoOrdersNotAccepted(@PathVariable("ceo_id") int ceoId) {
 
 
@@ -112,7 +112,7 @@ public class OrdersController {
 
 	//SSE
 	@GetMapping("/ceo/accepted/{ceo_id}")
-	@ApiOperation(value = "현재 수락된 주문내역 조회 - 사업자", notes = "<strong>Ceo ID를 통해 주문내역 조회를 한다.</strong>")
+	@ApiOperation(value = "현재 수락된 주문내역 조회 - 사업자 (SSE)", notes = "<strong>Ceo ID를 통해 주문내역 조회를 한다.</strong>")
 	public Flux<?> getCeoOrdersAccepted(@PathVariable("ceo_id") int ceoId) {
 		Optional<User> ceoUserOpt = userRepository.findById(ceoId);
 
