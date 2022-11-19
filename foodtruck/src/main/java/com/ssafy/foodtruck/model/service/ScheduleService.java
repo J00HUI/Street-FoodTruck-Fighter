@@ -92,21 +92,60 @@ public class ScheduleService {
 			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE));
 
 //		List<Schedule> findScheduleList = scheduleRepository.findScheduleByFoodTruckAndThisMonth(foodtruck.getId(), firstDate, lastDate);
-		List<Schedule> findScheduleList = scheduleRepository.findAllByFoodTruck(foodtruck);
+		List<Schedule> findScheduleList = scheduleRepository.findAllByFoodtruck(foodtruck.getId());
 
 		List<GetScheduleRes> scheduleResList = new ArrayList<>();
-		for(Schedule schedule : findScheduleList){
-			scheduleResList.add(GetScheduleRes.builder()
-				.ScheduleId(schedule.getId())
-				.workingDate(schedule.getWorkingDate())
-				.startTime(schedule.getStartTime())
-				.endTime(schedule.getEndTime())
-				.latitude(schedule.getLatitude())
-				.longitude(schedule.getLongitude())
-				.address(schedule.getAddress())
-				.title(schedule.getTitle())
-				.groupId(schedule.getGroupId())
+		List<ScheduleDateDto> scheduleDateDtoList = new ArrayList<>();
+
+		if(!findScheduleList.isEmpty()) {
+			Integer groupId = findScheduleList.get(0).getGroupId();
+
+			for(int i=0; i<findScheduleList.size(); i++){
+				Schedule schedule = findScheduleList.get(i);
+
+				if(groupId == schedule.getGroupId()) {
+					scheduleDateDtoList.add(ScheduleDateDto.builder()
+						.workingDay(schedule.getWorkingDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+						.startTime(schedule.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")))
+						.endTime(schedule.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")))
+						.build());
+				} else {
+					// GroupId 가 달라지면 이전 스케줄 리스트 가져와서 add
+					Schedule newSchedule = findScheduleList.get(i - 1);
+					List<ScheduleDateDto> input = new ArrayList<>();
+					input.addAll(scheduleDateDtoList);
+					GetScheduleRes getScheduleRes = GetScheduleRes.builder()
+						.ScheduleId(newSchedule.getId())
+						.latitude(newSchedule.getLatitude())
+						.longitude(newSchedule.getLongitude())
+						.address(newSchedule.getAddress())
+						.title(newSchedule.getTitle())
+						.groupId(newSchedule.getGroupId()).build();
+					getScheduleRes.setScheduleDateDtoList(input);
+
+					scheduleResList.add(getScheduleRes);
+
+					groupId = schedule.getGroupId();
+					scheduleDateDtoList.clear();
+				}
+			}
+
+			// 마지막 스케줄 add
+			Schedule lastSchedule = findScheduleList.get(findScheduleList.size()-1);
+			scheduleDateDtoList.add(ScheduleDateDto.builder()
+				.workingDay(lastSchedule.getWorkingDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+				.startTime(lastSchedule.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")))
+				.endTime(lastSchedule.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")))
 				.build());
+
+			scheduleResList.add(GetScheduleRes.builder()
+				.ScheduleId(lastSchedule.getId())
+				.latitude(lastSchedule.getLatitude())
+				.longitude(lastSchedule.getLongitude())
+				.address(lastSchedule.getAddress())
+				.title(lastSchedule.getTitle())
+				.scheduleDateDtoList(scheduleDateDtoList)
+				.groupId(lastSchedule.getGroupId()).build());
 		}
 
 		return scheduleResList;
