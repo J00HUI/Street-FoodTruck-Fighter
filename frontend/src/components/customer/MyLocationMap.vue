@@ -7,13 +7,12 @@
 </template>
 
 <script>
-import { useKakaoStore } from "@/stores/kakao.js";
+// import { useKakaoStore } from "@/stores/kakao.js";
 import { onMounted } from "vue";
 export default {
   setup() {
-    const store = useKakaoStore();
+    // const store = useKakaoStore();
     /* global kakao */
-    store.getSurvey();
 
     onMounted(() => {
       if (window.kakao && window.kakao.maps) {
@@ -38,7 +37,7 @@ export default {
             position.coords.latitude,
             position.coords.longitude
           );
-          ``;
+          
           var marker = new kakao.maps.Marker({
             position: moveLatLng,
           });
@@ -46,6 +45,7 @@ export default {
           // 마커가 지도 위에 표시되도록 설정합니다
           marker.setMap(initMap.map);
           initMap.map.panTo(moveLatLng);
+          searchAddrFromCoords(initMap.map.getCenter(), displayCenterInfo);
         });
       }
 
@@ -56,7 +56,11 @@ export default {
         // 좌표로 행정동 주소 정보를 요청합니다
         geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback);
       }
-      searchAddrFromCoords(initMap.map.getCenter(), displayCenterInfo);
+
+      kakao.maps.event.addListener(initMap.map, "dragend", function () {
+        searchAddrFromCoords(initMap.map.getCenter(), displayCenterInfo);
+      });
+
       function displayCenterInfo(result, status) {
         if (status === kakao.maps.services.Status.OK) {
           var infoDiv = document.getElementById("centerAddr");

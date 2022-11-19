@@ -64,12 +64,12 @@ const options = reactive({
   longPressDelay: 300,
   eventLongPressDelay: 300,
   selectLongPressDelay: 300,
-  events: eventList,
+  events: store.scheduleList,
   select: arg => {
     id.value = id.value + 1;
     const cal = arg.view.calendar;
     // cal.unselect();
-    let title = "등록";
+    let title = "+스케쥴";
     // title = arg.startStr.slice(-5);
 
     colorIndex = Math.floor(Math.random() * 6);
@@ -88,12 +88,14 @@ const options = reactive({
   eventClick: e => {
     let end = e.event.end;
     for (let str = e.event.start; str < end; str.setDate(str.getDate() + 1)) {
+      
       const scheduleDateDto = {
         endTime: "00:00",
         startTime: "00:00",
         workingDay: null
       };
-      scheduleDateDto.workingDay = `${str.getFullYear()}-${str.getMonth()}-${str.getDate()}`;
+      // 한국 시간대 설정
+      scheduleDateDto.workingDay = new Date(str.getTime() -  str.getTimezoneOffset() * 60000).toISOString().substring(0,10);
 
       store.scheduleDateDtoList.push(scheduleDateDto);
       console.log(scheduleDateDto.workingDay);

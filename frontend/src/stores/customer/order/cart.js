@@ -18,20 +18,21 @@ export const useCartStore = defineStore("Cart", {
     };
   },
   actions:{
-    registerOrder(){
+    makeCustomerOrders(){
         const token = localStorage.getItem("accessToken");
 
         axios({
-            url: RF.user.registerFoodTruckReview(),
+            url: RF.orders.setCustomerOrders(),
             method: "post",
             headers: { Authorization: "Bearer " + token },
             data : this.cart
           })
             .then((res) => {
-              console.log(res.data)
+              console.log('cart making success!! ' + res.data)
             })
             .catch(() => {
-              console.log('error')
+              console.log('cart making error!!' + JSON.stringify(this.cart))
+              
             });
     }
 
