@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.ssafy.foodtruck.constant.FoodtruckConstant.DUPLICATED_FOODTRUCK_ERROR_MESSAGE;
 import static com.ssafy.foodtruck.constant.FoodtruckConstant.REGISTER_FOODTRUCK_SUCCESS;
 
@@ -35,8 +37,10 @@ public class BusinessController {
 
 	@GetMapping
 	@ApiOperation(value = "결산 확인", notes = "<strong>내 모든 결산을 가져온다.</strong>")
-	public ResponseEntity<?> getBusinuess(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken) {
+	public ResponseEntity<List<GetBusinessRes>> getBusinuess(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken) {
 		User user = userService.getUserByEmail(JwtTokenUtil.getEmailFromBearerToken(bearerToken));
-		return new ResponseEntity<>(businessService.getBusinuess(user), HttpStatus.OK);
+		List<GetBusinessRes> list = businessService.getBusinuess(user);
+		System.out.println(list);
+		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 }

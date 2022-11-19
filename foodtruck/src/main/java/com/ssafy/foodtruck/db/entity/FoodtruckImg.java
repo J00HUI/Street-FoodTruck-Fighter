@@ -17,6 +17,6 @@ public class FoodtruckImg extends BaseEntity {
 
 	private String savedPath;
 
-	@OneToOne(mappedBy = "foodtruckImg", cascade = CascadeType.ALL)
-	private FoodTruck foodTruck;
+//	@OneToOne(mappedBy = "foodtruckImg", cascade = CascadeType.ALL)
+//	private FoodTruck foodTruck;
 }

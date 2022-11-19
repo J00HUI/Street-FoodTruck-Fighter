@@ -78,7 +78,7 @@ public class MenuService {
 			.orgNm(origName)
 			.savedNm(savedName)
 			.savedPath(savedPath)
-			.menu(menu.get())
+//			.menu(menu.get())
 			.build();
 
 		// 실제로 로컬에 uuid를 파일명으로 저장
