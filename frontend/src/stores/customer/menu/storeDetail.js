@@ -34,6 +34,7 @@ export const useStoreDetail = defineStore("storeDetail", {
         src: null,
       },
     };
+    const nearData = [{}];
     const imgSet = {
       img: null,
     };
@@ -51,10 +52,12 @@ export const useStoreDetail = defineStore("storeDetail", {
     // const foodtruck_id = sessionStorage.getItem("foodTruckId")
     const foodtruck_id = 2;
     const amount = 1;
+
     return {
       imgSet,
       amount,
       aboutStore,
+      nearData,
       reviews,
       menuDetail,
       foodtruck_id,
@@ -93,6 +96,28 @@ export const useStoreDetail = defineStore("storeDetail", {
         })
         .catch(() => {
           console.log("error");
+        });
+    },
+
+    getNearStoreInfo() {
+      axios({
+        url: RF.foodtruck.getNearFoodTruck(),
+        method: "post",
+        data: {
+          category: sessionStorage.getItem("selectedMenu"),
+          lat: sessionStorage.getItem("latitude"),
+          lng: sessionStorage.getItem("longitude"),
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+
+          this.nearData = res.data;
+
+          console.log("가까운 푸드트럭 조회 성공");
+        })
+        .catch(() => {
+          console.log("가까운 푸드트럭 조회 실패");
         });
     },
   },
