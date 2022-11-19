@@ -142,7 +142,7 @@ export const useCeoMyStore = defineStore("CeoMy", {
           console.log('가져와줘잉')
           console.log(res.data)
           if (res.data !== null) {
-            this.set_img(res)
+            this.drawTruckImg(res)
           }
 
 
@@ -152,7 +152,7 @@ export const useCeoMyStore = defineStore("CeoMy", {
         });
     },
     // 아래 함수 임의 사용금지
-    set_img(res) {
+    drawTruckImg(res) {
 
       if (this.createImgUrl !== null) {
         URL.revokeObjectURL(this.createImgUrl);
