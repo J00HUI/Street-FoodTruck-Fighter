@@ -53,7 +53,7 @@ public class SmsService {
 			String randomNumber = Integer.toString(random.nextInt(10));
 			numStr += randomNumber;
 		}
-		messages.add(new MessagesDto(phoneNumber, "[스푸파] 인증번호 [" + numStr + "]를 입력해주세요. 호호"));
+		messages.add(new MessagesDto(phoneNumber, "[스푸파] 인증번호 [" + numStr + "]를 입력해주세요."));
 
 
 		SmsRequest smsRequest = new SmsRequest("SMS", "COMM", "82", "01085104523", "내용", messages);
@@ -73,7 +73,7 @@ public class SmsService {
 		restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
 		SmsResponse smsResponse = restTemplate.postForObject(new URI("https://sens.apigw.ntruss.com/sms/v2/services/" + this.serviceId + "/messages"), body, SmsResponse.class);
 
-		redisUtil.setDataExpired(phoneNumber, numStr, 60 * 3L);
+		redisUtil.setDataExpired(phoneNumber, numStr, 60 * 5L);
 
 		return smsResponse;
 	}
@@ -108,7 +108,7 @@ public class SmsService {
 		return encodeBase64String;
 	}
 
-	public void authSms(SmsAuthReq smsAuthReq) {
-		redisUtil.validateData(smsAuthReq.getPhoneNumber(), smsAuthReq.getAuthToken());
+	public String authSms(SmsAuthReq smsAuthReq) {
+		return redisUtil.validateData(smsAuthReq.getPhoneNumber(), smsAuthReq.getAuthToken());
 	}
 }

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ssafy.foodtruck.dto.SmsAuthReq;
 import com.ssafy.foodtruck.dto.response.SmsResponse;
 import com.ssafy.foodtruck.model.service.SmsService;
-import com.ssafy.foodtruck.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +27,7 @@ public class SmsController {
 	}
 
 	@PostMapping("/sms")
-	public ResponseEntity<Void> authSms(@RequestBody SmsAuthReq smsAuthReq) {
-		smsService.authSms(smsAuthReq);
-		return new ResponseEntity<>(HttpStatus.OK);
+	public ResponseEntity<String> authSms(@RequestBody SmsAuthReq smsAuthReq) {
+		return new ResponseEntity<>(smsService.authSms(smsAuthReq), HttpStatus.OK);
 	}
 }
