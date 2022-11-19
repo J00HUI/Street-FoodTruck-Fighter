@@ -10,8 +10,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
+//	List<Schedule> findAllByFoodTruck(FoodTruck foodTruck);
 
-	List<Schedule> findAllByFoodTruck(FoodTruck foodTruck);
+	@Query(value = "select * \n" +
+		"from schedule \n" +
+		"where foodtruck_id = :foodtruckId \n" +
+		"order by group_id;", nativeQuery = true)
+	List<Schedule> findAllByFoodtruck(Integer foodtruckId);
 
 	@Query(value = "SELECT * \n" +
 		"FROM schedule \n" +
