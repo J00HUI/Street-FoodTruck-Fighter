@@ -254,8 +254,8 @@ label:hover {
 .updateButton {
   font: 1rem "SCoreDream";
   border-radius: 2rem;
-  width: 80%;
-  margin-left: 10%;
+  width: 88%;
+  margin-left: 6%;
   height: 6%;
   color: white;
   background-color: var(--color-purple-2);
@@ -290,7 +290,7 @@ label:hover {
   position: absolute;
   top: 3rem;
   left: 1.5rem;
-  width: calc(96% - 2rem);
+  width: calc(94% - 2rem);
   margin: auto;
   height: calc(76% - 2rem);
 }

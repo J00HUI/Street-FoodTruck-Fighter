@@ -49,7 +49,7 @@ export const useCeoSalesStore = defineStore("CeoSales", {
             this.eventList.push(newEvent)
           }
           this.makeSalesData()
-          console.log(res.data)
+
         })
         .catch((err) => {
           console.log(err);

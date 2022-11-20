@@ -2,7 +2,7 @@
   <div class="orderView">
     <h1>수락된 주문 내역</h1>
     <section class="orderBox" v-for="(order, o_i) in orderStore.acceptedOrder" :key="o_i">
-      <div>{{order.ordersId}}</div>
+      <div>주문번호: {{order.ordersId}}</div>
       <br />
       <div v-for="(menu, m_i) in order.menuResList"
       :key="m_i">

@@ -3,7 +3,6 @@
     <CeoHeader></CeoHeader>
     <NewOrder></NewOrder>
     <Order class="orderScroll"></Order>
-    <button type="button" id="btnSend">버튼</button>
   </div>
 </template>
 
@@ -11,17 +10,21 @@
 import CeoHeader from "@/components/ceo/CeoHeader.vue";
 import NewOrder from "@/components/ceo/StartNewOrder.vue";
 import Order from "@/components/ceo/StartOrder.vue";
-
+import { useCeoOrderStore } from "@/stores/ceo/order.js";
 export default {
   components: {
     CeoHeader,
     NewOrder,
-    Order
+    Order,
   },
   setup() {
-
+    const orderStore = useCeoOrderStore();
+    setInterval(function () {
+      orderStore.getNotAcceptedOrder();
+      orderStore.getCeoOrders();
+    }, 3000);
     return {};
-  }
+  },
 };
 </script>
 

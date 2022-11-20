@@ -14,7 +14,7 @@
           <div>매출액</div>
         </div>
       </div>
-      <div style="padding: 0 1rem 0 1rem">
+      <div class="TodaySalesBox">
         <div
           class="salesMenus"
           v-for="(menu, index) in salesStore.salesData[
@@ -99,5 +99,15 @@ h1 {
   display: flex;
   width: 96%;
   justify-content: space-between;
+}
+.TodaySalesBox {
+  padding: 0 1rem 0 1rem;
+  height: 8rem;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.TodaySalesBox::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
 }
 </style>

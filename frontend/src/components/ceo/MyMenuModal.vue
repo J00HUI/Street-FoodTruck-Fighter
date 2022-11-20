@@ -202,7 +202,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 /***************** modal style start ******************/
 .modal-wrapper {
   position: absolute;
@@ -276,7 +276,7 @@ textarea {
   scrollbar-width: none; /* Firefox */
   border: none;
   outline: none;
-  background-color: var(--color-purple-1);
+  background-color: var(--color-gray-1);
   font: 1rem "SCoreDream";
 }
 .newMenuTitle {
