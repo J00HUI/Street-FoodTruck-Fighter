@@ -59,10 +59,10 @@
 
 ### 인프라
 
-- AWS EC2
-- Docker 
-- Jenkins 
-- NGINX 
+- AWS EC2 ubuntu : 20.04 LTS
+- Docker 20.10.20
+- Jenkins image : jenkins/jenkins:lts
+- NGINX image : stable-alpine
 
 ## 🍖 주요 기능
 
