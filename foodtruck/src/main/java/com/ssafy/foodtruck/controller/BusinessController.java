@@ -40,7 +40,6 @@ public class BusinessController {
 	public ResponseEntity<List<GetBusinessRes>> getBusinuess(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken) {
 		User user = userService.getUserByEmail(JwtTokenUtil.getEmailFromBearerToken(bearerToken));
 		List<GetBusinessRes> list = businessService.getBusinuess(user);
-		System.out.println(list);
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 }
