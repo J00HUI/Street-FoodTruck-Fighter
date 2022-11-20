@@ -90,47 +90,39 @@ public class OrdersController {
 		return new ResponseEntity<>(ordersService.getCustomerOrdersAll(user), HttpStatus.OK);
 	}
 
-	//SSE
+
 	@GetMapping(path = "/ceo/not/accepted/{ceo_id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-	@ApiOperation(value = "현재 수락되지 않은 주문내역 조회 - 사업자 (SSE)", notes = "<strong>Ceo ID를 통해 주문내역 조회를 한다.</strong>")
-	public Flux<?> getCeoOrdersNotAccepted(@PathVariable("ceo_id") int ceoId) {
+	@ApiOperation(value = "현재 수락되지 않은 주문내역 조회 - 사업자", notes = "<strong>Ceo ID를 통해 주문내역 조회를 한다.</strong>")
+	public ResponseEntity<?> getCeoOrdersNotAccepted(@PathVariable("ceo_id") int ceoId) {
 
 
 		Optional<User> ceoUserOpt = userRepository.findById(ceoId);
 
 		if(!ceoUserOpt.isPresent()){
-			return Flux.interval(Duration.ofHours(1))
-				.map(sequence -> "적절하지 못한 ceoId입니다.");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
 		User ceoUser = ceoUserOpt.get();
-
 		List<CurrentOrdersListByFoodtruckRes> currentOrdersListByFoodtruckResList = ordersService.getCeoOrdersNotAccepted(ceoUser);
-		return Flux.interval(Duration.ofSeconds(1))
-			.map(sequence -> currentOrdersListByFoodtruckResList);
+
+		if(currentOrdersListByFoodtruckResList.size() == 0) {
+			return new ResponseEntity<>("수락되지 않은 주문내역이 없습니다.", HttpStatus.OK);
+		}
+		return new ResponseEntity<>(currentOrdersListByFoodtruckResList, HttpStatus.OK);
 	}
 
-	//SSE
 	@GetMapping("/ceo/accepted/{ceo_id}")
-	@ApiOperation(value = "현재 수락된 주문내역 조회 - 사업자 (SSE)", notes = "<strong>Ceo ID를 통해 주문내역 조회를 한다.</strong>")
-	public Flux<?> getCeoOrdersAccepted(@PathVariable("ceo_id") int ceoId) {
+	@ApiOperation(value = "현재 수락된 주문내역 조회 - 사업자", notes = "<strong>Ceo ID를 통해 주문내역 조회를 한다.</strong>")
+	public ResponseEntity<?> getCeoOrdersAccepted(@PathVariable("ceo_id") int ceoId) {
 		Optional<User> ceoUserOpt = userRepository.findById(ceoId);
-
-		if(!ceoUserOpt.isPresent()){
-			return Flux.interval(Duration.ofHours(1))
-				.map(sequence -> "적절하지 못한 ceoId입니다.");
-		}
-
 		User ceoUser = ceoUserOpt.get();
+		List<CurrentOrdersListByFoodtruckRes> currentOrdersListByFoodtruckResList = ordersService.getCeoOrdersAccepted(ceoUser);
 
-		try {
-			List<CurrentOrdersListByFoodtruckRes> currentOrdersListByFoodtruckResList = ordersService.getCeoOrdersAccepted(ceoUser);
-			return Flux.interval(Duration.ofSeconds(1))
-				.map(sequence -> currentOrdersListByFoodtruckResList);
-		} catch (NotFoundException ex) {
-			return Flux.interval(Duration.ofHours(1))
-				.map(sequence -> "적절하지 못한 ceoId입니다.");
+		if(currentOrdersListByFoodtruckResList.size() == 0) {
+			return new ResponseEntity<>("수락되지 않은 주문내역이 없습니다.", HttpStatus.OK);
 		}
+
+		return new ResponseEntity<>(currentOrdersListByFoodtruckResList, HttpStatus.OK);
 	}
 
 //	@GetMapping("/ceo/all")
