@@ -1,109 +1,64 @@
 <template>
   <div class="truckScroll">
-    <div style="margin-top: 7%">
-      <div class="truck">
-        <img src="@/assets/foodtruck.svg" class="truckImg" alt />
+    <div style="margin-top: 7%"></div>
 
-        <span class="truckName"
-          >맛있는 카페 ⭐ 4.5<br /><span class="truckSub"
-            >카페<br />
-            대전 유성구 어은동 45</span
-          ></span
-        >
-      </div>
-    </div>
-    <div
-      style="margin-top: 3%"
-      v-for="(near, nearDataIndex) in nearStore.nearData"
-      :key="nearDataIndex"
+<div
+  style="margin-top: 3%"
+  v-for="(near, nearDataIndex) in nearStore.nearData"
+  :key="nearDataIndex"
+>
+  <div class="truck" @click="goDetail(nearDataIndex)">
+    <img src="@/assets/foodtruck.svg" class="truckImg" alt />
+
+    <span class="truckName"
+      >{{ near.name }} ⭐ {{ near.grade }}<br /><span class="truckSub"
+        >{{ near.category }}<br />
+        {{ near.address }}</span
+      ></span
     >
-      <div class="truck">
-        <img src="@/assets/foodtruck.svg" class="truckImg" alt />
+  </div>
+</div>
+<!-- <div style="margin-top: 3%">
+  <div class="truck">
+    <img src="@/assets/foodtruck.svg" class="truckImg" alt />
 
-        <span class="truckName"
-          >{{ near.name }} ⭐ {{ near.grade }}<br /><span class="truckSub"
-            >{{ near.category }}<br />
-            {{ near.address }}</span
-          ></span
-        >
-      </div>
-    </div>
-    <div style="margin-top: 3%">
-      <div class="truck">
-        <img src="@/assets/foodtruck.svg" class="truckImg" alt />
-
-        <span class="truckName"
-          >맛있는 떡볶이 ⭐ 4.5<br /><span class="truckSub"
-            >떡볶이, 오뎅, 닭꼬치<br />
-            대전 유성구</span
-          ></span
-        >
-      </div>
-    </div>
-    <div style="margin-top: 3%">
-      <div class="truck">
-        <img src="@/assets/foodtruck.svg" class="truckImg" alt />
-
-        <span class="truckName"
-          >맛있는 떡볶이 ⭐ 4.5<br /><span class="truckSub"
-            >떡볶이, 오뎅, 닭꼬치<br />
-            대전 유성구</span
-          ></span
-        >
-      </div>
-    </div>
-    <div style="margin-top: 3%">
-      <div class="truck">
-        <img src="@/assets/foodtruck.svg" class="truckImg" alt />
-
-        <span class="truckName"
-          >맛있는 떡볶이 ⭐ 4.5<br /><span class="truckSub"
-            >떡볶이, 오뎅, 닭꼬치<br />
-            대전 유성구</span
-          ></span
-        >
-      </div>
-    </div>
-    <div style="margin-top: 3%">
-      <div class="truck">
-        <img src="@/assets/foodtruck.svg" class="truckImg" alt />
-
-        <span class="truckName"
-          >맛있는 떡볶이 ⭐ 4.5<br /><span class="truckSub"
-            >떡볶이, 오뎅, 닭꼬치<br />
-            대전 유성구</span
-          ></span
-        >
-      </div>
-    </div>
-    <div style="margin-top: 3%">
-      <div class="truck">
-        <img src="@/assets/foodtruck.svg" class="truckImg" alt />
-
-        <span class="truckName"
-          >맛있는 떡볶이 ⭐ 4.5<br /><span class="truckSub"
-            >떡볶이, 오뎅, 닭꼬치<br />
-            대전 유성구</span
-          ></span
-        >
-      </div>
-    </div>
+    <span class="truckName"
+      >맛있는 떡볶이 ⭐ 4.5<br /><span class="truckSub"
+        >떡볶이, 오뎅, 닭꼬치<br />
+        대전 유성구</span
+      ></span
+    >
+  </div>
+</div> -->
   </div>
 </template>
   
+
 <script>
 import { useStoreDetail } from "@/stores/customer/menu/storeDetail.js";
+import router from "@/router";
 
 export default {
   setup() {
     const nearStore = useStoreDetail();
 
+    function goDetail(nearDataIndex) {
+      sessionStorage.setItem(
+        "foodtruckId",
+        nearStore.nearData[nearDataIndex].foodtruckId
+      );
+
+      router.push("/order");
+    }
+
     return {
       nearStore,
+      goDetail,
     };
   },
 };
 </script>
+
 
 <style scoped>
 .truck {
@@ -148,10 +103,10 @@ export default {
   overflow-y: auto;
   height: 63%;
 
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge /
+  scrollbar-width: none; / Firefox /
 }
 .truckScroll::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera*/
+  display: none; / Chrome, Safari, Opera*/
 }
 </style>

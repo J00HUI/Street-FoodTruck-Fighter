@@ -20,7 +20,8 @@ export const useReviewRoadStore = defineStore("reviewRoad", {
   },
   actions: {
     getReview() {
-      const foodtruck_id = 1;
+      // const foodtruck_id = 1;
+      const foodtruck_id = sessionStorage.getItem("foodtruckId")
       axios({
         url: RF.review.getReview(foodtruck_id),
         method: "get",
