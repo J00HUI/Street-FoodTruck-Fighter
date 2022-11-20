@@ -1,6 +1,7 @@
 import RF from "@/api/RF";
 import axios from "axios";
 import { defineStore } from "pinia";
+import router from "@/router/index.js";
 
 export const useCeoScheduleStore = defineStore("CeoSchedule", {
   state: () => {
@@ -29,12 +30,13 @@ export const useCeoScheduleStore = defineStore("CeoSchedule", {
     }]
 
     const scheduleAddForm = {
-      address: null,
+      address: "",
       latitude: null,
       longitude: null,
+      scheduleId: null,
       scheduleDateDtoList: [
       ],
-      title: "+추가"
+      title: "title"
     }
     const scheduleTypeData = {
       dateIdx: 0,
@@ -53,26 +55,28 @@ export const useCeoScheduleStore = defineStore("CeoSchedule", {
   },
   actions: {
     setSchedule() {
-      this.scheduleAddForm.scheduleDateDtoList = this.scheduleDateDtoList.slice(1)
-      console.log(this.scheduleAddForm)
+      let form = this.scheduleAddForm
+      form.scheduleDateDtoList = this.scheduleDateDtoList.slice(1)
       const token = localStorage.getItem("accessToken");
-      axios({
-        url: RF.schedule.setSchedule(),
-        method: "post",
-        headers: { Authorization: "Bearer " + token },
-        data: this.scheduleAddForm
-      })
-        .then((res) => {
-          console.log(res)
-          console.log(res.data)
+      if (form.address === "" || form.latitude === null || form.longitude === null || form.title === "title" || form.title === "") {
+        alert("모든 정보를 입력해주세요")
+      } else {
+        axios({
+          url: RF.schedule.setSchedule(),
+          method: "post",
+          headers: { Authorization: "Bearer " + token },
+          data: this.scheduleAddForm
+        })
+        .then(() => {
         })
         .catch((err) => {
           console.log(err);
         });
+      }
+
     },
     getSchedule() {
       const token = localStorage.getItem("accessToken");
-      console.log(token)
       axios({
         url: RF.schedule.getSchedule(),
         method: "get",
@@ -84,7 +88,7 @@ export const useCeoScheduleStore = defineStore("CeoSchedule", {
           let backgroundColor = this.backgroundColor
           let borderColor = this.borderColor
           let eventList = this.eventList
-          this.scheduleList.forEach(function(item, index) {
+          this.scheduleList.forEach(function (item, index) {
             colorIndex = Math.floor(Math.random() * 5);
             const newEvent = {
               id: item.scheduleId,
@@ -93,23 +97,34 @@ export const useCeoScheduleStore = defineStore("CeoSchedule", {
               start: item.scheduleDateDtoList[0].workingDay,
               end: item.scheduleDateDtoList[item.scheduleDateDtoList.length - 1].workingDay,
               allDay: true,
-        
+
               backgroundColor: backgroundColor[colorIndex],
               borderColor: borderColor[colorIndex],
               textColor: borderColor[colorIndex]
             }
             eventList.push(newEvent)
-
-
           })
-
-          // console.log(res.data)
-          // console.log(this.scheduleList)
         })
         .catch((err) => {
           console.log(err);
+
         });
     },
+    deleteSchedule(scheduleId) {
+
+      const token = localStorage.getItem("accessToken");
+      axios({
+        url: RF.schedule.cancelSchedule(scheduleId),
+        method: "patch",
+        headers: { Authorization: "Bearer " + token },
+      })
+        .then(() => {
+          router.push('/schedule')
+        })
+        .catch(() => {
+          alert('삭제에 실패했습니다.')
+        });
+    }
   }
 })
 

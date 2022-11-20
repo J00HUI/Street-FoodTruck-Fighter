@@ -61,7 +61,7 @@
             </label>
             <div class="newMenuList">
               <img
-                v-for="i in myStore.createMenuImgUrlList.length"
+                v-for="i in myStore.newMenuDataList.length - 1"
                 @click="loadMenu(i - 1)"
                 :src="myStore.createMenuImgUrlList[i - 1]"
                 :key="i"
@@ -79,11 +79,7 @@
               <button type="button" class="acceptbutton" @click="addMenu">
                 추가
               </button>
-              <button
-                type="button"
-                class="acceptbutton"
-                @click="myStore.setNewMenu"
-              >
+              <button type="button" class="acceptbutton" @click="setAndUpdateMenu">
                 등록
               </button>
               <button type="button" class="acceptbutton" @click="modalToggle">
@@ -102,6 +98,7 @@ import { useCeoMyStore } from "@/stores/ceo/my.js";
 export default {
   setup() {
     const myStore = useCeoMyStore();
+    myStore.getMenu();
     function setNewMenuImg(e) {
       if (myStore.createImgUrl !== null) {
         URL.revokeObjectURL(myStore.createImgUrl);
@@ -123,12 +120,22 @@ export default {
       // 만드 메뉴 정보 가져오기
       myStore.myTypeData.newMenuIndex = idx;
       myStore.newMenuData = myStore.newMenuDataList[idx];
-      URL.revokeObjectURL(myStore.createImgUrl);
-      myStore.createImgUrl = URL.createObjectURL(myStore.createMenuImgList[myStore.myTypeData.newMenuIndex]);
+      
       const myMenuImg = document.getElementById("my-menu-img");
+      URL.revokeObjectURL(myStore.createImgUrl);
+      if (myStore.createMenuImgList[myStore.myTypeData.newMenuIndex] !== null) {
+        myStore.createImgUrl = URL.createObjectURL(
+        myStore.createMenuImgList[myStore.myTypeData.newMenuIndex]
+      );
+
       myMenuImg.src = myStore.createImgUrl;
       myMenuImg.classList.remove("imgVisible");
       myMenuImg.nextElementSibling.classList.add("imgVisible");
+      } else {
+        myMenuImg.classList.add("imgVisible");
+        myMenuImg.nextElementSibling.classList.remove("imgVisible");
+      }
+      
     }
     function addMenu() {
       if (myStore.newMenuData.name === null || "") {
@@ -140,10 +147,8 @@ export default {
       } else if (
         myStore.createMenuImgList[myStore.myTypeData.newMenuIndex] === undefined
       ) {
-
         alert("이미지를 입력해주세요");
       } else {
-                console.log()
         // 이미지 박스 초기화 및 가리기
         URL.revokeObjectURL(myStore.createImgUrl);
         myStore.createImgUrl = null;
@@ -180,6 +185,10 @@ export default {
         document.getElementById("my-new-menu-img").value = null;
       }
     }
+    function setAndUpdateMenu() {
+      myStore.setNewMenu();
+      myStore.updateNewMenu();
+    }
 
     return {
       myStore,
@@ -187,6 +196,7 @@ export default {
       modalToggle,
       loadMenu,
       addMenu,
+      setAndUpdateMenu,
     };
   },
 };

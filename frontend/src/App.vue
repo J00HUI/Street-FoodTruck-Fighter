@@ -7,10 +7,8 @@
   font-family: Avenir, Helvetica, Arial, sans-serif, ;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
   width: 390px;
   height: 844px;
-  border: 5px solid var(--color-gray-1);
   margin: 0 auto 0 auto;
 
 }
@@ -43,10 +41,7 @@
   --color-pink-2: #ffaeae;
   --color-green-1: #7fd488;
 }
-h1 {
-  margin: 0px;
-  /* 나중에 지울 것 */
-}
+
 body {
   -webkit-user-select:none;
   -moz-user-select:none;

@@ -11,7 +11,7 @@
     </nav>
     <div class="salesContent" v-if="!salesStore.salesTypeData.viewToggle">
       <Today></Today>
-      <Chart></Chart>
+      <Chart v-if="salesStore.salesTypeData.is_chart"></Chart>
     </div>
     <div class="salesContent" v-if="salesStore.salesTypeData.viewToggle">
       <Calendar></Calendar>
@@ -38,7 +38,11 @@ export default {
   },
   setup() {
     const salesStore = useCeoSalesStore();
+    salesStore.salesTypeData.viewToggle = false
+    salesStore.salesTypeData.is_chart = false
     salesStore.getStatistics()
+    salesStore.chartNameData = [];
+    salesStore.chartNumData = [];
     function toDay() {
       document.getElementById("sales-today").classList.add("underLine");
       document.getElementById("sales-allday").classList.remove("underLine");

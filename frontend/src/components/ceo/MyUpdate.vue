@@ -45,6 +45,9 @@
     >
       {{ categoryList[myStore.myTypeData.myCategoryIndex][1] }}
     </div>
+    <button class="addMenuButton" type="button" @click="modalToggle">
+      +메뉴
+    </button>
   </div>
   <label class="truckInput inputTextarea" for="my-truck-describe">
     <div class="descriptionIcon">
@@ -58,7 +61,7 @@
       placeholder="설명을 입력해주세요"
     ></textarea>
   </label>
-  <button type="button" @click="modalToggle">메뉴추가</button>
+
   <myMenu v-if="myStore.myTypeData.modalView"></myMenu>
   <button type="button" @click="myUpdate" class="updateButton">수정</button>
 </template>
@@ -273,7 +276,7 @@ label:hover {
 .categoryInput {
   font: 1rem "SCoreDream";
   padding: 0 1.5rem 0 1.5rem;
-  width: 58%;
+  width: 35%;
 }
 .descriptionIcon {
   position: absolute;
@@ -294,5 +297,8 @@ label:hover {
 .descriptionIcon2 {
   vertical-align: bottom;
   width: 1.5rem;
+}
+.addMenuButton {
+  font: 0.75rem "SCoreDream";
 }
 </style>
