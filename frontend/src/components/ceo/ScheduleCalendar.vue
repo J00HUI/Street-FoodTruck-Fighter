@@ -16,37 +16,22 @@ import interactionPlugin from "@fullcalendar/interaction";
 const store = useCeoScheduleStore();
 const id = ref(0);
 let colorIndex = Math.floor(Math.random() * 6);
-const backgroundColor = [
-  "rgba(255, 99, 132, 0.2)",
-  "rgba(54, 162, 235, 0.2)",
-  "rgba(255, 206, 86, 0.2)",
-  "rgba(75, 192, 192, 0.2)",
-  "rgba(153, 102, 255, 0.2)",
-  "rgba(255, 159, 64, 0.2)"
-];
-const borderColor = [
-  "rgba(255,99,132,1)",
-  "rgba(54, 162, 235, 1)",
-  "rgba(255, 206, 86, 1)",
-  "rgba(75, 192, 192, 1)",
-  "rgba(153, 102, 255, 1)",
-  "rgba(255, 159, 64, 1)"
-];
+store.scheduleList = []
+store.eventList = []
+
 // let colorList = ["yellow", "orange", "purple", "blue", "pink", "green"];
-const eventList = [];
-let eventsData = store.scheduleAddForm.scheduleDateDtoList;
-if (eventsData.length > 0) {
-  eventList.push({
-    title: store.scheduleAddForm.title,
-    start: eventsData[0].workingDay,
-    end: eventsData[eventsData.length - 1].workingDay,
-    // backgroundColor: "var(--color-" + colorList[colorIndex] + "-1)",
-    // borderColor: "var(--color-" + colorList[colorIndex] + "-2)"
-    backgroundColor: backgroundColor[colorIndex],
-    borderColor: borderColor[colorIndex],
-    textColor: borderColor[colorIndex]
-  });
-}
+// const eventList = store.eventList;
+// let eventsData = store.scheduleAddForm.scheduleDateDtoList;
+// if (eventsData.length > 0) {
+//   eventList.push({
+//     title: store.scheduleAddForm.title,
+//     start: eventsData[0].workingDay,
+//     end: eventsData[eventsData.length - 1].workingDay,
+//     backgroundColor: backgroundColor[colorIndex],
+//     borderColor: borderColor[colorIndex],
+//     textColor: borderColor[colorIndex]
+//   });
+// }
 
 const options = reactive({
   plugins: [dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin],
@@ -64,7 +49,7 @@ const options = reactive({
   longPressDelay: 300,
   eventLongPressDelay: 300,
   selectLongPressDelay: 300,
-  events: store.scheduleList,
+  events: store.eventList,
   select: arg => {
     id.value = id.value + 1;
     const cal = arg.view.calendar;
@@ -80,21 +65,22 @@ const options = reactive({
       end: arg.end,
       allDay: true,
 
-      backgroundColor: backgroundColor[colorIndex],
-      borderColor: borderColor[colorIndex],
-      textColor: borderColor[colorIndex]
+      backgroundColor: store.backgroundColor[colorIndex],
+      borderColor: store.borderColor[colorIndex],
+      textColor: store.borderColor[colorIndex]
     });
   },
   eventClick: e => {
     let end = e.event.end;
     for (let str = e.event.start; str < end; str.setDate(str.getDate() + 1)) {
+      
       const scheduleDateDto = {
         endTime: "00:00",
         startTime: "00:00",
         workingDay: null
       };
-      console.log(str)
-      scheduleDateDto.workingDay = str.toISOString().substring(0,10);
+      // 한국 시간대 설정
+      scheduleDateDto.workingDay = new Date(str.getTime() -  str.getTimezoneOffset() * 60000).toISOString().substring(0,10);
 
       store.scheduleDateDtoList.push(scheduleDateDto);
       console.log(scheduleDateDto.workingDay);
