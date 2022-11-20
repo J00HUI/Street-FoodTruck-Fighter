@@ -87,3 +87,5 @@
 [API 명세서](https://k7b206.p.ssafy.io/api/swagger-ui/)  
 
 ## 💻 시스템 아키텍처
+
+![스푸파 아키텍처](https://user-images.githubusercontent.com/99133426/202916867-defbf547-6ac6-48cc-91dc-f075727933b0.png)
