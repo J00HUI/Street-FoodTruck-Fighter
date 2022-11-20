@@ -42,6 +42,7 @@
         id="schedule-operating"
         title="open"
         type="time"
+        class="time"
         @change="setStartTime"
         v-model="
           scheduleStore.scheduleDateDtoList[
@@ -56,6 +57,7 @@
       <input
         style="padding-right: 1rem"
         type="time"
+        class="time"
         @change="setEndTime"
         v-model="
           scheduleStore.scheduleDateDtoList[
@@ -232,6 +234,7 @@ input[type="time"] {
   filter: drop-shadow(0px 10px 22px rgba(149, 173, 254, 0.3));
 }
 .timeInputBox {
+  width: 90%;
   display: flex;
   flex-direction: column;
 }
@@ -249,5 +252,8 @@ input[type="time"] {
   width: 100%;
   height: 2rem;
   display: flex;
+}
+.time {
+background-color: none;
 }
 </style>
