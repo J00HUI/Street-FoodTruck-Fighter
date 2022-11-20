@@ -69,5 +69,9 @@ export default {
     setMenuImg: () => HOST + MENU + "upload",
     updateMenu: () => HOST + MENU + "update",
     deleteMenu: (menu_id) => HOST + MENU + `${menu_id}`,
+  },
+  pay:{
+    pay: () => HOST + 'v1/' + 'pay',
+    paySuccess: () => HOST + 'v1/' + 'pay/' + 'success',
   }
 };
