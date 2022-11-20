@@ -16,7 +16,6 @@ public class OrdersHistoryRes {
 
 	private Integer ordersId;
     private String foodtruckName;
-
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime acceptTime;
 	private boolean isDone;
@@ -24,12 +23,10 @@ public class OrdersHistoryRes {
 	private boolean isReviewed;
 	private String menuDescription;
 
-	private List<GetOrdersMenuRes> menuResList = new ArrayList<>();
+//	private List<GetOrdersMenuRes> menuResList = new ArrayList<>();
 	//menuName, count
 
-	private String orderDate;
-
-	public static OrdersHistoryRes of(Orders orders, boolean isReviewed, List<GetOrdersMenuRes> menuResList, String orderDate){
+	public static OrdersHistoryRes of(Orders orders, boolean isReviewed, String menuDescription){
 		return new OrdersHistoryResBuilder()
 			.ordersId(orders.getId())
 			.foodtruckName(orders.getFoodTruck().getName())
@@ -37,8 +34,7 @@ public class OrdersHistoryRes {
 			.isDone(orders.getIsDone())
 			.isCanceled(orders.getIsCanceled())
 			.isReviewed(isReviewed)
-			.menuResList(menuResList)
-			.orderDate(orderDate)
+			.menuDescription(menuDescription)
 			.build();
 	}
 }

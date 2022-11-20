@@ -12,6 +12,6 @@ import java.util.Map;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrdersHistoryAllRes {
 
-	private String date;
+	private String orderDate;
 	List<OrdersHistoryRes> ordersHistoryResList = new ArrayList<>();
 }

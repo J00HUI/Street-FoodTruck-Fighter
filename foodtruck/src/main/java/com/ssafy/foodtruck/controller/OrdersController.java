@@ -84,7 +84,7 @@ public class OrdersController {
 		@ApiResponse(code = 404, message = "사용자 없음"),
 		@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity<List<OrdersHistoryRes>> getCustomerOrdersAll(@RequestHeader(AUTHORIZATION) @ApiParam(value="Access Token", required = true) String bearerToken) {
+	public ResponseEntity<List<OrdersHistoryAllRes>> getCustomerOrdersAll(@RequestHeader(AUTHORIZATION) @ApiParam(value="Access Token", required = true) String bearerToken) {
 //		int customerId = JwtTokenUtil.getUserIdFromBearerToken(bearerToken);
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
 		return new ResponseEntity<>(ordersService.getCustomerOrdersAll(user), HttpStatus.OK);
