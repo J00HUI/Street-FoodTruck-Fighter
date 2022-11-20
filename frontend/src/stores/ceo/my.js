@@ -17,19 +17,18 @@ export const useCeoMyStore = defineStore("CeoMy", {
     const newMenuData = {
       name: null,
       price: null,
-      img: null,
       description: null,
     };
     const newMenuDataList = [
       {
         name: null,
         price: null,
-        img: null,
         description: null,
       },
     ];
     const createImgUrl = null;
-    const createImgUrlList = [];
+    const createMenuImgList = []
+    const createMenuImgUrlList = [];
     const myTypeData = {
       modalView: false,
       newMenuIndex: 0,
@@ -43,7 +42,8 @@ export const useCeoMyStore = defineStore("CeoMy", {
       myTypeData,
       newMenuDataList,
       createImgUrl,
-      createImgUrlList,
+      createMenuImgList,
+      createMenuImgUrlList,
     };
   },
   actions: {
@@ -139,7 +139,6 @@ export const useCeoMyStore = defineStore("CeoMy", {
         headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
-          console.log('가져와줘잉')
           console.log(res.data)
           if (res.data !== null) {
             this.drawTruckImg(res)
@@ -167,6 +166,29 @@ export const useCeoMyStore = defineStore("CeoMy", {
       imgTag.nextElementSibling.nextElementSibling.classList.add(
         "imgVisible"
       );
-    }
+    },
+    setNewMenu () {
+      const token = localStorage.getItem("accessToken");
+      const menuList = {
+        menuReqList: [
+        ]
+      }
+
+      menuList.menuReqList = this.newMenuDataList.slice(0,-1)
+      console.log(menuList)
+      axios({
+        url: RF.menu.setMenu(),
+        method: "post",
+        headers: { Authorization: "Bearer " + token },
+        data: menuList
+      })
+        .then((res) => {
+          console.log(res)
+          console.log(res.data)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
 });

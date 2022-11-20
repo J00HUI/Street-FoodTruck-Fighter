@@ -4,7 +4,24 @@ import { defineStore } from "pinia";
 
 export const useCeoScheduleStore = defineStore("CeoSchedule", {
   state: () => {
+    const backgroundColor = [
+      "rgba(255, 99, 132, 0.2)",
+      "rgba(54, 162, 235, 0.2)",
+      "rgba(255, 206, 86, 0.2)",
+      "rgba(75, 192, 192, 0.2)",
+      "rgba(153, 102, 255, 0.2)",
+      "rgba(255, 159, 64, 0.2)"
+    ];
+    const borderColor = [
+      "rgba(255,99,132,1)",
+      "rgba(54, 162, 235, 1)",
+      "rgba(255, 206, 86, 1)",
+      "rgba(75, 192, 192, 1)",
+      "rgba(153, 102, 255, 1)",
+      "rgba(255, 159, 64, 1)"
+    ];
     const scheduleList = []
+    const eventList = []
     const scheduleDateDtoList = [{
       endTime: "00:00",
       startTime: "00:00",
@@ -23,7 +40,10 @@ export const useCeoScheduleStore = defineStore("CeoSchedule", {
       dateIdx: 0
     }
     return {
+      backgroundColor,
+      borderColor,
       scheduleList,
+      eventList,
       scheduleDateDtoList,
       scheduleAddForm,
       viewToggle: false,
@@ -50,7 +70,6 @@ export const useCeoScheduleStore = defineStore("CeoSchedule", {
         });
     },
     getSchedule() {
-
       const token = localStorage.getItem("accessToken");
       console.log(token)
       axios({
@@ -59,18 +78,28 @@ export const useCeoScheduleStore = defineStore("CeoSchedule", {
         headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
-          // let scehdule = {
-          //   title  : 'event2',
-          //   start  : '2022-11-19',
-          //   end    : '2022-11-30',
-          // }
-          // this.scheduleList.push(scehdule)
-          
-          // res.data.forEach((item, idx) => {
-            
-            
-            
-          // });
+          let colorIndex = null
+          this.scheduleList = res.data
+          let backgroundColor = this.backgroundColor
+          let borderColor = this.borderColor
+          let eventList = this.eventList
+          this.scheduleList.forEach(function(item) {
+            colorIndex = Math.floor(Math.random() * 5);
+            const newEvent = {
+              title: item.title,
+              start: item.scheduleDateDtoList[0].workingDay,
+              end: item.scheduleDateDtoList[item.scheduleDateDtoList.length - 1].workingDay,
+              allDay: true,
+        
+              backgroundColor: backgroundColor[colorIndex],
+              borderColor: borderColor[colorIndex],
+              textColor: borderColor[colorIndex]
+            }
+            eventList.push(newEvent)
+
+
+          })
+
           console.log(res.data)
           console.log(this.scheduleList)
         })

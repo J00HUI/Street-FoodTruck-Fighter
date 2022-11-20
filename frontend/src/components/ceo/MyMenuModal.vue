@@ -7,17 +7,25 @@
             <h1 class="newMenuTitle">새로운 메뉴 등록</h1>
             <label for="my-new-menu-img" class="truckInput inputImg">
               <input
-                @change="setNewMenuimg"
+                @change="setNewMenuImg"
                 id="my-new-menu-img"
                 type="file"
                 accept=".gif, .jpg, .png"
               />
               <img id="my-menu-img" class="truckImg imgVisible" src alt />
-              <img class="addIcon" src="@/assets/ceo/myAddImgIcon.svg" alt="추가" />
+              <img
+                class="addIcon"
+                src="@/assets/ceo/myAddImgIcon.svg"
+                alt="추가"
+              />
             </label>
 
             <label for="new-menu-name" class="truckInput inputText">
-              <img style="width:1.5rem;" src="@/assets/ceo/myNewMenuName.svg" alt />
+              <img
+                style="width: 1.5rem"
+                src="@/assets/ceo/myNewMenuName.svg"
+                alt
+              />
               <input
                 v-model="myStore.newMenuData.name"
                 id="new-menu-name"
@@ -26,19 +34,23 @@
               />
             </label>
             <label for="new-menu-price" class="truckInput inputText">
-              <img style="width:1.5rem;" src="@/assets/ceo/myPrice.svg" alt />
+              <img style="width: 1.5rem" src="@/assets/ceo/myPrice.svg" alt />
               <input
-                @keyup="inputNumberFormat(this)"
                 id="new-menu-price"
                 type="text"
                 maxlength="20"
+                v-model="myStore.newMenuData.price"
                 placeholder="가격을 입력해 주세요"
               />
             </label>
 
             <label class="descriptionLabel" for="new-menu-describe">
               <div class="descriptionIcon">
-                <img class="descriptionIcon2" src="@/assets/ceo/myDescription.svg" alt />
+                <img
+                  class="descriptionIcon2"
+                  src="@/assets/ceo/myDescription.svg"
+                  alt
+                />
               </div>
               <textarea
                 v-model="myStore.newMenuData.description"
@@ -49,19 +61,34 @@
             </label>
             <div class="newMenuList">
               <img
-                v-for="i in myStore.createImgUrlList.length"
+                v-for="i in myStore.createMenuImgUrlList.length"
                 @click="loadMenu(i - 1)"
-                :src="myStore.createImgUrlList[i - 1]"
+                :src="myStore.createMenuImgUrlList[i - 1]"
                 :key="i"
                 :id="i"
                 class="newMenuIcon"
               />
-              <img @click="newMenu" class="newMenuIcon" src="@/assets/ceo/myAddImgIcon.svg" alt />
+              <img
+                @click="addMenu"
+                class="newMenuIcon"
+                src="@/assets/ceo/myAddImgIcon.svg"
+                alt
+              />
             </div>
             <div class="buttons">
-              <button type="button" class="acceptbutton" @click="createMenu">추가</button>
-              <button type="button" class="acceptbutton" @click="myStore.updateNewMenu">등록</button>
-              <button type="button" class="acceptbutton" @click="modalToggle">취소</button>
+              <button type="button" class="acceptbutton" @click="addMenu">
+                추가
+              </button>
+              <button
+                type="button"
+                class="acceptbutton"
+                @click="myStore.setNewMenu"
+              >
+                등록
+              </button>
+              <button type="button" class="acceptbutton" @click="modalToggle">
+                취소
+              </button>
             </div>
           </div>
         </div>
@@ -75,11 +102,12 @@ import { useCeoMyStore } from "@/stores/ceo/my.js";
 export default {
   setup() {
     const myStore = useCeoMyStore();
-    function setNewMenuimg(e) {
+    function setNewMenuImg(e) {
       if (myStore.createImgUrl !== null) {
         URL.revokeObjectURL(myStore.createImgUrl);
       }
-      myStore.newMenuData.img = e.target.files[0];
+      myStore.createMenuImgList[myStore.myTypeData.newMenuIndex] =
+        e.target.files[0];
       myStore.createImgUrl = URL.createObjectURL(e.target.files[0]);
       e.target.nextElementSibling.src = myStore.createImgUrl;
       e.target.nextElementSibling.classList.remove("imgVisible");
@@ -90,72 +118,32 @@ export default {
     function modalToggle() {
       myStore.myTypeData.modalView = !myStore.myTypeData.modalView;
     }
-    function createMenu() {
-      if (myStore.newMenuData.name === null || "") {
-        alert("이름을 입력해주세요");
-      } else if (myStore.newMenuData.price === null) {
-        alert("가격을 입력해주세요");
-      } else if (myStore.newMenuData.img === null) {
-        alert("이미지를 입력해주세요");
-      } else if (myStore.newMenuData.description === null) {
-        alert("설명을 입력해주세요");
-      } else {
-        // 이미지 박스 초기화 및 가리기
-        URL.revokeObjectURL(myStore.createImgUrl);
-        myStore.createImgUrl = null;
-        const myMenuImg = document.getElementById("my-menu-img");
-        myMenuImg.src = null;
-        myMenuImg.classList.add("imgVisible");
-        myMenuImg.nextElementSibling.classList.remove("imgVisible");
-        // 정보 넣기
-        myStore.newMenuDataList[
-          myStore.myTypeData.newMenuIndex
-        ] = Object.assign({}, myStore.newMenuData);
-        if (
-          myStore.createImgUrlList[myStore.myTypeData.newMenuIndex] !== null
-        ) {
-          myStore.createImgUrlList[
-            myStore.myTypeData.newMenuIndex
-          ] = URL.createObjectURL(
-            myStore.newMenuDataList[myStore.myTypeData.newMenuIndex].img
-          );
-        }
-        myStore.newMenuData = {
-          name: null,
-          price: null,
-          img: null,
-          description: null
-        };
-        myStore.myTypeData.newMenuIndex += 1;
-        if (
-          myStore.myTypeData.newMenuIndex === myStore.newMenuDataList.length
-        ) {
-          myStore.newMenuDataList.push(myStore.newMenuData);
-        }
-        document.getElementById("my-new-menu-img").value = null;
-      }
-    }
+
     function loadMenu(idx) {
       // 만드 메뉴 정보 가져오기
       myStore.myTypeData.newMenuIndex = idx;
       myStore.newMenuData = myStore.newMenuDataList[idx];
       URL.revokeObjectURL(myStore.createImgUrl);
-      myStore.createImgUrl = URL.createObjectURL(myStore.newMenuData.img);
+      myStore.createImgUrl = URL.createObjectURL(myStore.createMenuImgList[myStore.myTypeData.newMenuIndex]);
       const myMenuImg = document.getElementById("my-menu-img");
       myMenuImg.src = myStore.createImgUrl;
       myMenuImg.classList.remove("imgVisible");
       myMenuImg.nextElementSibling.classList.add("imgVisible");
     }
-    function newMenu() {
+    function addMenu() {
       if (myStore.newMenuData.name === null || "") {
         alert("이름을 입력해주세요");
-      } else if (myStore.newMenuData.price === null) {
+      } else if (myStore.newMenuData.price === null || "") {
         alert("가격을 입력해주세요");
-      } else if (myStore.newMenuData.img === null) {
-        alert("이미지를 입력해주세요");
-      } else if (myStore.newMenuData.description === null) {
+      } else if (myStore.newMenuData.description === null || "") {
         alert("설명을 입력해주세요");
+      } else if (
+        myStore.createMenuImgList[myStore.myTypeData.newMenuIndex] === undefined
+      ) {
+
+        alert("이미지를 입력해주세요");
       } else {
+                console.log()
         // 이미지 박스 초기화 및 가리기
         URL.revokeObjectURL(myStore.createImgUrl);
         myStore.createImgUrl = null;
@@ -165,23 +153,24 @@ export default {
         myMenuImg.classList.add("imgVisible");
         myMenuImg.nextElementSibling.classList.remove("imgVisible");
         // 정보 넣기
-        myStore.newMenuDataList[
-          myStore.myTypeData.newMenuIndex
-        ] = Object.assign({}, myStore.newMenuData);
+        myStore.newMenuDataList[myStore.myTypeData.newMenuIndex] =
+          Object.assign({}, myStore.newMenuData);
         if (
-          myStore.createImgUrlList[myStore.myTypeData.newMenuIndex] !== null
+          myStore.createMenuImgUrlList[myStore.myTypeData.newMenuIndex] !== null
         ) {
-          myStore.createImgUrlList[
-            myStore.myTypeData.newMenuIndex
-          ] = URL.createObjectURL(
-            myStore.newMenuDataList[myStore.myTypeData.newMenuIndex].img
+          URL.revokeObjectURL(
+            myStore.createMenuImgUrlList[myStore.myTypeData.newMenuIndex]
           );
+          myStore.createMenuImgUrlList[myStore.myTypeData.newMenuIndex] =
+            URL.createObjectURL(
+              myStore.createMenuImgList[myStore.myTypeData.newMenuIndex]
+            );
         }
         myStore.newMenuData = {
           name: null,
           price: null,
           img: null,
-          description: null
+          description: null,
         };
         myStore.myTypeData.newMenuIndex += 1;
         if (
@@ -192,16 +181,15 @@ export default {
         document.getElementById("my-new-menu-img").value = null;
       }
     }
- 
+
     return {
       myStore,
-      setNewMenuimg,
+      setNewMenuImg,
       modalToggle,
-      createMenu,
       loadMenu,
-      newMenu,
+      addMenu,
     };
-  }
+  },
 };
 </script>
 
