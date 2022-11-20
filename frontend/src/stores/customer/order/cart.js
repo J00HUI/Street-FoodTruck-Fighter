@@ -13,8 +13,11 @@ export const useCartStore = defineStore("Cart", {
         },
       ],
     };
+    const amount = 1;
+    
     return {
         cart,
+        amount,
     };
   },
   actions:{

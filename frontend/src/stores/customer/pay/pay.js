@@ -5,7 +5,7 @@ import RF from "@/api/RF.js";
 export const usePayStore = defineStore("Pay", {
   state: () => {
     const bill = {
-      foodtruckId: 0,
+      // foodtruckId: sessionStorage.getItem(),
       menuList: [
         {
           count: 0,
@@ -13,8 +13,10 @@ export const usePayStore = defineStore("Pay", {
         },
       ],
     };
+    let parameter = ""
     return {
       bill,
+      parameter,
     };
   },
   actions: {
@@ -22,16 +24,20 @@ export const usePayStore = defineStore("Pay", {
       const token = localStorage.getItem("accessToken");
 
         axios({
-            url: RF.pay.setCustomerOrders(),
+            url: RF.pay.pay(),
             method: "post",
             headers: { Authorization: "Bearer " + token },
-            data : this.cart
+            data : this.bill
           })
             .then((res) => {
-              console.log('cart making success!! ' + res.data)
+              console.log('pay success ' + res.data)
+              console.log('res ' + JSON.stringify(res.data))
+              window.location.href = res.data.next_redirect_mobile_url;
+              this.parameter = document.location.href.split("=");
+              console.log(this.parameter + " para")
             })
             .catch(() => {
-              console.log('cart making error!!' + JSON.stringify(this.cart))
+              console.log('pay error!!' + JSON.stringify(this.bill))
               
             });
     },
