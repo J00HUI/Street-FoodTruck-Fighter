@@ -15,7 +15,6 @@
           ].workingDay
         "
       />
-      <!-- <time style="padding: 0 4%" v-model="scheduleStore.scheduleAddForm.date">{{}}</time> -->
       <button @click="tomorrow">
         <img
           style="transform: rotate(180deg)"
@@ -79,13 +78,12 @@
   </div>
 
   <kakaoMap class="truckInput inputMap"></kakaoMap>
-  <button
-    type="button"
-    @click="scheduleStore.setSchedule()"
-    class="updateButton"
-  >
-    수정
-  </button>
+  <div class="scheduleButtons">
+    <button type="button" @click="addSchedule" class="updateButton">
+      등록
+    </button>
+    <button @click="deleteSchedule" class="updateButton">삭제</button>
+  </div>
 </template>
 
 <script>
@@ -139,6 +137,24 @@ export default {
         );
       }
     }
+    let scheduleId = null;
+    function addSchedule() {
+      scheduleId = scheduleStore.scheduleAddForm.scheduleId;
+      if (scheduleId !== null && scheduleId !== undefined) {
+        scheduleStore.deleteSchedule(scheduleId);
+      }
+
+      scheduleStore.setSchedule();
+    }
+    function deleteSchedule() {
+      scheduleId = scheduleStore.scheduleAddForm.scheduleId;
+      if (scheduleId !== null && scheduleId !== undefined) {
+        scheduleStore.deleteSchedule(scheduleId);
+      } else {
+        router.push("/schedule");
+      }
+    }
+
     return {
       scheduleStore,
       kakaoStore,
@@ -147,6 +163,8 @@ export default {
       setStartTime,
       setEndTime,
       inputType,
+      addSchedule,
+      deleteSchedule,
     };
   },
 };
@@ -204,9 +222,11 @@ input[type="time"] {
 .updateButton {
   font: 1rem "SCoreDream";
   border-radius: 2rem;
-  width: 80%;
-  margin-left: 10%;
-  height: 6%;
+  width: 44%;
+
+  margin: 6%;
+  margin-top: 2%;
+  height: 2rem;
   color: white;
   background-color: var(--color-purple-2);
   filter: drop-shadow(0px 10px 22px rgba(149, 173, 254, 0.3));
@@ -224,5 +244,10 @@ input[type="time"] {
   width: 50%;
   padding: 0;
   vertical-align: sub;
+}
+.scheduleButtons {
+  width: 100%;
+  height: 2rem;
+  display: flex;
 }
 </style>

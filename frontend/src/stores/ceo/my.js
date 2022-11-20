@@ -29,6 +29,7 @@ export const useCeoMyStore = defineStore("CeoMy", {
     const myTypeData = {
       modalView: false,
       newMenuIndex: 0,
+      savedMenuIndex: 0,
       myCategoryIndex: 0,
       truckImg: null,
       is_update: false,
@@ -45,25 +46,16 @@ export const useCeoMyStore = defineStore("CeoMy", {
   },
   actions: {
     updateNewMenu() {
-      //초기화
-      URL.revokeObjectURL(this.createImgUrl);
-      this.createImgUrlList.forEach(function (item) {
-        URL.revokeObjectURL(item);
-      });
-      location.reload();
-    },
-    setNewMenu() {
       const token = localStorage.getItem("accessToken");
-      const menuList = {
-        menuReqList: null
-      }
-      menuList.menuReqList = this.newMenuDataList.slice(0, -1)
-      console.log(menuList)
+      const updateList = []
+      updateList.push(this.newMenuDataList.slice(0, this.myTypeData.savedMenuIndex))
+      console.log(updateList)
+      console.log('업데이잉ㅇ이')
       axios({
-        url: RF.menu.setMenu(),
+        url: RF.menu.updateMenu(),
         method: "post",
         headers: { Authorization: "Bearer " + token },
-        data: menuList
+        data: updateList
       })
         .then((res) => {
           console.log(res)
@@ -72,6 +64,81 @@ export const useCeoMyStore = defineStore("CeoMy", {
         .catch((err) => {
           console.log(err);
         });
+
+    },
+    setNewMenu() {
+      const token = localStorage.getItem("accessToken");
+      const menuList = {
+        menuReqList: null
+      }
+      menuList.menuReqList = this.newMenuDataList.slice(this.myTypeData.savedMenuIndex, -1)
+      console.log('새로운 메뉴' + menuList)
+      if (menuList.menuReqList.length > 0) {
+        axios({
+          url: RF.menu.setMenu(),
+          method: "post",
+          headers: { Authorization: "Bearer " + token },
+          data: menuList
+        })
+          .then((res) => {
+            console.log(res)
+            console.log(res.data)
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
+    getMenu() {
+      const token = localStorage.getItem("accessToken");
+      const truckId = sessionStorage.getItem("foodTruck")
+      axios({
+        url: RF.menu.getMenu(truckId),
+        method: "get",
+        headers: { Authorization: "Bearer " + token },
+
+      })
+        .then((res) => {
+          const newData = {
+            name: null,
+            price: null,
+            description: null,
+          };
+          this.newMenuDataList = res.data
+          this.newMenuDataList.push(newData)
+          this.myTypeData.newMenuIndex += res.data.length - 1
+          this.myTypeData.savedMenuIndex = res.data.length - 1
+          console.log(res.data)
+          let max_i = res.data.length
+          for (let i = 0; i < max_i - 1; i++) {
+            if (this.newMenuDataList[i].menuId === null) {
+              console.log(null)
+            } else {
+              this.getMenuImg(this.newMenuDataList[i].menuId)
+            }
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getMenuImg(menuId) {
+
+      axios({
+        url: RF.menu.getMenuImg(menuId),
+        method: "get",
+      })
+        .then((res) => {
+          console.log(res.data)
+          if (res.data === "") {
+            this.createMenuImgList.push(null)
+            this.createMenuImgUrlList.push(null)
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
     },
     setFoodTruck() {
       // let formData = new FormData()
