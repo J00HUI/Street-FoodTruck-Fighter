@@ -202,7 +202,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 /***************** modal style start ******************/
 .modal-wrapper {
   position: absolute;
@@ -394,4 +394,5 @@ textarea::-webkit-scrollbar {
   vertical-align: bottom;
   width: 1.5rem;
 }
+
 </style>

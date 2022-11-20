@@ -4,7 +4,7 @@
       <h1 class="salesTitle">
         <span>최근 매출</span>
         <span>{{
-          salesStore.salesData[salesStore.salesData.length - 1].regDate
+          salesStore.salesData[salesStore.salesTypeData.salesIndex].regDate
         }}</span>
       </h1>
       <br />
@@ -18,7 +18,7 @@
         <div
           class="salesMenus"
           v-for="(menu, index) in salesStore.salesData[
-            salesStore.salesData.length - 1
+            salesStore.salesTypeData.salesIndex
           ].businessResList"
           :key="index"
         >
