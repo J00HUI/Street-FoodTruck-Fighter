@@ -2,7 +2,7 @@
 
 푸드트럭을 쉽게 접근할 수 있는 서비스
 
-![스푸파](https://user-images.githubusercontent.com/99133426/202908814-7e073a4e-7778-4204-8b0e-ebded82ad9a3.png)
+![스푸파](https://user-images.githubusercontent.com/99133426/202908973-43099654-321b-499e-b24d-fb48b61a23ea.png)
 
 ## 🍔 서비스 소개
 
