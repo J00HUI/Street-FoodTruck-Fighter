@@ -22,10 +22,14 @@ public class OrdersHistoryRes {
 	private boolean isDone;
 	private boolean isCanceled;
 	private boolean isReviewed;
+	private String menuDescription;
+
 	private List<GetOrdersMenuRes> menuResList = new ArrayList<>();
 	//menuName, count
 
-	public static OrdersHistoryRes of(Orders orders, boolean isReviewed, List<GetOrdersMenuRes> menuResList){
+	private String orderDate;
+
+	public static OrdersHistoryRes of(Orders orders, boolean isReviewed, List<GetOrdersMenuRes> menuResList, String orderDate){
 		return new OrdersHistoryResBuilder()
 			.ordersId(orders.getId())
 			.foodtruckName(orders.getFoodTruck().getName())
@@ -34,6 +38,7 @@ public class OrdersHistoryRes {
 			.isCanceled(orders.getIsCanceled())
 			.isReviewed(isReviewed)
 			.menuResList(menuResList)
+			.orderDate(orderDate)
 			.build();
 	}
 }
