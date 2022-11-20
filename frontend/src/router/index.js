@@ -107,17 +107,17 @@ const routes = [
     component: () => import("@/views/ceo/SurveyCheckView.vue"),
   },
   {
-    path: "/paysuccess",
+    path: "/success",
     name: "paysuccess",
     component: () => import("@/components/customer/PayOk.vue"),
   },
   {
-    path: "/payfail",
+    path: "/fail",
     name: "payfail",
     component: () => import("@/components/customer/PayFail.vue"),
   },
   {
-    path: "/paycancel",
+    path: "/cancel",
     name: "paycancel",
     component: () => import("@/components/customer/PayCancel.vue"),
   },
