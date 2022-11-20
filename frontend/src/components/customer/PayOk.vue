@@ -27,7 +27,8 @@ export default {
     // console.log(para[1])
     const payToken = para[1]
     console.log(JSON.stringify(payToken))
-    payStore.payToken.pg_token = JSON.stringify(payToken)
+    // payStore.payToken.pg_token = JSON.stringify(payToken)
+    payStore.payToken.pg_token = payToken
 
     payStore.paySuccess(payStore.payToken.pg_token);
 

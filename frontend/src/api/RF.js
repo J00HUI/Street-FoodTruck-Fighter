@@ -72,6 +72,6 @@ export default {
   },
   pay:{
     pay: () => HOST + 'v1/' + 'pay',
-    paySuccess: () => HOST + 'v1/' + 'pay/' + 'success',
+    paySuccess: (pg_token) => HOST + 'v1/' + 'pay/' + 'success/' + `${pg_token}`,
   }
 };

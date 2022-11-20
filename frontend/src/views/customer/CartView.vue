@@ -5,7 +5,7 @@
       <div class="cardContainer">
         <div class="card">
           <div>
-            <img class="picture" src="@/assets/hamburger.svg" alt />
+            <img class="picture" src="@/assets/coffee.svg" alt />
           </div>
           <div class="detail">
             <div class="storeName">
