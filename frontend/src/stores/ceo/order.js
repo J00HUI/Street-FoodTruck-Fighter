@@ -5,7 +5,6 @@ import axios from "axios";
 export const useCeoOrderStore = defineStore("CeoOrder", {
   state: () => {
     const notAcceptedOrder = [
-      // 터미네이터
       {
         acceptTime: "yyyy-MM-dd HH:mm:ss",
         accepted: true,
@@ -20,54 +19,23 @@ export const useCeoOrderStore = defineStore("CeoOrder", {
       },
     ];
     const acceptedOrder = [
-      // 더미데이터
-      // {
-      //   acceptTime: "yyyy-MM-dd HH:mm:ss",
-      //   accepted: true,
-      //   menuResList: [
-      //     {
-      //       count: 0,
-      //       menuName: "string"
-      //     }
-      //   ],
-      //   orderUserId: 0,
-      //   ordersId: 0
-      // },
-      // {
-      //   acceptTime: "yyyy-MM-dd HH:mm:ss",
-      //   accepted: true,
-      //   menuResList: [
-      //     {
-      //       count: 0,
-      //       menuName: "string"
-      //     }
-      //   ],
-      //   orderUserId: 0,
-      //   ordersId: 0
-      // },
-      // {
-      //   acceptTime: "yyyy-MM-dd HH:mm:ss",
-      //   accepted: true,
-      //   menuResList: [
-      //     {
-      //       count: 0,
-      //       menuName: "string"
-      //     },
-      //     {
-      //       count: 0,
-      //       menuName: "string"
-      //     },
-      //     {
-      //       count: 0,
-      //       menuName: "string"
-      //     }
-      //   ],
-      //   orderUserId: 0,
-      //   ordersId: 0
-      // }
+      {
+        acceptTime: "yyyy-MM-dd HH:mm:ss",
+        accepted: true,
+        menuResList: [
+          {
+            count: 0,
+            menuName: "string"
+          }
+        ],
+        orderUserId: 0,
+        ordersId: 0
+      },
     ];
     const orderTypeData = {
       doneDate: 0, //주문 수락에 사용
+      notAcceptToggle: false,
+      acceptToggle: false,
     };
     return {
       viewToggle: false,
@@ -78,15 +46,23 @@ export const useCeoOrderStore = defineStore("CeoOrder", {
   },
   actions: {
     getNotAcceptedOrder() {
+      const ceoId = JSON.parse(sessionStorage.getItem("user"))['id']
       const token = localStorage.getItem("accessToken");
       axios({
-        url: RF.orders.getNotAcceptedOrder(),
+        url: RF.orders.getNotAcceptedOrder(ceoId),
         method: "get",
         headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
           console.log("-----허락안된 주문--------");
-          console.log(res);
+          if (Array.isArray(res.data)) {
+            this.notAcceptedOrder = res.data
+            this.orderTypeData.notAcceptToggle = true
+          } else {
+            this.notAcceptedOrder = null
+            this.orderTypeData.notAcceptToggle = false
+          }
+
           console.log(res.data);
         })
         .catch((err) => {
@@ -96,35 +72,27 @@ export const useCeoOrderStore = defineStore("CeoOrder", {
         });
     },
     getCeoOrders() {
+      const ceoId = JSON.parse(sessionStorage.getItem("user"))['id']
       const token = localStorage.getItem("accessToken");
       axios({
-        url: RF.orders.getCeoOrders(),
+        url: RF.orders.getCeoOrders(ceoId),
         method: "get",
         headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
           console.log("-----현재주문--------");
-          console.log(res);
+          if (Array.isArray(res.data)) {
+            this.acceptedOrder = res.data
+            this.orderTypeData.acceptToggle = true
+          } else {
+            this.acceptedOrder = null
+            this.orderTypeData.acceptToggle = false
+          }
           console.log(res.data);
         })
         .catch((err) => {
           alert("현재주문 가져오기");
           console.log(err);
-        });
-    },
-    getCeoOrdersAll() {
-      const token = localStorage.getItem("accessToken");
-      axios({
-        url: RF.orders.getCeoOrdersAll(),
-        method: "get",
-        headers: { Authorization: "Bearer " + token },
-      })
-        .then((res) => {
-          console.log("-----모든주문--------");
-          console.log(res.data);
-        })
-        .catch(() => {
-          alert("주문목록 가져오기 실패");
         });
     },
     acceptOrders(order_id) {

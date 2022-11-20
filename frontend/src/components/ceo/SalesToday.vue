@@ -4,7 +4,7 @@
       <h1 class="salesTitle">
         <span>최근 매출</span>
         <span>{{
-          salesStore.salesData[salesStore.salesData.length - 1].regDate
+          salesStore.salesData[salesStore.salesTypeData.salesIndex].regDate
         }}</span>
       </h1>
       <br />
@@ -14,11 +14,11 @@
           <div>매출액</div>
         </div>
       </div>
-      <div style="padding: 0 1rem 0 1rem">
+      <div class="TodaySalesBox">
         <div
           class="salesMenus"
           v-for="(menu, index) in salesStore.salesData[
-            salesStore.salesData.length - 1
+            salesStore.salesTypeData.salesIndex
           ].businessResList"
           :key="index"
         >
@@ -99,5 +99,15 @@ h1 {
   display: flex;
   width: 96%;
   justify-content: space-between;
+}
+.TodaySalesBox {
+  padding: 0 1rem 0 1rem;
+  height: 8rem;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.TodaySalesBox::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
 }
 </style>

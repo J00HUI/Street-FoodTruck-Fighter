@@ -1,7 +1,8 @@
 import RF from "@/api/RF";
 import axios from "axios";
 import { defineStore } from "pinia";
-
+import blue from "@/assets/ceo/noImgBlue.png"
+import green from "@/assets/ceo/noImgGreen.png"
 export const useCeoMyStore = defineStore("CeoMy", {
   state: () => {
     const myData = {
@@ -132,7 +133,12 @@ export const useCeoMyStore = defineStore("CeoMy", {
           console.log(res.data)
           if (res.data === "") {
             this.createMenuImgList.push(null)
-            this.createMenuImgUrlList.push(null)
+            if (this.createMenuImgUrlList.length % 2 === 1){ 
+              this.createMenuImgUrlList.push(green)
+            } else {
+              this.createMenuImgUrlList.push(blue)
+            }
+
           }
         })
         .catch((err) => {
