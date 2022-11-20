@@ -5,7 +5,7 @@
 <script setup>
 import router from "@/router";
 import { useCeoScheduleStore } from "@/stores/ceo/schedule.js";
-import { useKakaoStore } from "@/stores/kakao.js"
+import { useKakaoStore } from "@/stores/kakao.js";
 import { reactive, ref } from "vue";
 import "@fullcalendar/core/vdom";
 import FullCalendar from "@fullcalendar/vue3";
@@ -14,12 +14,18 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
 
-
 const store = useCeoScheduleStore();
-const kakaoStore = useKakaoStore()
+const kakaoStore = useKakaoStore();
 
-kakaoStore.searchTypeData.goBack = true
+kakaoStore.searchTypeData.goBack = true;
 //초기화
+store.scheduleAddForm = {
+  address: null,
+  latitude: null,
+  longitude: null,
+  scheduleDateDtoList: [],
+  title: "title",
+};
 store.scheduleDateDtoList = [
   {
     endTime: "00:00",
@@ -31,7 +37,6 @@ store.scheduleTypeData = {
   dateIdx: 0,
   is_update: false,
 };
-
 
 const id = ref(0);
 let colorIndex = Math.floor(Math.random() * 6);
@@ -59,7 +64,7 @@ const options = reactive({
     id.value = id.value - 1;
     const cal = arg.view.calendar;
     // cal.unselect();
-    let title = "+스케쥴";
+    let title = "title";
     // title = arg.startStr.slice(-5);
 
     colorIndex = Math.floor(Math.random() * 6);
@@ -77,7 +82,6 @@ const options = reactive({
   },
   eventClick: (e) => {
     kakaoStore.searchTypeData.goBack = false;
-    console.log(kakaoStore.searchTypeData.goBack)
     if (e.event.extendedProps["listIndex"] === undefined) {
       let end = e.event.end;
       for (let str = e.event.start; str < end; str.setDate(str.getDate() + 1)) {
@@ -97,9 +101,6 @@ const options = reactive({
       }
       store.scheduleAddForm.title = e.event.title;
     } else {
-      console.log(e.event.id);
-      console.log(e.event.extendedProps["listIndex"]);
-      console.log(store.scheduleList[e.event.extendedProps["listIndex"]]);
       let saved_schedule =
         store.scheduleList[e.event.extendedProps["listIndex"]];
       store.scheduleAddForm = saved_schedule;

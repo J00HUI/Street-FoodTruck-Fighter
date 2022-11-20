@@ -21,7 +21,7 @@ import {
   Legend,
   BarElement,
   CategoryScale,
-  LinearScale
+  LinearScale,
 } from "chart.js";
 
 ChartJS.register(
@@ -32,72 +32,79 @@ ChartJS.register(
   CategoryScale,
   LinearScale
 );
-
+import { useCeoSalesStore } from "@/stores/ceo/sales.js";
 export default {
   name: "BarChart",
   components: { Bar },
 
   setup() {
+    const salesStore = useCeoSalesStore();
     const chartId = {
       type: String,
-      default: "bar-chart"
+      default: "bar-chart",
     };
     const datasetIdKey = {
       type: String,
-      default: "label"
+      default: "label",
     };
     const width = {
       type: Number,
-      default: 200
+      default: 200,
     };
     const height = {
       type: Number,
-      default: 400
+      default: 400,
     };
     const cssClasses = {
       default: "",
-      type: String
+      type: String,
     };
     const type = { Object, default: () => {} };
     const plugins = {
       type: Object,
-      default: () => {}
+      default: () => {},
     };
     const chartData = {
-      labels: ["성훈", "태완", "승주"],
+      labels: salesStore.chartNameData,
       datasets: [
         {
-          data: [40, 20, 12],
-          backgroundColor: [      "rgba(255, 99, 132, 0.2)",
-      "rgba(54, 162, 235, 0.2)",
-      "rgba(255, 206, 86, 0.2)",
-      "rgba(75, 192, 192, 0.2)",
-      "rgba(153, 102, 255, 0.2)",
-      "rgba(255, 159, 64, 0.2)",
-      "rgba(255, 99, 132, 0.2)",
-      "rgba(54, 162, 235, 0.2)",
-      "rgba(255, 206, 86, 0.2)",
-      "rgba(75, 192, 192, 0.2)",
-      "rgba(153, 102, 255, 0.2)",
-      "rgba(255, 159, 64, 0.2)"],
-          borderColor: [      "rgba(255,99,132,1)",
-      "rgba(54, 162, 235, 1)",
-      "rgba(255, 206, 86, 1)",
-      "rgba(75, 192, 192, 1)",
-      "rgba(153, 102, 255, 1)",
-      "rgba(255, 159, 64, 1)",
-      "rgba(255,99,132,1)",
-      "rgba(54, 162, 235, 1)",
-      "rgba(255, 206, 86, 1)",
-      "rgba(75, 192, 192, 1)",
-      "rgba(153, 102, 255, 1)",
-      "rgba(255, 159, 64, 1)"],
-          borderWidth: 1
-        }
-      ]
+          label: "판매량/메뉴",
+          
+          data: salesStore.chartNumData,
+          backgroundColor: [
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
+            "rgba(255, 206, 86, 0.2)",
+            "rgba(75, 192, 192, 0.2)",
+            "rgba(153, 102, 255, 0.2)",
+            "rgba(255, 159, 64, 0.2)",
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
+            "rgba(255, 206, 86, 0.2)",
+            "rgba(75, 192, 192, 0.2)",
+            "rgba(153, 102, 255, 0.2)",
+            "rgba(255, 159, 64, 0.2)",
+          ],
+          borderColor: [
+            "rgba(255,99,132,1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(255, 206, 86, 1)",
+            "rgba(75, 192, 192, 1)",
+            "rgba(153, 102, 255, 1)",
+            "rgba(255, 159, 64, 1)",
+            "rgba(255,99,132,1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(255, 206, 86, 1)",
+            "rgba(75, 192, 192, 1)",
+            "rgba(153, 102, 255, 1)",
+            "rgba(255, 159, 64, 1)",
+          ],
+          borderWidth: 1,
+        },
+      ],
     };
     const chartOptions = {
-      responsive: true
+      responsive: true,
     };
     return {
       chartId,
@@ -108,9 +115,9 @@ export default {
       type,
       plugins,
       chartData,
-      chartOptions
+      chartOptions,
     };
-  }
+  },
 };
 </script>
 <style>

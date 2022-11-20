@@ -3,16 +3,15 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { reactive} from "vue";
 import "@fullcalendar/core/vdom";
 import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
-import { useCeoSalesStore } from "@/stores/ceo/sales";
-const salesStore = useCeoSalesStore();
-const id = ref(0);
+// import { useCeoSalesStore } from "@/stores/ceo/sales";
+// const salesStore = useCeoSalesStore();
 
 const eventList = [
   {
@@ -41,44 +40,7 @@ const options = reactive({
   events: eventList,
 
   select: arg => {
-    id.value = id.value + 1;
-    const cal = arg.view.calendar;
-    console.log(cal.getEvents());
-    let title = "";
-    if (salesStore.salesTypeData.addEventIdx === 0) {
-      cal.addEvent({
-        id: `${id.value}`,
-        title: title,
-        start: arg.end - 1,
-        end: arg.end,
-        allDay: true,
-
-        backgroundColor: "rgb(72, 131, 203)"
-      });
-      salesStore.salesTypeData.addEventIdx += 1
-    } else if (salesStore.salesTypeData.addEventIdx === 1) {
-      cal.addEvent({
-        id: `${id.value}`,
-        title: title,
-        start: arg.end - 1,
-        end: arg.end,
-        allDay: true,
-
-        backgroundColor: "rgb(203, 72, 72)"
-      });
-      salesStore.salesTypeData.addEventIdx += 1
-    } else if (salesStore.salesTypeData.addEventIdx === 2) {
-      cal.addEvent({
-        id: `${id.value}`,
-        title: title,
-        start: arg.end - 1,
-        end: arg.end,
-        allDay: true,
-
-        backgroundColor: "rgb(72, 131, 203)"
-      });
-      salesStore.salesTypeData.addEventIdx -= 1
-    }
+    console.log(arg)
 
 
     // 초록
