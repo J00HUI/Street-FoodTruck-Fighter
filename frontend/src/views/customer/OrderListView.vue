@@ -1,25 +1,48 @@
 <template>
   <Header></Header>
-  <div class="container">
-    <div class="order">
+  <div
+    class="container"
+    v-for="(orderList, index) in orderStore.orderAllData"
+    :key="index"
+  >
+    <div>
       <div class="orderDate">
-        <p>10/15 (토) º 주문완료</p>
+        <span>{{ orderList.orderDate }}</span>
+        <span> - 주문완료</span>
       </div>
       <div class="orderDetail">
-        <div class="cardContainer">
+        <div
+          class="cardContainer"
+          v-for="(order, index) in orderList.ordersHistoryResList"
+          :key="index"
+        >
           <div class="card">
             <div>
               <img class="picture" src="@/assets/foodtruck.svg" alt />
             </div>
             <div class="detail">
               <div class="storeName">
-                <h3>맛있는 햄버거</h3>
+                <h3>{{ order.foodtruckName }}</h3>
               </div>
               <div class="orders">
-                <h4>치즈버거 1개, 감자튀김 1개</h4>
+                <div>
+                  <p>{{ order.menuDescription }}</p>
+                </div>
               </div>
-              <button class="reviewButton" @click="openModal()">
+              <button
+                class="reviewButton"
+                @click="openModal()"
+                v-if="order.reviewed == false"
+              >
                 리뷰작성
+              </button>
+              <button
+                class="reviewButtonDone"
+                @click="openModal()"
+                disabled
+                v-if="order.reviewed == true"
+              >
+                작성완료
               </button>
             </div>
           </div>
@@ -55,7 +78,7 @@ export default {
       showModal.value = false;
     };
 
-    orderStore.getCustomerOrdersAll()
+    orderStore.getCustomerOrdersAll();
 
     return {
       orderStore,
@@ -69,21 +92,20 @@ export default {
 
 <style scoped>
 .container {
-  height: 100%;
+  //height: 100%;
   width: 100%;
-  display: flex;
   justify-content: center;
   align-content: center;
+  margin-left: 2rem;
 }
 .orderDate {
-  margin-left: 2rem;
+  margin-left: 0.7rem;
   color: gray;
   font-style: bold;
 }
 /***************** card style start ******************/
 .cardContainer {
   height: 100%;
-  display: flex;
   justify-content: center;
   margin-top: 1rem;
   margin-bottom: 1.5rem;
@@ -92,7 +114,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 21.5rem;
+  width: 20.5rem;
 
   height: auto;
   border: 0.1rem solid lightgray;
@@ -104,13 +126,15 @@ export default {
 
 /***************** cardDetail style start ******************/
 .picture {
-  height: 7rem;
+  margin-left: 1rem;
+  height: 5rem;
   width: auto;
 }
 .detail {
   position: relative;
   margin-left: 1rem;
   font-style: bold;
+  width: 100%;
 }
 .storeName {
   height: 34%;
@@ -123,11 +147,23 @@ export default {
 .reviewButton {
   position: relative;
   margin-left: 60%;
+  //margin-right: 1rem;
   height: 33%;
   bottom: 0.5rem;
   right: 0px;
   border: 0.2rem solid #ffdd2d;
   background-color: #fff6dd;
+  border-radius: 0.75rem;
+  padding: 0.3rem;
+}
+.reviewButtonDone {
+  position: relative;
+  margin-left: 60%;
+  height: 33%;
+  bottom: 0.5rem;
+  right: 0px;
+  border: 0.2rem solid #898989;
+  background-color: #f7f8f8;
   border-radius: 0.75rem;
   padding: 0.3rem;
 }
