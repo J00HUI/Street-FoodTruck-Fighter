@@ -15,6 +15,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
 	@Query(value = "select * \n" +
 		"from schedule \n" +
 		"where foodtruck_id = :foodtruckId \n" +
+		"And is_valid = true \n" +
 		"order by group_id;", nativeQuery = true)
 	List<Schedule> findAllByFoodtruck(Integer foodtruckId);
 
