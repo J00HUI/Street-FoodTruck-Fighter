@@ -106,8 +106,11 @@ public class MenuController {
 	}
 
 	@GetMapping("/image/{menu_id}")
-	public ResponseEntity<UrlResource> getMenuImg(@PathVariable Integer menuId) throws IOException{
+	public ResponseEntity<?> getMenuImg(@PathVariable("menu_id") Integer menuId) throws IOException{
 		MenuImg file = menuService.getMenuImg(menuId);
+		if(file == null) {
+			return new ResponseEntity<>("해당 메뉴의 이미지 파일이 없습니다.", HttpStatus.NO_CONTENT);
+		}
 		return new ResponseEntity<>(new UrlResource("file:" + file.getSavedPath()), HttpStatus.OK);
 	}
 
