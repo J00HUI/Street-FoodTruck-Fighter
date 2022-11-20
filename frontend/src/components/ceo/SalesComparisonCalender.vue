@@ -10,15 +10,10 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
-// import { useCeoSalesStore } from "@/stores/ceo/sales";
-// const salesStore = useCeoSalesStore();
+import { useCeoSalesStore } from "@/stores/ceo/sales";
+const salesStore = useCeoSalesStore();
 
-const eventList = [
-  {
-    start: "2022-11-10",
-    end: "2022-11-11"
-  }
-];
+
 // const backColorList = [rgb(72, 131, 203),rgb(203, 72, 72)]
 
 const options = reactive({
@@ -30,40 +25,23 @@ const options = reactive({
     right: "next today"
   },
   editable: true,
-  selectable: true,
+  selectable: false,
   weekends: true,
   dayMaxEvents: 1,
   eventMaxStack: 99,
   longPressDelay: 300,
   eventLongPressDelay: 300,
   selectLongPressDelay: 300,
-  events: eventList,
+  events: salesStore.eventList,
 
-  select: arg => {
-    console.log(arg)
-
-
-    // 초록
-    // cal.addEvent({
-    //   id: `${id.value}`,
-    //   title: title,
-    //   start: arg.start,
-    //   end: arg.end,
-    //   allDay: true,
-    //   display: 'background',
-    //   backgroundColor: "rgba(89, 250, 99, 0.644)",
-    // });
-  },
   eventClick: e => {
-    console.log(e);
-    // for (let str = e.event.start; str < end; str.setDate(str.getDate() + 1)) {
+    salesStore.salesTypeData.salesIndex = e.event.extendedProps['listIndex']
+    salesStore.salesTypeData.is_chart = false
+    salesStore.makeSalesData()
+    salesStore.salesTypeData.viewToggle = false
 
-    // }
   },
-  // eventMouseEnter: arg => {
 
-  //   console.log(arg.event.taget);
-  // },
 
   titleFormat: function(date) {
     return `${date.date.year}년 ${date.date.month + 1}월`;

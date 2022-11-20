@@ -276,7 +276,7 @@ textarea {
   scrollbar-width: none; /* Firefox */
   border: none;
   outline: none;
-  background-color: var(--color-purple-1);
+  background-color: var(--color-gray-1);
   font: 1rem "SCoreDream";
 }
 .newMenuTitle {
@@ -394,4 +394,5 @@ textarea::-webkit-scrollbar {
   vertical-align: bottom;
   width: 1.5rem;
 }
+
 </style>

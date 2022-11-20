@@ -1,7 +1,7 @@
 <template>
   <div class="newOrderView">
     <h1>새로운 주문 내역</h1>
-    <div v-if="orderStore.notAcceptedOrder.length">
+    <div v-if="orderStore.orderTypeData.notAcceptToggle">
       <section
         class="newOrderBox"
         v-for="(order, o_i) in [orderStore.notAcceptedOrder[0]]"
@@ -56,8 +56,6 @@
 
 <script>
 import { useCeoOrderStore } from "@/stores/ceo/order";
-import $ from "jquery";
-import RF from "@/api/RF";
 
 export default {
   setup() {
@@ -69,37 +67,7 @@ export default {
       orderStore.orderTypeData.doneDate = time;
     }
 
-    start();
-    var evtsource = null;
-    function start() {
-      const ceo_id = JSON.parse(sessionStorage.getItem("user")).id;
-      // const token = localStorage.getItem("accessToken");
-      evtsource = new EventSource(RF.orders.getCeoOrders(ceo_id), {
-         withCredentials: true,
-      });
-      evtsource.onmessage = function(ev) {
-        console.log("on message: ", ev.data);
-      };
-      evtsource.onerror = function(err) {
-        console.log("on err: ", err);
-        stop();
-      };
-    }
-    function stop() {
-      if (evtsource != null) {
-        evtsource.close();
-        console.log("close EventSource");
-        evtsource = null;
-      }
-    }
-
-    $(document).ready(function() {
-      start();
-    });
-    $(window).on("unload", function() {
-      stop();
-    });
-
+    
     return {
       orderStore,
       selectTime,
