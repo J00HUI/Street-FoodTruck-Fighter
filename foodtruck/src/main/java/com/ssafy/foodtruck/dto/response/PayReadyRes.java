@@ -13,4 +13,8 @@ public class PayReadyRes {
 	String ios_app_scheme;
 	String created_at;
 	boolean tms_result;
+
+	String partner_order_id;
+	String partner_user_id;
+
 }

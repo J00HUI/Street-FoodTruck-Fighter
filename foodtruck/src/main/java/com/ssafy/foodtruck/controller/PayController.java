@@ -2,6 +2,7 @@ package com.ssafy.foodtruck.controller;
 
 import com.ssafy.foodtruck.db.entity.User;
 import com.ssafy.foodtruck.dto.PayApprovalDto;
+import com.ssafy.foodtruck.dto.request.PayApprovalReq;
 import com.ssafy.foodtruck.dto.request.PayReadyReq;
 import com.ssafy.foodtruck.dto.request.RegisterOrdersReq;
 import com.ssafy.foodtruck.dto.response.PayApprovalRes;
@@ -63,6 +64,9 @@ public class PayController {
 				String.valueOf(registerOrdersRes.getOrders().getUser().getId())
 			);
 
+			payReadyRes.setPartner_order_id(String.valueOf(registerOrdersRes.getOrders().getId()));
+			payReadyRes.setPartner_user_id(String.valueOf(registerOrdersRes.getOrders().getUser().getId()));
+
 			return new ResponseEntity<>(payReadyRes, HttpStatus.OK);
 
 		} catch (NotFoundException ex) {
@@ -70,12 +74,12 @@ public class PayController {
 		}
 	}
 
-	@GetMapping("/success")
+	@PostMapping("/success/{pg_token}")
 	@ApiOperation(value = "결제 승인 요청", notes = "<strong>토큰을 통해 카카오 Pay API에 결제 승인 요청을 한다.</strong>")
-	public ResponseEntity<PayApprovalRes> paySuccess(@RequestParam @ApiParam(value="결제 승인 요청 토큰", required = true) String pg_token){
+	public ResponseEntity<PayApprovalRes> paySuccess(@PathVariable("pg_token") @ApiParam(value="결제 승인 요청 토큰", required = true) String pg_token, @RequestBody @ApiParam(value="결제 승인 요청", required = true) PayApprovalReq payApprovalReq){
 		System.out.println("token: " + pg_token);
-		System.out.println("tid : " + payApprovalDto.getTid());
-		ResponseEntity<PayApprovalRes> payApprovalRes = payService.paySuccess(payApprovalDto, pg_token);
+		System.out.println("tid : " + payApprovalReq.getTid());
+		ResponseEntity<PayApprovalRes> payApprovalRes = payService.paySuccess(payApprovalReq, pg_token);
 
 		// 결제 완료 설정
 		ordersService.successPay(Integer.parseInt(payApprovalDto.getPartner_order_id()));
