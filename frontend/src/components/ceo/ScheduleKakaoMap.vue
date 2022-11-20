@@ -25,6 +25,7 @@ export default {
     const scheduleStore = useCeoScheduleStore();
     const myStore = useCeoMyStore();
     const iconType = [emptyMarker, addressIcon, addressXIcon];
+ 
     let dataCase = null;
     if (store.searchTypeData.viewType === "schedule") {
       dataCase = scheduleStore.scheduleAddForm;
@@ -63,7 +64,33 @@ export default {
 
       // 주소-좌표 변환 객체를 생성합니다
       var geocoder = new kakao.maps.services.Geocoder();
-      store.searchTypeData.geocoder = geocoder;
+      if (dataCase.address !== null || dataCase.address !== null) {
+        geocoder.addressSearch(dataCase.address, function (result, status) {
+          // 정상적으로 검색이 완료됐으면
+          if (status === kakao.maps.services.Status.OK) {
+            store.searchTypeData.iconType = iconType[1];
+            var coords = new kakao.maps.LatLng(
+              dataCase.latitude,
+              dataCase.longitude
+            );
+            marker.setPosition(coords);
+            marker.setMap(initMap.map);
+            var content =
+              '<div class="contentBox"><div class="bAddr">' +
+              dataCase.address +
+              "</div></div> ";
+            customOverlay.setContent(content);
+            customOverlay.setPosition(
+              new kakao.maps.LatLng(dataCase.latitude, dataCase.longitude)
+            );
+
+            // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+            initMap.map.setCenter(coords);
+          } else {
+            store.searchTypeData.iconType = iconType[2];
+          }
+        });
+      } else store.searchTypeData.geocoder = geocoder;
       store.searchTypeData.map = initMap.map;
 
       var imageSrc = truckMarker;
@@ -229,6 +256,7 @@ export default {
   background: rgba(255, 255, 255, 0.8);
   z-index: 1;
   padding: 5px;
+  max-width: 60%;
 }
 #centerAddr {
   display: block;

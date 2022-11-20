@@ -127,7 +127,7 @@ export default {
       );
     }
     function myUpdate() {
-      if (myStore.myTypeData) {
+      if (myStore.myTypeData.is_update) {
         myStore.updateFoodTruck();
       } else {
         myStore.setFoodTruck();
