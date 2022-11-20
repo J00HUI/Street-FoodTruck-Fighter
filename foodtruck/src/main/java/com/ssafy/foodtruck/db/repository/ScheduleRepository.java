@@ -30,7 +30,8 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
 	@Query(value = "SELECT *\n" +
 		"FROM schedule\n" +
 		"WHERE foodtruck_id = :foodTruckId \n" +
-		"And curdate() = working_date;", nativeQuery = true)
+		"And curdate() = working_date" +
+		"AND is_valid = true;", nativeQuery = true)
 	Optional<Schedule> findScheduleByFoodTruckAndDate(int foodTruckId);
 
 	// 이번달에 해당하는 스케줄을 가져온다.
