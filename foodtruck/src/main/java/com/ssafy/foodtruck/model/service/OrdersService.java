@@ -18,6 +18,9 @@ import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.NoSuchElementException;
+
+import static com.ssafy.foodtruck.constant.OrdersConsatnt.NOT_FOUND_ORDER_ERROR_MESSAGE;
 
 @RequiredArgsConstructor
 @Service
@@ -113,29 +116,68 @@ public class OrdersService {
 		return currentOrdersHistoryResList;
 	}
 
-	public List<OrdersHistoryRes> getCustomerOrdersAll(User user) {
+	public List<OrdersHistoryAllRes> getCustomerOrdersAll(User user) {
 
+		List<OrdersHistoryAllRes> ordersHistoryAllResList = new ArrayList<>();
 		List<OrdersHistoryRes> ordersHistoryResList = new ArrayList<>();
 		List<Orders> ordersList = ordersRepository.findAllByUser(user.getId());
 
-		for(Orders orders : ordersList) {
+		if(ordersList.size() == 0) {
+			throw new NoSuchElementException(NOT_FOUND_ORDER_ERROR_MESSAGE);
+		}
+
+		LocalDateTime baseOrderDate = ordersList.get(0).getRegDate();
+		String baseDayOfWeek = baseOrderDate.getDayOfWeek().getDisplayName(TextStyle.NARROW, Locale.KOREA);
+		String baseDateStr = baseOrderDate.getYear()+"/"+baseOrderDate.getMonthValue()+"/"+baseOrderDate.getDayOfMonth()+"("+baseDayOfWeek+")";
+
+		for(int i=0; i<ordersList.size(); i++) {
+			Orders orders = ordersList.get(i);
 
 			LocalDateTime date = orders.getRegDate();
 			String dayOfWeek = date.getDayOfWeek().getDisplayName(TextStyle.NARROW, Locale.KOREA);
 			String dateStr = date.getYear()+"/"+date.getMonthValue()+"/"+date.getDayOfMonth()+"("+dayOfWeek+")";
 
-			List<GetOrdersMenuRes> menuResList = new ArrayList<>();
+			String menuDescription="";
 			List<OrdersMenu> ordersMenuList = ordersMenuRepository.findAllByOrders(orders);
-			for(OrdersMenu ordersMenu : ordersMenuList){
-				menuResList.add(GetOrdersMenuRes.of(ordersMenu.getMenu().getName(), ordersMenu.getCount(), ordersMenu.getMenu().getMenuImg()));
+			for(int j=0; j<ordersMenuList.size(); j++){
+				OrdersMenu ordersMenu = ordersMenuList.get(j);
+				menuDescription += ordersMenu.getMenu().getName() + " " + ordersMenu.getCount() + "개";
+				if(j != ordersMenuList.size()-1) {
+					menuDescription += ", ";
+				}
 			}
+
 			boolean isReviewed = false;
 			Review review = reviewRepository.findReviewByOrdersAndUser(orders, user).orElse(null);
 			if(review != null) isReviewed = true;
-			ordersHistoryResList.add(OrdersHistoryRes.of(orders, isReviewed, menuResList, dateStr));
+
+			if(baseDateStr.equals(dateStr)) {
+				ordersHistoryResList.add(OrdersHistoryRes.of(orders, isReviewed, menuDescription));
+				baseDateStr = dateStr;
+			} else {
+				// 날짜가 달라지면 이전 날짜 가져와서 add
+				List<OrdersHistoryRes> input = new ArrayList<>();
+				input.addAll(ordersHistoryResList);
+
+				ordersHistoryAllResList.add(OrdersHistoryAllRes.builder()
+					.orderDate(baseDateStr)
+					.ordersHistoryResList(input).build());
+
+				ordersHistoryResList.clear();
+
+				// 주문 내역 list 에 현재 주문 내역 add
+				ordersHistoryResList.add(OrdersHistoryRes.of(orders, isReviewed, menuDescription));
+				baseDateStr = dateStr;
+			}
+
+			if(i==ordersList.size()-1) {	// 마지막 주문 내역
+				ordersHistoryAllResList.add(OrdersHistoryAllRes.builder()
+					.orderDate(baseDateStr)
+					.ordersHistoryResList(ordersHistoryResList).build());
+			}
 		}
 
-		return ordersHistoryResList;
+		return ordersHistoryAllResList;
 	}
 
 	public List<CurrentOrdersListByFoodtruckRes> getCeoOrdersNotAccepted(User ceoUser) {
