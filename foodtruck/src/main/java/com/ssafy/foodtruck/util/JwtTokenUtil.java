@@ -6,7 +6,9 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.*;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.ssafy.foodtruck.dto.UserDto;
+import com.ssafy.foodtruck.db.entity.User;
+import com.ssafy.foodtruck.db.repository.UserRepository;
+import com.ssafy.foodtruck.dto.request.UserReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -31,19 +33,21 @@ public class JwtTokenUtil {
 
     private final RedisUtil redisUtil;
 
+	private static UserRepository userRepository;
+
     private static String secretKey;
     public static Integer expirationTime;
 
     @Autowired
-    public JwtTokenUtil(@Value("${jwt.secret}") String secretKey, @Value("${jwt.expiration}") Integer expirationTime, RedisUtil redisUtil) {
+    public JwtTokenUtil(@Value("${jwt.secret}") String secretKey, @Value("${jwt.expiration}") Integer expirationTime, RedisUtil redisUtil, UserRepository userRepository) {
         this.secretKey = secretKey;
         this.expirationTime = expirationTime;
         this.redisUtil=redisUtil;
+		this.userRepository = userRepository;
     }
 
     public static JWTVerifier getVerifier() {
-        return JWT
-                .require(Algorithm.HMAC512(secretKey.getBytes()))
+        return JWT.require(Algorithm.HMAC512(secretKey.getBytes()))
                 .withIssuer(ISSUER)
                 .build();
     }
@@ -73,8 +77,7 @@ public class JwtTokenUtil {
     }
 
     public static void handleError(String token) {
-        JWTVerifier verifier = JWT
-                .require(Algorithm.HMAC512(secretKey.getBytes()))
+        JWTVerifier verifier = JWT.require(Algorithm.HMAC512(secretKey.getBytes()))
                 .withIssuer(ISSUER)
                 .build();
 
@@ -125,7 +128,7 @@ public class JwtTokenUtil {
         }
     }
 
-    public JWToken createToken(UserDto userDto, Authentication auth) {
+    public JWToken createToken(UserReq userDtoReq, Authentication auth) {
         Date date = new Date();
         Long accessExpires = 24 * 60 * 60 * 1000L; // 1day
         Long refreshExpires = 60 * 60 * 24 * 15 * 1000L; // 15days
@@ -136,7 +139,7 @@ public class JwtTokenUtil {
                 .collect(Collectors.joining(","));
 
         String accessToken = JWT.create()
-                .withSubject(userDto.getEmail())
+                .withSubject(userDtoReq.getEmail())
                 .withClaim("auth", authorities)
                 .withExpiresAt(new Date(date.getTime() + accessExpires))
                 .withIssuer(ISSUER)
@@ -144,7 +147,7 @@ public class JwtTokenUtil {
                 .sign(Algorithm.HMAC512(secretKey.getBytes()));
 
         String refreshToken = JWT.create()
-                .withSubject(userDto.getEmail())
+                .withSubject(userDtoReq.getEmail())
                 .withExpiresAt(new Date(date.getTime() + refreshExpires))
                 .withIssuer(ISSUER)
                 .withIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
@@ -179,13 +182,19 @@ public class JwtTokenUtil {
                 .build();
     }
 
-    public String getEmailFromBearerToken(String bearerToken) {
+    public static String getEmailFromBearerToken(String bearerToken) {
         if (bearerToken.startsWith(TOKEN_PREFIX)) {
             String token = bearerToken.substring(TOKEN_PREFIX.length());
             return decodeToken(token).getSubject();
         }
         throw new RuntimeException();
     }
+
+	public static int getUserIdFromBearerToken(String bearertoken) {
+		String email = getEmailFromBearerToken(bearertoken);
+		User user = userRepository.findByEmail(email).get();
+		return user.getId();
+	}
 
     public String getEmailFromRefreshToken(String refreshToken) {
         return decodeToken(refreshToken).getSubject();

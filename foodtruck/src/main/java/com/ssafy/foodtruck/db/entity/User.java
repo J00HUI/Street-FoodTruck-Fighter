@@ -13,35 +13,43 @@ import java.util.Set;
 @Builder
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class User extends BaseEntity {
 
-    @Unique
-    @NotNull
-    @Column(length = 50)
-    private String nickname;
+	@Unique
+	@NotNull
+	@Column(length = 50)
+	private String nickname;
 
-    @Unique
-    @NotNull
-    @Column(length = 50)
-    private String email;
+	@Unique
+	@NotNull
+	@Column(length = 50)
+	private String email;
 
-    @NotNull
-    @Column(length = 50)
-    private String password;
+	@NotNull
+	@Column(length = 100)
+	private String password;
 
-    @NotNull
-    @Column(length = 50)
-    private String phone;
+	@NotNull
+	@Column(length = 50)
+	private String phone;
 
-    @Enumerated(EnumType.STRING)
-    @NotNull
-    private UserType userType;
+	@Enumerated(EnumType.STRING)
+	@NotNull
+	private UserType userType;
 
-    @Unique
-    @Column(length = 50)
-    private String businessNumber;
+	@Unique
+	@Column(length = 50)
+	private String businessNumber;
 
-    @Transient
-    private Set<Authority> authorities;
+	@Builder.Default
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<Orders> ordersList = new ArrayList<>();
+
+	@Builder.Default
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<Review> reviewList = new ArrayList<>();
+
+	@Transient
+	private Set<Authority> authorities;
 }

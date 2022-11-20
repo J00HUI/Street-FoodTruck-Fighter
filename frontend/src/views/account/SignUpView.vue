@@ -1,5 +1,19 @@
 <template>
-    <div>
-      <h1>This is an about page</h1>
-    </div>
-  </template>
+  <SignUpHeader></SignUpHeader>
+  <SignUpBody></SignUpBody>
+</template>
+
+<script>
+import SignUpHeader from "@/components/customer/SignUpHeader.vue";
+import SignUpBody from "@/components/customer/SignUpBody.vue";
+
+export default {
+  components: {
+    SignUpHeader,
+    SignUpBody,
+  },
+};
+</script>
+
+<style scoped>
+</style>
