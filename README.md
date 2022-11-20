@@ -78,30 +78,38 @@
 
 ### 사용자
 - 메인화면
+
 ![사용자 메인화면](https://user-images.githubusercontent.com/99133426/202927894-b803b711-c51c-43f9-8d16-c4febd878597.png)
 
 - 내 주변 푸드트럭 찾기
+
 ![내 주변 푸드트럭](https://user-images.githubusercontent.com/99133426/202927991-9b4bbc10-6aa7-4c85-936e-4f4a597a41b2.png)
 
 - 주문하기
 
 - 원해요 푸드트럭
+
 ![원해요 푸드트럭 사용자](https://user-images.githubusercontent.com/99133426/202928023-74266b7f-847c-4409-9a5d-8b076059113b.png)
 
 ### 사업자
 - 메인화면
+
 ![사업자 메인화면](https://user-images.githubusercontent.com/99133426/202927863-a5bae8cc-50c4-4ea9-bbda-1510756ab91d.png)
 
 - 매출통계
+
 ![매출통계](https://user-images.githubusercontent.com/99133426/202928074-d5e50674-8f73-406c-8958-8beb51f29414.png)
 
 - 스케줄 관리
+
 ![스케줄 등록](https://user-images.githubusercontent.com/99133426/202928106-9e6dd738-54d7-4f5e-9293-98b69c3f3021.png)
 
 - 수요조사
 
 - 마이푸드트럭
+
 ![마이푸드트럭 등록](https://user-images.githubusercontent.com/99133426/202928167-c1c5d94e-ff8b-4d07-9ad5-026e1fc0a34e.png)
+
 ![메뉴 등록](https://user-images.githubusercontent.com/99133426/202928171-eb706aab-8abf-4ab7-83f5-1b56bed2be13.png)
 
 ## 📚 산출물
