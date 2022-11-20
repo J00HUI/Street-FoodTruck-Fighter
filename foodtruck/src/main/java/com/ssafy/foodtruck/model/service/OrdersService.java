@@ -12,9 +12,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @RequiredArgsConstructor
 @Service
@@ -111,19 +114,25 @@ public class OrdersService {
 	}
 
 	public List<OrdersHistoryRes> getCustomerOrdersAll(User user) {
+
 		List<OrdersHistoryRes> ordersHistoryResList = new ArrayList<>();
 		List<Orders> ordersList = ordersRepository.findAllByUser(user.getId());
 
-		for(Orders order : ordersList) {
+		for(Orders orders : ordersList) {
+
+			LocalDateTime date = orders.getRegDate();
+			String dayOfWeek = date.getDayOfWeek().getDisplayName(TextStyle.NARROW, Locale.KOREA);
+			String dateStr = date.getYear()+"/"+date.getMonthValue()+"/"+date.getDayOfMonth()+"("+dayOfWeek+")";
+
 			List<GetOrdersMenuRes> menuResList = new ArrayList<>();
-			List<OrdersMenu> ordersMenuList = ordersMenuRepository.findAllByOrders(order);
+			List<OrdersMenu> ordersMenuList = ordersMenuRepository.findAllByOrders(orders);
 			for(OrdersMenu ordersMenu : ordersMenuList){
 				menuResList.add(GetOrdersMenuRes.of(ordersMenu.getMenu().getName(), ordersMenu.getCount(), ordersMenu.getMenu().getMenuImg()));
 			}
 			boolean isReviewed = false;
-			Review review = reviewRepository.findReviewByOrdersAndUser(order, user).orElse(null);
+			Review review = reviewRepository.findReviewByOrdersAndUser(orders, user).orElse(null);
 			if(review != null) isReviewed = true;
-			ordersHistoryResList.add(OrdersHistoryRes.of(order, isReviewed, menuResList));
+			ordersHistoryResList.add(OrdersHistoryRes.of(orders, isReviewed, menuResList, dateStr));
 		}
 
 		return ordersHistoryResList;
