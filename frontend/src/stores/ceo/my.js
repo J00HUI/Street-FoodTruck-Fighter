@@ -109,7 +109,7 @@ export const useCeoMyStore = defineStore("CeoMy", {
           this.newMenuDataList.push(newData)
           this.myTypeData.newMenuIndex += res.data.length - 1
           this.myTypeData.savedMenuIndex = res.data.length - 1
-          console.log(res.data)
+
           let max_i = res.data.length
           for (let i = 0; i < max_i - 1; i++) {
             if (this.newMenuDataList[i].menuId === null) {
@@ -130,10 +130,10 @@ export const useCeoMyStore = defineStore("CeoMy", {
         method: "get",
       })
         .then((res) => {
-          console.log(res.data)
+
           if (res.data === "") {
             this.createMenuImgList.push(null)
-            if (this.createMenuImgUrlList.length % 2 === 1){ 
+            if (this.createMenuImgUrlList.length % 2 === 1) {
               this.createMenuImgUrlList.push(green)
             } else {
               this.createMenuImgUrlList.push(blue)
@@ -214,8 +214,7 @@ export const useCeoMyStore = defineStore("CeoMy", {
         headers: { Authorization: "Bearer " + token },
         data: formData,
       })
-        .then((res) => {
-          console.log(res);
+        .then(() => {
         })
         .catch((err) => {
           console.log(err);

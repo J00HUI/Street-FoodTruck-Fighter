@@ -68,6 +68,7 @@ export const useCeoScheduleStore = defineStore("CeoSchedule", {
           data: this.scheduleAddForm
         })
         .then(() => {
+          router.push('/schedule')
         })
         .catch((err) => {
           console.log(err);

@@ -3,7 +3,7 @@
   <div class="container">
     <div class="top">
       <div class="pictureContainer">
-        <img class="picture" src="@/assets/hamburger.svg" alt />
+        <img class="picture" src="@/assets/coffee.svg" alt />
       </div>
       <div class="amount">
         <button @click="minusAmount">-</button>

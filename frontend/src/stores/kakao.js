@@ -24,7 +24,7 @@ export const useKakaoStore = defineStore("Kakao", {
     };
     const surveyData = [{
     }
-     
+
     ];
     return {
       s_markers_info: [],
