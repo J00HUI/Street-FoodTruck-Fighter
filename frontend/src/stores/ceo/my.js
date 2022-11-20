@@ -5,11 +5,8 @@ import { defineStore } from "pinia";
 export const useCeoMyStore = defineStore("CeoMy", {
   state: () => {
     const myData = {
-      address: "",
       category: "",
-      description: "string",
-      latitude: 0,
-      longitude: 0,
+      description: "",
       name: "",
       phone: "",
     };
@@ -55,14 +52,13 @@ export const useCeoMyStore = defineStore("CeoMy", {
       });
       location.reload();
     },
-    setNewMenu () {
+    setNewMenu() {
       const token = localStorage.getItem("accessToken");
       const menuList = {
         menuReqList: [
         ]
       }
-
-      menuList.menuReqList = this.newMenuDataList.slice(0,-1)
+      menuList.menuReqList = this.newMenuDataList.slice(0, -1)
       console.log(menuList)
       axios({
         url: RF.menu.setMenu(),
@@ -78,8 +74,6 @@ export const useCeoMyStore = defineStore("CeoMy", {
           console.log(err);
         });
     },
-
-
     setFoodTruck() {
       // let formData = new FormData()
       // formData.append('file', this.myTypeData.truckImg)
@@ -87,7 +81,7 @@ export const useCeoMyStore = defineStore("CeoMy", {
       axios({
         url: RF.foodtruck.registerFoodTruck(),
         method: "post",
-        headers: {Authorization: "Bearer " + token,},
+        headers: { Authorization: "Bearer " + token, },
         data: this.myData,
       })
         .then(() => {
@@ -103,10 +97,14 @@ export const useCeoMyStore = defineStore("CeoMy", {
         url: RF.foodtruck.updateFoodTruck(),
         method: "patch",
         headers: { Authorization: "Bearer " + token },
-        data:this.myData,
+        data: this.myData,
       })
-        .then(() => {
-          this.setImg()
+        .then((res) => {
+          console.log(res)
+          if (this.myTypeData.truckImg !== null) {
+            this.setImg()
+          }
+
         })
         .catch((err) => {
           console.log(err);
@@ -121,14 +119,10 @@ export const useCeoMyStore = defineStore("CeoMy", {
         headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
-          ["address", "category", "description", "latitude", "longitude", "name","phone"]
-          
-          
-          
-          
-          
-          
-          
+          this.myData.category = res.data.category
+          this.myData.description = res.data.description
+          this.myData.name = res.data.name
+          this.myData.phone = res.data.phone
           this.myTypeData.is_update = true
           console.log(res.data)
         })
@@ -139,7 +133,6 @@ export const useCeoMyStore = defineStore("CeoMy", {
 
     setImg() {
       var formData = new FormData();
-      console.log(this.myData.truckImg);
       formData.append("file", this.myTypeData.truckImg);
       const token = localStorage.getItem("accessToken");
       axios({
@@ -169,8 +162,6 @@ export const useCeoMyStore = defineStore("CeoMy", {
           if (res.data !== null) {
             this.drawTruckImg(res)
           }
-
-
         })
         .catch((err) => {
           console.log(err);
@@ -193,6 +184,6 @@ export const useCeoMyStore = defineStore("CeoMy", {
         "imgVisible"
       );
     },
-    
+
   },
 });

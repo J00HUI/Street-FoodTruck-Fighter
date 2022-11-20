@@ -17,11 +17,9 @@
 </template>
 
 <script>
-import { useCeoOrderStore } from '@/stores/ceo/order';
 export default {
   setup() {
-    const orderStore = useCeoOrderStore()
-    orderStore.getCeoOrders()
+
     const selectTime = [5, 10, 15, 20, 25]
     return {
       selectTime

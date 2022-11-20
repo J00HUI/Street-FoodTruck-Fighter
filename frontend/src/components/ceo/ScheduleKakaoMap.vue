@@ -13,7 +13,6 @@
 <script>
 import { useKakaoStore } from "@/stores/kakao.js";
 import { useCeoScheduleStore } from "@/stores/ceo/schedule";
-import { useCeoMyStore } from "@/stores/ceo/my";
 import { onMounted, watch } from "vue";
 import truckMarker from "@/assets/ceo/mapTruck.svg";
 import emptyMarker from "@/assets/ceo/myEmptyMarkerIcon.svg";
@@ -23,15 +22,10 @@ export default {
   setup() {
     const store = useKakaoStore();
     const scheduleStore = useCeoScheduleStore();
-    const myStore = useCeoMyStore();
     const iconType = [emptyMarker, addressIcon, addressXIcon];
  
-    let dataCase = null;
-    if (store.searchTypeData.viewType === "schedule") {
-      dataCase = scheduleStore.scheduleAddForm;
-    } else if (store.searchTypeData.viewType === "my") {
-      dataCase = myStore.myData;
-    }
+    let dataCase =  scheduleStore.scheduleAddForm;
+
     /* global kakao */
     onMounted(() => {
       if (window.kakao && window.kakao.maps) {
