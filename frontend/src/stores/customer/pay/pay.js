@@ -19,10 +19,17 @@ export const usePayStore = defineStore("Pay", {
       pg_token: "",
     };
 
+    const payReq = {
+      partner_order_id: "",
+      partner_user_id: "",
+      tid: "",
+    };
+
     return {
       bill,
       parameter,
       payToken,
+      payReq,
     };
   },
   actions: {
@@ -36,28 +43,33 @@ export const usePayStore = defineStore("Pay", {
         data: this.bill,
       })
         .then((res) => {
-          console.log("pay success " + res.data);
-          console.log("res " + JSON.stringify(res.data));
+          // console.log("pay success " + res.data);
+          // console.log("res " + JSON.stringify(res.data));
           window.location.href = res.data.next_redirect_mobile_url;
           this.parameter = document.location.href.split("=");
-          console.log(this.parameter + " para");
+          // console.log(this.parameter + " para");
+          this.payReq.tid = res.data.tid;
+          this.payReq.partner_order_id = res.data.partner_order_id;
+          this.payReq.partner_user_id = res.data.partner_user_id;
+          // console.log("pay ssss!! " + JSON.stringify(this.payReq));
         })
         .catch(() => {
-          console.log("pay error!!" + JSON.stringify(this.bill));
+          console.log("pay error!! " + JSON.stringify(this.payReq));
         });
     },
 
     paySuccess(token) {
       axios({
-        url: RF.pay.paySuccess() + `?pg_token=${token}`,
-        method: "get",
+        url: RF.pay.paySuccess(token),
+        method: "post",
+        data: this.payReq,
       })
         .then((res) => {
           console.log("pay success " + res.data);
         })
-        .catch((res) => {
+        .catch(() => {
           console.log(this.parameter);
-          console.log("pay error!!" + res);
+          console.log("pay error!!" + JSON.stringify(this.payReq));
         });
     },
   },
