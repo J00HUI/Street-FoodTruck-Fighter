@@ -8,6 +8,7 @@ import com.ssafy.foodtruck.dto.request.MenuReq;
 import com.ssafy.foodtruck.dto.request.RegisterMenuReq;
 import com.ssafy.foodtruck.dto.request.UpdateMenuReq;
 import com.ssafy.foodtruck.dto.response.MenuRes;
+import com.ssafy.foodtruck.dto.response.RegisterMenuRes;
 import com.ssafy.foodtruck.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.Opt;
@@ -32,7 +33,9 @@ public class MenuService {
 	private final FoodtruckRepository foodTruckRepository;
 	private final MenuRepository menuRepository;
 
-	public void registerMenu(RegisterMenuReq registerMenuReq, User user) throws IOException {
+	public List<RegisterMenuRes> registerMenu(RegisterMenuReq registerMenuReq, User user) throws IOException {
+
+		List<RegisterMenuRes> list = new ArrayList<>();
 
 		// user 에 해당하는 푸드트럭 조회
 		FoodTruck foodTruck = foodTruckRepository.findByUser(user)
@@ -48,7 +51,16 @@ public class MenuService {
 				.description(menuReq.getDescription())
 				.build();
 			menuRepository.save(menu);
+
+
+			list.add(RegisterMenuRes.builder()
+					.id(menu.getId())
+					.description(menu.getDescription())
+					.name(menu.getName())
+					.price(menu.getPrice())
+					.build());
 		}
+		return list;
 	}
 
 	@Transactional

@@ -6,6 +6,7 @@ import com.ssafy.foodtruck.db.entity.User;
 import com.ssafy.foodtruck.db.repository.UserRepository;
 import com.ssafy.foodtruck.dto.request.RegisterMenuReq;
 import com.ssafy.foodtruck.dto.request.UpdateMenuReq;
+import com.ssafy.foodtruck.dto.response.RegisterMenuRes;
 import com.ssafy.foodtruck.exception.NotFoundException;
 import com.ssafy.foodtruck.model.service.FoodTruckService;
 import com.ssafy.foodtruck.model.service.MenuService;
@@ -58,8 +59,8 @@ public class MenuController {
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
 
 		try {
-			menuService.registerMenu(registerMenuReq, user);
-			return new ResponseEntity<>(REGISTER_MENU_SUCCESS, HttpStatus.CREATED);
+			List<RegisterMenuRes> list = menuService.registerMenu(registerMenuReq, user);
+			return new ResponseEntity<>(list, HttpStatus.CREATED);
 		} catch (NotFoundException ex) {
 			return new ResponseEntity<>(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE, HttpStatus.BAD_REQUEST);
 		} catch (IOException e){
