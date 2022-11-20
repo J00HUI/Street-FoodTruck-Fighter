@@ -1,5 +1,7 @@
 package com.ssafy.foodtruck.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.ssafy.foodtruck.dto.request.RegisterFoodtruckReq;
 import com.sun.istack.NotNull;
 import lombok.*;
