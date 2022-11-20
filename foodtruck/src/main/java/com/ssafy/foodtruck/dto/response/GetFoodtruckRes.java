@@ -110,19 +110,19 @@ public class GetFoodtruckRes extends BaseResponseBody {
 			}
 		}
 
-		if(schedule != null) {
-			res.setWorkingDate(schedule.getWorkingDate());
-			res.setStartTime(schedule.getStartTime());
-			res.setEndTime(schedule.getEndTime());
-			res.setIs_valid(schedule.getIsValid());
-			res.setLatitude(schedule.getLatitude());
-			res.setLongitude(schedule.getLongitude());
-			res.setAddress(schedule.getAddress());
-			res.setTitle(schedule.getTitle());
-			res.setGroupId(schedule.getGroupId());
-		} else {
-			res.setIs_valid(false);
-		}
+//		if(schedule != null) {
+//			res.setWorkingDate(schedule.getWorkingDate());
+//			res.setStartTime(schedule.getStartTime());
+//			res.setEndTime(schedule.getEndTime());
+//			res.setIs_valid(schedule.getIsValid());
+//			res.setLatitude(schedule.getLatitude());
+//			res.setLongitude(schedule.getLongitude());
+//			res.setAddress(schedule.getAddress());
+//			res.setTitle(schedule.getTitle());
+//			res.setGroupId(schedule.getGroupId());
+//		} else {
+//			res.setIs_valid(false);
+//		}
 
 		res.setGrade(grade);
 		res.setNumberOfPeople(numberOfPeople);

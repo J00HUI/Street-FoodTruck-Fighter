@@ -36,7 +36,6 @@ public class FoodTruckService {
 		FoodTruck foodTruck = foodTruckRepository.findById(foodTruckId)
 			.orElseThrow(() -> new IllegalArgumentException(NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE));
 
-		Schedule schedule = scheduleRepository.findScheduleByFoodTruckAndDate(foodTruckId).orElse(null);
 
 		List<Menu> findMenuList = menuRepository.findAllByFoodTruck(foodTruck);
 		List<MenuRes> menuList = new ArrayList<>();
@@ -55,7 +54,7 @@ public class FoodTruckService {
 
 		FoodtruckImg foodtruckImg = foodTruck.getFoodtruckImg();
 
-		return GetFoodtruckRes.of(GET_FOODTRUCK_SUCCESS, menuList, foodTruck, schedule, grade, numberOfPeople, time, foodtruckImg);
+		return GetFoodtruckRes.of(GET_FOODTRUCK_SUCCESS, menuList, foodTruck, null, grade, numberOfPeople, time, foodtruckImg);
 	}
 
 	// 내 푸드트럭 등록

@@ -73,6 +73,24 @@ public class ScheduleController {
 		}
 	}
 
+	@GetMapping()
+	@ApiOperation(value = "내 다음 일정 조회", notes = "<strong>내 다음 일정을 조회한다.</strong>")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "성공", response = GetScheduleRes.class),
+		@ApiResponse(code = 401, message = "인증 실패"),
+		@ApiResponse(code = 404, message = "사용자 없음"),
+		@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<?> getNextSchedule(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken) {
+		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
+		try {
+			GetScheduleRes getScheduleRes = scheduleService.getNextSchedule(user);
+			return new ResponseEntity<>(getScheduleRes, HttpStatus.OK);
+		} catch (IllegalArgumentException ex) {
+			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+
 	@GetMapping("/all")
 	@ApiOperation(value = "일정 조회", notes = "<strong>일정을 조회한다.</strong>")
 	@ApiResponses({
