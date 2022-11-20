@@ -85,6 +85,8 @@
 
 ![내 주변 푸드트럭](https://user-images.githubusercontent.com/99133426/202927991-9b4bbc10-6aa7-4c85-936e-4f4a597a41b2.png)
 
+![푸드트럭 찾기](https://user-images.githubusercontent.com/99133426/202928825-7c6fe4b0-a652-4481-b1f2-a8da07f6a188.png)
+
 - 주문하기
 
 - 원해요 푸드트럭
