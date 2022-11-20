@@ -55,6 +55,29 @@ export const useCeoMyStore = defineStore("CeoMy", {
       });
       location.reload();
     },
+    setNewMenu () {
+      const token = localStorage.getItem("accessToken");
+      const menuList = {
+        menuReqList: [
+        ]
+      }
+
+      menuList.menuReqList = this.newMenuDataList.slice(0,-1)
+      console.log(menuList)
+      axios({
+        url: RF.menu.setMenu(),
+        method: "post",
+        headers: { Authorization: "Bearer " + token },
+        data: menuList
+      })
+        .then((res) => {
+          console.log(res)
+          console.log(res.data)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
 
 
     setFoodTruck() {
@@ -64,14 +87,10 @@ export const useCeoMyStore = defineStore("CeoMy", {
       axios({
         url: RF.foodtruck.registerFoodTruck(),
         method: "post",
-        headers: {
-          Authorization: "Bearer " + token,
-
-        },
+        headers: {Authorization: "Bearer " + token,},
         data: this.myData,
       })
         .then(() => {
-
           this.setImg()
         })
         .catch((err) => {
@@ -87,7 +106,6 @@ export const useCeoMyStore = defineStore("CeoMy", {
         data:this.myData,
       })
         .then(() => {
-
           this.setImg()
         })
         .catch((err) => {
@@ -103,6 +121,14 @@ export const useCeoMyStore = defineStore("CeoMy", {
         headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
+          ["address", "category", "description", "latitude", "longitude", "name","phone"]
+          
+          
+          
+          
+          
+          
+          
           this.myTypeData.is_update = true
           console.log(res.data)
         })
@@ -167,28 +193,6 @@ export const useCeoMyStore = defineStore("CeoMy", {
         "imgVisible"
       );
     },
-    setNewMenu () {
-      const token = localStorage.getItem("accessToken");
-      const menuList = {
-        menuReqList: [
-        ]
-      }
-
-      menuList.menuReqList = this.newMenuDataList.slice(0,-1)
-      console.log(menuList)
-      axios({
-        url: RF.menu.setMenu(),
-        method: "post",
-        headers: { Authorization: "Bearer " + token },
-        data: menuList
-      })
-        .then((res) => {
-          console.log(res)
-          console.log(res.data)
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
+    
   },
 });

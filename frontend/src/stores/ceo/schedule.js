@@ -37,7 +37,8 @@ export const useCeoScheduleStore = defineStore("CeoSchedule", {
       title: "+추가"
     }
     const scheduleTypeData = {
-      dateIdx: 0
+      dateIdx: 0,
+      is_update: false,
     }
     return {
       backgroundColor,
@@ -83,9 +84,11 @@ export const useCeoScheduleStore = defineStore("CeoSchedule", {
           let backgroundColor = this.backgroundColor
           let borderColor = this.borderColor
           let eventList = this.eventList
-          this.scheduleList.forEach(function(item) {
+          this.scheduleList.forEach(function(item, index) {
             colorIndex = Math.floor(Math.random() * 5);
             const newEvent = {
+              id: item.scheduleId,
+              listIndex: index,
               title: item.title,
               start: item.scheduleDateDtoList[0].workingDay,
               end: item.scheduleDateDtoList[item.scheduleDateDtoList.length - 1].workingDay,
@@ -100,8 +103,8 @@ export const useCeoScheduleStore = defineStore("CeoSchedule", {
 
           })
 
-          console.log(res.data)
-          console.log(this.scheduleList)
+          // console.log(res.data)
+          // console.log(this.scheduleList)
         })
         .catch((err) => {
           console.log(err);
