@@ -28,7 +28,7 @@
     </div>
 
     <button class="payButton" @click="makeCart">
-      <p>{{detailStore.menuDetail.price * detailStore.amount}}원 담기</p>
+      <p @click="cartSave">{{detailStore.menuDetail.price * detailStore.amount}}원 담기</p>
     </button>
   </div>
 </template>
@@ -57,21 +57,42 @@ export default {
       // console.log((detailStore.menuDetail.price) * (detailStore.amount) + ' price')
     }
     const cartStore = useCartStore();
+    const sessionCart = {
+      menuName : "",
+      price : 0,
+      amount : 0,
+      // src : ""
+    }
     function makeCart(){
       cartStore.cart.foodtruckId = detailStore.foodtruck_id
       cartStore.cart.menuList[0].count = detailStore.amount
       cartStore.cart.menuList[0].menuId = detailStore.menuDetail.menuId
       cartStore.makeCustomerOrders()
-      console.log(JSON.stringify(cartStore.cart) + ' cart')
-      console.log(JSON.stringify(detailStore.menuDetail) + ' !!!!kkkk')
+      sessionCart.menuName = detailStore.menuDetail.name
+      sessionCart.price = detailStore.menuDetail.price
+      sessionCart.amount = detailStore.amount
+      // sessionCart.src = detailStore.menuDetail.src
 
+      sessionStorage.setItem("cart", JSON.stringify(this.sessionCart))
+      // sessionStorage.setItem("bill", JSON.stringify(cartStore.cart))
+      sessionStorage.setItem("bill", JSON.stringify(cartStore.cart))
+      alert('카트에 담겼습니다!')
+
+      // console.log(JSON.stringify(cartStore.cart) + ' cart')
+      // console.log(JSON.stringify(detailStore.menuDetail) + ' !!!!kkkk')
+
+    }
+    function cartSave(){
+      
     }
     return {
       detailStore,
       cartStore,
+      sessionCart,
       minusAmount,
       plusAmount,
       makeCart,
+      cartSave,
     };
   },
 };
