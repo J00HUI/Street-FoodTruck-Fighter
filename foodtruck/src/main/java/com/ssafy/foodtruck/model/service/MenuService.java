@@ -7,6 +7,7 @@ import com.ssafy.foodtruck.db.repository.MenuRepository;
 import com.ssafy.foodtruck.dto.request.MenuReq;
 import com.ssafy.foodtruck.dto.request.RegisterMenuReq;
 import com.ssafy.foodtruck.dto.request.UpdateMenuReq;
+import com.ssafy.foodtruck.dto.response.GetMenuRes;
 import com.ssafy.foodtruck.dto.response.MenuRes;
 import com.ssafy.foodtruck.dto.response.RegisterMenuRes;
 import com.ssafy.foodtruck.exception.NotFoundException;
@@ -133,7 +134,7 @@ public class MenuService {
 		return menuOpt.get().getMenuImg();
 	}
 
-    public List<MenuRes> getMenuList(Integer foodtruckId) {
+    public List<GetMenuRes> getMenuList(Integer foodtruckId) {
 		//푸드트럭 id로 푸드트럭 객체 가져오기
 		Optional<FoodTruck> foodTruckOptional = foodTruckRepository.findById(foodtruckId);
 		if(!foodTruckOptional.isPresent()){
@@ -142,11 +143,11 @@ public class MenuService {
 
 		//해당 푸드트럭 메뉴 가져오기
 		List<Menu> menuList = menuRepository.findAllByFoodTruck(foodTruckOptional.get());
-		List<MenuRes> list = new ArrayList<>();
+		List<GetMenuRes> list = new ArrayList<>();
 
 		//Entity를 Dto로 변경
 		for(Menu menu : menuList) {
-			list.add(MenuRes.of(menu));
+			list.add(GetMenuRes.of(menu));
 		}
 
 		return list;
