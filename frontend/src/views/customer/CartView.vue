@@ -29,8 +29,7 @@
         </div>
       </div>
     </div>
-    <button class="payButton" @click="[ payStart()]"> 
-      <!-- loginCheck(), -->
+    <button class="payButton" @click="[loginCheck(), payStart()]">
       <p>{{this.sessionCart.price * this.sessionCart.amount}}원 결제하기</p>
     </button>
   </div>
@@ -60,9 +59,6 @@ export default {
       ) {
         alert("로그인이 필요한 서비스 입니다!");
         router.push("/login");
-        
-      } else {
-        router.push("/pay");
         
       }
     }
@@ -160,8 +156,8 @@ button {
 
 .payButton {
   position: absolute;
-  bottom: 5rem;
-  right: 4.3rem;
+  bottom: 10rem;
+  right: 4rem;
   width: 70%;
   height: 3.5rem;
   background-color: #ffe060;
