@@ -2,6 +2,7 @@ package com.ssafy.foodtruck.model.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.foodtruck.dto.PayApprovalDto;
+import com.ssafy.foodtruck.dto.request.PayApprovalReq;
 import com.ssafy.foodtruck.dto.response.PayApprovalRes;
 import com.ssafy.foodtruck.dto.response.PayReadyRes;
 import com.ssafy.foodtruck.dto.response.RegisterOrdersRes;
@@ -83,7 +84,7 @@ public class PayService {
 			"fail_url=" + DOMAIN + "/fail";
 	}
 
-	public ResponseEntity<PayApprovalRes> paySuccess(PayApprovalDto payApprovalDto, String pg_token){
+	public ResponseEntity<PayApprovalRes> paySuccess(PayApprovalReq payApprovalReq, String pg_token){
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 
@@ -92,12 +93,11 @@ public class PayService {
 		headers.add("Content-Type",MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8");
 
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		params.add("cid", payApprovalDto.getCid());
-		params.add("tid", payApprovalDto.getTid());
-		params.add("partner_order_id",payApprovalDto.getPartner_order_id());
-		params.add("partner_user_id",payApprovalDto.getPartner_user_id());
+		params.add("cid", "TC0ONETIME");
+		params.add("tid", payApprovalReq.getTid());
+		params.add("partner_order_id",payApprovalReq.getPartner_order_id());
+		params.add("partner_user_id",payApprovalReq.getPartner_user_id());
 		params.add("pg_token",pg_token);
-
 
 		HttpEntity<MultiValueMap<String,String>> body
 			= new HttpEntity<>(params, headers);

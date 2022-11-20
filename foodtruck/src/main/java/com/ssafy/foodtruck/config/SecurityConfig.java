@@ -114,6 +114,7 @@ public class SecurityConfig {
 				, "/v1/pay/success"
 				, "/menu/customer/{foodtruck_id}"
 				, "/menu/image/{menu_id}"
+					,"/v1/pay/success/{pg_token}"
 			).permitAll()
 			.anyRequest().authenticated(); //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
 		return http.build();
