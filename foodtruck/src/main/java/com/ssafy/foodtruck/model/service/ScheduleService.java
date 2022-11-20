@@ -19,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ssafy.foodtruck.constant.FoodtruckConstant.DUPLICATED_FOODTRUCK_ERROR_MESSAGE;
 import static com.ssafy.foodtruck.constant.FoodtruckConstant.NOT_FOUNT_FOODTRUCK_ERROR_MESSAGE;
@@ -150,5 +151,19 @@ public class ScheduleService {
 		}
 
 		return scheduleResList;
+	}
+
+	public GetScheduleRes getNextSchedule(User user) {
+		Optional<FoodTruck> foodTruckOpt = foodTruckRepository.findByUser(user);
+		if(!foodTruckOpt.isPresent()){
+			throw new RuntimeException("등록된 푸드트럭이 없습니다.");
+		}
+
+		Optional<Schedule> nextSchedule = scheduleRepository.findNextSchedule(foodTruckOpt.get().getId());
+		if(!nextSchedule.isPresent()){
+			throw new RuntimeException("다음 스케줄이 없습니다.");
+		}
+
+		return GetScheduleRes.oof(nextSchedule.get());
 	}
 }

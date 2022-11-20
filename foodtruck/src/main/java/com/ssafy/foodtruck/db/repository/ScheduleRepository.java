@@ -45,4 +45,13 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
 	@Query(value = "SELECT max(group_id) FROM schedule;", nativeQuery = true)
 	Optional<Integer> findMaxGroupId();
 
+	@Query(value = "SELECT *\n" +
+		"FROM schedule\n" +
+		"WHERE foodtruck_id = :foodtruckId\n" +
+		"AND start_time > now()\n" +
+		"AND is_valid = 1\n" +
+		"ORDER BY start_time\n" +
+		"LIMIT 1", nativeQuery = true)
+	Optional<Schedule> findNextSchedule(int foodtruckId);
+
 }
