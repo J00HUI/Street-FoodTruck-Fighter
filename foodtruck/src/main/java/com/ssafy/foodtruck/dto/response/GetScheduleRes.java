@@ -1,6 +1,7 @@
 package com.ssafy.foodtruck.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ssafy.foodtruck.db.entity.Schedule;
 import com.ssafy.foodtruck.dto.ScheduleDateDto;
 import lombok.*;
 
@@ -26,7 +27,15 @@ public class GetScheduleRes {
 	private String title;
 	private Integer groupId;
 
-//	public void setGetSceduleRes(Integer scheduleId, List<Sc>) {
+	public static GetScheduleRes of(Schedule schedule) {
+		GetScheduleRes getScheduleRes = GetScheduleRes.builder()
+			.ScheduleId(schedule.getId())
+			.address(schedule.getAddress())
+			.groupId(schedule.getGroupId())
+			.latitude(schedule.getLatitude())
+			.longitude(schedule.getLongitude())
+			.build();
 
-//	}
+		return getScheduleRes;
+	}
 }
