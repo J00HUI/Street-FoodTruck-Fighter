@@ -6,35 +6,92 @@ export const useCeoOrderStore = defineStore("CeoOrder", {
   state: () => {
     const notAcceptedOrder = [
       {
-        acceptTime: "yyyy-MM-dd HH:mm:ss",
+        acceptTime: "2022-11-21 09:10:22",
         accepted: true,
         menuResList: [
           {
-            count: 0,
-            menuName: "string",
+            count: 5,
+            menuName: "박범수의 따끈한 붕어빵",
+          },
+          {
+            count: 2,
+            menuName: "윤일준의 쌉쌀한 아아",
+          },
+          {
+            count: 2,
+            menuName: "이성훈의 달달한 자허블",
           },
         ],
         orderUserId: 0,
-        ordersId: 0,
+        ordersId: 3,
       },
     ];
     const acceptedOrder = [
+
       {
-        acceptTime: "yyyy-MM-dd HH:mm:ss",
+        acceptTime: "2022-11-21 09:10:22",
         accepted: true,
         menuResList: [
           {
-            count: 0,
-            menuName: "string"
-          }
+            count: 5,
+            menuName: "박범수의 따끈한 붕어빵",
+          },
+          {
+            count: 2,
+            menuName: "윤일준의 쌉쌀한 아아",
+          },
+          {
+            count: 2,
+            menuName: "이성훈의 달달한 자허블",
+          },
         ],
         orderUserId: 0,
-        ordersId: 0
+        ordersId: 3,
+      },
+      {
+        acceptTime: "2022-11-21 09:10:22",
+        accepted: true,
+        menuResList: [
+          {
+            count: 5,
+            menuName: "박범수의 따끈한 붕어빵",
+          },
+          {
+            count: 2,
+            menuName: "윤일준의 쌉쌀한 아아",
+          },
+          {
+            count: 2,
+            menuName: "이성훈의 달달한 자허블",
+          },
+        ],
+        orderUserId: 0,
+        ordersId: 3,
+      },
+      {
+        acceptTime: "2022-11-21 09:10:22",
+        accepted: true,
+        menuResList: [
+          {
+            count: 5,
+            menuName: "박범수의 따끈한 붕어빵",
+          },
+          {
+            count: 2,
+            menuName: "윤일준의 쌉쌀한 아아",
+          },
+          {
+            count: 2,
+            menuName: "이성훈의 달달한 자허블",
+          },
+        ],
+        orderUserId: 0,
+        ordersId: 3,
       },
     ];
     const orderTypeData = {
       doneDate: 0, //주문 수락에 사용
-      notAcceptToggle: false,
+      notAcceptToggle: true,
       acceptToggle: false,
     };
     return {
@@ -55,18 +112,18 @@ export const useCeoOrderStore = defineStore("CeoOrder", {
       })
         .then((res) => {
           console.log("-----허락안된 주문--------");
-          if (Array.isArray(res.data)) {
-            this.notAcceptedOrder = res.data
-            this.orderTypeData.notAcceptToggle = true
-          } else {
-            this.notAcceptedOrder = null
-            this.orderTypeData.notAcceptToggle = false
-          }
+          // if (Array.isArray(res.data)) {
+            // this.notAcceptedOrder = res.data
+          this.orderTypeData.notAcceptToggle = true
+          // } else {
+          //   this.notAcceptedOrder = null
+          //   this.orderTypeData.notAcceptToggle = false
+          // }
 
           console.log(res.data);
         })
         .catch((err) => {
-          alert("허락안된 주문");
+          // alert("허락안된 주문");
 
           console.log(err);
         });
@@ -81,7 +138,7 @@ export const useCeoOrderStore = defineStore("CeoOrder", {
       })
         .then((res) => {
           console.log("-----현재주문--------");
-          if (Array.isArray(res.data)) {
+          if (Array.isArray(res.data)|| res.data.length > 2) {
             this.acceptedOrder = res.data
             this.orderTypeData.acceptToggle = true
           } else {
@@ -91,11 +148,11 @@ export const useCeoOrderStore = defineStore("CeoOrder", {
           console.log(res.data);
         })
         .catch((err) => {
-          alert("현재주문 가져오기");
           console.log(err);
         });
     },
     acceptOrders(order_id) {
+
       const acceptData = {
         doneDate: this.orderTypeData.doneDate,
         ordersId: order_id,
@@ -115,7 +172,6 @@ export const useCeoOrderStore = defineStore("CeoOrder", {
             console.log(res);
           })
           .catch(() => {
-            alert("주문수락 실패");
           });
       } else {
         alert('시간을 선택해주세요')
@@ -133,7 +189,6 @@ export const useCeoOrderStore = defineStore("CeoOrder", {
           console.log(res);
         })
         .catch(() => {
-          alert("주문 거절 실패");
         });
     },
   },

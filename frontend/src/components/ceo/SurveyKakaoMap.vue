@@ -8,7 +8,7 @@
 
 <script>
 import { useKakaoStore } from "@/stores/kakao.js";
-import { onMounted, watch } from "vue";
+import { onMounted } from "vue";
 import $ from "jquery";
 
 import hotdog from "@/assets/hotdog.svg";
@@ -91,6 +91,7 @@ export default {
         store.mapCenter["latitude"] = initMap.map.getCenter()["Ma"];
         store.mapCenter["longitude"] = initMap.map.getCenter()["La"];
         store.getSurvey();
+        Markers_clusterer()
       });
       var mapTypeControl = new kakao.maps.MapTypeControl();
 
@@ -104,7 +105,15 @@ export default {
       // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
       var zoomControl = new kakao.maps.ZoomControl();
       initMap.map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+      var clusterer = new kakao.maps.MarkerClusterer({
+          map: initMap.map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
+          averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
+          minLevel: 2, // 클러스터 할 최소 지도 레벨
+          disableClickZoom: true, // 클러스터 마커를 클릭했을 때 지도가 확대되지 않도록 설정한다
+        });
       Markers_clusterer();
+
+
       function Markers_clusterer() {
         var imageSrc = null;
         var markers = $(store.surveyData).map(function (i, item) {
@@ -133,12 +142,7 @@ export default {
           });
         });
 
-        var clusterer = new kakao.maps.MarkerClusterer({
-          map: initMap.map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
-          averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
-          minLevel: 2, // 클러스터 할 최소 지도 레벨
-          disableClickZoom: true, // 클러스터 마커를 클릭했을 때 지도가 확대되지 않도록 설정한다
-        });
+
         clusterer.addMarkers(markers);
 
         // 마커 클러스터러에 클릭이벤트를 등록합니다
@@ -180,17 +184,7 @@ export default {
             }
           }
         }
-        watch(
-          () => store.is_survey_update,
-          (is_update) => {
-            console.log(is_update)
-            if (is_update === true) {
-              console.log("메렁");
-              Markers_clusterer();
-              this.is_survey_update = false;
-            }
-          }
-        );
+
       }
     };
     return {};
