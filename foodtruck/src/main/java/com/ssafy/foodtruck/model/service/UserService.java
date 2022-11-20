@@ -3,7 +3,7 @@ package com.ssafy.foodtruck.model.service;
 import com.ssafy.foodtruck.db.entity.Authority;
 import com.ssafy.foodtruck.db.entity.User;
 import com.ssafy.foodtruck.db.repository.UserRepository;
-import com.ssafy.foodtruck.dto.UserDtoReq;
+import com.ssafy.foodtruck.dto.request.UserReq;
 import com.ssafy.foodtruck.exception.ExistingEmailException;
 import com.ssafy.foodtruck.util.JwtTokenUtil;
 import com.ssafy.foodtruck.util.UserRole;
@@ -37,7 +37,13 @@ public class UserService {
     private final JwtTokenUtil jwtTokenUtil;
 //    private final RedisUtil redisUtil;
 
-    public void createUser(UserDtoReq userDtoReq) {
+    public void createUser(UserReq userDtoReq) {
+		// 아이디 중복 검사
+		User user = userRepository.findByEmail(userDtoReq.getEmail()).orElse(null);
+		if(user != null){
+			throw new ExistingEmailException();
+		}
+
         userRepository.save(User.builder()
                         .email(userDtoReq.getEmail())
                         .password(passwordEncoder.encode(userDtoReq.getPassword()))

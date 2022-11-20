@@ -1,13 +1,12 @@
 package com.ssafy.foodtruck.model.service;
 
+import com.ssafy.foodtruck.constant.OrdersErrorMessage;
 import com.ssafy.foodtruck.db.entity.*;
 import com.ssafy.foodtruck.db.repository.*;
-import com.ssafy.foodtruck.dto.request.RegisterOrdersReq;
 import com.ssafy.foodtruck.dto.request.AcceptOrdersReq;
-import com.ssafy.foodtruck.dto.response.CurrentOrdersHistoryRes;
-import com.ssafy.foodtruck.dto.response.CurrentOrdersListByFoodtruckRes;
-import com.ssafy.foodtruck.dto.response.OrdersHistoryRes;
-import com.ssafy.foodtruck.dto.response.OrdersListByFoodtruckRes;
+import com.ssafy.foodtruck.dto.request.OrdersMenuReq;
+import com.ssafy.foodtruck.dto.request.RegisterOrdersReq;
+import com.ssafy.foodtruck.dto.response.*;
 import com.ssafy.foodtruck.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,39 +24,66 @@ public class OrdersService {
 	private final OrdersMenuRepository ordersMenuRepository;
 	private final MenuRepository menuRepository;
 	private final UserRepository userRepository;
-	private final FoodTruckRepository foodTruckRepository;
+	private final FoodtruckRepository foodTruckRepository;
+	private final ReviewRepository reviewRepository;
 
+
+	// 주문 내역을 등록하고, 카카오 페이 요청 시 필요한 데이터를 리턴
 	@Transactional
-	public void registerOrders(int customerId, List<RegisterOrdersReq> registerOrdersReqList) {
-		User user = userRepository.findById(customerId)
-			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
+	public RegisterOrdersRes registerOrders(RegisterOrdersReq registerOrdersReq, User user) {
+		FoodTruck foodTruck = foodTruckRepository.findById(registerOrdersReq.getFoodtruckId())
+			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
 
-		for (RegisterOrdersReq registerOrdersReq : registerOrdersReqList) {
-			FoodTruck foodTruck = foodTruckRepository.findById(registerOrdersReq.getFoodtruckId())
-				.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
+		final Orders orders = Orders.builder()
+			.user(user)
+			.foodTruck(foodTruck)
+			.build();
+		Orders savedOrders = ordersRepository.save(orders);
 
-			Orders orders = Orders.builder()
-				.user(user)
-				.foodTruck(foodTruck)
-				.build();
-			ordersRepository.save(orders);
-
-			Menu menu = menuRepository.findById(registerOrdersReq.getMenuId())
+		List<OrdersMenuReq> menuList = registerOrdersReq.getMenuList();
+		String payMenuName = "";
+		Integer totalQuantity = 0;
+		Integer totalAmount = 0;
+		for(OrdersMenuReq menuReq : menuList){
+			Menu menu = menuRepository.findById(menuReq.getMenuId())
 				.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
 
-			OrdersMenu ordersMenu = OrdersMenu.builder()
-				.orders(orders)
+			ordersMenuRepository.save(OrdersMenu.builder()
+				.orders(savedOrders)
 				.menu(menu)
-				.build();
-			ordersMenuRepository.save(ordersMenu);
+				.count(menuReq.getCount())
+				.build());
+
+			if(payMenuName == "")
+				payMenuName = menu.getName()+" 외 " + (menuList.size()-1) + "개";
+			totalQuantity += menuReq.getCount();
+			totalAmount += menu.getPrice();
 		}
+
+		// 카카오페이에 필요한 데이터
+		return RegisterOrdersRes.builder()
+			.orders(savedOrders)
+			.payMenuName(payMenuName)
+			.totalQuantity(totalQuantity)
+			.totalAmount(totalAmount)
+			.build();
 	}
+
+	// 카카오페이 결제 완료 건 is_paied true 로 변경
+	@Transactional
+	public void successPay(Integer ordersId){
+		Orders orders = ordersRepository.findById(ordersId)
+			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_ORDER));
+		orders.setIsPaid(true);
+	}
+
 
 	@Transactional
 	public void acceptOrders(int ceoId, AcceptOrdersReq acceptOrdersReq) {
 		Orders orders = ordersRepository.findById(acceptOrdersReq.getOrdersId())
 			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
 
+		// 주문이 사장님 아이디인지 확인
 		if (ceoId != orders.getFoodTruck().getUser().getId()) {
 			throw new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER);
 		}
@@ -65,73 +91,118 @@ public class OrdersService {
 	}
 
 	public List<CurrentOrdersHistoryRes> getCustomerOrders(int customerId) {
-		List<Orders> ordersList = ordersRepository.findByCustomerOrders(customerId);
+		List<Orders> ordersList = ordersRepository.findCustomerOrders(customerId);
+
 		List<CurrentOrdersHistoryRes> currentOrdersHistoryResList = new ArrayList<>();
 
-		for (Orders orders : ordersList) {
-			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
+		for(Orders orders : ordersList){
+			List<OrdersMenu> ordersMenuList = ordersMenuRepository.findAllByOrders(orders);
+			List<GetOrdersMenuRes> menuList = new ArrayList<>();
+
+			for(OrdersMenu ordersMenu : ordersMenuList){
+				menuList.add(GetOrdersMenuRes.of(ordersMenu.getMenu().getName(), ordersMenu.getCount(), ordersMenu.getMenu().getMenuImg()));
+			}
 			currentOrdersHistoryResList.add(
-				CurrentOrdersHistoryRes.builder()
-					.foodtruckName(orders.getFoodTruck().getName())
-					.menuName(ordersMenu.getMenu().getName())
-					.build());
+				CurrentOrdersHistoryRes.of(orders.getId(), orders.getFoodTruck().getName(), orders.getFoodTruck().getFoodtruckImg(), orders.getRegDate(), menuList));
+			;
 		}
+
 		return currentOrdersHistoryResList;
 	}
 
-	public List<OrdersHistoryRes> getCustomerOrdersAll(int customerId) {
-		List<Orders> ordersList = ordersRepository.findByCustomerOrdersAll(customerId);
+	public List<OrdersHistoryRes> getCustomerOrdersAll(User user) {
 		List<OrdersHistoryRes> ordersHistoryResList = new ArrayList<>();
+		List<Orders> ordersList = ordersRepository.findAllByUser(user.getId());
 
-		for (Orders orders : ordersList) {
-			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
-			ordersHistoryResList.add(
-				OrdersHistoryRes.builder()
-					.foodtruckName(orders.getFoodTruck().getName())
-					.menuName(ordersMenu.getMenu().getName())
-					.build());
+		for(Orders order : ordersList) {
+			List<GetOrdersMenuRes> menuResList = new ArrayList<>();
+			List<OrdersMenu> ordersMenuList = ordersMenuRepository.findAllByOrders(order);
+			for(OrdersMenu ordersMenu : ordersMenuList){
+				menuResList.add(GetOrdersMenuRes.of(ordersMenu.getMenu().getName(), ordersMenu.getCount(), ordersMenu.getMenu().getMenuImg()));
+			}
+			boolean isReviewed = false;
+			Review review = reviewRepository.findReviewByOrdersAndUser(order, user).orElse(null);
+			if(review != null) isReviewed = true;
+			ordersHistoryResList.add(OrdersHistoryRes.of(order, isReviewed, menuResList));
 		}
+
 		return ordersHistoryResList;
 	}
 
-	public List<CurrentOrdersListByFoodtruckRes> getCeoOrders(int ceoId) {
-		User user = userRepository.findById(ceoId)
-			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
-		FoodTruck foodTruck = foodTruckRepository.findByUser(user)
-			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
-		List<Orders> ordersList = ordersRepository.findByCeoOrders(foodTruck.getId());
+	public List<CurrentOrdersListByFoodtruckRes> getCeoOrdersNotAccepted(User ceoUser) {
 		List<CurrentOrdersListByFoodtruckRes> currentOrdersListByFoodtruckResponseList = new ArrayList<>();
 
-		for (Orders orders : ordersList) {
-			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
-			currentOrdersListByFoodtruckResponseList.add(
-				CurrentOrdersListByFoodtruckRes.builder()
-					.foodtruckName(orders.getFoodTruck().getName())
+		FoodTruck foodTruck = foodTruckRepository.findByUser(ceoUser)
+			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
+
+		List<Orders> ordersList = ordersRepository.findCeoOrdersNotAccepted(foodTruck.getId());
+
+		for(Orders orders : ordersList){
+			List<GetOrdersMenuRes> menuResList = new ArrayList<>();
+			List<OrdersMenu> ordersMenuList = ordersMenuRepository.findAllByOrders(orders);
+			for(OrdersMenu ordersMenu : ordersMenuList){
+				menuResList.add(GetOrdersMenuRes.builder()
 					.menuName(ordersMenu.getMenu().getName())
+					.count(ordersMenu.getCount())
 					.build());
+			}
+			currentOrdersListByFoodtruckResponseList.add(CurrentOrdersListByFoodtruckRes.builder()
+				.ordersId(orders.getId())
+				.orderUserId(orders.getUser().getId())
+				.isAccepted(orders.getIsAccepted())
+				.acceptTime(orders.getRegDate())
+				.menuResList(menuResList).build());
 		}
+
 		return currentOrdersListByFoodtruckResponseList;
 	}
 
-	public List<OrdersListByFoodtruckRes> getCeoOrdersAll(int ceoId) {
-		User user = userRepository.findById(ceoId)
-			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
-		FoodTruck foodTruck = foodTruckRepository.findByUser(user)
+	public List<CurrentOrdersListByFoodtruckRes> getCeoOrdersAccepted(User ceoUser) {
+		List<CurrentOrdersListByFoodtruckRes> currentOrdersListByFoodtruckResponseList = new ArrayList<>();
+
+		FoodTruck foodTruck = foodTruckRepository.findByUser(ceoUser)
 			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
-		List<Orders> ordersList = ordersRepository.findByCeoOrdersAll(foodTruck.getId());
-		List<OrdersListByFoodtruckRes> ordersListByFoodtruckResponseList = new ArrayList<>();
+		List<Orders> ordersList = ordersRepository.findCeoOrdersAccepted(foodTruck.getId());
 
-		for (Orders orders : ordersList) {
-			OrdersMenu ordersMenu = ordersMenuRepository.findByOrdersId(orders.getId());
-
-			ordersListByFoodtruckResponseList.add(
-				OrdersListByFoodtruckRes.builder()
-					.foodtruckName(orders.getFoodTruck().getName())
+		for(Orders orders : ordersList){
+			List<GetOrdersMenuRes> menuResList = new ArrayList<>();
+			List<OrdersMenu> ordersMenuList = ordersMenuRepository.findAllByOrders(orders);
+			for(OrdersMenu ordersMenu : ordersMenuList){
+				menuResList.add(GetOrdersMenuRes.builder()
 					.menuName(ordersMenu.getMenu().getName())
+					.count(ordersMenu.getCount())
 					.build());
+			}
+			currentOrdersListByFoodtruckResponseList.add(CurrentOrdersListByFoodtruckRes.builder()
+				.ordersId(orders.getId())
+				.orderUserId(orders.getUser().getId())
+				.isAccepted(orders.getIsAccepted())
+				.acceptTime(orders.getRegDate())
+				.menuResList(menuResList).build());
 		}
-		return ordersListByFoodtruckResponseList;
+
+		return currentOrdersListByFoodtruckResponseList;
 	}
+
+//	public List<OrdersListByFoodtruckRes> getCeoOrdersAll(int ceoId) {
+//
+//		// 사장님 찾기
+//		User user = userRepository.findById(ceoId)
+//			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER));
+//
+//		// 사장님 푸드트럭
+//		FoodTruck foodTruck = foodTruckRepository.findByUser(user)
+//			.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_FOODTRUCK));
+//
+//		List<Orders> ordersList = ordersRepository.findByCeoOrdersAll(foodTruck.getId());
+//		List<OrdersListByFoodtruckRes> ordersListByFoodtruckResponseList = new ArrayList<>();
+//
+//		for(Orders order : ordersList){
+//			ordersListByFoodtruckResponseList.add(OrdersListByFoodtruckRes.builder().build());
+//		}
+//
+//		return ordersListByFoodtruckResponseList;
+//	}
 
 	@Transactional
 	public void cancelOrders(int ceoId, int orderId) {
@@ -141,6 +212,18 @@ public class OrdersService {
 		if (ceoId != orders.getFoodTruck().getUser().getId()) {
 			throw new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER);
 		}
+
 		orders.setIsCanceled(true);
+	}
+
+	@Transactional
+	public void doneOrders(int ceoId, int orderId) {
+		Orders orders = ordersRepository.findById(orderId)
+		.orElseThrow(() -> new NotFoundException(OrdersErrorMessage.NOT_FOUND_MENU));
+
+		if (ceoId != orders.getFoodTruck().getUser().getId()) {
+			throw new NotFoundException(OrdersErrorMessage.NOT_FOUND_USER);
+		}
+		orders.setIsDone(true);
 	}
 }

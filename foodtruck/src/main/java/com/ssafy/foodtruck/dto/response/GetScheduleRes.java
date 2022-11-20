@@ -1,7 +1,12 @@
 package com.ssafy.foodtruck.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ssafy.foodtruck.db.entity.Schedule;
+import com.ssafy.foodtruck.dto.ScheduleDateDto;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,19 +15,27 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class GetScheduleRes {
 	private Integer ScheduleId;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-	private LocalDate workingDate;
+	List<ScheduleDateDto> scheduleDateDtoList;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
-	private LocalDateTime startTime;
-
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
-	private LocalDateTime endTime;
 	private Double latitude;
 	private Double longitude;
 	private String address;
+	private String title;
+	private Integer groupId;
+
+	public static GetScheduleRes of(Schedule schedule) {
+		GetScheduleRes getScheduleRes = GetScheduleRes.builder()
+			.ScheduleId(schedule.getId())
+			.address(schedule.getAddress())
+			.groupId(schedule.getGroupId())
+			.latitude(schedule.getLatitude())
+			.longitude(schedule.getLongitude())
+			.build();
+
+		return getScheduleRes;
+	}
 }

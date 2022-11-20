@@ -1,14 +1,11 @@
 package com.ssafy.foodtruck.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class UpdateScheduleReq {
 	private Integer scheduleId; // 스케쥴 Id
@@ -21,4 +18,5 @@ public class UpdateScheduleReq {
 	private Double lat; // 위도
 	private Double lng; // 경도
 	private String address; // 주소
+	private String title;
 }

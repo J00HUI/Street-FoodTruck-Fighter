@@ -1,5 +1,7 @@
 package com.ssafy.foodtruck.db.entity;
 
+import com.ssafy.foodtruck.constant.OrdersErrorMessage;
+
 public class Message {
 
     public static final String AUTHORIZATION = "Authorization";

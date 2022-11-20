@@ -1,18 +1,15 @@
 package com.ssafy.foodtruck.controller;
 
-import com.ssafy.foodtruck.common.Response;
 import com.ssafy.foodtruck.db.entity.User;
 import com.ssafy.foodtruck.dto.request.CreateScheduleReq;
-import com.ssafy.foodtruck.dto.request.RegisterFoodTruckReq;
 import com.ssafy.foodtruck.dto.request.UpdateScheduleReq;
 import com.ssafy.foodtruck.dto.response.GetScheduleRes;
 import com.ssafy.foodtruck.model.service.ScheduleService;
 import com.ssafy.foodtruck.model.service.UserService;
 import com.ssafy.foodtruck.util.JwtTokenUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.ssafy.foodtruck.constant.FoodTruckConstant.GET_FOODTRUCK_SUCCESS;
 import static com.ssafy.foodtruck.constant.ScheduleConstant.*;
 
 /**
@@ -43,8 +39,12 @@ public class ScheduleController {
 	@ApiOperation(value = "일정 등록", notes = "<strong>새로운 일정을 등록한다.</strong>")
 	public ResponseEntity<?> createSchedule(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken, @RequestBody @ApiParam(value="일정 정보", required = true) CreateScheduleReq createScheduleReq){
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
-		scheduleService.createSchedule(createScheduleReq, user);
-		return ResponseEntity.ok().body(CREATE_SCHEDULE_SUCCESS);
+		try {
+			scheduleService.createSchedule(createScheduleReq, user);
+			return new ResponseEntity<>(CREATE_SCHEDULE_SUCCESS, HttpStatus.CREATED);
+		} catch (IllegalArgumentException ex) {
+			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	// 일정 수정
@@ -52,28 +52,42 @@ public class ScheduleController {
 	@ApiOperation(value = "일정 수정", notes = "<strong>일정을 수정한다.</strong>")
 	public ResponseEntity<?> updateSchedule(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken, @RequestBody @ApiParam(value="일정 정보", required = true) UpdateScheduleReq updateScheduleReq){
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
-		scheduleService.updateSchedule(updateScheduleReq, user);
-		return ResponseEntity.ok().body(UPDATE_SCHEDULE_SUCCESS);
+		try {
+			scheduleService.updateSchedule(updateScheduleReq, user);
+		} catch (IllegalArgumentException ex) {
+			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>(UPDATE_SCHEDULE_SUCCESS, HttpStatus.OK);
 	}
+
 	// 일정 취소
 	@PatchMapping("/{schedule_id}")
 	@ApiOperation(value = "일정 취소", notes = "<strong>일정을 취소한다.</strong>")
 	public ResponseEntity<?> cancleSchedule(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken, @PathVariable("schedule_id") @ApiParam(value="스케쥴 ID", required = true) Integer scheduleId){
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
-		scheduleService.cancelSchedule(scheduleId, user);
-		return ResponseEntity.ok().body(CANCEL_SCHEDULE_SUCCESS);
+		try {
+			scheduleService.cancelSchedule(scheduleId, user);
+			return new ResponseEntity<>(CANCEL_SCHEDULE_SUCCESS, HttpStatus.OK);
+		} catch (Exception ex) {
+			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 
-	// 한달간 일정 조회
 	@GetMapping("/all")
-	@ApiOperation(value = "일정 조회", notes = "<strong>이번달 일정을 조회한다.</strong>")
-	public ResponseEntity<Map<String, Object>> getSchedule(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken){
+	@ApiOperation(value = "일정 조회", notes = "<strong>일정을 조회한다.</strong>")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "성공", response = GetScheduleRes.class),
+		@ApiResponse(code = 401, message = "인증 실패"),
+		@ApiResponse(code = 404, message = "사용자 없음"),
+		@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<?> getSchedule(@RequestHeader("Authorization") @ApiParam(value="Access Token", required = true) String bearerToken) {
 		User user = userService.getUserByEmail(jwtTokenUtil.getEmailFromBearerToken(bearerToken));
-		List<GetScheduleRes> scheduleResList = scheduleService.getSchedule(user);
-
-		Map<String, Object> result = new HashMap<>();
-		result.put("data", scheduleResList);
-		result.put("msg", GET_SCHEDULE_SUCCESS);
-		return ResponseEntity.ok().body(result);
+		try {
+			List<GetScheduleRes> scheduleResList = scheduleService.getSchedule(user);
+			return new ResponseEntity<>(scheduleResList, HttpStatus.OK);
+		} catch (IllegalArgumentException ex) {
+			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 }

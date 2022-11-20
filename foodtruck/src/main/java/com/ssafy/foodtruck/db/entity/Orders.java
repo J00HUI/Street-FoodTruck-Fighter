@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Orders extends BaseEntity {
 
     @ColumnDefault("false")
@@ -25,6 +25,9 @@ public class Orders extends BaseEntity {
 
     @ColumnDefault("false")
     private Boolean isCanceled;
+
+	@ColumnDefault("true")
+	private Boolean isPaid;
 
     private LocalDateTime doneDate;
 
@@ -40,12 +43,24 @@ public class Orders extends BaseEntity {
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
     private List<OrdersMenu> ordersMenuList = new ArrayList<>();
 
+//	@Builder.Default
+//	@OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)
+//	private Review review;
+
     public void setIsAccepted(boolean isAccepted, LocalDateTime doneDate) {
         this.isAccepted = isAccepted;
 		this.doneDate = doneDate;
     }
 
     public void setIsCanceled(boolean isCanceled) {
-        this.isCanceled = isCanceled;
+		this.isCanceled = isCanceled;
     }
+
+	public void setIsDone(boolean isDone) {
+		this.isDone = isDone;
+	}
+
+	public void setIsPaid(boolean isPaid) {
+		this.isPaid = isPaid;
+	}
 }
