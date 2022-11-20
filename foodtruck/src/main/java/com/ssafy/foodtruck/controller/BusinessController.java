@@ -1,7 +1,7 @@
 package com.ssafy.foodtruck.controller;
 
 import com.ssafy.foodtruck.db.entity.User;
-import com.ssafy.foodtruck.dto.request.RegisterFoodtruckReq;
+import com.ssafy.foodtruck.dto.response.BusinessRes;
 import com.ssafy.foodtruck.dto.response.GetBusinessRes;
 import com.ssafy.foodtruck.model.service.BusinessService;
 import com.ssafy.foodtruck.model.service.UserService;
@@ -15,9 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import static com.ssafy.foodtruck.constant.FoodtruckConstant.DUPLICATED_FOODTRUCK_ERROR_MESSAGE;
-import static com.ssafy.foodtruck.constant.FoodtruckConstant.REGISTER_FOODTRUCK_SUCCESS;
 
 @Api(value = "결산 API", tags = {"Business"})
 @RestController
