@@ -55,8 +55,7 @@ export const useCeoMyStore = defineStore("CeoMy", {
     setNewMenu() {
       const token = localStorage.getItem("accessToken");
       const menuList = {
-        menuReqList: [
-        ]
+        menuReqList: null
       }
       menuList.menuReqList = this.newMenuDataList.slice(0, -1)
       console.log(menuList)
@@ -99,15 +98,16 @@ export const useCeoMyStore = defineStore("CeoMy", {
         headers: { Authorization: "Bearer " + token },
         data: this.myData,
       })
-        .then((res) => {
-          console.log(res)
+        .then((
+        ) => {
           if (this.myTypeData.truckImg !== null) {
             this.setImg()
           }
 
         })
-        .catch((err) => {
-          console.log(err);
+        .catch((
+        ) => {
+          alert("업데이트 실패")
         });
     },
     getMyFoodTruck() {
@@ -124,10 +124,10 @@ export const useCeoMyStore = defineStore("CeoMy", {
           this.myData.name = res.data.name
           this.myData.phone = res.data.phone
           this.myTypeData.is_update = true
-          console.log(res.data)
+
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          alert("정보가져오기 실패");
         });
     },
 
@@ -158,13 +158,12 @@ export const useCeoMyStore = defineStore("CeoMy", {
         headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
-          console.log(res.data)
           if (res.data !== null) {
             this.drawTruckImg(res)
           }
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          alert("이미지 가져오기 실패")
         });
     },
     // 아래 함수 임의 사용금지

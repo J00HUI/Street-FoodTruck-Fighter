@@ -169,7 +169,6 @@ export default {
         myStore.newMenuData = {
           name: null,
           price: null,
-          img: null,
           description: null,
         };
         myStore.myTypeData.newMenuIndex += 1;
