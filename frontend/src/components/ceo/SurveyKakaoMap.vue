@@ -8,7 +8,7 @@
 
 <script>
 import { useKakaoStore } from "@/stores/kakao.js";
-import { onMounted, watch } from "vue";
+import { onMounted } from "vue";
 import $ from "jquery";
 
 import hotdog from "@/assets/hotdog.svg";
@@ -91,6 +91,7 @@ export default {
         store.mapCenter["latitude"] = initMap.map.getCenter()["Ma"];
         store.mapCenter["longitude"] = initMap.map.getCenter()["La"];
         store.getSurvey();
+        Markers_clusterer()
       });
       var mapTypeControl = new kakao.maps.MapTypeControl();
 
@@ -180,17 +181,7 @@ export default {
             }
           }
         }
-        watch(
-          () => store.is_survey_update,
-          (is_update) => {
-            console.log(is_update)
-            if (is_update === true) {
-              console.log("메렁");
-              Markers_clusterer();
-              this.is_survey_update = false;
-            }
-          }
-        );
+
       }
     };
     return {};
