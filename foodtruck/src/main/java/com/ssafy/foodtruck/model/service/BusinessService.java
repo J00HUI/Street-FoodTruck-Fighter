@@ -4,7 +4,7 @@ import com.ssafy.foodtruck.db.entity.*;
 import com.ssafy.foodtruck.db.repository.BusinessRepository;
 import com.ssafy.foodtruck.db.repository.FoodtruckRepository;
 import com.ssafy.foodtruck.db.repository.MenuRepository;
-import com.ssafy.foodtruck.db.repository.OrdersRepository;
+import com.ssafy.foodtruck.dto.response.BusinessRes;
 import com.ssafy.foodtruck.dto.response.GetBusinessRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -78,12 +78,47 @@ public class BusinessService {
 			return null;
 		}
 
-		List<GetBusinessRes> list = new ArrayList<>();
+		List<BusinessRes> businessResList = new ArrayList<>();
 
 		for(Business business : businessListOpt.get()) {
-			list.add(GetBusinessRes.of(business));
+			businessResList.add(BusinessRes.of(business));
 		}
 
-		return list;
+		List<GetBusinessRes> getBusinessResList = new ArrayList<>();
+
+		//쭉 돌면서 새로운 날짜가 나왔을 경우 새로운 객체를 생성해주고 그 객체 안의 리스트에 정보를 넣어준다.
+		for(BusinessRes businessRes : businessResList) {
+			//처음 들어왔을 때는
+			if(getBusinessResList.size() == 0) {
+
+				//새로운 GetBusinessRes 생성해서 리스트에 넣어준다.
+				getBusinessResList.add(GetBusinessRes.builder()
+						.regDate(businessRes.getRegDate())
+						.businessResList(new ArrayList<>())
+						.build());
+
+				getBusinessResList.get(0).getBusinessResList().add(businessRes);
+				continue;
+			}
+
+			// 값이 다르면
+			if(!getBusinessResList.get(getBusinessResList.size()-1).getRegDate().equals(businessRes.getRegDate())) {
+
+				//새로운 GetBusinessRes 생성해서 리스트에 넣어준다.
+				getBusinessResList.add(GetBusinessRes.builder()
+						.regDate(businessRes.getRegDate())
+						.businessResList(new ArrayList<>())
+						.build());
+
+				getBusinessResList.get(getBusinessResList.size()-1).getBusinessResList().add(businessRes);
+				continue;
+			}
+
+			// 값이 같을때
+			getBusinessResList.get(getBusinessResList.size()-1).getBusinessResList().add(businessRes);
+		}
+
+
+		return getBusinessResList;
 	}
 }
