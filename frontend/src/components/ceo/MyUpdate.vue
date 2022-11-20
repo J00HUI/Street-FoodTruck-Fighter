@@ -27,19 +27,7 @@
       type="tel"
     />
   </label>
-  <div id="ceo-default-address" class="truckInput inputText">
-    <img :src="kakaoStore.searchTypeData.iconType" alt />
-    <input
-      type="text"
-      v-model="myStore.myData.address"
-      @focus="inputType"
-      style="padding: 0px"
-      placeholder="위치"
-    />
-    <a href="#ceo-schedule-map">
-      <img @click="toggleMap" src="@/assets/ceo/myMarkerIcon.svg" alt />
-    </a>
-  </div>
+
   <div class="ceoDefaultMap">
     <defaultKakaoMap v-if="toggle.isMap"></defaultKakaoMap>
   </div>
@@ -58,6 +46,18 @@
       {{ categoryList[myStore.myTypeData.myCategoryIndex][1] }}
     </div>
   </div>
+  <label class="truckInput inputTextarea" for="my-truck-describe">
+    <div class="descriptionIcon">
+      <img class="descriptionIcon2" src="@/assets/ceo/myDescription.svg" alt />
+    </div>
+
+    <textarea
+      v-model="myStore.myData.description"
+      id="my-truck-describe"
+      class="description"
+      placeholder="설명을 입력해주세요"
+    ></textarea>
+  </label>
   <button type="button" @click="modalToggle">메뉴추가</button>
   <myMenu v-if="myStore.myTypeData.modalView"></myMenu>
   <button type="button" @click="myUpdate" class="updateButton">수정</button>
@@ -89,7 +89,7 @@ export default {
     const myStore = useCeoMyStore();
     const kakaoStore = useKakaoStore();
     myStore.getMyFoodTruck();
-    myStore.getImg()
+    myStore.getImg();
     const categoryList = [
       [categoryIcon, "카테고리"],
       [coffee, "카페"],
@@ -127,15 +127,13 @@ export default {
       );
     }
     function myUpdate() {
-      if (myStore.myTypeData) {
+      if (myStore.myTypeData.is_update) {
         myStore.updateFoodTruck();
       } else {
         myStore.setFoodTruck();
       }
     }
-    function inputType() {
-      kakaoStore.searchTypeData.searchType = "input";
-    }
+
     function modalToggle() {
       myStore.myTypeData.modalView = !myStore.myTypeData.modalView;
     }
@@ -153,7 +151,6 @@ export default {
       toggleMap,
       set_img,
       myUpdate,
-      inputType,
       modalToggle,
       changeCategory,
     };
@@ -192,6 +189,18 @@ button {
   background-color: transparent;
   border: none;
 }
+textarea {
+  resize: none;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  border: none;
+  outline: none;
+  font: 1rem "SCoreDream";
+}
+textarea::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
 .truckInput {
   display: flex;
   position: relative;
@@ -228,6 +237,10 @@ label:hover {
 .inputText {
   height: 8%;
 }
+.inputTextarea {
+  position: relative;
+  height: 20%;
+}
 .timePlaceHoleder {
   padding: 0 0.7rem;
 }
@@ -261,5 +274,25 @@ label:hover {
   font: 1rem "SCoreDream";
   padding: 0 1.5rem 0 1.5rem;
   width: 58%;
+}
+.descriptionIcon {
+  position: absolute;
+  height: 1.5rem;
+  top: 1.1rem;
+  left: 1.5rem;
+  display: block;
+}
+
+.description {
+  position: absolute;
+  top: 3rem;
+  left: 1.5rem;
+  width: calc(96% - 2rem);
+  margin: auto;
+  height: calc(76% - 2rem);
+}
+.descriptionIcon2 {
+  vertical-align: bottom;
+  width: 1.5rem;
 }
 </style>

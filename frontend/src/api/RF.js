@@ -64,9 +64,14 @@ export default {
   },
   menu: {
     setMenu: () => HOST + 'menu',
+    getMenu: (foodtruck_id) => HOST + MENU + CUSTOMER + `${foodtruck_id}`,
     getMenuImg: (menu_id) => HOST + MENU + "image/" + `${menu_id}`,
     setMenuImg: () => HOST + MENU + "upload",
     updateMenu: () => HOST + MENU + "update",
     deleteMenu: (menu_id) => HOST + MENU + `${menu_id}`,
+  },
+  pay:{
+    pay: () => HOST + 'v1/' + 'pay',
+    paySuccess: () => HOST + 'v1/' + 'pay/' + 'success',
   }
 };

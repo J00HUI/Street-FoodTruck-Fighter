@@ -14,8 +14,8 @@ export const useKakaoStore = defineStore("Kakao", {
     };
     const searchTypeData = {
       iconType:  emptyMarker,
-      viewType: null, // schedule과 my있음
       searchType: "click", //'click'과 'input'존재
+      goBack: false,
     };
     const mapCenter = {
       latitude: 0,

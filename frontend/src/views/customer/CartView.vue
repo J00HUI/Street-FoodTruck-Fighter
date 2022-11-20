@@ -9,10 +9,10 @@
           </div>
           <div class="detail">
             <div class="storeName">
-              <h3>맛있는 햄버거</h3>
+              <h3>{{this.sessionCart.menuName}}</h3>
             </div>
             <div class="orders">
-              <h4>7500원</h4>
+              <h4>{{this.sessionCart.price * this.sessionCart.amount}}</h4>
             </div>
           </div>
 
@@ -22,15 +22,16 @@
           <div class="amount">
             <button @click="minusAmount">-</button>
             <div id="amount">
-              <p>{{store.amount}}</p>
+              <p>{{this.sessionCart.amount}}</p>
             </div>
             <button @click="plusAmount">+</button>
           </div>
         </div>
       </div>
     </div>
-    <button class="payButton" @click="loginCheck">
-      <p>7500원 결제하기</p>
+    <button class="payButton" @click="[ payStart()]"> 
+      <!-- loginCheck(), -->
+      <p>{{this.sessionCart.price * this.sessionCart.amount}}원 결제하기</p>
     </button>
   </div>
 </template>
@@ -38,6 +39,9 @@
 <script>
 import Header from "@/components/customer/BackButtonHeader.vue";
 import { useMenuStore } from "@/stores/customer/menu/menu";
+import { useCartStore } from "@/stores/customer/order/cart";
+import { useStoreDetail } from "@/stores/customer/menu/storeDetail";
+import { usePayStore } from "@/stores/customer/pay/pay";
 import router from "@/router";
 export default {
   components: {
@@ -45,6 +49,10 @@ export default {
   },
   setup() {
     const store = useMenuStore();
+    const cartStore = useCartStore();
+    const detailStore = useStoreDetail();
+    const payStore = usePayStore();
+    const sessionCart = JSON.parse(sessionStorage.getItem("cart"))
     function loginCheck() {
       if (
         localStorage.getItem("accessToken") == null ||
@@ -58,19 +66,30 @@ export default {
         
       }
     }
+    function payStart(){
+      payStore.bill = JSON.parse(sessionStorage.getItem("bill"))
+      console.log(payStore.bill)
+      payStore.payStart()
+    }
     
     function minusAmount() {
-      if (store.amount > 0) store.amount--;
-      else store.amount = 0;
-      console.log(store.amount)
+      if (this.sessionCart.amount > 1) {
+          this.sessionCart.amount--;
+        }
+      console.log(this.sessionCart.amount)
     }
     function plusAmount() {
-      store.amount++;
-      console.log(store.amount)
+      this.sessionCart.amount++;
+      console.log(this.sessionCart.amount)
     }
     return {
       store,
+      cartStore,
+      detailStore,
+      payStore,
+      sessionCart,
       loginCheck,
+      payStart,
       minusAmount,
       plusAmount,
     };

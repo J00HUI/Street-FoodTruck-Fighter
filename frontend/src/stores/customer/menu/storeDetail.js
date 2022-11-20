@@ -49,8 +49,8 @@ export const useStoreDetail = defineStore("storeDetail", {
       foodtruckId: 0,
       menuList: [{ count: 0, menuId: 0 }],
     };
-    // const foodtruck_id = sessionStorage.getItem("foodTruckId")
-    const foodtruck_id = 2;
+    // const foodtruck_id = sessionStorage.getItem("foodtruckId")
+    const foodtruck_id = 1;
     const amount = 1;
 
     return {

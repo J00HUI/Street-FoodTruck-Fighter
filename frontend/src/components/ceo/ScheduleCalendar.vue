@@ -5,6 +5,7 @@
 <script setup>
 import router from "@/router";
 import { useCeoScheduleStore } from "@/stores/ceo/schedule.js";
+import { useKakaoStore } from "@/stores/kakao.js"
 import { reactive, ref } from "vue";
 import "@fullcalendar/core/vdom";
 import FullCalendar from "@fullcalendar/vue3";
@@ -13,25 +14,29 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
 
+
 const store = useCeoScheduleStore();
+const kakaoStore = useKakaoStore()
+
+kakaoStore.searchTypeData.goBack = true
+//초기화
+store.scheduleDateDtoList = [
+  {
+    endTime: "00:00",
+    startTime: "00:00",
+    workingDay: "전체",
+  },
+];
+store.scheduleTypeData = {
+  dateIdx: 0,
+  is_update: false,
+};
+
+
 const id = ref(0);
 let colorIndex = Math.floor(Math.random() * 6);
-store.scheduleList = []
-store.eventList = []
-
-// let colorList = ["yellow", "orange", "purple", "blue", "pink", "green"];
-// const eventList = store.eventList;
-// let eventsData = store.scheduleAddForm.scheduleDateDtoList;
-// if (eventsData.length > 0) {
-//   eventList.push({
-//     title: store.scheduleAddForm.title,
-//     start: eventsData[0].workingDay,
-//     end: eventsData[eventsData.length - 1].workingDay,
-//     backgroundColor: backgroundColor[colorIndex],
-//     borderColor: borderColor[colorIndex],
-//     textColor: borderColor[colorIndex]
-//   });
-// }
+store.scheduleList = [];
+store.eventList = [];
 
 const options = reactive({
   plugins: [dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin],
@@ -39,7 +44,7 @@ const options = reactive({
   headerToolbar: {
     left: "prev",
     center: "title",
-    right: "next today"
+    right: "next today",
   },
   editable: true,
   selectable: true,
@@ -50,8 +55,8 @@ const options = reactive({
   eventLongPressDelay: 300,
   selectLongPressDelay: 300,
   events: store.eventList,
-  select: arg => {
-    id.value = id.value + 1;
+  select: (arg) => {
+    id.value = id.value - 1;
     const cal = arg.view.calendar;
     // cal.unselect();
     let title = "+스케쥴";
@@ -67,25 +72,39 @@ const options = reactive({
 
       backgroundColor: store.backgroundColor[colorIndex],
       borderColor: store.borderColor[colorIndex],
-      textColor: store.borderColor[colorIndex]
+      textColor: store.borderColor[colorIndex],
     });
   },
-  eventClick: e => {
-    let end = e.event.end;
-    for (let str = e.event.start; str < end; str.setDate(str.getDate() + 1)) {
-      
-      const scheduleDateDto = {
-        endTime: "00:00",
-        startTime: "00:00",
-        workingDay: null
-      };
-      // 한국 시간대 설정
-      scheduleDateDto.workingDay = new Date(str.getTime() -  str.getTimezoneOffset() * 60000).toISOString().substring(0,10);
+  eventClick: (e) => {
+    kakaoStore.searchTypeData.goBack = false;
+    console.log(kakaoStore.searchTypeData.goBack)
+    if (e.event.extendedProps["listIndex"] === undefined) {
+      let end = e.event.end;
+      for (let str = e.event.start; str < end; str.setDate(str.getDate() + 1)) {
+        const scheduleDateDto = {
+          endTime: "00:00",
+          startTime: "00:00",
+          workingDay: null,
+        };
+        // 한국 시간대 설정
+        scheduleDateDto.workingDay = new Date(
+          str.getTime() - str.getTimezoneOffset() * 60000
+        )
+          .toISOString()
+          .substring(0, 10);
 
-      store.scheduleDateDtoList.push(scheduleDateDto);
-      console.log(scheduleDateDto.workingDay);
+        store.scheduleDateDtoList.push(scheduleDateDto);
+      }
+      store.scheduleAddForm.title = e.event.title;
+    } else {
+      console.log(e.event.id);
+      console.log(e.event.extendedProps["listIndex"]);
+      console.log(store.scheduleList[e.event.extendedProps["listIndex"]]);
+      let saved_schedule =
+        store.scheduleList[e.event.extendedProps["listIndex"]];
+      store.scheduleAddForm = saved_schedule;
+      store.scheduleDateDtoList.push(...saved_schedule.scheduleDateDtoList);
     }
-    store.scheduleAddForm.title = e.event.title;
 
     router.push("/scheduleupdate");
   },
@@ -94,7 +113,7 @@ const options = reactive({
   //   console.log(arg.event.taget);
   // },
 
-  titleFormat: function(date) {
+  titleFormat: function (date) {
     return `${date.date.year}년 ${date.date.month + 1}월`;
   },
 
@@ -103,8 +122,8 @@ const options = reactive({
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
-    meridiem: false
-  }
+    meridiem: false,
+  },
 });
 </script>
 

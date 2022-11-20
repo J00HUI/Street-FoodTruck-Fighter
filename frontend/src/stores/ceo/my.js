@@ -5,11 +5,8 @@ import { defineStore } from "pinia";
 export const useCeoMyStore = defineStore("CeoMy", {
   state: () => {
     const myData = {
-      address: "",
       category: "",
-      description: "string",
-      latitude: 0,
-      longitude: 0,
+      description: "",
       name: "",
       phone: "",
     };
@@ -55,8 +52,27 @@ export const useCeoMyStore = defineStore("CeoMy", {
       });
       location.reload();
     },
-
-
+    setNewMenu() {
+      const token = localStorage.getItem("accessToken");
+      const menuList = {
+        menuReqList: null
+      }
+      menuList.menuReqList = this.newMenuDataList.slice(0, -1)
+      console.log(menuList)
+      axios({
+        url: RF.menu.setMenu(),
+        method: "post",
+        headers: { Authorization: "Bearer " + token },
+        data: menuList
+      })
+        .then((res) => {
+          console.log(res)
+          console.log(res.data)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     setFoodTruck() {
       // let formData = new FormData()
       // formData.append('file', this.myTypeData.truckImg)
@@ -64,14 +80,10 @@ export const useCeoMyStore = defineStore("CeoMy", {
       axios({
         url: RF.foodtruck.registerFoodTruck(),
         method: "post",
-        headers: {
-          Authorization: "Bearer " + token,
-
-        },
+        headers: { Authorization: "Bearer " + token, },
         data: this.myData,
       })
         .then(() => {
-
           this.setImg()
         })
         .catch((err) => {
@@ -84,14 +96,18 @@ export const useCeoMyStore = defineStore("CeoMy", {
         url: RF.foodtruck.updateFoodTruck(),
         method: "patch",
         headers: { Authorization: "Bearer " + token },
-        data:this.myData,
+        data: this.myData,
       })
-        .then(() => {
+        .then((
+        ) => {
+          if (this.myTypeData.truckImg !== null) {
+            this.setImg()
+          }
 
-          this.setImg()
         })
-        .catch((err) => {
-          console.log(err);
+        .catch((
+        ) => {
+          alert("업데이트 실패")
         });
     },
     getMyFoodTruck() {
@@ -103,17 +119,20 @@ export const useCeoMyStore = defineStore("CeoMy", {
         headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
+          this.myData.category = res.data.category
+          this.myData.description = res.data.description
+          this.myData.name = res.data.name
+          this.myData.phone = res.data.phone
           this.myTypeData.is_update = true
-          console.log(res.data)
+
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          alert("정보가져오기 실패");
         });
     },
 
     setImg() {
       var formData = new FormData();
-      console.log(this.myData.truckImg);
       formData.append("file", this.myTypeData.truckImg);
       const token = localStorage.getItem("accessToken");
       axios({
@@ -139,15 +158,12 @@ export const useCeoMyStore = defineStore("CeoMy", {
         headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
-          console.log(res.data)
           if (res.data !== null) {
             this.drawTruckImg(res)
           }
-
-
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          alert("이미지 가져오기 실패")
         });
     },
     // 아래 함수 임의 사용금지
@@ -167,28 +183,6 @@ export const useCeoMyStore = defineStore("CeoMy", {
         "imgVisible"
       );
     },
-    setNewMenu () {
-      const token = localStorage.getItem("accessToken");
-      const menuList = {
-        menuReqList: [
-        ]
-      }
 
-      menuList.menuReqList = this.newMenuDataList.slice(0,-1)
-      console.log(menuList)
-      axios({
-        url: RF.menu.setMenu(),
-        method: "post",
-        headers: { Authorization: "Bearer " + token },
-        data: menuList
-      })
-        .then((res) => {
-          console.log(res)
-          console.log(res.data)
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
   },
 });

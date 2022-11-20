@@ -16,14 +16,19 @@
 
 <script>
 import { useKakaoStore } from "@/stores/kakao.js";
+import router from "@/router";
 export default {
   setup() {
     const kakaoStore = useKakaoStore();
-
     kakaoStore.setHeaderAddress();
-
     function goBack() {
-      window.history.back();
+      if (kakaoStore.searchTypeData.goBack) {
+        kakaoStore.searchTypeData.goBack = false
+        router.push('/ceomain')
+      } else {
+        window.history.back();
+        }
+
     }
 
     return {
