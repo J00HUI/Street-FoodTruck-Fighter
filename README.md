@@ -110,11 +110,15 @@
 
 ![매출통계](https://user-images.githubusercontent.com/99133426/202928074-d5e50674-8f73-406c-8958-8beb51f29414.png)
 
+![매출통계2](https://user-images.githubusercontent.com/99133426/202934934-fbf3f415-8dbe-48f5-be30-46ad826753ef.png)
+
 - 스케줄 관리
 
 ![스케줄 등록](https://user-images.githubusercontent.com/99133426/202928106-9e6dd738-54d7-4f5e-9293-98b69c3f3021.png)
 
 - 수요조사
+
+![수요조사 확인](https://user-images.githubusercontent.com/99133426/202934910-482b85b5-99a3-426b-b882-c67c6376aea2.png)
 
 - 마이푸드트럭
 
