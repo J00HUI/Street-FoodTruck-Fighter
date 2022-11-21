@@ -21,8 +21,8 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
 
 	@Query(value = "SELECT * \n" +
 		"FROM schedule \n" +
-		"WHERE latitude BETWEEN :latitude - 0.5 AND :latitude + 0.5 \n" +
-		"AND longitude BETWEEN :longitude - 0.5 AND :longitude + 0.5 \n" +
+		"WHERE latitude BETWEEN :latitude - 5 AND :latitude + 5 \n" +
+		"AND longitude BETWEEN :longitude - 5 AND :longitude + 5 \n" +
 		"And curdate() = working_date \n" +
 		"And is_valid = true", nativeQuery = true)
 	List<Schedule> findScheduleNearBy(Double latitude, Double longitude);
