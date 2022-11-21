@@ -16,6 +16,7 @@ export const useKakaoStore = defineStore("Kakao", {
       iconType:  emptyMarker,
       searchType: "click", //'click'과 'input'존재
       goBack: false,
+      is_map:false,
     };
     const mapCenter = {
       latitude: 0,
@@ -50,6 +51,7 @@ export const useKakaoStore = defineStore("Kakao", {
           console.log(res.data);
           this.surveyData = res.data
           this.is_survey_update = true
+          this.searchTypeData.is_map = true
 
         })
         .catch(() => {

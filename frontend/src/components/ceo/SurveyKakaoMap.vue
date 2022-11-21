@@ -91,7 +91,7 @@ export default {
         store.mapCenter["latitude"] = initMap.map.getCenter()["Ma"];
         store.mapCenter["longitude"] = initMap.map.getCenter()["La"];
         store.getSurvey();
-        Markers_clusterer()
+        
       });
       var mapTypeControl = new kakao.maps.MapTypeControl();
 
@@ -111,10 +111,8 @@ export default {
           minLevel: 2, // 클러스터 할 최소 지도 레벨
           disableClickZoom: true, // 클러스터 마커를 클릭했을 때 지도가 확대되지 않도록 설정한다
         });
-      Markers_clusterer();
 
 
-      function Markers_clusterer() {
         var imageSrc = null;
         var markers = $(store.surveyData).map(function (i, item) {
           for (let m_i = 0; m_i < categoryLength + 1; m_i++) {
@@ -160,7 +158,7 @@ export default {
             initMap.map.setLevel(level, { anchor: cluster.getCenter() });
           }
         );
-      }
+
       var geocoder = new kakao.maps.services.Geocoder();
       function searchAddrFromCoords(coords, callback) {
         // 좌표로 행정동 주소 정보를 요청합니다
