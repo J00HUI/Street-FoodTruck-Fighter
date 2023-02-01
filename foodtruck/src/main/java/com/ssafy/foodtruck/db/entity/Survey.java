@@ -9,24 +9,24 @@ import javax.persistence.*;
 @Builder
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Survey extends BaseEntity {
 
-    @NotNull
-    @Column(length = 200)
-    private String category;
+	@NotNull
+	@Column(length = 200)
+	private Category category;
 
-    @NotNull
-    private Double latitude;
+	@NotNull
+	private Double latitude;
 
-    @NotNull
-    private Double longitude;
+	@NotNull
+	private Double longitude;
 
-    @NotNull
-    @Column(length = 200)
-    private String address;
+	@NotNull
+	@Column(length = 200)
+	private String address;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private User user;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User user;
 }

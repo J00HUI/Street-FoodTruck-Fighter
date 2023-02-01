@@ -58,11 +58,11 @@ public class SwaggerConfig {
         return newArrayList(new SecurityReference(SECURITY_SCHEMA_NAME, authorizationScopes));
     }
 
-    @Bean
-    UiConfiguration uiConfig() {
-        return UiConfigurationBuilder.builder()
-//                .supportedSubmitMethods(newArrayList("get").toArray(new String[0])) // try it 기능 활성화 범위
-//                .operationsSorter(METHOD)
-                .build();
-    }
+//    @Bean
+//    UiConfiguration uiConfig() {
+//        return UiConfigurationBuilder.builder()
+////                .supportedSubmitMethods(newArrayList("get").toArray(new String[0])) // try it 기능 활성화 범위
+////                .operationsSorter(METHOD)
+//                .build();
+//    }
 }

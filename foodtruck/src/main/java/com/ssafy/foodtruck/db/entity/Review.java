@@ -9,28 +9,29 @@ import javax.persistence.*;
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Review extends BaseEntity {
 
-    @NotNull
-    @Column(length = 200)
-    private String title;
+	@NotNull
+	@Column(length = 3000)
+	private String content;
 
-    @NotNull
-    @Column(length = 3000)
-    private String content;
+	@NotNull
+	private Integer grade;
 
-    @NotNull
-    private Integer grade;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User user;
 
-    @Column(length = 200)
-    private String src;
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "orders_id")
+	private Orders orders;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private User user;
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "review_img_id")
+	private ReviewImg reviewImg;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "orders_id")
-    private Orders orders;
+	public void setReviewImg(ReviewImg reviewImg) {
+		this.reviewImg = reviewImg;
+	}
 }
