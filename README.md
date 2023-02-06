@@ -62,9 +62,13 @@
 ## 💻 시스템 아키텍처
 <img src="https://user-images.githubusercontent.com/99133426/202916867-defbf547-6ac6-48cc-91dc-f075727933b0.png" width="70%">
 
+## 💻 주요 기능
+### 온보딩
+
 ## 📚 산출물
 
 [🖥️ 와이어 프레임](https://www.figma.com/file/5wfH0Qpq21ki0rBAyIyi5A/%EC%8A%A4%ED%8A%B8%EB%A6%AC%ED%8A%B8-%ED%91%B8%EB%93%9C%ED%8A%B8%EB%9F%AD-%ED%8C%8C%EC%9D%B4%ED%84%B0_B206_%EC%9E%90%EC%9C%A8-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8?node-id=0%3A1&t=PTcmkGYpTGvPth2h-0)  / 📃 [기능명세서](https://www.notion.so/3a665dc16e5942219d083fd0e053c76e)  /  🌐 [ERD](https://www.erdcloud.com/d/wkHDpQmGCtkvGzMZQ)  /  🍏 [API 명세서](https://www.notion.so/API-Docs-dcac15915bd94e2bad86aa0a08221463)
+</br>
 </br>
 </br>
 
