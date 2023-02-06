@@ -1,5 +1,5 @@
 # 🚚 Street Foodtruck Fighter
-푸드트럭 사용자와 사장님을 위한 테이블링 앱, Street FoodTruck Fighter 🚚🍳
+푸드트럭 사용자와 사장님을 위한 테이블링 앱, Street FoodTruck Fighter
 </br>
 
 <img src="https://user-images.githubusercontent.com/99133426/202908973-43099654-321b-499e-b24d-fb48b61a23ea.png" width="50%">
