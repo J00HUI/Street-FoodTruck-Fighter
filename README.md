@@ -66,14 +66,64 @@
 * VSCode
 </br>
 
-## 🔎 시스템 아키텍처
+## 💡 시스템 아키텍처
 <img src="https://user-images.githubusercontent.com/99133426/202916867-defbf547-6ac6-48cc-91dc-f075727933b0.png" width="70%">
 
 ## 💻 주요 기능
-### 사용자
+## [사용자]
+* 회원가입 및 로그인
+
+| 회원가입 | 로그인 |
+|:-------:|:-------:|
+| <img src="https://user-images.githubusercontent.com/83942393/216920654-39912b46-69ab-480b-97c5-ad30245569d4.png" width="70%"> |<img src="https://user-images.githubusercontent.com/83942393/216916770-5813d369-f9ce-48ea-879f-250338b8cf94.png" width="70%"> |
+</br>
+
+* 메인화면
+
+| 메인화면 | 
+|:-------:|
+| <img src="https://user-images.githubusercontent.com/83942393/216921152-5bb7de1f-20df-4ad6-b733-b8e97fe9aa89.png" width="70%"> |
+</br>
+
+* 메뉴별 푸드트럭 위치 및 정보 확인
+
+| 지도 | 목록 |
+|:-------:|:-------:|
+| <img src="https://user-images.githubusercontent.com/83942393/216921356-73ee0fc3-30bd-489a-986f-cfaadb94a2e4.png" width="70%"> |<img src="https://user-images.githubusercontent.com/83942393/216921130-49464ca4-0b47-41d7-85cd-22a61ff4034a.png" width="70%"> |
+</br>
+
+* 푸드트럭 상세 정보
+* 리뷰
+
+| 메뉴 | 상세 정보 | 리뷰 | 
+|:-------:|:-------:|:-------:|
+| <img src="https://user-images.githubusercontent.com/83942393/216921325-045d278a-b366-4442-a160-643022eb6586.png" width="70%"> |<img src="https://user-images.githubusercontent.com/83942393/216922357-c27b9318-217f-4477-9beb-d6bacbdf2453.png" width="70%"> |<img src="https://user-images.githubusercontent.com/83942393/216921325-045d278a-b366-4442-a160-643022eb6586.png" width="70%"> |
+</br>
+
+* 주문 및 결제
+
+| 메뉴 | 상세 정보 |  상세 정보 |  상세 정보 |
+|:-------:|:-------:|:-------:|:-------:|
+| <img src="https://user-images.githubusercontent.com/99133426/202929102-61fc011f-b08c-4073-a2e7-8cad9c194497.png" width="70%"> |<img src="https://user-images.githubusercontent.com/99133426/202929101-8162f86e-2ec9-48bf-9469-4932db2471ec.png" width="70%"> |<img src="https://user-images.githubusercontent.com/99133426/202929099-feb40dc9-abba-4833-a056-363541b47d81.png" width="70%"> |<img src="https://user-images.githubusercontent.com/99133426/202929098-56fb4d2d-e366-41a2-ac8b-f15756ac5f20.png" width="70%"> |
+</br>
+
+![survey](https://user-images.githubusercontent.com/83942393/216921229-65a5c3d8-5d94-4fcd-8319-4b4ee464ca80.png)
 
 
-### CEO
+### [CEO]
+* 회원가입 및 로그인
+
+| 회원가입 | 로그인 |
+|:-------:|:-------:|
+| <img src="https://user-images.githubusercontent.com/83942393/216920969-aeba939d-e203-4c05-b0e1-2a374cd0fb5a.png" width="70%"> |<img src="https://user-images.githubusercontent.com/83942393/216916770-5813d369-f9ce-48ea-879f-250338b8cf94.png" width="70%"> |
+</br>
+</br>
+
+![surveycheck](https://user-images.githubusercontent.com/83942393/216921187-0cbce3db-28ba-4af8-9ec4-472744b472b9.png)
+![start](https://user-images.githubusercontent.com/83942393/216921262-2515789f-27f9-418f-aaa1-0c132765d977.png)
+![signup](https://user-images.githubusercontent.com/83942393/216921289-33e05630-7a99-4f24-a088-5e116d7df77b.png)
+![ceomain](https://user-images.githubusercontent.com/83942393/216921376-b92e5cbd-7b67-47dc-bc1a-0235d8730dec.png)
+
 
 
 ## 🧑🏻‍💻 개발 멤버 소개
