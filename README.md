@@ -67,6 +67,7 @@
 
 ## 💡 시스템 아키텍처
 <img src="https://user-images.githubusercontent.com/99133426/202916867-defbf547-6ac6-48cc-91dc-f075727933b0.png" width="70%">
+</br>
 
 ## 💻 주요 기능
 ## [사용자]
