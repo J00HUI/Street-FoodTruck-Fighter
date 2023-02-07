@@ -143,7 +143,7 @@
       <img src="https://avatars.githubusercontent.com/atj14" width="140px"/> <br><br> 안태환 <br>(Front-End) </a> <br></td>
   </tr>
   <tr>
-      <td align="center">👑<br/>CI/CD<br/>Rest API</td>
+      <td align="center">👑<br/>CI/CD<br/>REST API</td>
       <td align="center">REST API</td>
       <td align="center">UI/UX<br/>REST API</td>
       <td align="center">UI/UX<br/>Vue</td>
