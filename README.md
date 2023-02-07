@@ -70,58 +70,125 @@
 
 ## 💻 주요 기능
 ## [사용자]
-* 회원가입 및 로그인
+### 회원가입 및 로그인
+* 카카오 API 를 활용하여 카카오 간편 로그인이 가능합니다.
+* 문자 인증을 통한 회원가입이 가능합니다.
 
-| 회원가입 | 로그인 |
+| 로그인 | 회원가입 |
 |:-------:|:-------:|
-| <img src="https://user-images.githubusercontent.com/83942393/216920654-39912b46-69ab-480b-97c5-ad30245569d4.png" width="70%"> |<img src="https://user-images.githubusercontent.com/83942393/216916770-5813d369-f9ce-48ea-879f-250338b8cf94.png" width="70%"> |
+| <img src="https://user-images.githubusercontent.com/83942393/216916770-5813d369-f9ce-48ea-879f-250338b8cf94.png" width="70%"> | <img src="https://user-images.githubusercontent.com/83942393/216920654-39912b46-69ab-480b-97c5-ad30245569d4.png" width="70%"> |
 </br>
 
-* 메인화면
+### 메인화면
+* GeoLocation API 를 사용하여 사용자의 현재 위치 정보를 받아옵니다.
+* 현재 주문한 내역을 확인할 수 있습니다.
+* 메뉴 카테고리를 선택해 조회페이지로 이동합니다.
 
 | 메인화면 | 
 |:-------:|
-| <img src="https://user-images.githubusercontent.com/83942393/216921152-5bb7de1f-20df-4ad6-b733-b8e97fe9aa89.png" width="70%"> |
+| <img src="https://user-images.githubusercontent.com/99133426/202927894-b803b711-c51c-43f9-8d16-c4febd878597.png" width="70%"> |
 </br>
 
-* 메뉴별 푸드트럭 위치 및 정보 확인
+### 푸드트럭 조회
+* 지도와 목록탭으로 구분됩니다.
+* 카테고리별로 사용자 위치 주변의 푸드트럭 정보를 제공합니다.
+* 검색 기능을 제공합니다.
 
 | 지도 | 목록 |
 |:-------:|:-------:|
-| <img src="https://user-images.githubusercontent.com/83942393/216921356-73ee0fc3-30bd-489a-986f-cfaadb94a2e4.png" width="70%"> |<img src="https://user-images.githubusercontent.com/83942393/216921130-49464ca4-0b47-41d7-85cd-22a61ff4034a.png" width="70%"> |
+| <img src="https://user-images.githubusercontent.com/99133426/202927991-9b4bbc10-6aa7-4c85-936e-4f4a597a41b2.png" width="70%"> |<img src="https://user-images.githubusercontent.com/99133426/202928825-7c6fe4b0-a652-4481-b1f2-a8da07f6a188.png" width="70%"> |
 </br>
 
-* 푸드트럭 상세 정보
-* 리뷰
+### 푸드트럭 상세 조회
+* 푸드트럭의 별점을 제공합니다.
+* 푸드트럭의 메뉴, 상세정보, 리뷰를 제공합니다.
 
 | 메뉴 | 상세 정보 | 리뷰 | 
 |:-------:|:-------:|:-------:|
-| <img src="https://user-images.githubusercontent.com/83942393/216921325-045d278a-b366-4442-a160-643022eb6586.png" width="70%"> |<img src="https://user-images.githubusercontent.com/83942393/216922357-c27b9318-217f-4477-9beb-d6bacbdf2453.png" width="70%"> |<img src="https://user-images.githubusercontent.com/83942393/216921325-045d278a-b366-4442-a160-643022eb6586.png" width="70%"> |
+| <img src="https://user-images.githubusercontent.com/83942393/217159293-3e563f49-b935-4931-9ae4-e6e415c1c8db.png" width="70%"> |<img src="https://user-images.githubusercontent.com/83942393/216922357-c27b9318-217f-4477-9beb-d6bacbdf2453.png" width="70%"> |<img src="https://user-images.githubusercontent.com/83942393/216921325-045d278a-b366-4442-a160-643022eb6586.png" width="70%"> |
 </br>
 
-* 주문 및 결제
+### 주문 및 결제
+* 원하는 메뉴를 장바구니에 담을 수 있습니다.
+* 카카오 Pay API 를 활용하여 결제시스템을 구현하였습니다.
 
-| 메뉴 | 상세 정보 |  상세 정보 |  상세 정보 |
-|:-------:|:-------:|:-------:|:-------:|
-| <img src="https://user-images.githubusercontent.com/99133426/202929102-61fc011f-b08c-4073-a2e7-8cad9c194497.png" width="70%"> |<img src="https://user-images.githubusercontent.com/99133426/202929101-8162f86e-2ec9-48bf-9469-4932db2471ec.png" width="70%"> |<img src="https://user-images.githubusercontent.com/99133426/202929099-feb40dc9-abba-4833-a056-363541b47d81.png" width="70%"> |<img src="https://user-images.githubusercontent.com/99133426/202929098-56fb4d2d-e366-41a2-ac8b-f15756ac5f20.png" width="70%"> |
+| 장바구니 |  결제 |  결제 완료 |
+|:-------:|:-------:|:-------:|
+|<img src="https://user-images.githubusercontent.com/99133426/202929101-8162f86e-2ec9-48bf-9469-4932db2471ec.png" width="70%"> |<img src="https://user-images.githubusercontent.com/99133426/202929099-feb40dc9-abba-4833-a056-363541b47d81.png" width="70%"> |<img src="https://user-images.githubusercontent.com/99133426/202929098-56fb4d2d-e366-41a2-ac8b-f15756ac5f20.png" width="70%"> |
 </br>
 
-![survey](https://user-images.githubusercontent.com/83942393/216921229-65a5c3d8-5d94-4fcd-8319-4b4ee464ca80.png)
+### 원해요, 푸드트럭
+* 설문조사를 통해 우리 동네에 원하는 푸드트럭 설문조사를 진행합니다.
+* 통계는 푸드트럭 사장님들께 수요 메뉴와 위치를 제공합니다.
 
+| 설문조사 | 
+|:-------:|
+|<img src="https://user-images.githubusercontent.com/99133426/202928023-74266b7f-847c-4409-9a5d-8b076059113b.png" width="70%"> |
+</br>
+
+### 마이페이지
+* 지난 주문 내역 조회
+* 리뷰 작성
+
+| 지난 주문 내역 | 리뷰 등록 | 
+|:-------:|:-------:|
+|<img src="https://user-images.githubusercontent.com/83942393/217159854-c475719c-d27b-49df-9cb3-b44e52d2d3d7.png" width="70%"> | <img src="https://user-images.githubusercontent.com/83942393/217166365-79522567-59cc-4a4d-97da-2ae526751fef.png" width="70%"> |
+</br>
 
 ### [CEO]
-* 회원가입 및 로그인
+### 회원가입 및 마이푸드트럭 등록
 
-| 회원가입 | 로그인 |
+| 회원가입 | 마이푸드트럭 등록 |
 |:-------:|:-------:|
-| <img src="https://user-images.githubusercontent.com/83942393/216920969-aeba939d-e203-4c05-b0e1-2a374cd0fb5a.png" width="70%"> |<img src="https://user-images.githubusercontent.com/83942393/216916770-5813d369-f9ce-48ea-879f-250338b8cf94.png" width="70%"> |
+| <img src="https://user-images.githubusercontent.com/83942393/216921289-33e05630-7a99-4f24-a088-5e116d7df77b.png" width="70%"> |<img src="https://user-images.githubusercontent.com/83942393/216920969-aeba939d-e203-4c05-b0e1-2a374cd0fb5a.png" width="70%"> |
 </br>
 </br>
 
-![surveycheck](https://user-images.githubusercontent.com/83942393/216921187-0cbce3db-28ba-4af8-9ec4-472744b472b9.png)
-![start](https://user-images.githubusercontent.com/83942393/216921262-2515789f-27f9-418f-aaa1-0c132765d977.png)
-![signup](https://user-images.githubusercontent.com/83942393/216921289-33e05630-7a99-4f24-a088-5e116d7df77b.png)
-![ceomain](https://user-images.githubusercontent.com/83942393/216921376-b92e5cbd-7b67-47dc-bc1a-0235d8730dec.png)
+### 메인화면
+
+| 메인 화면 | 
+|:-------:|
+| <img src="https://user-images.githubusercontent.com/99133426/202927863-a5bae8cc-50c4-4ea9-bbda-1510756ab91d.png" width="70%"> |
+</br>
+
+### 장사시작
+
+| 장사 시작 | 
+|:-------:|
+| <img src="https://user-images.githubusercontent.com/83942393/216921262-2515789f-27f9-418f-aaa1-0c132765d977.png" width="70%"> |
+</br>
+
+### 수요 조사 확인
+
+| 메인화면 | 
+|:-------:|
+| <img src="https://user-images.githubusercontent.com/99133426/202934910-482b85b5-99a3-426b-b882-c67c6376aea2.png" width="70%"> |
+</br>
+</br>
+
+* 매출 통계
+
+| 매출 통계 | 
+|:-------:|
+| <img src="https://user-images.githubusercontent.com/99133426/202928074-d5e50674-8f73-406c-8958-8beb51f29414.png" width="70%"> |
+</br>
+</br>
+
+* 스케쥴
+
+| 메인화면 | 스케줄 | 
+|:-------:|:-------:|
+| <img src="https://user-images.githubusercontent.com/99133426/202934934-fbf3f415-8dbe-48f5-be30-46ad826753ef.png" width="70%"> | <img src="https://user-images.githubusercontent.com/99133426/202928106-9e6dd738-54d7-4f5e-9293-98b69c3f3021.png" width="70%"> |
+</br>
+</br>
+
+* 메뉴 등록
+
+| 메인화면 | 
+|:-------:|
+| <img src="https://user-images.githubusercontent.com/99133426/202928171-eb706aab-8abf-4ab7-83f5-1b56bed2be13.png" width="70%"> |
+</br>
+</br>
 
 
 
