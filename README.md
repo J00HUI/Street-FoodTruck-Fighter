@@ -216,7 +216,7 @@
   <tr>
       <td align="center">👑<br/>CI/CD<br/>REST API</td>
       <td align="center">REST API</td>
-      <td align="center">UI/UX<br/>REST API</td>
+      <td align="center">Design<br/>REST API</td>
       <td align="center">UI/UX<br/>Vue</td>
       <td align="center">UI/UX<br/>Vue</td>
       <td align="center">UI/UX<br/>Vue</td>
