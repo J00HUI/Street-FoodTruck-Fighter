@@ -197,6 +197,12 @@
 </br>
 </br>
 
+## 🤙🏻협업 (Jira, Notion)
+| Jira 1주차 | Jira 2주차 |
+|:-------:|:-------:|
+| <img src="https://user-images.githubusercontent.com/83942393/218046711-49d9c8f7-0104-489e-8931-333b213f63a7.png" width="90%"> | <img src="https://user-images.githubusercontent.com/83942393/218047627-0d07d0c7-fedb-477a-b619-3d9e23a554e0.png" width="50%"> |
+</br>
+
 ## 🧑🏻‍💻 개발 멤버 소개
 <table>
   <tr>
