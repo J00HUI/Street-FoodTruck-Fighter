@@ -210,8 +210,8 @@
       <img src="https://avatars.githubusercontent.com/SmileJune" width="140px"/> <br><br> 윤일준 <br>(Back-End) </a> <br></td>
     <td height="140px" align="center"><a href="https://github.com/ssafypark">
       <img src="https://avatars.githubusercontent.com/ssafypark" width="140px"/> <br><br> 박범수 <br>(Back-End) </a> <br></td>
-    <td height="140px" align="center"><a href="https://github.com/J00HUI">
-      <img src="https://avatars.githubusercontent.com/J00HUI" width="140px"/> <br><br> 이주희 <br>(Back-End) </a> <br></td>
+    <td height="140px" align="center"><a href="https://github.com/joohee56">
+      <img src="https://avatars.githubusercontent.com/joohee56" width="140px"/> <br><br> 이주희 <br>(Back-End) </a> <br></td>
     <td height="140px" align="center"><a href="https://github.com/ggpp200">
       <img src="https://avatars.githubusercontent.com/ggpp200" width="140px"/> <br><br> 박승주 <br>(Front-End) </a> <br></td>
     <td height="140px" align="center"><a href="https://github.com/Sung-Hoon-Lee">
