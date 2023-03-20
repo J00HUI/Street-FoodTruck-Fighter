@@ -117,8 +117,6 @@ public class BusinessService {
 			// 값이 같을때
 			getBusinessResList.get(getBusinessResList.size()-1).getBusinessResList().add(businessRes);
 		}
-
-
 		return getBusinessResList;
 	}
 }

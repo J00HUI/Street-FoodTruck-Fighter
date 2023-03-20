@@ -67,24 +67,10 @@ public class UserService {
         return user.get();
     }
 
-    // Uid Id 구분 헷갈리네...
-//    public UserDto getUserByUid(int uId){
-//        UserDto userDto = userDao.selectUserByUid(uId);
-//        if(userDto == null){
-//            throw new UsernameNotFoundException("존재하지 않는 u_id입니다.");
-//        }
-//        return userDto;
-//    }
-
     public void checkExistingEmail(String email) throws ExistingEmailException {
         User user = userRepository.findByEmail(email).get();
         if (user != null) {
             throw new ExistingEmailException();
         }
     }
-
-    // 얘도 Uid, id 헷갈린다...
-//    public int getUidFromBearerToken(String BearerToken) {
-//        return userDao.selectUidByEmail(jwtTokenUtil.getEmailFromBearerToken(BearerToken));
-//    }
 }

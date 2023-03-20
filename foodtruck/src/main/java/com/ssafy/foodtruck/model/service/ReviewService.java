@@ -120,5 +120,4 @@ public class ReviewService {
 
 		return review.get().getReviewImg();
 	}
-
 }
