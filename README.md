@@ -85,9 +85,8 @@
 * 현재 사용자가 주문한 내역을 확인할 수 있습니다.
 * 메뉴 카테고리를 클릭하여 푸드트럭 조회 페이지로 이동합니다.
 
-| 메인화면 | 
-|:-------:|
 | <img src="https://user-images.githubusercontent.com/99133426/202927894-b803b711-c51c-43f9-8d16-c4febd878597.png" width="70%"> |
+|:-------:|
 </br>
 
 ### 푸드트럭 조회
@@ -153,28 +152,24 @@
 * 영업 시작, 영업 종료 버튼을 통해 간편하게 영업을 시작 및 종료할 수 있습니다.
 * 매출 통계, 스케줄, 수요조사, 마이푸드트럭 버튼을 통해 각각의 페이지로 이동합니다.
 
-| 메인 화면 | 
-|:-------:|
 | <img src="https://user-images.githubusercontent.com/99133426/202927863-a5bae8cc-50c4-4ea9-bbda-1510756ab91d.png" width="70%"> |
+|:-------:|
 </br>
 
 ### 영업 시작
 * 수락되지 않은 주문 내역과 수락된 주문 내역을 확인할 수 있습니다.
 * 뱃지를 통해 수락되지 않은 주문내역의 갯수를 확인할 수 있도록 구현하였습니다.
 
-
-| 영업 시작 | 
-|:-------:|
 | <img src="https://user-images.githubusercontent.com/83942393/216921262-2515789f-27f9-418f-aaa1-0c132765d977.png" width="70%"> |
+|:-------:|
 </br>
 
 ### 수요 조사 확인
 * 원해요, 푸드트럭에서 진행한 설문조사의 결과를 확인할 수 있습니다.
 * 수요가 많은 메뉴와 위치를 제공하여 사장님께선 더 많은 수익을, 푸드트럭 손님들께선 원하는 메뉴를 원하는 위치에서 만날 수 있는 장점을 제공합니다.
 
-| 수요 조사 | 
-|:-------:|
 | <img src="https://user-images.githubusercontent.com/99133426/202934910-482b85b5-99a3-426b-b882-c67c6376aea2.png" width="70%"> |
+|:-------:|
 </br>
 </br>
 
@@ -182,9 +177,8 @@
 * Chart.js 를 사용하였습니다.
 * 매출 통계를 간편하게 파악할 수 있습니다. 
 
-| 매출 통계 | 
-|:-------:|
 | <img src="https://user-images.githubusercontent.com/99133426/202928074-d5e50674-8f73-406c-8958-8beb51f29414.png" width="70%"> |
+|:-------:|
 </br>
 </br>
 
@@ -210,8 +204,8 @@
       <img src="https://avatars.githubusercontent.com/SmileJune" width="140px"/> <br><br> 윤일준 <br>(Back-End) </a> <br></td>
     <td height="140px" align="center"><a href="https://github.com/ssafypark">
       <img src="https://avatars.githubusercontent.com/ssafypark" width="140px"/> <br><br> 박범수 <br>(Back-End) </a> <br></td>
-    <td height="140px" align="center"><a href="https://github.com/J00HUI">
-      <img src="https://avatars.githubusercontent.com/J00HUI" width="140px"/> <br><br> 이주희 <br>(Back-End) </a> <br></td>
+    <td height="140px" align="center"><a href="https://github.com/joohee56">
+      <img src="https://avatars.githubusercontent.com/joohee56" width="140px"/> <br><br> 이주희 <br>(Back-End) </a> <br></td>
     <td height="140px" align="center"><a href="https://github.com/ggpp200">
       <img src="https://avatars.githubusercontent.com/ggpp200" width="140px"/> <br><br> 박승주 <br>(Front-End) </a> <br></td>
     <td height="140px" align="center"><a href="https://github.com/Sung-Hoon-Lee">
